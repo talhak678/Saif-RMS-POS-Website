@@ -60,8 +60,8 @@ const MenuStyle2 = () => {
     <div className="page-content bg-white">
       <CommonBanner
         img={IMAGES.banner_bnr1}
-        title="Our Menu 2"
-        subtitle="Our Menu 2"
+        title="Our Menu"
+        subtitle="Our Menu"
       />
 
       <section className="content-inner">

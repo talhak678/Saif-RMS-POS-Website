@@ -22,10 +22,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Header from "./components/Header";
-import Home from "./pages/Home";
 import Footer from "./components/Footer";
-import Home2 from "./pages/Home2";
-import Footer2 from "./components/Footer2";
 import ScrollTop from "./constent/ScrollTop";
 import Home3 from "./pages/Home3";
 import Footer3 from "./components/Footer3";
@@ -70,24 +67,9 @@ import BlogGrid4Masonary from "./pages/BlogGrid4Masonary";
 import BlogWideListSidebar from "./pages/BlogWideListSidebar";
 import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
 import ContactUs from "./pages/ContactUs";
-import Header2 from "./components/Header2";
 import Header3 from "./components/Header3";
 import SignIn from "./elements/SignIn";
 
-const Layout1 = () => (
-  <>
-    <Header />
-    <Outlet />
-    <Footer />
-  </>
-);
-const Layout2 = () => (
-  <>
-    <Header2 />
-    <Outlet />
-    <Footer2 />
-  </>
-);
 const Layout3 = () => (
   <>
     <Header3 />
