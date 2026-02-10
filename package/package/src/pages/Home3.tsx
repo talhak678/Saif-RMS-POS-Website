@@ -15,6 +15,16 @@ const Home3 = () => {
     <div className="page-content bg-white">
       <MainBanner3 />
       <Home3Box />
+      <section className="content-inner section-wrapper-6 p-b40">
+        <div className="container inner-section-wrapper">
+          <div className="section-head text-center">
+            <h2 className="title wow flipInX">From Our Menu</h2>
+          </div>
+          <Home3OurMenu />
+        </div>
+        <Home3BookTable />
+      </section>
+
       <section className="content-inner bg-white section-wrapper-2 overflow-hidden">
         <div className="container">
           <div className="section-head text-center">
@@ -61,15 +71,6 @@ const Home3 = () => {
             ))}
           </div>
         </div>
-      </section>
-      <section className="content-inner section-wrapper-6 p-b40">
-        <div className="container inner-section-wrapper">
-          <div className="section-head text-center">
-            <h2 className="title wow flipInX">From Our Menu</h2>
-          </div>
-          <Home3OurMenu />
-        </div>
-        <Home3BookTable />
       </section>
     </div>
   );

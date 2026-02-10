@@ -1,14 +1,5 @@
 export const MenuArr = [
-  {
-    menu: "Home",
-    className: "sub-menu-down",
-    ulClassName: "sub-menu",
-    submenu: [
-      { child: "Home 01", to: "/" },
-      { child: "Home 02", to: "/home-2" },
-      { child: "Home 03", to: "/home-3" },
-    ],
-  },
+  { menu: "Home", to: "/" },
   {
     menu: "Pages",
     className: "has-mega-menu",
