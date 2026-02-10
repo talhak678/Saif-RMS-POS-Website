@@ -109,5 +109,4 @@ export const MenuArr = [
       },
     ],
   },
-  { menu: "Contact Us", to: "/contact-us" },
 ];
