@@ -139,14 +139,8 @@ function App() {
           <SignIn />
           <ScrollTop />
           <Routes>
-            <Route element={<Layout1 />}>
-              <Route path="/" element={<Home />} />
-            </Route>
-            <Route element={<Layout2 />}>
-              <Route path="/home-2" element={<Home2 />} />
-            </Route>
             <Route element={<Layout3 />}>
-              <Route path="/home-3" element={<Home3 />} />
+              <Route path="/" element={<Home3 />} />
             </Route>
             <Route element={<Layout4 />}>
               <Route path="/about-us" element={<AboutUs />} />
