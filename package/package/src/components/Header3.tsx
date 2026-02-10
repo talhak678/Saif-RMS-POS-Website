@@ -39,9 +39,8 @@ const Header3 = () => {
   return (
     <header className="site-header mo-left header header-transparent transparent-white style-1">
       <div
-        className={`sticky-header main-bar-wraper navbar-expand-lg ${
-          scroll ? "is-fixed" : ""
-        }`}
+        className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""
+          }`}
       >
         <div className="main-bar clearfix ">
           <div className="container clearfix">
@@ -54,9 +53,8 @@ const Header3 = () => {
             </div>
 
             <button
-              className={`navbar-toggler collapsed navicon justify-content-end ${
-                headerSidebar ? "open" : ""
-              }`}
+              className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
+                }`}
               type="button"
               onClick={() => {
                 setHeaderSidebar(!headerSidebar);
@@ -68,189 +66,204 @@ const Header3 = () => {
             </button>
 
             <div className="extra-nav">
-              <div className="extra-cell">
-                <ul>
-                  <li>
-                    <Link
-                      className="btn btn-white btn-square btn-shadow"
-                      to={"#"}
-                      onClick={() => {
-                        setShowSignInForm(true);
-                      }}
-                    >
-                      <i className="flaticon-user"></i>
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      type="button"
-                      className="btn btn-white btn-square btn-shadow cart-btn"
-                      onClick={cartButton}
-                    >
-                      <i className="flaticon-shopping-bag-1"></i>
-                      <span className="badge">6</span>
-                    </button>
-                    <div
+              <ul className="d-flex align-items-center mb-0 list-unstyled">
+                <li>
+                  <Link
+                    className="btn btn-white btn-square btn-shadow"
+                    to={"#"}
+                    onClick={() => {
+                      setShowSignInForm(true);
+                    }}
+                  >
+                    <i className="flaticon-user"></i>
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    className="btn btn-white btn-square btn-shadow cart-btn"
+                    onClick={cartButton}
+                  >
+                    <i className="flaticon-shopping-bag-1"></i>
+                    <span className="badge">6</span>
+                  </button>
+                  <div
+                    style={{
+                      transition: "all 0.5s",
+                      opacity: cart ? "1" : "0",
+                    }}
+                  >
+                    <ul
+                      className="dropdown-menu cart-list"
                       style={{
-                        transition: "all 0.5s",
+                        display: cart ? "block" : "",
+                        transitionDuration: "0.5s",
                         opacity: cart ? "1" : "0",
+                        overflow: "hidden",
                       }}
                     >
-                      <ul
-                        className="dropdown-menu cart-list"
-                        style={{
-                          display: cart ? "block" : "",
-                          transitionDuration: "0.5s",
-                          opacity: cart ? "1" : "0",
-                          overflow: "hidden",
+                      <li
+                        className="cart-item"
+                        ref={(node) => {
+                          if (node) {
+                            cartRef.current.push(node);
+                          }
                         }}
                       >
-                        <li
-                          className="cart-item"
-                          ref={(node) => {
-                            if (node) {
-                              cartRef.current.push(node);
-                            }
-                          }}
-                        >
-                          <div className="media">
-                            <div className="media-left">
-                              <Link to="/product-detail">
-                                <img
-                                  alt="/"
-                                  className="media-object"
-                                  src={IMAGES.shop_pic2}
-                                />
-                              </Link>
-                            </div>
-                            <div className="media-body">
-                              <h6 className="dz-title">
-                                <Link
-                                  to="/product-detail"
-                                  className="media-heading"
-                                >
-                                  Double Burger
-                                </Link>
-                              </h6>
-                              <span className="dz-price">$28.00</span>
-                              <span
-                                className="item-close"
-                                onClick={() => {
-                                  deletItems(0);
-                                }}
-                              >
-                                &times;
-                              </span>
-                            </div>
+                        <div className="media">
+                          <div className="media-left">
+                            <Link to="/product-detail">
+                              <img
+                                alt="/"
+                                className="media-object"
+                                src={IMAGES.shop_pic2}
+                              />
+                            </Link>
                           </div>
-                        </li>
-                        <li
-                          className="cart-item"
-                          ref={(node) => {
-                            if (node) {
-                              cartRef.current.push(node);
-                            }
-                          }}
-                        >
-                          <div className="media">
-                            <div className="media-left">
-                              <Link to="/product-detail">
-                                <img
-                                  alt="/"
-                                  className="media-object"
-                                  src={IMAGES.shop_pic3}
-                                />
-                              </Link>
-                            </div>
-                            <div className="media-body">
-                              <h6 className="dz-title">
-                                <Link
-                                  to="/product-detail"
-                                  className="media-heading"
-                                >
-                                  Cheese Burger
-                                </Link>
-                              </h6>
-                              <span className="dz-price">$20.00</span>
-                              <span
-                                className="item-close"
-                                onClick={() => {
-                                  deletItems(1);
-                                }}
+                          <div className="media-body">
+                            <h6 className="dz-title">
+                              <Link
+                                to="/product-detail"
+                                className="media-heading"
                               >
-                                &times;
-                              </span>
-                            </div>
-                          </div>
-                        </li>
-                        <li
-                          className="cart-item"
-                          ref={(node) => {
-                            if (node) {
-                              cartRef.current.push(node);
-                            }
-                          }}
-                        >
-                          <div className="media">
-                            <div className="media-left">
-                              <Link to="/product-detail">
-                                <img
-                                  alt="/"
-                                  className="media-object"
-                                  src={IMAGES.shop_pic4}
-                                />
+                                Double Burger
                               </Link>
-                            </div>
-                            <div className="media-body">
-                              <h6 className="dz-title">
-                                <Link
-                                  to="/product-detail"
-                                  className="media-heading"
-                                >
-                                  Burger
-                                </Link>
-                              </h6>
-                              <span className="dz-price">$15.00</span>
-                              <span
-                                className="item-close"
-                                onClick={() => {
-                                  deletItems(2);
-                                }}
-                              >
-                                &times;
-                              </span>
-                            </div>
+                            </h6>
+                            <span className="dz-price">$28.00</span>
+                            <span
+                              className="item-close"
+                              onClick={() => {
+                                deletItems(0);
+                              }}
+                            >
+                              &times;
+                            </span>
                           </div>
-                        </li>
-                        <li className="cart-item text-center d-flex justify-content-between">
-                          <h6 className="text-primary mb-0">Total:</h6>
-                          <h6 className="text-primary mb-0">$63</h6>
-                        </li>
-                        <li className="text-center d-flex">
-                          <Link
-                            to="/shop-cart"
-                            className="btn btn-primary me-2 w-100 d-block btn-hover-1"
-                          >
-                            <span>View Cart</span>
-                          </Link>
-                          <Link
-                            to="/our-menu-1"
-                            className="btn btn-outline-primary w-100 d-block btn-hover-1"
-                          >
-                            <span>Menu</span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                        </div>
+                      </li>
+                      <li
+                        className="cart-item"
+                        ref={(node) => {
+                          if (node) {
+                            cartRef.current.push(node);
+                          }
+                        }}
+                      >
+                        <div className="media">
+                          <div className="media-left">
+                            <Link to="/product-detail">
+                              <img
+                                alt="/"
+                                className="media-object"
+                                src={IMAGES.shop_pic3}
+                              />
+                            </Link>
+                          </div>
+                          <div className="media-body">
+                            <h6 className="dz-title">
+                              <Link
+                                to="/product-detail"
+                                className="media-heading"
+                              >
+                                Cheese Burger
+                              </Link>
+                            </h6>
+                            <span className="dz-price">$20.00</span>
+                            <span
+                              className="item-close"
+                              onClick={() => {
+                                deletItems(1);
+                              }}
+                            >
+                              &times;
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        className="cart-item"
+                        ref={(node) => {
+                          if (node) {
+                            cartRef.current.push(node);
+                          }
+                        }}
+                      >
+                        <div className="media">
+                          <div className="media-left">
+                            <Link to="/product-detail">
+                              <img
+                                alt="/"
+                                className="media-object"
+                                src={IMAGES.shop_pic4}
+                              />
+                            </Link>
+                          </div>
+                          <div className="media-body">
+                            <h6 className="dz-title">
+                              <Link
+                                to="/product-detail"
+                                className="media-heading"
+                              >
+                                Burger
+                              </Link>
+                            </h6>
+                            <span className="dz-price">$15.00</span>
+                            <span
+                              className="item-close"
+                              onClick={() => {
+                                deletItems(2);
+                              }}
+                            >
+                              &times;
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="cart-item text-center d-flex justify-content-between">
+                        <h6 className="text-primary mb-0">Total:</h6>
+                        <h6 className="text-primary mb-0">$63</h6>
+                      </li>
+                      <li className="text-center d-flex">
+                        <Link
+                          to="/shop-cart"
+                          className="btn btn-primary me-2 w-100 d-block btn-hover-1"
+                        >
+                          <span>View Cart</span>
+                        </Link>
+                        <Link
+                          to="/our-menu-1"
+                          className="btn btn-outline-primary w-100 d-block btn-hover-1"
+                        >
+                          <span>Menu</span>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li className="ms-2">
+                  <Link
+                    className="btn btn-white btn-shadow d-flex align-items-center"
+                    to={"#"}
+                  >
+                    <i className="flaticon-placeholder me-2"></i>
+                    <span>Location</span>
+                  </Link>
+                </li>
+                <li className="ms-2">
+                  <Link
+                    className="btn btn-white btn-shadow d-flex align-items-center"
+                    to={"tel:1234567890"}
+                  >
+                    <i className="flaticon-phone-call me-2"></i>
+                    <span>+123 456 7890</span>
+                  </Link>
+                </li>
+              </ul>
             </div>
 
             <div
-              className={`header-nav navbar-collapse collapse justify-content-start ${
-                headerSidebar ? "show" : ""
-              }`}
+              className={`header-nav navbar-collapse collapse justify-content-start ${headerSidebar ? "show" : ""
+                }`}
               id="navbarNavDropdown"
             >
               {" "}
