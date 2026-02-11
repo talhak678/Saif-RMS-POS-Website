@@ -22,12 +22,19 @@ import {
   Outlet,
 } from "react-router-dom";
 import Header from "./components/Header";
-import ScrollTop from "./constent/ScrollTop";
-import Home3 from "./pages/Home3";
+import Header2 from "./components/Header2";
+import Header3 from "./components/Header3";
+import Header4 from "./components/Header4";
+import Footer from "./components/Footer";
+import Footer2 from "./components/Footer2";
 import Footer3 from "./components/Footer3";
+import Footer4 from "./components/Footer4";
+import Home from "./pages/Home";
+import Home2 from "./pages/Home2";
+import Home3 from "./pages/Home3";
+import ScrollTop from "./constent/ScrollTop";
 import AboutUs from "./pages/AboutUs";
 import Faq from "./pages/Faq";
-import Footer4 from "./components/Footer4";
 import Team from "./pages/Team";
 import TeamDetail from "./pages/TeamDetail";
 import Testimonial from "./pages/Testimonial";
@@ -57,7 +64,6 @@ import BlogListLeftSidebar from "./pages/BlogListLeftSidebar";
 import BlogListRightSidebar from "./pages/BlogListRightSidebar";
 import BlogBothSidebar from "./pages/BlogBothSidebar";
 import BlogDetail from "./pages/BlogDetail";
-import Header4 from "./components/Header4";
 import BlogGutenberg from "./pages/BlogGutenberg";
 import BlogDetailLeftSidebar from "./pages/BlogDetailLeftSidebar";
 import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
@@ -66,17 +72,45 @@ import BlogGrid4Masonary from "./pages/BlogGrid4Masonary";
 import BlogWideListSidebar from "./pages/BlogWideListSidebar";
 import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
 import ContactUs from "./pages/ContactUs";
-import Header3 from "./components/Header3";
 import SignIn from "./elements/SignIn";
+import OrderTypeModal from "./elements/OrderTypeModal";
 
-
-const Layout3 = () => (
-  <>
-    <Header3 />
-    <Outlet />
-    <Footer3 />
-  </>
-);
+const Layout1 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
+const Layout2 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header2 />
+      <Outlet />
+      <Footer2 />
+    </>
+  );
+};
+const Layout3 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header3 />
+      <Outlet />
+      <Footer3 />
+    </>
+  );
+};
 const Layout4 = () => {
   const { setHeaderClass } = useContext(Context);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,16 +147,24 @@ const Layout6 = () => {
   );
 };
 
+
 function App() {
   return (
     <>
       <div className="page-wraper">
         <Router>
+          <OrderTypeModal />
           <SignIn />
           <ScrollTop />
           <Routes>
+            <Route element={<Layout2 />}>
+              <Route path="/" element={<Home2 />} />
+            </Route>
+            <Route element={<Layout1 />}>
+              <Route path="/home-1" element={<Home />} />
+            </Route>
             <Route element={<Layout3 />}>
-              <Route path="/" element={<Home3 />} />
+              <Route path="/home-3" element={<Home3 />} />
             </Route>
             <Route element={<Layout4 />}>
               <Route path="/about-us" element={<AboutUs />} />
