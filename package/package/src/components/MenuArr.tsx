@@ -1,6 +1,5 @@
 export const MenuArr = [
   { menu: "Home", to: "/" },
-  { menu: "Our Menu", to: "/our-menu-2" },
   {
     menu: "Pages",
     className: "has-mega-menu",
@@ -26,16 +25,16 @@ export const MenuArr = [
           { children: "Under Maintenance", to: "/under-maintenance" },
         ],
       },
-      // {
-      //     // child: "Our Menus",
-      //     // subchild: [
-      //     //   { children: "Menu Style 1", to: "/our-menu-1" },
-      //     //   { children: "Menu Style 2", to: "/our-menu-2" },
-      //     //   { children: "Menu Style 3", to: "/our-menu-3" },
-      //     //   { children: "Menu Style 4", to: "/our-menu-4" },
-      //     //   { children: "Menu Style 5", to: "/our-menu-5" },
-      //     // ],
-      // },
+      {
+        child: "Our Menus",
+        subchild: [
+          { children: "Menu Style 1", to: "/our-menu-1" },
+          { children: "Menu Style 2", to: "/our-menu-2" },
+          { children: "Menu Style 3", to: "/our-menu-3" },
+          { children: "Menu Style 4", to: "/our-menu-4" },
+          { children: "Menu Style 5", to: "/our-menu-5" },
+        ],
+      },
     ],
   },
   {

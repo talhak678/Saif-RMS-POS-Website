@@ -1,13 +1,33 @@
 import { IMAGES } from "../constent/theme";
 
-export const Home3ServicesArr = [
-  { icon: "flaticon-fast-delivery", content: "24/7 Free Delivery" },
+export const MainBannerArr = [
   {
-    icon: "flaticon-clock-1",
-    content: "Our Restaurant is Open Around the Clock",
+    img: IMAGES.main_slide_pic1,
+    imgThumb: IMAGES.main_slide_thumb_pic1,
+    subtitle: "High Quality Test Station",
+    title: "Choosing The",
+    title2: "Best",
+    title3: "Quality Food",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
-  { icon: "flaticon-chef", content: "Best Chef" },
-  { icon: "flaticon-cuisine", content: "We Have The Freshest Product" },
+  {
+    img: IMAGES.main_slide_pic1,
+    imgThumb: IMAGES.main_slide_thumb_pic2,
+    subtitle: "The Best Food Stations",
+    title: "Where Food ",
+    title2: "Meets",
+    title3: "Best Passion",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    img: IMAGES.main_slide_pic1,
+    imgThumb: IMAGES.main_slide_thumb_pic3,
+    subtitle: "Exploring the Delicious World",
+    title: "Delicious Eats",
+    title2: "And",
+    title3: "Tasty Drinks",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
 ];
 
 export const HomeSpacialMenunArr = [
@@ -37,6 +57,82 @@ export const HomeSpacialMenunArr = [
   },
 ];
 
+export const HomeImageBoxArr = [
+  {
+    price: "$55.00",
+    name: "Pasta",
+    img: IMAGES.gallery_grid_pic2,
+    img2: IMAGES.gallery_grid_pic1,
+    icon: "flaticon-restaurant",
+    title: "Restaurant",
+  },
+  {
+    price: "$50.00",
+    name: "Shake",
+    img: IMAGES.gallery_grid_pic5,
+    img2: IMAGES.gallery_grid_pic2,
+    icon: "flaticon-martini",
+    title: "Bar",
+  },
+  {
+    price: "$45.00",
+    name: "Dal Fry",
+    img: IMAGES.gallery_grid_pic4,
+    img2: IMAGES.gallery_grid_pic3,
+    icon: "flaticon-coffee-cup",
+    title: "Cafe",
+  },
+  {
+    price: "$35.00",
+    name: "Pizza",
+    img: IMAGES.gallery_grid_pic6,
+    img2: IMAGES.gallery_grid_pic4,
+    icon: "flaticon-cake",
+    title: "Dessert",
+  },
+];
+
+export const MenuSliderArr = [
+  { img: IMAGES.gellry_grid2_pic1, name: "Burger", price: "$20.00" },
+  { img: IMAGES.gellry_grid2_pic2, name: "Pasta", price: "$10.00" },
+  { img: IMAGES.gellry_grid2_pic3, name: "Tandoor", price: "$15.00" },
+  { img: IMAGES.gellry_grid2_pic4, name: "Dal Fry", price: "$65.00" },
+  { img: IMAGES.gellry_grid2_pic1, name: "Burger", price: "$20.00" },
+];
+
+export const TestymonialArr = [
+  {
+    name: "John Doe",
+    skill: "Food Expert",
+    img: IMAGES.testiminial_small_pic1,
+  },
+  {
+    name: "Jolly Roy",
+    skill: "Food Tester",
+    img: IMAGES.testiminial_small_pic2,
+  },
+  {
+    name: "Thomas Hed",
+    skill: "Food Expert",
+    img: IMAGES.testiminial_small_pic3,
+  },
+  {
+    name: "Kally Mint",
+    skill: "Food Expert",
+    img: IMAGES.testiminial_small_pic4,
+  },
+  {
+    name: "Thomas Hed",
+    skill: "Food Expert",
+    img: IMAGES.testiminial_small_pic5,
+  },
+  {
+    name: "Kally Mint",
+    skill: "Food Expert",
+    img: IMAGES.testiminial_small_pic6,
+  },
+];
+
 export const TeamCaroselArr = [
   { img: IMAGES.image_team_pic1, name: "John Doe", position: "Senior Chef" },
   {
@@ -51,6 +147,168 @@ export const TeamCaroselArr = [
     position: "Senior Chef",
   },
   { img: IMAGES.image_team_pic1, name: "John Doe", position: "Senior Chef" },
+];
+
+export const OurBlogArr = [
+  { img: IMAGES.blog_grid_pic1, title: "The Spices Route Taste" },
+  { img: IMAGES.blog_grid_pic2, title: "The Fork & Knife" },
+  { img: IMAGES.blog_grid_pic3, title: "Flavors Of The World" },
+  { img: IMAGES.blog_grid_pic4, title: "Taste of Paradise Dishes" },
+];
+
+export const MainBanner2Arr = [
+  {
+    bgimg: IMAGES.main_slider2_bg1,
+    img1: IMAGES.image_team_pic1,
+    img2: IMAGES.main_slider2_line,
+    img3: IMAGES.main_slider2_pic4,
+    img4: IMAGES.main_slider2_pic1,
+    title: "Paneer Tikka",
+    name: "John Doe",
+    price: "$10.00",
+  },
+  {
+    bgimg: IMAGES.main_slider2_bg2,
+    img1: IMAGES.image_team_pic1,
+    img2: IMAGES.main_slider2_pic2,
+    img3: IMAGES.main_slider2_pic4,
+    img4: IMAGES.main_slider2_pic2,
+    title: "Dal Makhni",
+    name: "Carry Mint",
+    price: "$15.00",
+  },
+  {
+    bgimg: IMAGES.main_slider2_bg3,
+    img1: IMAGES.image_team_pic1,
+    img2: IMAGES.main_slider2_pic3,
+    img3: IMAGES.main_slider2_pic4,
+    img4: IMAGES.main_slider2_pic3,
+    title: "Veg Biryani",
+    name: "Kamy Klay",
+    price: "$10.00",
+  },
+  {
+    bgimg: IMAGES.main_slider2_bg1,
+    img1: IMAGES.image_team_pic1,
+    img2: IMAGES.main_slider2_line,
+    img3: IMAGES.main_slider2_pic4,
+    img4: IMAGES.main_slider2_pic1,
+    title: "Paneer Tikka",
+    name: "John Doe",
+    price: "$10.00",
+  },
+];
+
+export const Home2IconWrapper = [
+  { title: "Discount Voucher", icon: "flaticon-offer" },
+  { title: "Fresh Healthy Food", icon: "flaticon-hamburger" },
+  { title: "Fast Serve On Table", icon: "flaticon-room-service" },
+];
+
+export const Home2OurMenuArr = [
+  { img: IMAGES.menu_small_pic1, name: "Burger", price: "$10.00" },
+  { img: IMAGES.menu_small_pic2, name: "Hot Rice", price: "$15.00" },
+  { img: IMAGES.menu_small_pic3, name: "Momos", price: "$25.00" },
+  { img: IMAGES.menu_small_pic4, name: "Pasta", price: "$45.00" },
+  { img: IMAGES.menu_small_pic1, name: "Burger", price: "$10.00" },
+];
+
+export const Home2SpacialMenuArr = [
+  { img: IMAGES.gallery_grid3_pic1, name: "Pepperoni", price: "$15.00" },
+  { img: IMAGES.gallery_grid3_pic2, name: "Pancake stack", price: "$18.00" },
+  { img: IMAGES.gallery_grid3_pic3, name: "Halumini", price: "$10.00" },
+  { img: IMAGES.gallery_grid3_pic4, name: "Eggs", price: "$12.00" },
+];
+
+export const Home2AreMenuArr = [
+  {
+    img: IMAGES.menu_small_grid_pic1,
+    name: "Pulled Chicken SandWich",
+    price: " $30",
+    categery: "All PIZZA SALAD SWEETS",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic2,
+    name: "Canada Dry Ginger Ale",
+    price: " $60",
+    categery: "All  COLD DRINK SALAD SWEETS",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic3,
+    name: "Martinelli’s Apple Juice",
+    price: " $80",
+    categery: "All PIZZA SPICY BURGER ",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic4,
+    name: "Mango Mania Smoothie",
+    price: " $30",
+    categery: "All COLD DRINK SWEETS SPICY",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic5,
+    name: "BBQ Chicken Sandwich",
+    price: " $30",
+    categery: "All PIZZA SALAD SWEETS BURGER",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic6,
+    name: "Honey Mustard Pasta",
+    price: " $20",
+    categery: "All PIZZA SPICY",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic7,
+    name: "Chicken Honey Plate",
+    price: " $80",
+    categery: "All COLD DRINK SALAD SWEETS SPICY",
+  },
+  {
+    img: IMAGES.menu_small_grid_pic8,
+    name: "Jamaican Jerk Sandwich",
+    price: " $80",
+    categery: "All COLD DRINK SWEETS SPICY BURGER",
+  },
+];
+
+export const Home2TeamArr = [
+  { img: IMAGES.image_team_pic1 },
+  { img: IMAGES.image_team_pic2 },
+  { img: IMAGES.image_team_pic3 },
+  { img: IMAGES.image_team_pic4 },
+];
+
+export const Home2TestimonialArr = [
+  {
+    img: IMAGES.testimonial_large_pic1,
+    name: "Carry Mint",
+    position: "Food Expert",
+  },
+  {
+    img: IMAGES.testimonial_large_pic2,
+    name: "John Doe",
+    position: "Food Expert",
+  },
+  {
+    img: IMAGES.testimonial_large_pic3,
+    name: "Marn Kamk",
+    position: "Food Expert",
+  },
+  {
+    img: IMAGES.testimonial_large_pic1,
+    name: "Carry Mint",
+    position: "Food Expert",
+  },
+];
+
+export const Home3ServicesArr = [
+  { icon: "flaticon-fast-delivery", content: "24/7 Free Delivery" },
+  {
+    icon: "flaticon-clock-1",
+    content: "Our Restaurant is Open Around the Clock",
+  },
+  { icon: "flaticon-chef", content: "Best Chef" },
+  { icon: "flaticon-cuisine", content: "We Have The Freshest Product" },
 ];
 
 export const Home3OurMenuArr = [

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Context } from "../context/AppContext";
 
 const Sidebar = () => {
-  const { showSidebar, setShowSidebar, setShowOrderModal } = useContext(Context);
+  const { showSidebar, setShowSidebar } = useContext(Context);
   return (
     <>
       <div className={`contact-sidebar ${showSidebar ? "active" : ""}`}>
@@ -25,31 +25,6 @@ const Sidebar = () => {
             <Link to="/about-us" className="btn btn-primary btn-hover-2">
               <span>READ MORE</span>
             </Link>
-          </div>
-          <div className="m-b50 contact-text">
-            <div className="dz-title">
-              <h4 className="m-b15">Customer Info</h4>
-            </div>
-            <div className="customer-buttons d-flex flex-column gap-2">
-              <button
-                className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                style={{ backgroundColor: "#fe9f10", borderColor: "#fe9f10", color: "#fff" }}
-                onClick={() => {
-                  setShowSidebar(false);
-                  setShowOrderModal(true);
-                }}
-              >
-                <i className="fa-solid fa-location-dot"></i>
-                <span>Change Location</span>
-              </button>
-              <button
-                className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
-                onClick={() => window.open('tel:+911234567890')}
-              >
-                <i className="fa-solid fa-phone"></i>
-                <span>Phone Number</span>
-              </button>
-            </div>
           </div>
           <div className="dz-title">
             <h4 className="m-b20">Contact Info</h4>
