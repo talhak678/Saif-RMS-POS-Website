@@ -73,28 +73,44 @@ import ContactUs from "./pages/ContactUs";
 import Header2 from "./components/Header2";
 import Header3 from "./components/Header3";
 import SignIn from "./elements/SignIn";
+import OrderTypeModal from "./elements/OrderTypeModal";
 
-const Layout1 = () => (
-  <>
-    <Header />
-    <Outlet />
-    <Footer />
-  </>
-);
-const Layout2 = () => (
-  <>
-    <Header2 />
-    <Outlet />
-    <Footer2 />
-  </>
-);
-const Layout3 = () => (
-  <>
-    <Header3 />
-    <Outlet />
-    <Footer3 />
-  </>
-);
+const Layout1 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
+const Layout2 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header2 />
+      <Outlet />
+      <Footer2 />
+    </>
+  );
+};
+const Layout3 = () => {
+  const { setHeaderClass } = useContext(Context);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setHeaderClass(false), []);
+  return (
+    <>
+      <Header3 />
+      <Outlet />
+      <Footer3 />
+    </>
+  );
+};
 const Layout4 = () => {
   const { setHeaderClass } = useContext(Context);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,16 +147,18 @@ const Layout6 = () => {
   );
 };
 
+
 function App() {
   return (
     <>
       <div className="page-wraper">
         <Router>
+          <OrderTypeModal />
           <SignIn />
           <ScrollTop />
           <Routes>
-            <Route element={<Layout3 />}>
-              <Route path="/" element={<Home3 />} />
+            <Route element={<Layout2 />}>
+              <Route path="/" element={<Home2 />} />
             </Route>
             <Route element={<Layout4 />}>
               <Route path="/about-us" element={<AboutUs />} />

@@ -17,19 +17,23 @@ interface AppContextValue {
   setShowSidebar: Dispatch<SetStateAction<boolean>>;
   headerSidebar: boolean;
   setHeaderSidebar: Dispatch<SetStateAction<boolean>>;
+  showOrderModal: boolean;
+  setShowOrderModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const defaultState: AppContextValue = {
   headerClass: false,
-  setHeaderClass: () => {},
+  setHeaderClass: () => { },
   showSignInForm: false,
-  setShowSignInForm: () => {},
+  setShowSignInForm: () => { },
   showCategeryFilter: false,
-  setShowCategeryFilter: () => {},
+  setShowCategeryFilter: () => { },
   showSidebar: false,
-  setShowSidebar: () => {},
+  setShowSidebar: () => { },
   headerSidebar: false,
-  setHeaderSidebar: () => {},
+  setHeaderSidebar: () => { },
+  showOrderModal: false,
+  setShowOrderModal: () => { },
 };
 
 export const Context = createContext(defaultState);
@@ -46,6 +50,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [showCategeryFilter, setShowCategeryFilter] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [headerSidebar, setHeaderSidebar] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
 
   const contextValue: AppContextValue = {
     headerClass,
@@ -58,6 +63,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setShowSidebar,
     headerSidebar,
     setHeaderSidebar,
+    showOrderModal,
+    setShowOrderModal,
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
