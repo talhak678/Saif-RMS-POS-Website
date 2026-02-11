@@ -1,5 +1,6 @@
 export const MenuArr = [
   { menu: "Home", to: "/" },
+  { menu: "Our Menu", to: "/our-menu-2" },
   {
     menu: "Pages",
     className: "has-mega-menu",
