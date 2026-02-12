@@ -21,17 +21,9 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
-import Header from "./components/Header";
 import Header2 from "./components/Header2";
-import Header3 from "./components/Header3";
-import Header4 from "./components/Header4";
-import Footer from "./components/Footer";
 import Footer2 from "./components/Footer2";
-import Footer3 from "./components/Footer3";
-import Footer4 from "./components/Footer4";
-import Home from "./pages/Home";
 import Home2 from "./pages/Home2";
-import Home3 from "./pages/Home3";
 import ScrollTop from "./constent/ScrollTop";
 import AboutUs from "./pages/AboutUs";
 import Faq from "./pages/Faq";
@@ -75,31 +67,7 @@ import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
 import OrderTypeModal from "./elements/OrderTypeModal";
 
-const Layout1 = () => {
-  const { setHeaderClass } = useContext(Context);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setHeaderClass(false), []);
-  return (
-    <>
-      <Header2 />
-      <Outlet />
-      <Footer2 />
-    </>
-  );
-};
 const Layout2 = () => {
-  const { setHeaderClass } = useContext(Context);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setHeaderClass(false), []);
-  return (
-    <>
-      <Header2 />
-      <Outlet />
-      <Footer2 />
-    </>
-  );
-};
-const Layout3 = () => {
   const { setHeaderClass } = useContext(Context);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setHeaderClass(false), []);

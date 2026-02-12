@@ -1,34 +1,10 @@
 import { IMAGES } from "../constent/theme";
 import { Link } from "react-router-dom";
-import emailjs from "@emailjs/browser";
-import toast, { Toaster } from "react-hot-toast";
-import { FormEvent, useRef, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { useRef } from "react";
 
 const Footer2 = () => {
   const heartRef = useRef<HTMLSpanElement | null>(null);
-  const [input, setInput] = useState<string>("");
-  const form = useRef<HTMLFormElement | null>(null);
-  const sendEmail = (e: FormEvent) => {
-    e.preventDefault();
-    setInput("");
-    if (form.current) {
-      emailjs
-        .sendForm(
-          "emailId",
-          "template_0byuv32",
-          form.current,
-          "qUDIPykc776NYHv4m"
-        )
-        .then(
-          () => {
-            toast.success("Successfully send!");
-          },
-          (error) => {
-            toast.error(error.text);
-          }
-        );
-    }
-  };
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
