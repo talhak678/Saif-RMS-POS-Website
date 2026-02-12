@@ -6,9 +6,15 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header2 = () => {
-  const { setShowSidebar, headerSidebar, setHeaderSidebar, headerClass } =
-    useContext(Context);
+  const {
+    setShowSidebar,
+    headerSidebar,
+    setHeaderSidebar,
+    headerClass,
+    setShowSignInForm,
+  } = useContext(Context);
   const [scroll, setScroll] = useState(false);
+  const [cart, setCart] = useState(false);
 
   const scrollHandler = () => {
     if (window.scrollY > 80) {
@@ -53,6 +59,104 @@ const Header2 = () => {
 
               <div className="extra-nav">
                 <div className="extra-cell">
+                  <ul className="header-right me-4">
+                    <li>
+                      <Link
+                        className="btn btn-white btn-square btn-shadow"
+                        to={"#"}
+                        onClick={() => {
+                          setShowSignInForm(true);
+                        }}
+                      >
+                        <i className="flaticon-user"></i>
+                      </Link>
+                    </li>
+                    <li
+                      className="nav-item cart-link"
+                      onMouseEnter={() => setCart(true)}
+                      onMouseLeave={() => setCart(false)}
+                    >
+                      <Link
+                        to="/shop-cart"
+                        className="btn btn-white btn-square btn-shadow cart-btn"
+                      >
+                        <i className="flaticon-shopping-bag-1"></i>
+                        <span className="badge">6</span>
+                      </Link>
+                      <ul
+                        className={`dropdown-menu cart-list ${cart ? "show" : ""
+                          }`}
+                        style={{
+                          display: cart ? "block" : "none",
+                          transition: "all 0.5s",
+                          opacity: cart ? "1" : "0",
+                        }}
+                      >
+                        <li className="cart-item">
+                          <div className="media">
+                            <div className="media-left">
+                              <Link to="/shop-cart">
+                                <img
+                                  alt="/"
+                                  className="media-object"
+                                  src={IMAGES.shop_pic2}
+                                />
+                              </Link>
+                            </div>
+                            <div className="media-body">
+                              <h6 className="dz-title">
+                                <Link to="/shop-cart" className="media-heading">
+                                  Cheese Burger
+                                </Link>
+                              </h6>
+                              <span className="dz-price">$20.00</span>
+                              <span className="item-close">&times;</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li className="cart-item">
+                          <div className="media">
+                            <div className="media-left">
+                              <Link to="/shop-cart">
+                                <img
+                                  alt="/"
+                                  className="media-object"
+                                  src={IMAGES.shop_pic3}
+                                />
+                              </Link>
+                            </div>
+                            <div className="media-body">
+                              <h6 className="dz-title">
+                                <Link to="/shop-cart" className="media-heading">
+                                  Burger
+                                </Link>
+                              </h6>
+                              <span className="dz-price">$15.00</span>
+                              <span className="item-close">&times;</span>
+                            </div>
+                          </div>
+                        </li>
+                        <li className="cart-item text-center d-flex justify-content-between">
+                          <h6 className="text-primary mb-0">Total:</h6>
+                          <h6 className="text-primary mb-0">$63</h6>
+                        </li>
+                        <li className="text-center d-flex">
+                          <Link
+                            to="/shop-cart"
+                            className="btn btn-primary me-2 w-100 d-block btn-hover-1"
+                          >
+                            <span>View Cart</span>
+                          </Link>
+                          <Link
+                            to="/our-menu-1"
+                            className="btn btn-outline-primary w-100 d-block btn-hover-1"
+                          >
+                            <span>Menu</span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                   <form method="post">
                     <div className="input-group">
                       <input

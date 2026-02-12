@@ -43,7 +43,7 @@ import MenuStyle4 from "./pages/MenuStyle4";
 import MenuStyle5 from "./pages/MenuStyle5";
 // import ShopStyle1 from "./pages/ShopStyle1";
 // import ShopStyle2 from "./pages/ShopStyle2";
-// import ShopCart from "./pages/ShopCart";
+import ShopCart from "./pages/ShopCart";
 // import ShopWishlist from "./pages/ShopWishlist";
 // import ShopCheckout from "./pages/ShopCheckout";
 // import ProductDetail from "./pages/ProductDetail";
@@ -149,9 +149,9 @@ function App() {
               <Route path="/our-menu-4" element={<MenuStyle4 />} />
               <Route path="/our-menu-5" element={<MenuStyle5 />} />
               {/* <Route path="/shop-style-1" element={<ShopStyle1 />} />
-              <Route path="/shop-style-2" element={<ShopStyle2 />} />
+              <Route path="/shop-style-2" element={<ShopStyle2 />} /> */}
               <Route path="/shop-cart" element={<ShopCart />} />
-              <Route path="/shop-wishlist" element={<ShopWishlist />} />
+              {/* <Route path="/shop-wishlist" element={<ShopWishlist />} />
               <Route path="/shop-checkout" element={<ShopCheckout />} />
               <Route path="/product-detail" element={<ProductDetail />} /> */}
               {/* <Route path="/blog-grid-2" element={<BlogGrid2 />} /> */}

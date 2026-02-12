@@ -54,6 +54,11 @@ const Footer2 = () => {
                         </Link>
                       </li>
                       <li>
+                        <Link to="/shop-cart">
+                          <span>Shop Cart</span>
+                        </Link>
+                      </li>
+                      <li>
                         <Link to="/about-us">
                           <span>About Us</span>
                         </Link>
