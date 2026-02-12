@@ -57,6 +57,7 @@ const Home2 = () => {
         <Home2OurMenu prev={"menu-button-prev1"} next={"menu-button-next1"} />
       </section>
       <section
+        id="todays-special"
         className="section-wrapper-5 content-inner overflow-hidden bg-parallax"
         style={{
           backgroundImage: `url(${IMAGES.background_pic1})`,

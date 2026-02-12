@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MenuStyle3Arr } from "../elements/JsonData";
 import OurMenuFilter from "../elements/OurMenuFilter";
 import { Context } from "../context/AppContext";
@@ -25,23 +25,30 @@ interface MenuFile {
 const MenuStyle3 = () => {
   const [active, setActive] = useState<number>(0);
   const [data, setData] = useState<MenuFile[]>(MenuStyle3Arr);
-  const cardRef = useRef<HTMLLIElement[]>([]); // Assuming the refs are for li elements
+  const cardRef = useRef<HTMLLIElement[]>([]);
   const { setShowCategeryFilter } = useContext(Context);
+  const location = useLocation();
 
   const filterGallery = (name: string) => {
     if (cardRef.current) {
+      // Reset scale first
       cardRef.current.forEach((ele) => {
         if (ele) {
           ele.style.transform = "scale(0)";
         }
       });
 
-      const updateItems = MenuStyle3Arr.filter((el: MenuFile) =>
-        el.categery.includes(name)
-      );
+      // Filter data
+      let updateItems = MenuStyle3Arr;
+      if (name !== "ALL") {
+        updateItems = MenuStyle3Arr.filter((el: MenuFile) =>
+          el.categery.includes(name)
+        );
+      }
 
       setData(updateItems);
 
+      // Animate back in
       setTimeout(() => {
         cardRef.current.forEach((ele) => {
           if (ele) {
@@ -51,6 +58,18 @@ const MenuStyle3 = () => {
       }, 100);
     }
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const category = searchParams.get("category");
+    if (category) {
+      const index = Buttons.findIndex(btn => btn.title === category);
+      if (index !== -1) {
+        setActive(index);
+        filterGallery(category);
+      }
+    }
+  }, [location.search]);
 
   return (
     <>

@@ -1,3 +1,33 @@
+interface MenuProps {
+  menu: string;
+  to?: string;
+  className?: string;
+  ulClassName?: string;
+  submenu?: {
+    child: string;
+    to?: string;
+    subchild?: { children: string; to: string }[];
+  }[];
+}
+
+export const MenuArr: MenuProps[] = [
+  { menu: "HOME", to: "/" },
+  { menu: "OUR MENU", to: "/our-menu-2" },
+  {
+    menu: "SPECIALITIES",
+    className: "sub-menu-down",
+    ulClassName: "sub-menu",
+    submenu: [
+      { child: "Burgers", to: "/our-menu-3?category=BURGER" },
+      { child: "Pizza", to: "/our-menu-3?category=PIZZA" },
+    ],
+  },
+  { menu: "ABOUT US", to: "/about-us" },
+  { menu: "CONTACT US", to: "/contact-us" },
+  { menu: "BLOGS", to: "/blog-list" },
+];
+
+/* Original MenuArr for reference
 export const MenuArr = [
   { menu: "Home", to: "/" },
   { menu: "Our Menu", to: "/our-menu-2" },
@@ -111,3 +141,5 @@ export const MenuArr = [
   },
   { menu: "Contact Us", to: "/contact-us" },
 ];
+*/
+

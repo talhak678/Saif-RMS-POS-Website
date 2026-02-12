@@ -35,12 +35,12 @@ import Home3 from "./pages/Home3";
 import ScrollTop from "./constent/ScrollTop";
 import AboutUs from "./pages/AboutUs";
 import Faq from "./pages/Faq";
-import Team from "./pages/Team";
-import TeamDetail from "./pages/TeamDetail";
-import Testimonial from "./pages/Testimonial";
-import Services from "./pages/Services";
+// import Team from "./pages/Team";
+// import TeamDetail from "./pages/TeamDetail";
+// import Testimonial from "./pages/Testimonial";
+// import Services from "./pages/Services";
 import { Context } from "./context/AppContext";
-import ServiceDetail from "./pages/ServiceDetail";
+// import ServiceDetail from "./pages/ServiceDetail";
 import Error404 from "./pages/Error404";
 import ComingSoon from "./pages/ComingSoon";
 import UnderMaintenance from "./pages/UnderMaintenance";
@@ -49,28 +49,28 @@ import MenuStyle2 from "./pages/MenuStyle2";
 import MenuStyle3 from "./pages/MenuStyle3";
 import MenuStyle4 from "./pages/MenuStyle4";
 import MenuStyle5 from "./pages/MenuStyle5";
-import ShopStyle1 from "./pages/ShopStyle1";
-import ShopStyle2 from "./pages/ShopStyle2";
-import ShopCart from "./pages/ShopCart";
-import ShopWishlist from "./pages/ShopWishlist";
-import ShopCheckout from "./pages/ShopCheckout";
-import ProductDetail from "./pages/ProductDetail";
-import BlogGrid2 from "./pages/BlogGrid2";
-import BlogGrid3 from "./pages/BlogGrid3";
-import BlogGridLeftSideba from "./pages/BlogGridLeftSideba";
-import BlogGridRightSidebar from "./pages/BlogGridRightSidebar";
+// import ShopStyle1 from "./pages/ShopStyle1";
+// import ShopStyle2 from "./pages/ShopStyle2";
+// import ShopCart from "./pages/ShopCart";
+// import ShopWishlist from "./pages/ShopWishlist";
+// import ShopCheckout from "./pages/ShopCheckout";
+// import ProductDetail from "./pages/ProductDetail";
+// import BlogGrid2 from "./pages/BlogGrid2";
+// import BlogGrid3 from "./pages/BlogGrid3";
+// import BlogGridLeftSideba from "./pages/BlogGridLeftSideba";
+// import BlogGridRightSidebar from "./pages/BlogGridRightSidebar";
 import BlogList from "./pages/BlogList";
-import BlogListLeftSidebar from "./pages/BlogListLeftSidebar";
-import BlogListRightSidebar from "./pages/BlogListRightSidebar";
-import BlogBothSidebar from "./pages/BlogBothSidebar";
+// import BlogListLeftSidebar from "./pages/BlogListLeftSidebar";
+// import BlogListRightSidebar from "./pages/BlogListRightSidebar";
+// import BlogBothSidebar from "./pages/BlogBothSidebar";
 import BlogDetail from "./pages/BlogDetail";
 import BlogGutenberg from "./pages/BlogGutenberg";
 import BlogDetailLeftSidebar from "./pages/BlogDetailLeftSidebar";
 import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
-import BlogGrid3Masonary from "./pages/BlogGrid3Masonary";
-import BlogGrid4Masonary from "./pages/BlogGrid4Masonary";
-import BlogWideListSidebar from "./pages/BlogWideListSidebar";
-import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
+// import BlogGrid3Masonary from "./pages/BlogGrid3Masonary";
+// import BlogGrid4Masonary from "./pages/BlogGrid4Masonary";
+// import BlogWideListSidebar from "./pages/BlogWideListSidebar";
+// import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
 import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
 import OrderTypeModal from "./elements/OrderTypeModal";
@@ -81,9 +81,9 @@ const Layout1 = () => {
   useEffect(() => setHeaderClass(false), []);
   return (
     <>
-      <Header />
+      <Header2 />
       <Outlet />
-      <Footer />
+      <Footer2 />
     </>
   );
 };
@@ -105,9 +105,9 @@ const Layout3 = () => {
   useEffect(() => setHeaderClass(false), []);
   return (
     <>
-      <Header3 />
+      <Header2 />
       <Outlet />
-      <Footer3 />
+      <Footer2 />
     </>
   );
 };
@@ -117,9 +117,9 @@ const Layout4 = () => {
   useEffect(() => setHeaderClass(true), []);
   return (
     <>
-      <Header />
+      <Header2 />
       <Outlet />
-      <Footer4 />
+      <Footer2 />
     </>
   );
 };
@@ -129,8 +129,9 @@ const Layout5 = () => {
   useEffect(() => setHeaderClass(true), []);
   return (
     <>
-      <Header />
+      <Header2 />
       <Outlet />
+      <Footer2 />
     </>
   );
 };
@@ -140,9 +141,9 @@ const Layout6 = () => {
   useEffect(() => setHeaderClass(false), []);
   return (
     <>
-      <Header4 />
+      <Header2 />
       <Outlet />
-      <Footer4 />
+      <Footer2 />
     </>
   );
 };
@@ -160,43 +161,43 @@ function App() {
             <Route element={<Layout2 />}>
               <Route path="/" element={<Home2 />} />
             </Route>
-            <Route element={<Layout1 />}>
+            {/* <Route element={<Layout1 />}>
               <Route path="/home-1" element={<Home />} />
-            </Route>
-            <Route element={<Layout3 />}>
+            </Route> */}
+            {/* <Route element={<Layout3 />}>
               <Route path="/home-3" element={<Home3 />} />
-            </Route>
+            </Route> */}
             <Route element={<Layout4 />}>
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/faq" element={<Faq />} />
-              <Route path="/team" element={<Team />} />
+              {/* <Route path="/team" element={<Team />} />
               <Route path="/team-detail" element={<TeamDetail />} />
               <Route path="/testimonial" element={<Testimonial />} />
               <Route path="/services" element={<Services />} />
-              <Route path="/service-detail" element={<ServiceDetail />} />
+              <Route path="/service-detail" element={<ServiceDetail />} /> */}
               <Route path="/our-menu-1" element={<MenuStyle1 />} />
               <Route path="/our-menu-2" element={<MenuStyle2 />} />
               <Route path="/our-menu-3" element={<MenuStyle3 />} />
               <Route path="/our-menu-4" element={<MenuStyle4 />} />
               <Route path="/our-menu-5" element={<MenuStyle5 />} />
-              <Route path="/shop-style-1" element={<ShopStyle1 />} />
+              {/* <Route path="/shop-style-1" element={<ShopStyle1 />} />
               <Route path="/shop-style-2" element={<ShopStyle2 />} />
               <Route path="/shop-cart" element={<ShopCart />} />
               <Route path="/shop-wishlist" element={<ShopWishlist />} />
               <Route path="/shop-checkout" element={<ShopCheckout />} />
-              <Route path="/product-detail" element={<ProductDetail />} />
-              <Route path="/blog-grid-2" element={<BlogGrid2 />} />
-              <Route path="/blog-grid-3" element={<BlogGrid3 />} />
-              <Route
+              <Route path="/product-detail" element={<ProductDetail />} /> */}
+              {/* <Route path="/blog-grid-2" element={<BlogGrid2 />} /> */}
+              {/* <Route path="/blog-grid-3" element={<BlogGrid3 />} /> */}
+              {/* <Route
                 path="/blog-grid-left-sidebar"
                 element={<BlogGridLeftSideba />}
               />
               <Route
                 path="/blog-grid-right-sidebar"
                 element={<BlogGridRightSidebar />}
-              />
+              /> */}
               <Route path="/blog-list" element={<BlogList />} />
-              <Route
+              {/* <Route
                 path="/blog-list-left-sidebar"
                 element={<BlogListLeftSidebar />}
               />
@@ -220,7 +221,7 @@ function App() {
               <Route
                 path="/blog-wide-grid-sidebar"
                 element={<BlogWideGridSidebar />}
-              />
+              /> */}
               <Route path="/contact-us" element={<ContactUs />} />
             </Route>
 

@@ -40,7 +40,7 @@ const Menu = () => {
   useEffect(() => {
     MenuArr.map((el) => {
       if (el) {
-        if ("/contact-us" === pathname) {
+        if (el.to === pathname) {
           setActive(el.menu);
         }
         el.submenu?.map((ell: MenuItem) => {
@@ -55,7 +55,7 @@ const Menu = () => {
         });
       }
     });
-    return () => {};
+    return () => { };
   }, [pathname]);
 
   const [state, setState] = useReducer(reducer, initialState);
@@ -74,18 +74,16 @@ const Menu = () => {
         </Link>
       </div>
       <ul
-        className={`nav navbar-nav navbar ms-lg-4 ${
-          headerClass ? "white" : ""
-        }`}
+        className={`nav navbar-nav navbar ms-lg-4 ${headerClass ? "white" : ""
+          }`}
       >
         {MenuArr?.map(({ menu, className, submenu, ulClassName, to }, ind) => {
           if (className) {
             return (
               <li
                 key={ind}
-                className={`${className} ${active === menu ? "active" : ""} ${
-                  state.activeSubmenu == menu ? "open" : ""
-                }`}
+                className={`${className} ${active === menu ? "active" : ""} ${state.activeSubmenu == menu ? "open" : ""
+                  }`}
                 ref={(node) => {
                   if (node) {
                     navRef.current.push(node);
@@ -102,8 +100,8 @@ const Menu = () => {
                   {menu}
                 </Link>
                 <ul className={ulClassName}>
-                  {submenu?.length > 0 &&
-                    submenu?.map(({ child, to, subchild }: MenuItem, index) => {
+                  {submenu && submenu.length > 0 &&
+                    submenu.map(({ child, to, subchild }: MenuItem, index: number) => {
                       if (ulClassName === "mega-menu") {
                         return (
                           <li key={index}>
@@ -165,7 +163,7 @@ export const MenuDark = () => {
   useEffect(() => {
     MenuArr.map((el) => {
       if (el) {
-        if ("/contact-us" === pathname) {
+        if (el.to === pathname) {
           setActive(el.menu);
         }
         el.submenu?.map((ell: MenuItem) => {
@@ -180,7 +178,7 @@ export const MenuDark = () => {
         });
       }
     });
-    return () => {};
+    return () => { };
   }, [pathname]);
 
   const [state, setState] = useReducer(reducer, initialState);
@@ -204,9 +202,8 @@ export const MenuDark = () => {
             return (
               <li
                 key={ind}
-                className={`${className} ${active === menu ? "active" : ""} ${
-                  state.activeSubmenu == menu ? "open" : ""
-                }`}
+                className={`${className} ${active === menu ? "active" : ""} ${state.activeSubmenu == menu ? "open" : ""
+                  }`}
                 ref={(node) => {
                   if (node) {
                     navRef.current.push(node);
@@ -223,8 +220,8 @@ export const MenuDark = () => {
                   {menu}
                 </Link>
                 <ul className={ulClassName}>
-                  {submenu?.length > 0 &&
-                    submenu?.map(({ child, to, subchild }: MenuItem, index) => {
+                  {submenu && submenu.length > 0 &&
+                    submenu.map(({ child, to, subchild }: MenuItem, index: number) => {
                       if (ulClassName === "mega-menu") {
                         return (
                           <li key={index}>

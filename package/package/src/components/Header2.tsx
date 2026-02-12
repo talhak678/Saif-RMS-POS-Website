@@ -28,9 +28,8 @@ const Header2 = () => {
     <>
       <header className="site-header mo-left header header-transparent transparent-white style-2">
         <div
-          className={`sticky-header main-bar-wraper navbar-expand-lg ${
-            scroll ? "is-fixed" : ""
-          }`}
+          className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""
+            }`}
         >
           <div className="main-bar clearfix ">
             <div className="container-fluid clearfix">
@@ -40,9 +39,8 @@ const Header2 = () => {
                 </Link>
               </div>
               <button
-                className={`navbar-toggler collapsed navicon justify-content-end ${
-                  headerSidebar ? "open" : ""
-                }`}
+                className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
+                  }`}
                 type="button"
                 onClick={() => {
                   setHeaderSidebar(!headerSidebar);
@@ -118,9 +116,8 @@ const Header2 = () => {
                 </div>
               </div>
               <div
-                className={`header-nav navbar-collapse justify-content-end ${
-                  headerSidebar ? "show" : ""
-                }`}
+                className={`header-nav navbar-collapse justify-content-center ${headerSidebar ? "show" : ""
+                  }`}
                 id="navbarNavDropdown"
               >
                 <Menu />
