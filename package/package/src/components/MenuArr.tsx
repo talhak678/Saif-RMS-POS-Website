@@ -18,8 +18,8 @@ export const MenuArr: MenuProps[] = [
     className: "sub-menu-down",
     ulClassName: "sub-menu",
     submenu: [
-      { child: "Burgers", to: "/our-menu-3?category=BURGER" },
-      { child: "Pizza", to: "/our-menu-3?category=PIZZA" },
+      { child: "Burgers", to: "/our-menu-2?category=BURGER" },
+      { child: "Pizza", to: "/our-menu-2?category=PIZZA" },
     ],
   },
   { menu: "ABOUT US", to: "/about-us" },

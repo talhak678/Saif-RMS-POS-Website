@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header2 = () => {
-  const { setShowSidebar, headerSidebar, setHeaderSidebar } =
+  const { setShowSidebar, headerSidebar, setHeaderSidebar, headerClass } =
     useContext(Context);
   const [scroll, setScroll] = useState(false);
 
@@ -91,21 +91,21 @@ const Header2 = () => {
                       >
                         <path
                           d="M4.04102 17.3984H29.041"
-                          stroke="#222222"
+                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                         <path
                           d="M4.04102 8.39844H29.541"
-                          stroke="#222222"
+                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                         <path
                           d="M4.04102 25.3984H29.041"
-                          stroke="#222222"
+                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -120,7 +120,7 @@ const Header2 = () => {
                   }`}
                 id="navbarNavDropdown"
               >
-                <Menu />
+                <Menu scroll={scroll} />
               </div>
             </div>
           </div>

@@ -63,12 +63,12 @@ const MainBanner2 = () => {
                         </p>
 
                         <div className="banner-btn d-flex align-items-center">
-                          <a
-                            href="#todays-special"
+                          <Link
+                            to="/our-menu-2"
                             className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
                           >
                             <span>OUR SPECIALITIES</span>
-                          </a>
+                          </Link>
                           <Link
                             to="/our-menu-2"
                             className="btn btn-outline-primary btn-md shadow-primary btn-hover-1"

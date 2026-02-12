@@ -31,7 +31,7 @@ const initialState = {
   activeSubmenu: "",
 };
 
-const Menu = () => {
+const Menu = ({ scroll = false }: { scroll?: boolean }) => {
   const { headerClass } = useContext(Context);
   const [active, setActive] = useState<string>("");
   const { pathname } = useLocation();
@@ -95,7 +95,13 @@ const Menu = () => {
               >
                 <Link
                   to={"#"}
-                  style={{ color: active === menu ? "var(--primary)" : "" }}
+                  style={{
+                    color: active === menu
+                      ? "#fe9f10"
+                      : (headerClass && !scroll)
+                        ? "#ffffff"
+                        : "#222222"
+                  }}
                 >
                   {menu}
                 </Link>
@@ -134,9 +140,15 @@ const Menu = () => {
             );
           } else {
             return (
-              <li key={ind}>
+              <li key={ind} className={active === menu ? "active" : ""}>
                 <Link
-                  style={{ color: active === menu ? "var(--primary)" : "" }}
+                  style={{
+                    color: active === menu
+                      ? "#fe9f10"
+                      : (headerClass && !scroll)
+                        ? "#ffffff"
+                        : "#222222"
+                  }}
                   to={`${to}`}
                 >
                   {menu}
@@ -215,7 +227,7 @@ export const MenuDark = () => {
               >
                 <Link
                   to={"#"}
-                  style={{ color: active === menu ? "var(--primary)" : "" }}
+                  style={{ color: active === menu ? "#fe9f10" : "" }}
                 >
                   {menu}
                 </Link>
@@ -256,7 +268,7 @@ export const MenuDark = () => {
             return (
               <li key={ind}>
                 <Link
-                  style={{ color: active === menu ? "var(--primary)" : "" }}
+                  style={{ color: active === menu ? "#fe9f10" : "" }}
                   to={`${to}`}
                 >
                   {menu}

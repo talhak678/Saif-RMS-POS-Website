@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { useRef, useState } from "react";
@@ -6,6 +6,7 @@ import { MenuStyle2Arr } from "../elements/JsonData";
 import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
+import { useEffect } from "react";
 
 const Buttons = [
   { icon: "flaticon-fast-food", title: "ALL" },
@@ -26,8 +27,24 @@ interface MenuFile {
 const MenuStyle2 = () => {
   const [active, setActive] = useState<number>(0);
   const [data, setData] = useState<MenuFile[]>(MenuStyle2Arr);
-  const cardRef = useRef<HTMLLIElement[]>([]); 
+  const cardRef = useRef<HTMLLIElement[]>([]);
   const heartRef = useRef<HTMLSpanElement[]>([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get("category");
+    if (category) {
+      const index = Buttons.findIndex(btn => btn.title === category.toUpperCase());
+      if (index !== -1) {
+        setActive(index);
+        filterGallery(category.toUpperCase());
+      }
+    } else {
+      setActive(0);
+      setData(MenuStyle2Arr);
+    }
+  }, [location.search]);
 
   const filterGallery = (name: string) => {
     if (cardRef.current) {
@@ -60,8 +77,8 @@ const MenuStyle2 = () => {
     <div className="page-content bg-white">
       <CommonBanner
         img={IMAGES.banner_bnr1}
-        title="Our Menu 2"
-        subtitle="Our Menu 2"
+        title="Our Menu"
+        subtitle="Our Menu"
       />
 
       <section className="content-inner">
