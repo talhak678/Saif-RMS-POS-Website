@@ -18607,8 +18607,9 @@ section {
 
 .cart-list {
   border: 0;
-  right: 0;
-  left: auto;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
   width: 300px;
   top: 100%;
   transition: none;
@@ -22218,8 +22219,9 @@ button:focus {
 .btn.btn-square .badge,
 .btn-square.wp-block-button__link .badge {
   position: absolute;
-  top: -7px;
-  right: -6px;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 0;
   height: 20px;
   width: 20px;
