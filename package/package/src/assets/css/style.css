@@ -18607,9 +18607,9 @@ section {
 
 .cart-list {
   border: 0;
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
+  right: 322px;
+  left: auto;
+  transform: none;
   width: 300px;
   top: 100%;
   transition: none;

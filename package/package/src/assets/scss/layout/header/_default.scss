@@ -1136,9 +1136,9 @@
 
 .cart-list {
 	border: 0;
-	left: 50%;
-	right: auto;
-	transform: translateX(-50%);
+	right: 60px;
+	left: auto;
+	transform: none;
 	width: 300px;
 	top: 100%;
 	transition: none;
