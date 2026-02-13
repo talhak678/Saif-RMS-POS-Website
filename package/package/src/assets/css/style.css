@@ -18537,6 +18537,14 @@ section {
   .mo-left .navbar-toggler.open span {
     background: #fff;
   }
+
+  .header-nav .nav.mobile-nav li a {
+    color: #222222 !important;
+  }
+
+  .header-nav .nav.mobile-nav li.active>a {
+    color: #fe9f10 !important;
+  }
 }
 
 .text-black .nav>li>a {

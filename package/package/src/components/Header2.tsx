@@ -44,6 +44,7 @@ const Header2 = () => {
                   <img src={IMAGES.logo} alt="/" />
                 </Link>
               </div>
+
               <button
                 className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
                   }`}
@@ -57,7 +58,23 @@ const Header2 = () => {
                 <span></span>
               </button>
 
-              <div className="extra-nav">
+              <div className="extra-nav d-lg-none d-flex align-items-center" style={{ float: 'right', height: 'var(--headerheight)' }}>
+                <div className="extra-cell">
+                  <ul className="header-right m-0">
+                    <li className="nav-item cart-link">
+                      <Link
+                        to="/shop-cart"
+                        className="btn btn-white btn-square btn-shadow cart-btn"
+                      >
+                        <i className="flaticon-shopping-bag-1"></i>
+                        <span className="badge">6</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="extra-nav d-none d-lg-block">
                 <div className="extra-cell">
                   <ul className="header-right me-4">
                     <li>

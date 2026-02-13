@@ -32,7 +32,7 @@ const initialState = {
 };
 
 const Menu = ({ scroll = false }: { scroll?: boolean }) => {
-  const { headerClass } = useContext(Context);
+  const { headerClass, setShowSignInForm, setHeaderSidebar, setShowOrderModal } = useContext(Context);
   const [active, setActive] = useState<string>("");
   const { pathname } = useLocation();
   const navRef = useRef<HTMLLIElement[]>([]);
@@ -75,8 +75,57 @@ const Menu = ({ scroll = false }: { scroll?: boolean }) => {
       </div>
       <ul
         className={`nav navbar-nav navbar ms-lg-4 ${headerClass ? "white" : ""
-          }`}
+          } ${window.innerWidth <= 991 ? "mobile-nav" : ""}`}
       >
+        <li className="nav-item d-lg-none border-bottom m-b20 p-b20">
+          <div className="d-flex align-items-center gap-3 p-3">
+            <Link
+              className="btn btn-primary btn-square rounded-circle"
+              to={"#"}
+              onClick={() => {
+                setShowSignInForm(true);
+                setHeaderSidebar(false);
+              }}
+            >
+              <i className="flaticon-user"></i>
+            </Link>
+            <div>
+              <h6 className="m-b0">Hello, Guest</h6>
+              <Link
+                to={"#"}
+                className="font-12 text-primary"
+                onClick={() => {
+                  setShowSignInForm(true);
+                  setHeaderSidebar(false);
+                }}
+              >
+                Login / Register
+              </Link>
+            </div>
+          </div>
+          <div className="p-3 pt-0">
+            <h6 className="title m-b10 font-14">Customer Info</h6>
+            <div className="d-flex flex-column gap-2">
+              <button
+                className="btn btn-primary btn-sm d-flex align-items-center justify-content-center gap-2"
+                onClick={() => {
+                  setShowOrderModal(true);
+                  setHeaderSidebar(false);
+                }}
+              >
+                <i className="fa-solid fa-location-dot"></i>
+                <span>Change Location</span>
+              </button>
+              <button
+                className="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center gap-2"
+                onClick={() => window.open("tel:+911234567890")}
+              >
+                <i className="fa-solid fa-phone"></i>
+                <span>Phone Number</span>
+              </button>
+            </div>
+          </div>
+        </li>
         {MenuArr?.map(({ menu, className, submenu, ulClassName, to }, ind) => {
           if (className) {
             return (
@@ -98,7 +147,7 @@ const Menu = ({ scroll = false }: { scroll?: boolean }) => {
                   style={{
                     color: active === menu
                       ? "#fe9f10"
-                      : (headerClass && !scroll)
+                      : (headerClass && !scroll && window.innerWidth > 991)
                         ? "#ffffff"
                         : "#222222"
                   }}
@@ -145,7 +194,7 @@ const Menu = ({ scroll = false }: { scroll?: boolean }) => {
                   style={{
                     color: active === menu
                       ? "#fe9f10"
-                      : (headerClass && !scroll)
+                      : (headerClass && !scroll && window.innerWidth > 991)
                         ? "#ffffff"
                         : "#222222"
                   }}
