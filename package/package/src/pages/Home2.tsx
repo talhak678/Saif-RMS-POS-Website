@@ -7,6 +7,8 @@ import Home3OurMenu from "../components/Home3OurMenu";
 import Home2Testimonial from "../components/Home2Testimonial";
 import { Context } from "../context/AppContext";
 
+import Home2PromoBanners from "../components/Home2PromoBanners";
+
 const Home2 = () => {
   const { cmsConfig, cmsLoading } = useContext(Context);
 
@@ -24,6 +26,7 @@ const Home2 = () => {
       style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}
     >
       <MainBanner2 />
+      <Home2PromoBanners />
 
       {sections.browseMenu?.enabled && (
         <section className="content-inner-1 overflow-hidden mt-5">
