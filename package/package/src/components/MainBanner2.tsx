@@ -2,8 +2,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { MainBanner2Arr } from "../elements/JsonData";
 import { Parallax, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../context/AppContext";
 
 const MainBanner2 = () => {
+  const { cmsConfig } = useContext(Context);
+
+  const bannerContent = cmsConfig?.config?.configJson?.home?.sections?.banner?.content || {
+    title: "We believe Good Food Offer Great Smile",
+    subtitle: "High Quality Test Station",
+    buttonText: "OUR SPECIALITIES",
+    buttonLink: "/our-menu-2"
+  };
+
   const pagination = {
     clickable: true,
     el: ".main-swiper3-pagination",
@@ -11,6 +22,7 @@ const MainBanner2 = () => {
       return '<span class="' + className + '">' + (index + 1) + "</span>";
     },
   };
+
   return (
     <div className="main-bnr-three overflow-hidden top-space">
       <div className="swiper-bnr-pagination left-align">
@@ -39,7 +51,7 @@ const MainBanner2 = () => {
                 data-swiper-parallax="-10"
                 data-swiper-parallax-duration="0.5"
                 style={{
-                  backgroundImage: `url(${bgimg})`,
+                  backgroundImage: `url(${bannerContent.imageUrl || bgimg})`,
                   backgroundSize: "cover",
                 }}
               >
@@ -51,23 +63,21 @@ const MainBanner2 = () => {
                     <div className="col-xl-7 col-lg-7 col-md-8">
                       <div className="banner-content">
                         <span className="sub-title text-primary">
-                          High Quality Test Station
+                          {bannerContent.subtitle}
                         </span>
                         <h1 className="title text-white">
-                          We believe Good Food Offer Great Smile
+                          {bannerContent.title}
                         </h1>
                         <p className="bnr-text">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua.
+                          {bannerContent.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients."}
                         </p>
 
                         <div className="banner-btn d-flex align-items-center">
                           <Link
-                            to="/our-menu-2"
+                            to={bannerContent.buttonLink || "/our-menu-2"}
                             className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
                           >
-                            <span>OUR SPECIALITIES</span>
+                            <span>{bannerContent.buttonText}</span>
                           </Link>
                           <Link
                             to="/our-menu-2"
@@ -80,21 +90,11 @@ const MainBanner2 = () => {
                           <div className="dz-head">
                             <h5 className="text-white title">{title}</h5>
                             <ul className="rating">
-                              <li>
-                                <i className="fa-solid fa-star m-r5"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star m-r5"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star m-r5"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star m-r5"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star "></i>
-                              </li>
+                              <li><i className="fa-solid fa-star m-r5"></i></li>
+                              <li><i className="fa-solid fa-star m-r5"></i></li>
+                              <li><i className="fa-solid fa-star m-r5"></i></li>
+                              <li><i className="fa-solid fa-star m-r5"></i></li>
+                              <li><i className="fa-solid fa-star "></i></li>
                             </ul>
                           </div>
                           <div className="dz-body">
@@ -105,11 +105,11 @@ const MainBanner2 = () => {
                                 </div>
                                 <div className="dz-content">
                                   <h6 className="title text-white">{name}</h6>
-                                  <p>Master Chief</p>
+                                  <p>Master Chef</p>
                                 </div>
                               </div>
                               <p className="text">
-                                Lorem ipsum dolor shit amet...
+                                Prepared with fresh ingredients and traditional spices...
                               </p>
                             </div>
                             <div className="dz-right">

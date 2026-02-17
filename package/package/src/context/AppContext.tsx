@@ -4,7 +4,9 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
+import axios from "axios";
 
 interface AppContextValue {
   headerClass: boolean;
@@ -19,6 +21,9 @@ interface AppContextValue {
   setHeaderSidebar: Dispatch<SetStateAction<boolean>>;
   showOrderModal: boolean;
   setShowOrderModal: Dispatch<SetStateAction<boolean>>;
+  // CMS Config
+  cmsConfig: any;
+  cmsLoading: boolean;
 }
 
 const defaultState: AppContextValue = {
@@ -34,6 +39,8 @@ const defaultState: AppContextValue = {
   setHeaderSidebar: () => { },
   showOrderModal: false,
   setShowOrderModal: () => { },
+  cmsConfig: null,
+  cmsLoading: true,
 };
 
 export const Context = createContext(defaultState);
@@ -52,6 +59,32 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [headerSidebar, setHeaderSidebar] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
 
+  const [cmsConfig, setCmsConfig] = useState<any>(null);
+  const [cmsLoading, setCmsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCMS = async () => {
+      try {
+        // Hardcoded for now or we can get slug from URL
+        const slug = "saifs-kitchen"; // Matches seed.js slug
+        const res = await axios.get(`http://localhost:3000/api/cms/config/public/${slug}`);
+        if (res.data?.success) {
+          setCmsConfig(res.data.data);
+
+          // Apply background color to body
+          if (res.data.data.config?.backgroundColor) {
+            document.body.style.backgroundColor = res.data.data.config.backgroundColor;
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load CMS", err);
+      } finally {
+        setCmsLoading(false);
+      }
+    };
+    fetchCMS();
+  }, []);
+
   const contextValue: AppContextValue = {
     headerClass,
     setHeaderClass,
@@ -65,6 +98,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setHeaderSidebar,
     showOrderModal,
     setShowOrderModal,
+    cmsConfig,
+    cmsLoading,
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

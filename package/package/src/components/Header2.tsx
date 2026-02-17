@@ -1,8 +1,8 @@
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import Menu from "./Menu";
 import Sidebar from "../elements/Sidebar";
-import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header2 = () => {
@@ -12,233 +12,93 @@ const Header2 = () => {
     setHeaderSidebar,
     headerClass,
     setShowSignInForm,
+    cmsConfig
   } = useContext(Context);
   const [scroll, setScroll] = useState(false);
-  const [cart, setCart] = useState(false);
 
   const scrollHandler = () => {
-    if (window.scrollY > 80) {
-      setScroll(true);
-    } else {
-      setScroll(false);
-    }
+    if (window.scrollY > 80) setScroll(true);
+    else setScroll(false);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler);
-    return () => {
-      window.removeEventListener("scroll", scrollHandler);
-    };
+    return () => window.removeEventListener("scroll", scrollHandler);
   }, []);
+
+  const headerSettings = cmsConfig?.config?.configJson?.home?.sections?.header || {};
+  const showHeader = headerSettings.enabled !== false;
+  const headerContent = headerSettings.content || { showCart: "true", showLogin: "true" };
+
+  if (!showHeader) return null;
+
   return (
     <>
       <header className="site-header mo-left header header-transparent transparent-white style-2">
-        <div
-          className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""
-            }`}
-        >
+        <div className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""}`}>
           <div className="main-bar clearfix ">
             <div className="container-fluid clearfix">
               <div className="logo-header mostion">
                 <Link to="/" className="anim-logo">
-                  <img src={IMAGES.logo} alt="/" />
+                  <img src={headerContent.logoUrl || cmsConfig?.restaurantLogo || IMAGES.logo} alt={cmsConfig?.restaurantName || "/"} />
                 </Link>
               </div>
 
               <button
-                className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
-                  }`}
+                className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""}`}
                 type="button"
-                onClick={() => {
-                  setHeaderSidebar(!headerSidebar);
-                }}
+                onClick={() => setHeaderSidebar(!headerSidebar)}
               >
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
               </button>
 
               <div className="extra-nav d-lg-none d-flex align-items-center" style={{ float: 'right', height: 'var(--headerheight)' }}>
                 <div className="extra-cell">
                   <ul className="header-right m-0">
-                    <li className="nav-item cart-link">
-                      <Link
-                        to="/shop-cart"
-                        className="btn btn-white btn-square btn-shadow cart-btn"
-                      >
-                        <i className="flaticon-shopping-bag-1"></i>
-                        <span className="badge">6</span>
-                      </Link>
-                    </li>
+                    {headerContent.showCart !== "false" && (
+                      <li className="nav-item cart-link">
+                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
+                          <i className="flaticon-shopping-bag-1"></i>
+                          <span className="badge">0</span>
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>
 
               <div className="extra-nav d-none d-lg-block">
-                <div className="extra-cell">
+                <div className="extra-cell flex items-center">
                   <ul className="header-right me-4">
-                    <li>
-                      <Link
-                        className="btn btn-white btn-square btn-shadow"
-                        to={"#"}
-                        onClick={() => {
-                          setShowSignInForm(true);
-                        }}
-                      >
-                        <i className="flaticon-user"></i>
-                      </Link>
-                    </li>
-                    <li
-                      className="nav-item cart-link"
-                      onMouseEnter={() => setCart(true)}
-                      onMouseLeave={() => setCart(false)}
-                    >
-                      <Link
-                        to="/shop-cart"
-                        className="btn btn-white btn-square btn-shadow cart-btn"
-                      >
-                        <i className="flaticon-shopping-bag-1"></i>
-                        <span className="badge">6</span>
-                      </Link>
-                      <ul
-                        className={`dropdown-menu cart-list ${cart ? "show" : ""
-                          }`}
-                        style={{
-                          display: cart ? "block" : "none",
-                          transition: "all 0.5s",
-                          opacity: cart ? "1" : "0",
-                        }}
-                      >
-                        <li className="cart-item">
-                          <div className="media">
-                            <div className="media-left">
-                              <Link to="/shop-cart">
-                                <img
-                                  alt="/"
-                                  className="media-object"
-                                  src={IMAGES.shop_pic2}
-                                />
-                              </Link>
-                            </div>
-                            <div className="media-body">
-                              <h6 className="dz-title">
-                                <Link to="/shop-cart" className="media-heading">
-                                  Cheese Burger
-                                </Link>
-                              </h6>
-                              <span className="dz-price">$20.00</span>
-                              <span className="item-close">&times;</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="cart-item">
-                          <div className="media">
-                            <div className="media-left">
-                              <Link to="/shop-cart">
-                                <img
-                                  alt="/"
-                                  className="media-object"
-                                  src={IMAGES.shop_pic3}
-                                />
-                              </Link>
-                            </div>
-                            <div className="media-body">
-                              <h6 className="dz-title">
-                                <Link to="/shop-cart" className="media-heading">
-                                  Burger
-                                </Link>
-                              </h6>
-                              <span className="dz-price">$15.00</span>
-                              <span className="item-close">&times;</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li className="cart-item text-center d-flex justify-content-between">
-                          <h6 className="text-primary mb-0">Total:</h6>
-                          <h6 className="text-primary mb-0">$63</h6>
-                        </li>
-                        <li className="text-center d-flex">
-                          <Link
-                            to="/shop-cart"
-                            className="btn btn-primary me-2 w-100 d-block btn-hover-1"
-                          >
-                            <span>View Cart</span>
-                          </Link>
-                          <Link
-                            to="/our-menu-1"
-                            className="btn btn-outline-primary w-100 d-block btn-hover-1"
-                          >
-                            <span>Menu</span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
+                    {headerContent.showLogin !== "false" && (
+                      <li>
+                        <Link className="btn btn-white btn-square btn-shadow" to={"#"} onClick={() => setShowSignInForm(true)}>
+                          <i className="flaticon-user"></i>
+                        </Link>
+                      </li>
+                    )}
+                    {headerContent.showCart !== "false" && (
+                      <li className="nav-item cart-link">
+                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
+                          <i className="flaticon-shopping-bag-1"></i>
+                          <span className="badge">0</span>
+                        </Link>
+                      </li>
+                    )}
                   </ul>
-                  <form method="post">
-                    <div className="input-group">
-                      <input
-                        required
-                        type="text"
-                        className="form-control"
-                        placeholder="Search"
-                      />
-                      <div className="input-group-addon">
-                        <button
-                          name="submit"
-                          value="submit"
-                          type="reset"
-                          className="btn btn-primary btn-hover-2"
-                        >
-                          <span>
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                  <div
-                    className="menu-btn"
-                    onClick={() => {
-                      setShowSidebar(true);
-                    }}
-                  >
+                  <div className="menu-btn" onClick={() => setShowSidebar(true)}>
                     <Link to={"#"}>
-                      <svg
-                        width="35"
-                        height="35"
-                        viewBox="0 0 35 35"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M4.04102 17.3984H29.041"
-                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M4.04102 8.39844H29.541"
-                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M4.04102 25.3984H29.041"
-                          stroke={headerClass && !scroll ? "#ffffff" : "#222222"}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                      <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.04102 17.3984H29.041" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M4.04102 8.39844H29.541" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M4.04102 25.3984H29.041" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </Link>
                   </div>
                 </div>
               </div>
               <div
-                className={`header-nav navbar-collapse justify-content-center ${headerSidebar ? "show" : ""
-                  }`}
+                className={`header-nav navbar-collapse justify-content-center ${headerSidebar ? "show" : ""}`}
                 id="navbarNavDropdown"
               >
                 <Menu scroll={scroll} />
