@@ -67,7 +67,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
       try {
         // Hardcoded for now or we can get slug from URL
         const slug = "saifs-kitchen"; // Matches seed.js slug
-        const res = await axios.get(`http://localhost:3000/api/cms/config/public/${slug}`);
+        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/cms/config/public/${slug}`);
         if (res.data?.success) {
           setCmsConfig(res.data.data);
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
-import { MenuDark } from "./Menu";
+import Menu from "./Menu";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context/AppContext";
 
@@ -39,9 +39,8 @@ const Header3 = () => {
   return (
     <header className="site-header mo-left header header-transparent transparent-white style-1">
       <div
-        className={`sticky-header main-bar-wraper navbar-expand-lg ${
-          scroll ? "is-fixed" : ""
-        }`}
+        className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""
+          }`}
       >
         <div className="main-bar clearfix ">
           <div className="container clearfix">
@@ -54,9 +53,8 @@ const Header3 = () => {
             </div>
 
             <button
-              className={`navbar-toggler collapsed navicon justify-content-end ${
-                headerSidebar ? "open" : ""
-              }`}
+              className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
+                }`}
               type="button"
               onClick={() => {
                 setHeaderSidebar(!headerSidebar);
@@ -248,13 +246,12 @@ const Header3 = () => {
             </div>
 
             <div
-              className={`header-nav navbar-collapse collapse justify-content-start ${
-                headerSidebar ? "show" : ""
-              }`}
+              className={`header-nav navbar-collapse collapse justify-content-start ${headerSidebar ? "show" : ""
+                }`}
               id="navbarNavDropdown"
             >
               {" "}
-              <MenuDark />
+              <Menu />
             </div>
           </div>
         </div>

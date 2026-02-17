@@ -31,7 +31,7 @@ const Home2SpacialMenu = () => {
               </div>
             </div>
             <div className="dz-media" style={{ height: '180px' }}>
-              <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectCover: 'cover' }} />
+              <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
               <Link className="detail-btn" to="/our-menu-1">
                 <i className="fa-solid fa-plus"></i>
               </Link>

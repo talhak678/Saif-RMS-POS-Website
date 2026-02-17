@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { IMAGES } from "../constent/theme";
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -6,7 +6,7 @@ import { Context } from "../context/AppContext";
 
 const Footer2 = () => {
   const { cmsConfig } = useContext(Context);
-  const heartRef = useRef<HTMLSpanElement | null>(null);
+
 
   const homeSections = cmsConfig?.config?.configJson?.home?.sections || {};
   const footerEnabled = homeSections.footer?.enabled !== false;
