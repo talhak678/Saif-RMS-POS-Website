@@ -9,12 +9,19 @@ const Home2SpacialMenu = () => {
 
   // Filter Items based on CMS selection
   const selectedItemIds = cmsConfig?.config?.configJson?.home?.sections?.todaysSpecial?.content?.selectedItemIds || [];
+  const selectedCategoryIds = cmsConfig?.config?.configJson?.home?.sections?.todaysSpecial?.content?.selectedCategoryIds || [];
   const allCategories = cmsConfig?.menu || [];
-  const allItems = allCategories.flatMap((cat: any) => cat.menuItems);
+  const allItems = allCategories.flatMap((cat: any) => cat.menuItems.map((item: any) => ({ ...item, categoryId: cat.id })));
 
-  const displayItems = selectedItemIds.length > 0
-    ? allItems.filter((item: any) => selectedItemIds.includes(item.id))
-    : allItems.slice(0, 4); // Default 4 if none selected
+  let displayItems = [];
+
+  if (selectedItemIds.length > 0) {
+    displayItems = allItems.filter((item: any) => selectedItemIds.includes(item.id));
+  } else if (selectedCategoryIds.length > 0) {
+    displayItems = allItems.filter((item: any) => selectedCategoryIds.includes(item.categoryId));
+  } else {
+    displayItems = allItems.slice(0, 4); // Default 4 if none selected
+  }
 
   return (
     <div className="row">

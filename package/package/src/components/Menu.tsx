@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/AppContext";
 import SocialLinks from "../elements/SocialLinks";
 
@@ -13,7 +13,8 @@ const routeMap: Record<string, string> = {
   "contact us": "/contact-us",
   "contact": "/contact-us",
   "faq": "/faq",
-  "help": "/faq"
+  "help": "/faq",
+  "blogs": "/blog-list"
 };
 
 const Menu = ({ scroll = false }: { scroll?: boolean }) => {
