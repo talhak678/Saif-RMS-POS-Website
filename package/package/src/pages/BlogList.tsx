@@ -1,47 +1,34 @@
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
-import { BlogGrid2Arr } from "../elements/JsonData";
-import { useState } from "react";
+import { useContext } from "react";
+import { Context } from "../context/AppContext";
 
-interface ArrType {
-  img2: string;
-  title: string;
-}
 const BlogList = () => {
-  const [data, setData] = useState<ArrType[]>(BlogGrid2Arr);
+  const { cmsConfig, cmsLoading } = useContext(Context);
 
-  const loadMore = () => {
-    const newData = [...data];
+  const bannerConfig = cmsConfig?.config?.configJson?.blogs?.sections?.banner;
+  const bannerEnabled = bannerConfig?.enabled !== false;
+  const bannerContent = bannerConfig?.content || { title: "Blog List", breadcrumb: "Blog List", imageUrl: IMAGES.images_bnr3 };
 
-    for (let i = 0; i < 2; i++) {
-      const key = Math.floor(Math.random() * BlogGrid2Arr.length);
-      const newElement = {
-        img2: BlogGrid2Arr[key].img2,
-        title: BlogGrid2Arr[key].title,
-      };
-      newData.push(newElement);
-    }
-
-    setData(newData);
-  };
+  if (cmsLoading) return <div className="text-center py-20">Loading...</div>;
 
   return (
     <div className="page-content bg-white">
-      <CommonBanner
-        img={IMAGES.images_bnr3}
-        title="Blog List"
-        subtitle="Blog List"
-      />
+      {bannerEnabled && <CommonBanner
+        img={bannerContent.imageUrl || IMAGES.images_bnr3}
+        title={bannerContent.title}
+        subtitle={bannerContent.breadcrumb}
+      />}
       <section className="content-inner-1">
         <div className="container">
           <div className="row justify-content-center loadmore-content">
-            {data.map(({ img2, title }, ind) => (
-              <div className="col-xl-6 col-lg-8" key={ind}>
+            {cmsConfig?.blogs?.map((blog: any) => (
+              <div className="col-xl-6 col-lg-8" key={blog.id}>
                 <div className="dz-card style-1 blog-half overlay-shine dz-img-effect zoom m-b30">
                   <div className="dz-media">
-                    <Link to="/blog-standard">
-                      <img src={img2} alt="/" />
+                    <Link to="/blog-standard" state={{ blog }}>
+                      <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} className="object-cover h-64 w-full" />
                     </Link>
                   </div>
                   <div className="dz-info">
@@ -49,27 +36,26 @@ const BlogList = () => {
                       <ul>
                         <li>
                           <Link to="#">
-                            <i className="flaticon-calendar-date"></i> 15 Feb
-                            2023
+                            <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString()}
                           </Link>
                         </li>
                         <li className="dz-comment">
                           <Link to="#">
-                            <i className="flaticon-chat-bubble"></i> 1.5K
+                            <i className="flaticon-user"></i> {blog.author || "Admin"}
                           </Link>
                         </li>
                       </ul>
                     </div>
                     <h5 className="dz-title">
-                      <Link to="/blog-standard">{title}</Link>
+                      <Link to="/blog-standard" state={{ blog }}>{blog.title}</Link>
                     </h5>
-                    <p>
-                      There are many variations of passages of Lorem Ipsum
-                      available, but the majority have.
+                    <p className="line-clamp-3">
+                      {blog.snippet || blog.content.substring(0, 100) + "..."}
                     </p>
                     <div className="read-btn">
                       <Link
                         to="/blog-standard"
+                        state={{ blog }}
                         className="btn btn-primary btn-hover-2"
                       >
                         Read More
@@ -79,15 +65,9 @@ const BlogList = () => {
                 </div>
               </div>
             ))}
-          </div>
-          <div className="text-center m-t10">
-            <Link
-              className="btn btn-primary dz-load-more btn-hover-2"
-              to={"#"}
-              onClick={loadMore}
-            >
-              Load More
-            </Link>
+            {(!cmsConfig?.blogs || cmsConfig.blogs.length === 0) && (
+              <div className="text-center py-10 w-full">No blog posts found.</div>
+            )}
           </div>
         </div>
       </section>

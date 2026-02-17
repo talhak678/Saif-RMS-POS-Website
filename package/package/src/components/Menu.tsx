@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import SocialLinks from "../elements/SocialLinks";
 

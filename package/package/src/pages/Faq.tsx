@@ -1,13 +1,20 @@
 import CommonBanner from "../elements/CommonBanner";
 import { Accordion } from "react-bootstrap";
-import { FaqArr } from "../elements/JsonData";
 import { IMAGES } from "../constent/theme";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState, useContext } from "react";
+import { Context } from "../context/AppContext";
+
 const Faq = () => {
+  const { cmsConfig, cmsLoading } = useContext(Context);
   const [input, setInput] = useState<string>("");
   const form = useRef<HTMLFormElement | null>(null);
+
+  const bannerConfig = cmsConfig?.config?.configJson?.faq?.sections?.banner;
+  const bannerEnabled = bannerConfig?.enabled !== false;
+  const bannerContent = bannerConfig?.content || { title: "Faq", breadcrumb: "Faq", imageUrl: IMAGES.banner_bnr2 };
+
   const sendEmail = (e: FormEvent) => {
     e.preventDefault();
     setInput("");
@@ -29,11 +36,14 @@ const Faq = () => {
         );
     }
   };
+
+  if (cmsLoading) return <div className="text-center py-20">Loading...</div>;
+
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       <div className="page-content bg-white">
-        <CommonBanner img={IMAGES.banner_bnr2} title="Faq" subtitle="Faq" />
+        {bannerEnabled && <CommonBanner img={bannerContent.imageUrl || IMAGES.banner_bnr2} title={bannerContent.title} subtitle={bannerContent.breadcrumb} />}
         <section className="content-inner">
           <div className="min-container">
             <div className="row search-wraper style-1 text-center">
@@ -54,7 +64,7 @@ const Faq = () => {
                       required
                       type="text"
                       className="form-control"
-                      placeholder="Why Should I Use Swigo ?"
+                      placeholder="Search Questions..."
                     />
                   </div>
                 </form>
@@ -65,36 +75,38 @@ const Faq = () => {
                 <Accordion
                   className="accordion dz-accordion"
                   id="accordionFaq2"
-                  defaultActiveKey="1"
+                  defaultActiveKey="0"
                 >
-                  {FaqArr.map(({ title, evantK }, ind) => (
+                  {cmsConfig?.faqs?.map(({ question, answer }: any, ind: number) => (
                     <Accordion.Item
                       className="accordion-item"
                       key={ind}
-                      eventKey={`${evantK}`}
+                      eventKey={`${ind}`}
                     >
                       <Accordion.Header
                         className="accordion-header"
-                        id="headingOne1"
+                        id={`heading${ind}`}
                       >
-                        {title}
+                        {question}
                         <span className="toggle-close"></span>
                       </Accordion.Header>
 
                       <Accordion.Body className="accordion-body">
                         <p className="m-b0">
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry's standard dummy text ever since the 1500s,
+                          {answer}
                         </p>
                       </Accordion.Body>
                     </Accordion.Item>
                   ))}
+                  {(!cmsConfig?.faqs || cmsConfig.faqs.length === 0) && (
+                    <div className="text-center py-10">No FAQs found.</div>
+                  )}
                 </Accordion>
               </div>
             </div>
 
-            <div className="row align-items-center">
+            {/* Newsletter Section */}
+            <div className="row align-items-center mt-10">
               <div className="col-lg-5 m-b20">
                 <div className="dz-media faq-media move-2">
                   <img src={IMAGES.faq_pic1} alt="/" />
