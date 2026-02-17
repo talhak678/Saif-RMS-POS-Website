@@ -65,19 +65,44 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   useEffect(() => {
     const fetchCMS = async () => {
       try {
-        // Hardcoded for now or we can get slug from URL
-        const slug = "saifs-kitchen"; // Matches seed.js slug
-        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/cms/config/public/${slug}`);
+        // Use environment variable or fallback to saifs-kitchen
+        const slug = import.meta.env.VITE_RESTAURANT_SLUG || "saifs-kitchen";
+        console.log("🔍 Fetching CMS for restaurant slug:", slug);
+
+        const apiUrl = `https://saif-rms-pos-backend.vercel.app/api/cms/config/public/${slug}`;
+        console.log("🌐 API URL:", apiUrl);
+
+        const res = await axios.get(apiUrl);
+
+        console.log("📦 CMS API Response:", res.data);
+
         if (res.data?.success) {
+          console.log("✅ CMS Data loaded for restaurant:", res.data.data.restaurantName);
+          console.log("🆔 Restaurant ID:", res.data.data.config?.restaurantId);
           setCmsConfig(res.data.data);
 
           // Apply background color to body
           if (res.data.data.config?.backgroundColor) {
             document.body.style.backgroundColor = res.data.data.config.backgroundColor;
           }
+        } else {
+          console.error("❌ CMS API returned success=false:", res.data);
         }
-      } catch (err) {
-        console.error("Failed to load CMS", err);
+      } catch (err: any) {
+        console.error("❌ Failed to load CMS:", err);
+        console.error("❌ Error details:", {
+          message: err.message,
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          data: err.response?.data
+        });
+
+        // Show user-friendly message
+        if (err.response?.status === 500) {
+          console.error("💥 Server Error: The restaurant slug might not exist in database, or websiteConfig is missing");
+        } else if (err.response?.status === 404) {
+          console.error("🔍 Not Found: Restaurant with this slug doesn't exist");
+        }
       } finally {
         setCmsLoading(false);
       }
