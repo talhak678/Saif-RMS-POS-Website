@@ -42,11 +42,10 @@ const Header2 = () => {
                 <Link to="/" className="anim-logo">
                   <img
                     src={
-                      (headerContent.logoUrl && headerContent.logoUrl.trim() !== "")
-                        ? headerContent.logoUrl
-                        : (cmsConfig?.restaurantLogo && cmsConfig.restaurantLogo.trim() !== "")
-                          ? cmsConfig.restaurantLogo
-                          : IMAGES.logo
+                      cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
+                      headerContent.logoUrl ||
+                      cmsConfig?.restaurantLogo ||
+                      IMAGES.logo
                     }
                     alt={cmsConfig?.restaurantName || "Saif Kitchen"}
                   />

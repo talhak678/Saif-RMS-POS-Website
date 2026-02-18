@@ -78,19 +78,58 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
         if (res.data?.success) {
           console.log("✅ CMS Data loaded for restaurant:", res.data.data.restaurantName);
-          console.log("🆔 Restaurant ID:", res.data.data.config?.restaurantId);
-          setCmsConfig(res.data.data);
+          const data = res.data.data;
+          setCmsConfig(data);
 
-          // Apply colors from CMS config
-          if (res.data.data.config) {
-            const { backgroundColor, primaryColor } = res.data.data.config;
+          // 🎨 Apply Theme Settings
+          const config = data.config || {};
+          const configJson = config.configJson || {};
+          const themeSettings = configJson.theme?.sections || {};
+
+          // 1. Colors
+          if (themeSettings.colors?.enabled) {
+            const { primaryColor, secondaryColor, accentColor, backgroundColor } = themeSettings.colors.content || {};
+
+            if (primaryColor) {
+              document.documentElement.style.setProperty('--primary', primaryColor);
+              document.documentElement.style.setProperty('--bs-primary', primaryColor);
+            }
+            if (secondaryColor) {
+              document.documentElement.style.setProperty('--secondary', secondaryColor);
+              document.documentElement.style.setProperty('--bs-secondary', secondaryColor);
+            }
+            if (accentColor) {
+              document.documentElement.style.setProperty('--accent', accentColor);
+            }
             if (backgroundColor) {
               document.body.style.backgroundColor = backgroundColor;
             }
-            if (primaryColor) {
-              document.documentElement.style.setProperty('--primary', primaryColor);
-              // Force the primary color-rgb for bootstrap/rgba variables if needed
-              // But for now --primary is the main one.
+          } else if (config) {
+            // Fallback to legacy fields
+            if (config.backgroundColor) document.body.style.backgroundColor = config.backgroundColor;
+            if (config.primaryColor) {
+              document.documentElement.style.setProperty('--primary', config.primaryColor);
+              document.documentElement.style.setProperty('--bs-primary', config.primaryColor);
+            }
+          }
+
+          // 2. Fonts
+          if (themeSettings.fonts?.enabled) {
+            const { primaryFont, secondaryFont } = themeSettings.fonts.content || {};
+            if (primaryFont) {
+              document.documentElement.style.setProperty('--font-family-base', primaryFont + ', sans-serif');
+              document.documentElement.style.setProperty('--bs-body-font-family', primaryFont + ', sans-serif');
+            }
+            if (secondaryFont) {
+              document.documentElement.style.setProperty('--font-family-title', secondaryFont + ', sans-serif');
+            }
+          }
+
+          // 3. Favicon
+          if (themeSettings.logos?.enabled && themeSettings.logos.content?.favicon) {
+            const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+            if (link) {
+              link.href = themeSettings.logos.content.favicon;
             }
           }
         } else {

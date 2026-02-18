@@ -48,7 +48,16 @@ const Footer2 = () => {
                     <div className="widget widget_services text-center">
                       <div className="footer-logo mb-4">
                         <Link to="/" className="anim-logo-white">
-                          <img src={cmsConfig?.restaurantLogo || IMAGES.logo2} alt="/" style={{ maxWidth: '180px' }} />
+                          <img
+                            src={
+                              cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.footerLogo ||
+                              cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
+                              cmsConfig?.restaurantLogo ||
+                              IMAGES.logo2
+                            }
+                            alt="/"
+                            style={{ maxWidth: '180px' }}
+                          />
                         </Link>
                       </div>
                       <p className="text-white mb-0 font-14">
