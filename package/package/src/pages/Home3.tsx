@@ -9,7 +9,7 @@ import { Home3ServicesArr } from "../elements/JsonData";
 
 const Home3 = () => {
   useEffect(() => {
-    document.body.setAttribute("data-color", "color_3");
+    // document.body.setAttribute("data-color", "color_3");
   }, []);
   return (
     <div className="page-content bg-white">

@@ -13,7 +13,7 @@ const Home2 = () => {
   const { cmsConfig, cmsLoading } = useContext(Context);
 
   useEffect(() => {
-    document.body.setAttribute("data-color", "color_2");
+    // document.body.setAttribute("data-color", "color_2");
   }, []);
 
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;

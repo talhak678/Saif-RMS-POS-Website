@@ -86,58 +86,174 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           const configJson = config.configJson || {};
           const themeSettings = configJson.theme?.sections || {};
 
-          // 1. Colors
-          if (themeSettings.colors?.enabled) {
-            const { primaryColor, secondaryColor, accentColor, backgroundColor } = themeSettings.colors.content || {};
+          // Clear any hardcoded data-color that might override our styles
+          document.body.removeAttribute('data-color');
 
-            if (primaryColor) {
-              document.documentElement.style.setProperty('--primary', primaryColor);
-              document.documentElement.style.setProperty('--bs-primary', primaryColor);
-            }
-            if (secondaryColor) {
-              document.documentElement.style.setProperty('--secondary', secondaryColor);
-              document.documentElement.style.setProperty('--bs-secondary', secondaryColor);
-            }
-            if (accentColor) {
-              document.documentElement.style.setProperty('--accent', accentColor);
-            }
-            if (backgroundColor) {
-              document.body.style.backgroundColor = backgroundColor;
-            }
-          } else if (config) {
+          // Normalize colors from either new system or legacy fields
+          let pColor = "";
+          let sColor = "";
+          let aColor = "";
+          let bColor = "";
+          let tColor = "";
+
+          if (themeSettings.colors?.enabled) {
+            const content = themeSettings.colors.content || {};
+            pColor = content.primaryColor;
+            sColor = content.secondaryColor;
+            aColor = content.accentColor;
+            bColor = content.backgroundColor;
+            tColor = content.textColor;
+          } else {
             // Fallback to legacy fields
-            if (config.backgroundColor) document.body.style.backgroundColor = config.backgroundColor;
-            if (config.primaryColor) {
-              document.documentElement.style.setProperty('--primary', config.primaryColor);
-              document.documentElement.style.setProperty('--bs-primary', config.primaryColor);
-            }
+            pColor = config.primaryColor;
+            bColor = config.backgroundColor;
           }
 
-          // 2. Fonts
+          // 1. Colors & Global Styles Implementation
+          if (pColor || bColor || tColor) {
+            const root = document.documentElement;
+
+            // Set CSS Variables on Root
+            if (pColor) {
+              root.style.setProperty('--primary', pColor);
+              root.style.setProperty('--bs-primary', pColor);
+              root.style.setProperty('--bs-link-color', pColor);
+              root.style.setProperty('--primary-hover', pColor);
+              root.style.setProperty('--primary-dark', pColor);
+            }
+
+            if (sColor) {
+              root.style.setProperty('--secondary', sColor);
+              root.style.setProperty('--bs-secondary', sColor);
+            }
+
+            if (bColor) {
+              root.style.setProperty('--bs-body-bg', bColor);
+              document.body.style.backgroundColor = bColor;
+            }
+
+            if (tColor) {
+              root.style.setProperty('--bs-body-color', tColor);
+              root.style.setProperty('--title', tColor);
+              document.body.style.color = tColor;
+            }
+
+            if (aColor) {
+              root.style.setProperty('--accent', aColor);
+              root.style.setProperty('--bs-border-color', aColor);
+            } else if (pColor) {
+              // Use faint primary for borders if no accent
+              root.style.setProperty('--bs-border-color', `${pColor}40`);
+            }
+
+            // 💉 Inject Dynamic Overrides (THE NUCLEAR OPTION for "Pore System" consistency)
+            let themeStyle = document.getElementById('cms-theme-overrides');
+            if (!themeStyle) {
+              themeStyle = document.createElement('style');
+              themeStyle.id = 'cms-theme-overrides';
+              document.head.appendChild(themeStyle);
+            }
+
+            themeStyle.innerHTML = `
+              :root {
+                --primary: ${pColor || '#7da640'} !important;
+                --bs-primary: ${pColor || '#7da640'} !important;
+                --bs-body-bg: ${bColor || '#ffffff'} !important;
+                --bs-border-color: ${aColor || (pColor ? pColor + '40' : '#e1e1f0')} !important;
+              }
+              body {
+                background-color: ${bColor || '#ffffff'} !important;
+                color: ${tColor || '#666666'} !important;
+              }
+              /* Button Overrides */
+              .btn-primary, .wp-block-button__link {
+                --bs-btn-bg: ${pColor} !important;
+                --bs-btn-border-color: ${pColor} !important;
+                --bs-btn-hover-bg: ${pColor} !important;
+                --bs-btn-hover-border-color: ${pColor} !important;
+                --bs-btn-active-bg: ${pColor} !important;
+                --bs-btn-active-border-color: ${pColor} !important;
+                background-color: ${pColor} !important;
+                border-color: ${pColor} !important;
+                color: #ffffff !important;
+              }
+              .btn-outline-primary {
+                --bs-btn-color: ${pColor} !important;
+                --bs-btn-border-color: ${pColor} !important;
+                --bs-btn-hover-bg: ${pColor} !important;
+                --bs-btn-hover-border-color: ${pColor} !important;
+                color: ${pColor} !important;
+                border-color: ${pColor} !important;
+              }
+              .btn-outline-primary:hover {
+                background-color: ${pColor} !important;
+                color: #ffffff !important;
+              }
+              /* Color Helpers */
+              .text-primary { color: ${pColor} !important; }
+              .bg-primary { background-color: ${pColor} !important; }
+              .shadow-primary { box-shadow: 0 10px 20px -10px ${pColor}80 !important; }
+              
+              /* Border Overrides */
+              .border-primary { border-color: ${pColor} !important; }
+              
+              /* Typography Overrides */
+              h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
+                color: ${tColor || '#222222'} !important;
+              }
+              
+              /* Link Overrides */
+              a { color: ${pColor || 'inherit'}; }
+              a:hover { color: ${pColor || 'inherit'}; opacity: 0.8; }
+            `;
+          }
+
+          // 2. Fonts Implementation
           if (themeSettings.fonts?.enabled) {
             const { primaryFont, secondaryFont } = themeSettings.fonts.content || {};
 
-            // Dynamically load Google Fonts
             const fontsToLoad = [primaryFont, secondaryFont].filter(Boolean);
             if (fontsToLoad.length > 0) {
               const fontLink = document.getElementById('cms-fonts') as HTMLLinkElement || document.createElement('link');
               fontLink.id = 'cms-fonts';
               fontLink.rel = 'stylesheet';
-              const fontQuery = fontsToLoad.map(f => f.replace(/\s+/g, '+')).join('|');
-              fontLink.href = `https://fonts.googleapis.com/css2?family=${fontQuery}:wght@300;400;500;600;700;800;900&display=swap`;
+
+              const uniqueFonts = Array.from(new Set(fontsToLoad));
+              // Correct query format for multiple families with weights
+              const fontQuery = uniqueFonts.map(f => `family=${f.replace(/\s+/g, '+')}:wght@300;400;500;600;700;800;900`).join('&');
+              fontLink.href = `https://fonts.googleapis.com/css2?${fontQuery}&display=swap`;
+
               if (!document.getElementById('cms-fonts')) {
                 document.head.appendChild(fontLink);
               }
             }
 
-            if (primaryFont) {
-              document.documentElement.style.setProperty('--font-family-base', `"${primaryFont}", sans-serif`);
-              document.documentElement.style.setProperty('--bs-body-font-family', `"${primaryFont}", sans-serif`);
-              // Update root body font if needed
-              document.body.style.fontFamily = `"${primaryFont}", sans-serif`;
-            }
-            if (secondaryFont) {
-              document.documentElement.style.setProperty('--font-family-title', `"${secondaryFont}", sans-serif`);
+            if (primaryFont || secondaryFont) {
+              const fontOverrides = document.getElementById('cms-font-overrides') || document.createElement('style');
+              fontOverrides.id = 'cms-font-overrides';
+
+              let css = "";
+              if (primaryFont) {
+                document.documentElement.style.setProperty('--font-family-base', `"${primaryFont}", sans-serif`);
+                document.documentElement.style.setProperty('--bs-body-font-family', `"${primaryFont}", sans-serif`);
+                css += `
+                  body, p, span:not(.title), a, li, input, textarea, button, .sub-title {
+                    font-family: "${primaryFont}", sans-serif !important;
+                  }
+                `;
+              }
+              if (secondaryFont) {
+                document.documentElement.style.setProperty('--font-family-title', `"${secondaryFont}", sans-serif`);
+                css += `
+                  h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
+                    font-family: "${secondaryFont}", sans-serif !important;
+                  }
+                `;
+              }
+              fontOverrides.innerHTML = css;
+              if (!document.getElementById('cms-font-overrides')) {
+                document.head.appendChild(fontOverrides);
+              }
             }
           }
 

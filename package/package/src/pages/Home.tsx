@@ -13,7 +13,7 @@ import Reservation from "../elements/Reservation";
 const Home = () => {
   const { setHeaderClass } = useContext(Context);
   useEffect(() => {
-    document.body.setAttribute("data-color", "color_1");
+    // document.body.setAttribute("data-color", "color_1");
   }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo(() => setHeaderClass(false), []);
