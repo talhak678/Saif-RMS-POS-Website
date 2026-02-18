@@ -40,7 +40,16 @@ const Header2 = () => {
             <div className="container-fluid clearfix">
               <div className="logo-header mostion">
                 <Link to="/" className="anim-logo">
-                  <img src={headerContent.logoUrl || cmsConfig?.restaurantLogo || IMAGES.logo} alt={cmsConfig?.restaurantName || "/"} />
+                  <img
+                    src={
+                      (headerContent.logoUrl && headerContent.logoUrl.trim() !== "")
+                        ? headerContent.logoUrl
+                        : (cmsConfig?.restaurantLogo && cmsConfig.restaurantLogo.trim() !== "")
+                          ? cmsConfig.restaurantLogo
+                          : IMAGES.logo
+                    }
+                    alt={cmsConfig?.restaurantName || "Saif Kitchen"}
+                  />
                 </Link>
               </div>
 
