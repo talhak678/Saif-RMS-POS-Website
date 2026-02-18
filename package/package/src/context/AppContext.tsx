@@ -81,9 +81,17 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           console.log("🆔 Restaurant ID:", res.data.data.config?.restaurantId);
           setCmsConfig(res.data.data);
 
-          // Apply background color to body
-          if (res.data.data.config?.backgroundColor) {
-            document.body.style.backgroundColor = res.data.data.config.backgroundColor;
+          // Apply colors from CMS config
+          if (res.data.data.config) {
+            const { backgroundColor, primaryColor } = res.data.data.config;
+            if (backgroundColor) {
+              document.body.style.backgroundColor = backgroundColor;
+            }
+            if (primaryColor) {
+              document.documentElement.style.setProperty('--primary', primaryColor);
+              // Force the primary color-rgb for bootstrap/rgba variables if needed
+              // But for now --primary is the main one.
+            }
           }
         } else {
           console.error("❌ CMS API returned success=false:", res.data);

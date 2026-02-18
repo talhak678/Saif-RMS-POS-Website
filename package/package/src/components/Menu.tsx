@@ -92,7 +92,7 @@ const Menu = ({ scroll = false }: { scroll?: boolean }) => {
               style={{
                 color: pathname === item.to
                   ? "#fe9f10"
-                  : (headerClass && !scroll && window.innerWidth > 991)
+                  : (!headerClass && !scroll && window.innerWidth > 991)
                     ? "#ffffff"
                     : "#222222"
               }}

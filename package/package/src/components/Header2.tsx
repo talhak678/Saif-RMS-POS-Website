@@ -34,7 +34,7 @@ const Header2 = () => {
 
   return (
     <>
-      <header className="site-header mo-left header header-transparent transparent-white style-2">
+      <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
         <div className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""}`}>
           <div className="main-bar clearfix ">
             <div className="container-fluid clearfix">
@@ -89,9 +89,9 @@ const Header2 = () => {
                   <div className="menu-btn" onClick={() => setShowSidebar(true)}>
                     <Link to={"#"}>
                       <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.04102 17.3984H29.041" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4.04102 8.39844H29.541" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4.04102 25.3984H29.041" stroke={headerClass && !scroll ? "#ffffff" : "#222222"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M4.04102 17.3984H29.041" stroke={headerClass || scroll ? "#222222" : "#ffffff"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M4.04102 8.39844H29.541" stroke={headerClass || scroll ? "#222222" : "#ffffff"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M4.04102 25.3984H29.041" stroke={headerClass || scroll ? "#222222" : "#ffffff"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </Link>
                   </div>
