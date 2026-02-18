@@ -26,11 +26,25 @@ const Menu = () => {
 
   const menuItems = menuItemsString.split(",").map((item: string) => {
     const name = item.trim();
+    const key = name.toLowerCase();
+
+    // Map menu names to CMS config keys
+    let cmsKey = key;
+    if (key === 'about us' || key === 'about') cmsKey = 'about';
+    if (key === 'blogs') cmsKey = 'blogs';
+    if (key === 'faq' || key === 'help') cmsKey = 'faq';
+    if (key === 'contact us' || key === 'contact') cmsKey = 'contact';
+    if (key === 'our menu' || key === 'menu') cmsKey = 'menu';
+    if (key === 'home') cmsKey = 'home';
+
+    const isEnabled = cmsConfig?.config?.configJson?.[cmsKey]?.enabled !== false;
+
     return {
       name,
-      to: routeMap[name.toLowerCase()] || "/"
+      to: routeMap[key] || "/",
+      isEnabled
     };
-  });
+  }).filter((item: any) => item.isEnabled);
 
   return (
     <>

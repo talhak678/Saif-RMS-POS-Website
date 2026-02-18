@@ -117,6 +117,20 @@ const Layout6 = () => {
 };
 
 
+const CmsProtectedRoute = ({ pageKey, children }: { pageKey: string, children: React.ReactNode }) => {
+  const { cmsConfig, cmsLoading } = useContext(Context);
+
+  if (cmsLoading) return null; // Or a loader
+
+  const isEnabled = cmsConfig?.config?.configJson?.[pageKey]?.enabled !== false;
+
+  if (!isEnabled) {
+    return <Error404 />; // Or Navigate to "/"
+  }
+
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <>
@@ -129,89 +143,78 @@ function App() {
             <Route element={<Layout2 />}>
               <Route path="/" element={<Home2 />} />
             </Route>
-            {/* <Route element={<Layout1 />}>
-              <Route path="/home-1" element={<Home />} />
-            </Route> */}
-            {/* <Route element={<Layout3 />}>
-              <Route path="/home-3" element={<Home3 />} />
-            </Route> */}
+
             <Route element={<Layout4 />}>
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/faq" element={<Faq />} />
-              {/* <Route path="/team" element={<Team />} />
-              <Route path="/team-detail" element={<TeamDetail />} />
-              <Route path="/testimonial" element={<Testimonial />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/service-detail" element={<ServiceDetail />} /> */}
-              <Route path="/our-menu-1" element={<MenuStyle1 />} />
+              <Route path="/about-us" element={
+                <CmsProtectedRoute pageKey="about">
+                  <AboutUs />
+                </CmsProtectedRoute>
+              } />
+              <Route path="/faq" element={
+                <CmsProtectedRoute pageKey="faq">
+                  <Faq />
+                </CmsProtectedRoute>
+              } />
+              <Route path="/our-menu-1" element={
+                <CmsProtectedRoute pageKey="menu">
+                  <MenuStyle1 />
+                </CmsProtectedRoute>
+              } />
               <Route path="/our-menu-2" element={<MenuStyle2 />} />
               <Route path="/our-menu-3" element={<MenuStyle3 />} />
               <Route path="/our-menu-4" element={<MenuStyle4 />} />
               <Route path="/our-menu-5" element={<MenuStyle5 />} />
-              {/* <Route path="/shop-style-1" element={<ShopStyle1 />} />
-              <Route path="/shop-style-2" element={<ShopStyle2 />} /> */}
+
               <Route path="/shop-cart" element={<ShopCart />} />
-              {/* <Route path="/shop-wishlist" element={<ShopWishlist />} />
-              <Route path="/shop-checkout" element={<ShopCheckout />} />
-              <Route path="/product-detail" element={<ProductDetail />} /> */}
-              {/* <Route path="/blog-grid-2" element={<BlogGrid2 />} /> */}
-              {/* <Route path="/blog-grid-3" element={<BlogGrid3 />} /> */}
-              {/* <Route
-                path="/blog-grid-left-sidebar"
-                element={<BlogGridLeftSideba />}
-              />
-              <Route
-                path="/blog-grid-right-sidebar"
-                element={<BlogGridRightSidebar />}
-              /> */}
-              <Route path="/blog-list" element={<BlogList />} />
-              {/* <Route
-                path="/blog-list-left-sidebar"
-                element={<BlogListLeftSidebar />}
-              />
-              <Route
-                path="/blog-list-right-sidebar"
-                element={<BlogListRightSidebar />}
-              />
-              <Route path="/blog-both-sidebar" element={<BlogBothSidebar />} />
-              <Route
-                path="/blog-grid-3-masonary"
-                element={<BlogGrid3Masonary />}
-              />
-              <Route
-                path="/blog-grid-4-masonary"
-                element={<BlogGrid4Masonary />}
-              />
-              <Route
-                path="/blog-wide-list-sidebar"
-                element={<BlogWideListSidebar />}
-              />
-              <Route
-                path="/blog-wide-grid-sidebar"
-                element={<BlogWideGridSidebar />}
-              /> */}
-              <Route path="/contact-us" element={<ContactUs />} />
+
+              <Route path="/blog-list" element={
+                <CmsProtectedRoute pageKey="blogs">
+                  <BlogList />
+                </CmsProtectedRoute>
+              } />
+
+              <Route path="/contact-us" element={
+                <CmsProtectedRoute pageKey="contact">
+                  <ContactUs />
+                </CmsProtectedRoute>
+              } />
             </Route>
 
             <Route element={<Layout5 />}>
               <Route path="/error-404" element={<Error404 />} />
             </Route>
             <Route element={<Layout6 />}>
-              <Route path="/blog-standard" element={<BlogDetail />} />
-              <Route path="/blog-open-gutenberg" element={<BlogGutenberg />} />
+              <Route path="/blog-standard" element={
+                <CmsProtectedRoute pageKey="blogs">
+                  <BlogDetail />
+                </CmsProtectedRoute>
+              } />
+              <Route path="/blog-open-gutenberg" element={
+                <CmsProtectedRoute pageKey="blogs">
+                  <BlogGutenberg />
+                </CmsProtectedRoute>
+              } />
               <Route
                 path="/blog-detail-left-sidebar"
-                element={<BlogDetailLeftSidebar />}
+                element={
+                  <CmsProtectedRoute pageKey="blogs">
+                    <BlogDetailLeftSidebar />
+                  </CmsProtectedRoute>
+                }
               />
               <Route
                 path="/blog-detail-right-sidebar"
-                element={<BlogDetailRightSidebar />}
+                element={
+                  <CmsProtectedRoute pageKey="blogs">
+                    <BlogDetailRightSidebar />
+                  </CmsProtectedRoute>
+                }
               />
             </Route>
             <Route path="/coming-soon" element={<ComingSoon />} />
             <Route path="/under-maintenance" element={<UnderMaintenance />} />
+            <Route path="*" element={<Error404 />} />
           </Routes>
-          {/* <Switcher />// */}
         </Router>
       </div>
     </>
