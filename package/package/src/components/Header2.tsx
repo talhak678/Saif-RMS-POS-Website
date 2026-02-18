@@ -75,8 +75,8 @@ const Header2 = () => {
                 </div>
               </div>
 
-              <div className="extra-nav d-none d-lg-block">
-                <div className="extra-cell flex items-center">
+              <div className="extra-nav d-none d-lg-flex align-items-center">
+                <div className="extra-cell d-flex align-items-center">
                   <ul className="header-right me-4">
                     {headerContent.showLogin !== "false" && (
                       <li>
