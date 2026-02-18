@@ -116,12 +116,28 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           // 2. Fonts
           if (themeSettings.fonts?.enabled) {
             const { primaryFont, secondaryFont } = themeSettings.fonts.content || {};
+
+            // Dynamically load Google Fonts
+            const fontsToLoad = [primaryFont, secondaryFont].filter(Boolean);
+            if (fontsToLoad.length > 0) {
+              const fontLink = document.getElementById('cms-fonts') as HTMLLinkElement || document.createElement('link');
+              fontLink.id = 'cms-fonts';
+              fontLink.rel = 'stylesheet';
+              const fontQuery = fontsToLoad.map(f => f.replace(/\s+/g, '+')).join('|');
+              fontLink.href = `https://fonts.googleapis.com/css2?family=${fontQuery}:wght@300;400;500;600;700;800;900&display=swap`;
+              if (!document.getElementById('cms-fonts')) {
+                document.head.appendChild(fontLink);
+              }
+            }
+
             if (primaryFont) {
-              document.documentElement.style.setProperty('--font-family-base', primaryFont + ', sans-serif');
-              document.documentElement.style.setProperty('--bs-body-font-family', primaryFont + ', sans-serif');
+              document.documentElement.style.setProperty('--font-family-base', `"${primaryFont}", sans-serif`);
+              document.documentElement.style.setProperty('--bs-body-font-family', `"${primaryFont}", sans-serif`);
+              // Update root body font if needed
+              document.body.style.fontFamily = `"${primaryFont}", sans-serif`;
             }
             if (secondaryFont) {
-              document.documentElement.style.setProperty('--font-family-title', secondaryFont + ', sans-serif');
+              document.documentElement.style.setProperty('--font-family-title', `"${secondaryFont}", sans-serif`);
             }
           }
 

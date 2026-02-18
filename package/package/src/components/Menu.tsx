@@ -105,7 +105,7 @@ const Menu = () => {
             <Link
               style={{
                 color: pathname === item.to
-                  ? "#fe9f10"
+                  ? "var(--primary)"
                   : "#222222"
               }}
               to={item.to}
