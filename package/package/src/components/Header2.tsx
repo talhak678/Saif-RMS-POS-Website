@@ -110,7 +110,7 @@ const Header2 = () => {
                 className={`header-nav navbar-collapse justify-content-center ${headerSidebar ? "show" : ""}`}
                 id="navbarNavDropdown"
               >
-                <Menu scroll={scroll} />
+                <Menu />
               </div>
             </div>
           </div>

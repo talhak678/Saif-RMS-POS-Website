@@ -17,7 +17,7 @@ const routeMap: Record<string, string> = {
   "blogs": "/blog-list"
 };
 
-const Menu = ({ scroll = false }: { scroll?: boolean }) => {
+const Menu = () => {
   const { headerClass, setShowSignInForm, setHeaderSidebar, setShowOrderModal, cmsConfig } = useContext(Context);
   const { pathname } = useLocation();
 
