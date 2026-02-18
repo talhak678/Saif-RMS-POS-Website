@@ -14,7 +14,7 @@ const BlogList = () => {
   if (cmsLoading) return <div className="text-center py-20">Loading...</div>;
 
   return (
-    <div className="page-content bg-white">
+    <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
       {bannerEnabled && <CommonBanner
         img={bannerContent.imageUrl || IMAGES.images_bnr3}
         title={bannerContent.title}

@@ -77,7 +77,7 @@ const Home2 = () => {
       )}
 
       {sections.customerComments?.enabled && (
-        <section className="content-inner-2 overflow-hidden" style={{ marginBottom: '100px' }}>
+        <section className="content-inner-2 overflow-hidden">
           <div className="container">
             <div className="section-head text-center">
               <h2 className="title wow flipInX">{sections.customerComments.content?.title || "Customer's Comment"}</h2>

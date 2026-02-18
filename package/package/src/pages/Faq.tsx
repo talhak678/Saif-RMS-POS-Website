@@ -42,7 +42,7 @@ const Faq = () => {
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
-      <div className="page-content bg-white">
+      <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
         {bannerEnabled && <CommonBanner img={bannerContent.imageUrl || IMAGES.banner_bnr2} title={bannerContent.title} subtitle={bannerContent.breadcrumb} />}
         <section className="content-inner">
           <div className="min-container">

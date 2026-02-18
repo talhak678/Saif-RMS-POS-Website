@@ -198,10 +198,21 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               .border-primary { border-color: ${pColor} !important; }
               
               /* Typography Overrides */
-              h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
+              h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6, .footer-title {
                 color: ${tColor || '#222222'} !important;
               }
               
+              /* Footer & Full System BG Overrides */
+              .site-footer, .footer-bg-wrapper, .footer-top, .footer-bottom {
+                background-color: ${bColor || '#222222'} !important;
+              }
+              .site-footer {
+                border-top: 1px solid ${aColor || (pColor ? pColor + '20' : '#e1e1f0')} !important;
+              }
+              .footer-top {
+                border-bottom: 1px solid ${aColor || (pColor ? pColor + '10' : '#eeeeee')} !important;
+              }
+
               /* Link Overrides */
               a { color: ${pColor || 'inherit'}; }
               a:hover { color: ${pColor || 'inherit'}; opacity: 0.8; }

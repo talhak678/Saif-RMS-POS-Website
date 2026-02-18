@@ -132,9 +132,10 @@ const CmsProtectedRoute = ({ pageKey, children }: { pageKey: string, children: R
 };
 
 function App() {
+  const { cmsConfig } = useContext(Context);
   return (
     <>
-      <div className="page-wraper">
+      <div className="page-wraper" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white", minHeight: '100vh' }}>
         <Router>
           <OrderTypeModal />
           <SignIn />

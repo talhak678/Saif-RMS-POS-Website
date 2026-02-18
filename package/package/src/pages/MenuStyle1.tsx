@@ -20,7 +20,7 @@ const MenuStyle1 = () => {
     : allAvailableCategories;
 
   return (
-    <div className="page-content bg-white" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
+    <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
       {sections.banner?.enabled !== false && (
         <CommonBanner
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
