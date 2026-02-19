@@ -42,7 +42,7 @@ const Home2PromoBanners = () => {
                     {promos.map((promo: any, index: number) => (
                         <SwiperSlide key={promo.id || index}>
                             <div className="dz-img-box style-1 wow fadeInUp" style={{ borderRadius: '20px', overflow: 'hidden', height: '250px' }}>
-                                <Link to={promo.linkUrl || "/our-menu-1"} style={{ display: 'block', height: '100%', width: '100%' }}>
+                                <Link to={promo.linkUrl || "/our-menu-2"} style={{ display: 'block', height: '100%', width: '100%' }}>
                                     <div className="dz-media" style={{ height: '100%', width: '100%' }}>
                                         <img
                                             src={promo.imageUrl}

@@ -12,9 +12,18 @@ const Header2 = () => {
     setHeaderSidebar,
     headerClass,
     setShowSignInForm,
-    cmsConfig
+    cmsConfig,
+    user,
+    setUser,
+    cartItems
   } = useContext(Context);
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("customer");
+  };
   const [scroll, setScroll] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const scrollHandler = () => {
     if (window.scrollY > 80) setScroll(true);
@@ -63,11 +72,24 @@ const Header2 = () => {
               <div className="extra-nav d-lg-none d-flex align-items-center" style={{ float: 'right', height: 'var(--headerheight)' }}>
                 <div className="extra-cell">
                   <ul className="header-right m-0">
+                    {headerContent.showLogin !== "false" && (
+                      <li className="nav-item">
+                        {user ? (
+                          <Link to="/my-account" className="btn btn-white btn-square btn-shadow me-2" style={{ border: 'none' }}>
+                            <i className="flaticon-user"></i>
+                          </Link>
+                        ) : (
+                          <button className="btn btn-white btn-square btn-shadow me-2" onClick={() => setShowSignInForm(true)} style={{ border: 'none' }}>
+                            <i className="flaticon-user"></i>
+                          </button>
+                        )}
+                      </li>
+                    )}
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link">
                         <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
                           <i className="flaticon-shopping-bag-1"></i>
-                          <span className="badge">0</span>
+                          <span className="badge">{cartItems.length}</span>
                         </Link>
                       </li>
                     )}
@@ -79,17 +101,61 @@ const Header2 = () => {
                 <div className="extra-cell d-flex align-items-center">
                   <ul className="header-right me-4">
                     {headerContent.showLogin !== "false" && (
-                      <li>
-                        <Link className="btn btn-white btn-square btn-shadow" to={"#"} onClick={() => setShowSignInForm(true)}>
-                          <i className="flaticon-user"></i>
-                        </Link>
+                      <li style={{ position: 'relative' }}>
+                        {user ? (
+                          <>
+                            <button
+                              className="btn btn-white btn-shadow px-3"
+                              onClick={() => setShowUserMenu(!showUserMenu)}
+                              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                            >
+                              <i className="flaticon-user me-1"></i>
+                              <span>{user.name?.split(" ")[0]}</span>
+                              <i className="fa fa-chevron-down" style={{ fontSize: 10, marginLeft: 4 }}></i>
+                            </button>
+                            {showUserMenu && (
+                              <div style={{
+                                position: 'absolute', top: '110%', right: 0, minWidth: 180,
+                                background: '#fff', borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+                                zIndex: 9999, overflow: 'hidden', border: '1px solid #f0f0f0'
+                              }}>
+                                <Link to="/my-account" onClick={() => setShowUserMenu(false)} style={{
+                                  display: 'flex', alignItems: 'center', gap: 10,
+                                  padding: '12px 16px', color: '#333', textDecoration: 'none',
+                                  fontSize: 14, fontWeight: 500, borderBottom: '1px solid #f8f8f8'
+                                }}>
+                                  📦 My Orders
+                                </Link>
+                                <Link to="/track-order" onClick={() => setShowUserMenu(false)} style={{
+                                  display: 'flex', alignItems: 'center', gap: 10,
+                                  padding: '12px 16px', color: '#333', textDecoration: 'none',
+                                  fontSize: 14, fontWeight: 500, borderBottom: '1px solid #f8f8f8'
+                                }}>
+                                  🔍 Track Order
+                                </Link>
+                                <button onClick={() => { handleLogout(); setShowUserMenu(false); }} style={{
+                                  display: 'flex', alignItems: 'center', gap: 10,
+                                  padding: '12px 16px', color: '#c62828', background: 'none',
+                                  border: 'none', cursor: 'pointer', width: '100%',
+                                  fontSize: 14, fontWeight: 500
+                                }}>
+                                  🚪 Logout
+                                </button>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <Link className="btn btn-white btn-square btn-shadow" to={"#"} onClick={() => setShowSignInForm(true)}>
+                            <i className="flaticon-user"></i>
+                          </Link>
+                        )}
                       </li>
                     )}
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link">
                         <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
                           <i className="flaticon-shopping-bag-1"></i>
-                          <span className="badge">0</span>
+                          <span className="badge">{cartItems.length}</span>
                         </Link>
                       </li>
                     )}

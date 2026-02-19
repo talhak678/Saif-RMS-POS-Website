@@ -7,6 +7,7 @@ import React, {
   useEffect,
 } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 interface AppContextValue {
   headerClass: boolean;
@@ -24,6 +25,17 @@ interface AppContextValue {
   // CMS Config
   cmsConfig: any;
   cmsLoading: boolean;
+  // Cart
+  cartItems: any[];
+  addToCart: (item: any) => void;
+  removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
+  // Context
+  user: any;
+  setUser: Dispatch<SetStateAction<any>>;
+  branches: any[];
+  activeBranch: any;
 }
 
 const defaultState: AppContextValue = {
@@ -41,6 +53,15 @@ const defaultState: AppContextValue = {
   setShowOrderModal: () => { },
   cmsConfig: null,
   cmsLoading: true,
+  cartItems: [],
+  addToCart: () => { },
+  removeFromCart: () => { },
+  updateQuantity: () => { },
+  clearCart: () => { },
+  user: null,
+  setUser: () => { },
+  branches: [],
+  activeBranch: null,
 };
 
 export const Context = createContext(defaultState);
@@ -61,6 +82,56 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   const [cmsConfig, setCmsConfig] = useState<any>(null);
   const [cmsLoading, setCmsLoading] = useState(true);
+
+  // Cart State
+  const [cartItems, setCartItems] = useState<any[]>(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // User Auth State
+  const [user, setUser] = useState<any>(() => {
+    const saved = localStorage.getItem("customer");
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("customer", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("customer");
+    }
+  }, [user]);
+
+  const addToCart = (item: any) => {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        toast.success(`${item.name} quantity updated!`, { duration: 1500 });
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i
+        );
+      }
+      toast.success(`${item.name} added to cart!`, { duration: 1500 });
+      return [...prev, { ...item, quantity: item.quantity || 1 }];
+    });
+  };
+
+  const removeFromCart = (id: string) => {
+    setCartItems((prev) => prev.filter((i) => i.id !== id));
+  };
+
+  const updateQuantity = (id: string, quantity: number) => {
+    setCartItems((prev) =>
+      prev.map((i) => (i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i))
+    );
+  };
+
+  const clearCart = () => setCartItems([]);
 
   useEffect(() => {
     const fetchCMS = async () => {
@@ -216,6 +287,76 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               /* Link Overrides */
               a { color: ${pColor || 'inherit'}; }
               a:hover { color: ${pColor || 'inherit'}; opacity: 0.8; }
+
+              /* === NAVBAR / MENU HOVER === */
+              .nav.navbar-nav > li > a:hover,
+              .nav.navbar-nav > li > a:focus,
+              .navbar-nav > li > a:hover,
+              .navbar-nav > li > a:focus,
+              .navbar-nav li a:hover,
+              .navbar-nav li:hover > a,
+              .nav > li > a:hover,
+              .header-nav .nav > li > a:hover,
+              .header-nav .nav > li:hover > a,
+              .navbar-nav > li.active > a,
+              .nav.navbar-nav > li.active > a,
+              .nav.mobile-nav > li > a:hover,
+              .nav.mobile-nav li a:hover {
+                color: ${pColor} !important;
+              }
+
+              /* === SITE FILTERS / CATEGORY TABS === */
+              .site-filters .filters li.active a,
+              .site-filters .filters li.active,
+              .site-filters ul.filters li.active > a,
+              .site-filters ul.filters li.btn.active,
+              .site-filters ul.filters li.btn.active a,
+              .site-filters .filters li a:hover,
+              .site-filters ul.filters li:hover > a,
+              .site-filters ul.filters li.btn:hover,
+              .site-filters.style-2 .filters li.active,
+              .site-filters.style-2 .filters li:hover {
+                background-color: ${pColor} !important;
+                border-color: ${pColor} !important;
+                color: #ffffff !important;
+              }
+              .site-filters.style-2 .filters li.active a,
+              .site-filters.style-2 .filters li:hover a,
+              .site-filters ul.filters li.btn.active a,
+              .site-filters ul.filters li.btn:hover a {
+                color: #ffffff !important;
+              }
+              .site-filters.style-1 .filters li.active,
+              .site-filters.style-1 .filters li:hover {
+                border-color: ${pColor} !important;
+                color: ${pColor} !important;
+              }
+              .site-filters.style-1 .filters li.active a,
+              .site-filters.style-1 .filters li:hover a {
+                color: ${pColor} !important;
+              }
+
+              /* === MISC INTERACTIVE ELEMENTS === */
+              .dz-img-box .detail-btn:hover,
+              .dz-img-box.box-hover:hover .detail-btn {
+                background-color: ${pColor} !important;
+                border-color: ${pColor} !important;
+              }
+              .header-cart:hover, .extra-nav a:hover { color: ${pColor} !important; }
+              .swiper-button-prev:hover, .swiper-button-next:hover,
+              .prev-btn:hover, .next-btn:hover {
+                background-color: ${pColor} !important;
+                border-color: ${pColor} !important;
+                color: #ffffff !important;
+              }
+              .pagination .page-item.active .page-link,
+              .pagination .page-link:hover {
+                background-color: ${pColor} !important;
+                border-color: ${pColor} !important;
+                color: #ffffff !important;
+              }
+              .footer-link li a:hover,
+              .widget_services ul li a:hover { color: ${pColor} !important; }
             `;
           }
 
@@ -315,6 +456,15 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setShowOrderModal,
     cmsConfig,
     cmsLoading,
+    cartItems,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    user,
+    setUser,
+    branches: cmsConfig?.branches || [],
+    activeBranch: cmsConfig?.branches?.[0] || null, // For now, picking first branch
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

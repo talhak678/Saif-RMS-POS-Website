@@ -58,7 +58,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
                 </div>
                 <div className="dz-content">
                   <h6 className="title">
-                    <Link to="/our-menu-1">{cat.name}</Link>
+                    <Link to="/our-menu-2">{cat.name}</Link>
                   </h6>
                   <p>{cat.description || "Fresh Categories"}</p>
                 </div>
@@ -67,7 +67,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
                 <span>Items Available</span>
                 <span className="price">{cat.menuItems?.length || 0}</span>
               </div>
-              <Link className="detail-btn" to="/our-menu-1">
+              <Link className="detail-btn" to="/our-menu-2">
                 <i className="fa-solid fa-plus"></i>
               </Link>
             </div>

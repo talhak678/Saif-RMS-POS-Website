@@ -42,27 +42,27 @@ const MainBanner3 = () => {
                     </div>
                   </div>
                   <div className="main-thumb2-area">
-                    <Link to="/our-menu-1" className="food-card wow fadeInUp">
+                    <Link to="/our-menu-2" className="food-card wow fadeInUp">
                       <div className="icon">
                         <i className="flaticon-juice"></i>
                       </div>
                     </Link>
-                    <Link to="/our-menu-1" className="food-card wow fadeInUp">
+                    <Link to="/our-menu-2" className="food-card wow fadeInUp">
                       <div className="icon">
                         <i className="flaticon-hamburger"></i>
                       </div>
                     </Link>
-                    <Link to="/our-menu-1" className="food-card wow fadeInUp">
+                    <Link to="/our-menu-2" className="food-card wow fadeInUp">
                       <div className="icon">
                         <i className="flaticon-pizza"></i>
                       </div>
                     </Link>
-                    <Link to="/our-menu-1" className="food-card wow fadeInUp">
+                    <Link to="/our-menu-2" className="food-card wow fadeInUp">
                       <div className="icon">
                         <i className="flaticon-cake-slice"></i>
                       </div>
                     </Link>
-                    <Link to="/our-menu-1" className="food-card wow fadeInUp">
+                    <Link to="/our-menu-2" className="food-card wow fadeInUp">
                       <div className="icon">
                         <i className="flaticon-room-service"></i>
                       </div>

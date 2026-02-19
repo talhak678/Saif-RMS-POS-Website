@@ -79,7 +79,7 @@ const Home2AreMenu = () => {
                 <div className="dz-content">
                   <div className="dz-head">
                     <span className="header-text">
-                      <Link to="/our-menu-1">{name}</Link>
+                      <Link to="/our-menu-2">{name}</Link>
                     </span>
                     <span className="img-line"></span>
                     <span className="header-price">{price}</span>

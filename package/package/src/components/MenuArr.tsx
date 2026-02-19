@@ -59,7 +59,7 @@ export const MenuArr = [
       {
         child: "Our Menus",
         subchild: [
-          { children: "Menu Style 1", to: "/our-menu-1" },
+          { children: "Menu Style 1", to: "/our-menu-2" },
           { children: "Menu Style 2", to: "/our-menu-2" },
           { children: "Menu Style 3", to: "/our-menu-3" },
           { children: "Menu Style 4", to: "/our-menu-4" },

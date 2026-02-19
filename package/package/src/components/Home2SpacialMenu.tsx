@@ -39,7 +39,7 @@ const Home2SpacialMenu = () => {
             </div>
             <div className="dz-media" style={{ height: '180px' }}>
               <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
-              <Link className="detail-btn" to="/our-menu-1">
+              <Link className="detail-btn" to="/our-menu-2">
                 <i className="fa-solid fa-plus"></i>
               </Link>
             </div>

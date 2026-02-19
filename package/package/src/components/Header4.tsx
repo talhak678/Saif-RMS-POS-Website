@@ -38,9 +38,8 @@ const Header2 = () => {
   return (
     <header className="site-header mo-left header style-1">
       <div
-        className={`sticky-header main-bar-wraper navbar-expand-lg ${
-          scroll ? "is-fixed" : ""
-        }`}
+        className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""
+          }`}
       >
         <div className="main-bar clearfix ">
           <div className="container clearfix">
@@ -58,9 +57,8 @@ const Header2 = () => {
               </div>
             </div>
             <button
-              className={`navbar-toggler collapsed navicon justify-content-end ${
-                headerSidebar ? "open" : ""
-              }`}
+              className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""
+                }`}
               type="button"
               onClick={() => {
                 setHeaderSidebar(!headerSidebar);
@@ -77,9 +75,8 @@ const Header2 = () => {
                   <li>
                     <Link
                       to={"#"}
-                      className={`btn btn-${
-                        headerClass ? "white" : "primary"
-                      } btn-square btn-shadow`}
+                      className={`btn btn-${headerClass ? "white" : "primary"
+                        } btn-square btn-shadow`}
                       onClick={() => {
                         setShowSignInForm(true);
                       }}
@@ -90,9 +87,8 @@ const Header2 = () => {
                   <li>
                     <button
                       type="button"
-                      className={`btn btn-${
-                        headerClass ? "white" : "primary"
-                      } btn-square btn-shadow cart-btn`}
+                      className={`btn btn-${headerClass ? "white" : "primary"
+                        } btn-square btn-shadow cart-btn`}
                       onClick={cartButton}
                     >
                       <i className="flaticon-shopping-bag-1"></i>
@@ -242,7 +238,7 @@ const Header2 = () => {
                             <span>View Cart</span>
                           </Link>
                           <Link
-                            to="/our-menu-1"
+                            to="/our-menu-2"
                             className="btn btn-outline-primary w-100 d-block btn-hover-1"
                           >
                             <span>Menu</span>
@@ -255,9 +251,8 @@ const Header2 = () => {
               </div>
             </div>
             <div
-              className={`header-nav navbar-collapse justify-content-end ${
-                headerSidebar ? "show" : ""
-              }`}
+              className={`header-nav navbar-collapse justify-content-end ${headerSidebar ? "show" : ""
+                }`}
               id="navbarNavDropdown"
             >
               <Menu />

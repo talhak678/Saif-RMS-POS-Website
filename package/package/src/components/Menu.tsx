@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../context/AppContext";
 import SocialLinks from "../elements/SocialLinks";
 
@@ -8,8 +8,8 @@ const routeMap: Record<string, string> = {
   "home": "/",
   "about us": "/about-us",
   "about": "/about-us",
-  "our menu": "/our-menu-1",
-  "menu": "/our-menu-1",
+  "our menu": "/our-menu-2",
+  "menu": "/our-menu-2",
   "contact us": "/contact-us",
   "contact": "/contact-us",
   "faq": "/faq",
@@ -20,9 +20,13 @@ const routeMap: Record<string, string> = {
 const Menu = () => {
   const { headerClass, setShowSignInForm, setHeaderSidebar, setShowOrderModal, cmsConfig } = useContext(Context);
   const { pathname } = useLocation();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor
+    || cmsConfig?.config?.primaryColor
+    || '#7da640';
 
   const headerSettings = cmsConfig?.config?.configJson?.home?.sections?.header || {};
-  const menuItemsString = headerSettings.content?.menuItems || "Home, About Us, Our Menu, Contact Us, FAQ";
+  const menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Contact Us, Blogs";
 
   const menuItems = menuItemsString.split(",").map((item: string) => {
     const name = item.trim();
@@ -44,7 +48,13 @@ const Menu = () => {
       to: routeMap[key] || "/",
       isEnabled
     };
-  }).filter((item: any) => item.isEnabled);
+  }).filter((item: any) => item.isEnabled)
+    .sort((a: any, b: any) => {
+      const order = ["home", "our menu", "about us", "contact us", "blogs"];
+      const indexA = order.indexOf(a.name.toLowerCase());
+      const indexB = order.indexOf(b.name.toLowerCase());
+      return (indexA > -1 ? indexA : 99) - (indexB > -1 ? indexB : 99);
+    });
 
   return (
     <>
@@ -104,11 +114,14 @@ const Menu = () => {
           <li key={ind} className={pathname === item.to ? "active" : ""}>
             <Link
               style={{
-                color: pathname === item.to
-                  ? "var(--primary)"
-                  : "#222222"
+                color: (pathname === item.to || hoveredIndex === ind)
+                  ? primaryColor
+                  : '#222222',
+                transition: 'color 0.2s ease'
               }}
               to={item.to}
+              onMouseEnter={() => setHoveredIndex(ind)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               {item.name}
             </Link>

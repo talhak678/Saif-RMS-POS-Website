@@ -34,7 +34,7 @@ const MenuSlider = () => {
               <div className="dz-content">
                 <div className="dz-info">
                   <h5 className="dz-title mb-0">
-                    <Link to="/our-menu-1">{name}</Link>
+                    <Link to="/our-menu-2">{name}</Link>
                   </h5>
                   <span className="dz-price">{price}</span>
                 </div>

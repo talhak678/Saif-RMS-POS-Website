@@ -44,8 +44,11 @@ import MenuStyle5 from "./pages/MenuStyle5";
 // import ShopStyle1 from "./pages/ShopStyle1";
 // import ShopStyle2 from "./pages/ShopStyle2";
 import ShopCart from "./pages/ShopCart";
+import ShopCheckout from "./pages/ShopCheckout";
+import OrderSuccess from "./pages/OrderSuccess";
+import TrackOrder from "./pages/TrackOrder";
+import MyAccount from "./pages/MyAccount";
 // import ShopWishlist from "./pages/ShopWishlist";
-// import ShopCheckout from "./pages/ShopCheckout";
 // import ProductDetail from "./pages/ProductDetail";
 // import BlogGrid2 from "./pages/BlogGrid2";
 // import BlogGrid3 from "./pages/BlogGrid3";
@@ -156,17 +159,21 @@ function App() {
                   <Faq />
                 </CmsProtectedRoute>
               } />
-              <Route path="/our-menu-1" element={
+              <Route path="/our-menu-1" element={<MenuStyle1 />} />
+              <Route path="/our-menu-2" element={
                 <CmsProtectedRoute pageKey="menu">
-                  <MenuStyle1 />
+                  <MenuStyle2 />
                 </CmsProtectedRoute>
               } />
-              <Route path="/our-menu-2" element={<MenuStyle2 />} />
               <Route path="/our-menu-3" element={<MenuStyle3 />} />
               <Route path="/our-menu-4" element={<MenuStyle4 />} />
               <Route path="/our-menu-5" element={<MenuStyle5 />} />
 
               <Route path="/shop-cart" element={<ShopCart />} />
+              <Route path="/shop-checkout" element={<ShopCheckout />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
+              <Route path="/track-order" element={<TrackOrder />} />
+              <Route path="/my-account" element={<MyAccount />} />
 
               <Route path="/blog-list" element={
                 <CmsProtectedRoute pageKey="blogs">

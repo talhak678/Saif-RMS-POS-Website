@@ -14,9 +14,8 @@ const HomeImageBox = () => {
               onMouseEnter={() => {
                 setActive(ind);
               }}
-              className={`dz-img-box style-3 box-hover ${
-                addActive === ind ? "active" : ""
-              }`}
+              className={`dz-img-box style-3 box-hover ${addActive === ind ? "active" : ""
+                }`}
             >
               <div className="dz-media">
                 <img src={img} alt="/" />
@@ -24,14 +23,14 @@ const HomeImageBox = () => {
               <span className="dz-tag">TOP SELLER</span>
               <div className="dz-content">
                 <h5 className="dz-title">
-                  <Link to="/our-menu-1">{name}</Link>
+                  <Link to="/our-menu-2">{name}</Link>
                 </h5>
                 <p>Lorem ipsum dolor sit amet, dipiscing elit, sed</p>
               </div>
               <div className="dz-hover-content">
                 <div className="dz-info">
                   <h5 className="dz-title mb-0">
-                    <Link to="/our-menu-1">Pasta</Link>
+                    <Link to="/our-menu-2">Pasta</Link>
                   </h5>
                   <span className="dz-price">{price}</span>
                 </div>
@@ -63,9 +62,8 @@ const HomeImageBox = () => {
                 onMouseEnter={() => {
                   setActivebox(ind);
                 }}
-                className={`icon-bx-wraper style-1 box-hover center ${
-                  activebox === ind ? "active" : ""
-                }`}
+                className={`icon-bx-wraper style-1 box-hover center ${activebox === ind ? "active" : ""
+                  }`}
                 style={{ backgroundImage: `url(${img2})` }}
               >
                 <div className="inner-content">
