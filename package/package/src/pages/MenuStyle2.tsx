@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { useRef, useState, useContext, useEffect } from "react";
@@ -10,6 +10,7 @@ const MenuStyle2 = () => {
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
   const cardRef = useRef<HTMLDivElement[]>([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const primaryColor =
     cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor ||
@@ -42,7 +43,19 @@ const MenuStyle2 = () => {
     if (!cmsLoading) {
       const params = new URLSearchParams(location.search);
       const category = params.get("category");
-      if (category) {
+      const search = params.get("search");
+
+      if (search) {
+        // Filter by search query across name, description and category
+        const query = search.toLowerCase();
+        const searched = allItems.filter((item: any) =>
+          item.name.toLowerCase().includes(query) ||
+          (item.description && item.description.toLowerCase().includes(query)) ||
+          item.categoryName.toLowerCase().includes(query)
+        );
+        setActive(0); // Reset tabs to ALL when searching
+        setFilteredItems(searched);
+      } else if (category) {
         const index = buttons.findIndex(
           (btn) => btn.title.toLowerCase() === category.toLowerCase()
         );
@@ -118,34 +131,26 @@ const MenuStyle2 = () => {
                 onClick={() => {
                   setActive(ind);
                   filterGallery(ind === 0 ? "ALL" : categories[ind - 1]?.name);
+                  // Clear search when clicking category tabs
+                  if (location.search.includes("search=")) {
+                    navigate("/our-menu-2");
+                  }
                 }}
                 style={{
-                  display: "inline-flex",
+                  display: "flex",
                   alignItems: "center",
-                  gap: "7px",
+                  gap: "10px",
                   padding: "10px 22px",
                   borderRadius: "50px",
                   border: `2px solid ${active === ind ? primaryColor : "#e0e0e0"}`,
-                  background: active === ind ? primaryColor : "#ffffff",
-                  color: active === ind ? "#ffffff" : "#666",
+                  background: active === ind ? primaryColor : "#fff",
+                  color: active === ind ? "#fff" : "#666",
+                  fontSize: "14px",
                   fontWeight: 600,
-                  fontSize: "13px",
                   cursor: "pointer",
                   transition: "all 0.25s ease",
                   boxShadow: active === ind ? `0 6px 18px ${primaryColor}44` : "none",
                   letterSpacing: "0.3px",
-                }}
-                onMouseEnter={(e) => {
-                  if (active !== ind) {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = primaryColor;
-                    (e.currentTarget as HTMLButtonElement).style.color = primaryColor;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (active !== ind) {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "#e0e0e0";
-                    (e.currentTarget as HTMLButtonElement).style.color = "#666";
-                  }
                 }}
               >
                 <i className={icon} style={{ fontSize: "15px" }} />
@@ -153,6 +158,22 @@ const MenuStyle2 = () => {
               </button>
             ))}
           </div>
+
+          {/* Search indicator */}
+          {new URLSearchParams(location.search).get("search") && (
+            <div className="mb-4 d-flex align-items-center justify-content-between" style={{ padding: '0 10px' }}>
+              <h5 className="mb-0">
+                Search results for: <span style={{ color: primaryColor }}>"{new URLSearchParams(location.search).get("search")}"</span>
+              </h5>
+              <button
+                className="btn btn-link btn-sm text-muted p-0"
+                onClick={() => navigate("/our-menu-2")}
+                style={{ textDecoration: 'none' }}
+              >
+                Clear Search ×
+              </button>
+            </div>
+          )}
 
           {/* ── Cards Grid ── */}
           <div className="row g-4">
@@ -195,25 +216,6 @@ const MenuStyle2 = () => {
                         height: "100%",
                         objectFit: "cover",
                         transition: "transform 0.45s ease",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.transform = "scale(1.07)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.transform = "scale(1)";
-                      }}
-                    />
-
-                    {/* Bottom gradient */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: "80px",
-                        background: "linear-gradient(to top, rgba(0,0,0,0.35), transparent)",
-                        pointerEvents: "none",
                       }}
                     />
 
@@ -267,14 +269,7 @@ const MenuStyle2 = () => {
                         lineHeight: 1.35,
                       }}
                     >
-                      <Link
-                        to="/product-detail"
-                        style={{ color: "inherit", textDecoration: "none", transition: "color 0.2s" }}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = primaryColor)}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "#1a1a1a")}
-                      >
-                        {item.name}
-                      </Link>
+                      {item.name}
                     </h5>
 
                     <p
@@ -298,30 +293,12 @@ const MenuStyle2 = () => {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        justifyContent: "flex-end",
                         borderTop: "1px solid #f2f2f2",
                         paddingTop: "13px",
-                        marginTop: "4px",
+                        marginTop: "10px",
                       }}
                     >
-                      <Link
-                        to="/product-detail"
-                        style={{
-                          fontSize: "13px",
-                          fontWeight: 600,
-                          color: primaryColor,
-                          textDecoration: "none",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "5px",
-                          transition: "gap 0.2s",
-                        }}
-                        onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.gap = "8px")}
-                        onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.gap = "5px")}
-                      >
-                        View Details <i className="fa fa-arrow-right" style={{ fontSize: "11px" }} />
-                      </Link>
-
                       <button
                         style={{
                           width: "36px",
@@ -369,8 +346,20 @@ const MenuStyle2 = () => {
                   style={{ fontSize: "48px", display: "block", marginBottom: "14px", color: `${primaryColor}88` }}
                 />
                 <p style={{ color: "#aaa", fontSize: "15px" }}>
-                  No items found for this category.
+                  {new URLSearchParams(location.search).get("search")
+                    ? `No matching items found for "${new URLSearchParams(location.search).get("search")}"`
+                    : "No items found in this category."}
                 </p>
+                <button
+                  onClick={() => {
+                    navigate("/our-menu-2");
+                    window.scrollTo(0, 0);
+                  }}
+                  className="btn btn-primary btn-sm mt-3"
+                  style={{ borderRadius: "10px" }}
+                >
+                  View All Menu
+                </button>
               </div>
             )}
           </div>
