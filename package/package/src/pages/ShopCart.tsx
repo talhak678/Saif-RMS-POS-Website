@@ -6,12 +6,23 @@ import ShopStyle1RightContent from "../elements/ShopStyle1RightContent";
 import { Context } from "../context/AppContext";
 
 const ShopCart = () => {
-  const { cartItems, updateQuantity, removeFromCart, activeBranch } = useContext(Context);
+  const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
+
+  // Deriving store closed status
+  const now = new Date();
+  let isStoreClosed = false;
+  if (activeBranch?.deliveryOffTime) {
+    const [hours, minutes] = activeBranch.deliveryOffTime.split(':').map(Number);
+    const closeTime = new Date();
+    closeTime.setHours(hours, minutes, 0, 0);
+    isStoreClosed = now > closeTime;
+  }
 
   const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
   const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
-  const tax = subtotal * 0.05;
+  const taxPercentage = Number(cmsConfig?.config?.configJson?.orders?.taxPercentage) || 0;
+  const tax = subtotal * (taxPercentage / 100);
   const total = subtotal + deliveryCharge + tax;
 
   return (
@@ -26,7 +37,7 @@ const ShopCart = () => {
           <div className="row">
             <div className="col-lg-8">
               <div className="d-flex justify-content-between align-items-center">
-                <h5 className="title m-b15 m-lg-30">Related Products</h5>
+                <h5 className="title m-b15 m-lg-30">Your Selection</h5>
                 <Link
                   to="#"
                   className="btn btn-primary panel-btn"
@@ -63,12 +74,12 @@ const ShopCart = () => {
                   </div>
                   {cartItems.map((item) => (
                     <div className="cart-item style-1" key={item.id}>
-                      <div className="dz-media">
+                      <div className="dz-media" style={{ filter: item.isAvailable === false ? 'grayscale(1)' : 'none' }}>
                         <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
                       </div>
                       <div className="dz-content">
                         <div className="dz-head">
-                          <h6 className="title mb-0">{item.name}</h6>
+                          <h6 className="title mb-0">{item.name} {item.isAvailable === false && <span className="text-danger small">(Out of Stock)</span>}</h6>
                           <button
                             style={{ border: 'none', background: 'none' }}
                             onClick={() => {
@@ -137,7 +148,7 @@ const ShopCart = () => {
                           <td className="price text-primary">Rs. {deliveryCharge.toFixed(0)}</td>
                         </tr>
                         <tr className="tax">
-                          <td>Govt Taxes (5%)</td>
+                          <td>Tax ({taxPercentage}%)</td>
                           <td className="price text-primary">Rs. {tax.toFixed(0)}</td>
                         </tr>
                         <tr className="total">
@@ -148,12 +159,21 @@ const ShopCart = () => {
                         </tr>
                       </tbody>
                     </table>
+
+                    {isStoreClosed && (
+                      <div className="alert alert-danger mb-3 p-2 small text-center" style={{ borderRadius: '10px' }}>
+                        <strong>⚠️ Kitchen is Closed</strong><br />
+                        Sorry, we are not accepting orders at this time.
+                      </div>
+                    )}
+
                     <Link
-                      to="/shop-checkout"
-                      className="btn btn-primary d-block text-center btn-md w-100 btn-hover-1"
+                      to={isStoreClosed || cartItems.length === 0 ? "#" : "/shop-checkout"}
+                      className={`btn btn-primary d-block text-center btn-md w-100 btn-hover-1 ${isStoreClosed || cartItems.length === 0 ? 'disabled' : ''}`}
+                      style={{ opacity: isStoreClosed || cartItems.length === 0 ? 0.6 : 1, pointerEvents: isStoreClosed || cartItems.length === 0 ? 'none' : 'auto' }}
                     >
                       <span>
-                        Order Now <i className="fa-solid fa-arrow-right"></i>
+                        {cartItems.length === 0 ? 'Add Items First' : (isStoreClosed ? 'Kitchen Closed' : 'Order Now')} <i className="fa-solid fa-arrow-right"></i>
                       </span>
                     </Link>
                   </div>

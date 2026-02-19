@@ -207,7 +207,13 @@ const MenuStyle2 = () => {
                   }}
                 >
                   {/* Image */}
-                  <div style={{ position: "relative", height: "230px", overflow: "hidden", flexShrink: 0 }}>
+                  <div style={{
+                    position: "relative",
+                    height: "230px",
+                    overflow: "hidden",
+                    flexShrink: 0,
+                    filter: item.isAvailable === false ? 'grayscale(0.8)' : 'none'
+                  }}>
                     <img
                       src={item.image || "https://via.placeholder.com/800x650"}
                       alt={item.name}
@@ -218,6 +224,35 @@ const MenuStyle2 = () => {
                         transition: "transform 0.45s ease",
                       }}
                     />
+
+                    {/* Out of Stock Overlay */}
+                    {item.isAvailable === false && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0,0,0,0.4)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 2
+                      }}>
+                        <span style={{
+                          background: '#ff4b2b',
+                          color: '#fff',
+                          padding: '6px 15px',
+                          borderRadius: '5px',
+                          fontWeight: 700,
+                          fontSize: '12px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px'
+                        }}>
+                          Out of Stock
+                        </span>
+                      </div>
+                    )}
 
                     {/* Category badge */}
                     <span
@@ -233,7 +268,7 @@ const MenuStyle2 = () => {
                         borderRadius: "50px",
                         textTransform: "uppercase",
                         letterSpacing: "0.6px",
-                        backdropFilter: "blur(6px)",
+                        zIndex: 3
                       }}
                     >
                       {item.categoryName}
@@ -252,6 +287,7 @@ const MenuStyle2 = () => {
                         padding: "5px 14px",
                         borderRadius: "50px",
                         boxShadow: `0 3px 12px ${primaryColor}66`,
+                        zIndex: 3
                       }}
                     >
                       Rs. {parseFloat(item.price).toFixed(0)}
@@ -259,7 +295,13 @@ const MenuStyle2 = () => {
                   </div>
 
                   {/* Content */}
-                  <div style={{ padding: "18px 20px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
+                  <div style={{
+                    padding: "18px 20px 20px",
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    opacity: item.isAvailable === false ? 0.6 : 1
+                  }}>
                     <h5
                       style={{
                         fontSize: "17px",
@@ -277,8 +319,8 @@ const MenuStyle2 = () => {
                         fontSize: "13px",
                         color: "#999",
                         lineHeight: 1.6,
-                        margin: "0 0 auto",
-                        paddingBottom: "14px",
+                        margin: "0 0 8px",
+                        paddingBottom: "4px",
                         display: "-webkit-box",
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: "vertical",
@@ -287,6 +329,27 @@ const MenuStyle2 = () => {
                     >
                       {item.description || "Freshly prepared with the finest ingredients."}
                     </p>
+
+                    {/* Stock indicator */}
+                    <div style={{ marginBottom: '10px' }}>
+                      {item.isAvailable !== false ? (
+                        <span style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          color: (item.stock && item.stock < 5) ? '#ff4b2b' : '#28a745',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          <i className="fa fa-check-circle" style={{ fontSize: '10px' }} />
+                          {item.stock ? `Stock: ${item.stock} left` : 'In Stock'}
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#999' }}>
+                          Currently Unavailable
+                        </span>
+                      )}
+                    </div>
 
                     {/* Footer actions */}
                     <div
@@ -300,21 +363,22 @@ const MenuStyle2 = () => {
                       }}
                     >
                       <button
+                        disabled={item.isAvailable === false}
                         style={{
                           width: "36px",
                           height: "36px",
                           borderRadius: "50%",
-                          background: primaryColor,
+                          background: item.isAvailable === false ? '#cbd5e0' : primaryColor,
                           color: "#fff",
                           display: "inline-flex",
                           alignItems: "center",
                           justifyContent: "center",
                           fontSize: "15px",
                           border: "none",
-                          cursor: "pointer",
+                          cursor: item.isAvailable === false ? 'not-allowed' : "pointer",
                           flexShrink: 0,
                           transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                          boxShadow: `0 4px 14px ${primaryColor}55`,
+                          boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${primaryColor}55`,
                         }}
                         onClick={() => addToCart({
                           id: item.id,
@@ -324,12 +388,16 @@ const MenuStyle2 = () => {
                           quantity: 1
                         })}
                         onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.15) rotate(-8deg)";
+                          if (item.isAvailable !== false) {
+                            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.15) rotate(-8deg)";
+                          }
                         }}
                         onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLButtonElement).style.transform = "scale(1) rotate(0)";
+                          if (item.isAvailable !== false) {
+                            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1) rotate(0)";
+                          }
                         }}
-                        title="Add to cart"
+                        title={item.isAvailable === false ? "Out of Stock" : "Add to cart"}
                       >
                         <i className="flaticon-shopping-cart" />
                       </button>

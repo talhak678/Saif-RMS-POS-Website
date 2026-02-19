@@ -173,7 +173,8 @@ const ShopCheckout = () => {
       }
     } catch (error: any) {
       console.error("Order Error:", error);
-      toast.error(error.response?.data?.message || "Failed to place order. Try again.");
+      const serverMsg = error.response?.data?.message || error.response?.data?.error;
+      toast.error(serverMsg || "Failed to place order. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }

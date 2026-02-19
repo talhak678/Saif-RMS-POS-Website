@@ -15,8 +15,28 @@ const Header2 = () => {
     cmsConfig,
     user,
     setUser,
-    cartItems
+    cartItems,
+    activeBranch
   } = useContext(Context);
+
+  const [isStoreClosed, setIsStoreClosed] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = () => {
+      if (!activeBranch?.deliveryOffTime) return;
+
+      const now = new Date();
+      const [hours, minutes] = activeBranch.deliveryOffTime.split(':').map(Number);
+      const closeTime = new Date();
+      closeTime.setHours(hours, minutes, 0, 0);
+
+      setIsStoreClosed(now > closeTime);
+    };
+
+    checkStatus();
+    const timer = setInterval(checkStatus, 60000); // Check every minute
+    return () => clearInterval(timer);
+  }, [activeBranch]);
 
   const navigate = useNavigate();
   const [scroll, setScroll] = useState(false);
@@ -90,6 +110,22 @@ const Header2 = () => {
                     alt={cmsConfig?.restaurantName || "Saif Kitchen"}
                   />
                 </Link>
+                {isStoreClosed && (
+                  <span style={{
+                    marginLeft: '15px',
+                    background: '#ff4b2b',
+                    color: '#fff',
+                    padding: '4px 12px',
+                    borderRadius: '50px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    boxShadow: '0 4px 10px rgba(255, 75, 43, 0.3)'
+                  }}>
+                    • Closed
+                  </span>
+                )}
               </div>
 
               {/* Mobile toggle */}
