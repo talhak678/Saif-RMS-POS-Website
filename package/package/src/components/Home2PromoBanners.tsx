@@ -20,7 +20,7 @@ const Home2PromoBanners = () => {
                     className="promo-slider"
                     slidesPerView={1}
                     spaceBetween={20}
-                    loop={true}
+                    loop={promos.length > 2}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,

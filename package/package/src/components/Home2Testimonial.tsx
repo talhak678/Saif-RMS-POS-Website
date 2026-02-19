@@ -7,7 +7,7 @@ const Home2Testimonial = () => {
     <Swiper
       className="swiper testimonial-two-swiper swiper-btn-lr swiper-single swiper-visible"
       speed={1500}
-      loop={true}
+      loop={Home2TestimonialArr.length > 1}
       modules={[Navigation, Autoplay]}
       autoplay={{
         delay: 1500,

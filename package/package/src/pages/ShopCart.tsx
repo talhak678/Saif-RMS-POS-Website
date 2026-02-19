@@ -9,10 +9,10 @@ const ShopCart = () => {
   const { cartItems, updateQuantity, removeFromCart, activeBranch } = useContext(Context);
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const deliveryCharge = cartItems.length > 0 ? (activeBranch?.deliveryCharge || 0) : 0;
-  const tax = subtotal * 0.05; // 5% tax
-  const total = subtotal + Number(deliveryCharge) + tax;
+  const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
+  const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
+  const tax = subtotal * 0.05;
+  const total = subtotal + deliveryCharge + tax;
 
   return (
     <div className="page-content bg-white">
@@ -111,7 +111,7 @@ const ShopCart = () => {
                               </span>
                             </div>
                           </div>
-                          <h5 className="price text-primary mb-0">Rs. {item.price * item.quantity}</h5>
+                          <h5 className="price text-primary mb-0">Rs. {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
                         </div>
                       </div>
                     </div>

@@ -108,16 +108,18 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   }, [user]);
 
   const addToCart = (item: any) => {
+    // Always normalize price to a proper Number to prevent toFixed/arithmetic errors
+    const normalizedItem = { ...item, price: Number(item.price) || 0 };
     setCartItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+      const existing = prev.find((i) => i.id === normalizedItem.id);
       if (existing) {
-        toast.success(`${item.name} quantity updated!`, { duration: 1500 });
+        toast.success(`${normalizedItem.name} quantity updated!`, { duration: 1500 });
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i
+          i.id === normalizedItem.id ? { ...i, quantity: i.quantity + (normalizedItem.quantity || 1) } : i
         );
       }
-      toast.success(`${item.name} added to cart!`, { duration: 1500 });
-      return [...prev, { ...item, quantity: item.quantity || 1 }];
+      toast.success(`${normalizedItem.name} added to cart!`, { duration: 1500 });
+      return [...prev, { ...normalizedItem, quantity: normalizedItem.quantity || 1 }];
     });
   };
 
