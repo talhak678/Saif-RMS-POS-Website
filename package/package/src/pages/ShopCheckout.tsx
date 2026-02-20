@@ -65,15 +65,8 @@ const ShopCheckout = () => {
   const discountAmount = appliedDiscount?.discountAmount || 0;
   const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
 
-  // Check if delivery is available based on branch delivery off time
-  const isDeliveryAvailable = () => {
-    if (!activeBranch?.deliveryOffTime) return true;
-    const now = new Date();
-    const [offHour, offMin] = activeBranch.deliveryOffTime.split(":").map(Number);
-    const offTime = new Date();
-    offTime.setHours(offHour, offMin, 0, 0);
-    return now < offTime;
-  };
+  // Delivery is always available now
+  const isDeliveryAvailable = () => true;
 
   const handleApplyDiscount = async () => {
     if (!discountCode.trim()) {
@@ -128,10 +121,6 @@ const ShopCheckout = () => {
     }
 
     if (orderType === "DELIVERY") {
-      if (!isDeliveryAvailable()) {
-        toast.error(`Delivery is not available after ${activeBranch?.deliveryOffTime}. Please choose pickup or order tomorrow.`);
-        return;
-      }
       if (!formData.address) {
         toast.error("Please enter a delivery address.");
         return;
@@ -180,7 +169,7 @@ const ShopCheckout = () => {
     }
   };
 
-  const deliveryNotAvailable = orderType === "DELIVERY" && !isDeliveryAvailable();
+
 
   return (
     <div className="page-content bg-white">
@@ -210,19 +199,6 @@ const ShopCheckout = () => {
               >
                 Sign In / Register
               </button>
-            </div>
-          )}
-
-          {/* Delivery Not Available Warning */}
-          {deliveryNotAvailable && (
-            <div style={{
-              background: "#ffebee", border: "1px solid #ffcdd2", borderRadius: "16px",
-              padding: "16px 24px", marginBottom: 24
-            }}>
-              <p style={{ color: "#c62828", fontWeight: 600, marginBottom: 0 }}>
-                ⏰ Delivery is not available after {activeBranch?.deliveryOffTime}.
-                Please switch to Pickup or come back tomorrow.
-              </p>
             </div>
           )}
 
@@ -495,7 +471,7 @@ const ShopCheckout = () => {
                       borderRadius: 14, height: 52, fontWeight: 700, fontSize: 16,
                       boxShadow: `0 8px 20px ${primaryColor}40`
                     }}
-                    disabled={loading || cartItems.length === 0 || deliveryNotAvailable}
+                    disabled={loading || cartItems.length === 0}
                   >
                     {loading ? (
                       <>
@@ -507,11 +483,7 @@ const ShopCheckout = () => {
                     )}
                   </button>
 
-                  {deliveryNotAvailable && (
-                    <p style={{ textAlign: "center", color: "#c62828", fontSize: 12, marginTop: 8, marginBottom: 0 }}>
-                      Delivery not available after {activeBranch?.deliveryOffTime}
-                    </p>
-                  )}
+
 
                   <p style={{ textAlign: "center", color: "#aaa", fontSize: 11, marginTop: 10, marginBottom: 0 }}>
                     🔒 Secure checkout — your info is protected

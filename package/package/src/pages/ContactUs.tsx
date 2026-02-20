@@ -19,7 +19,7 @@ const ContactUs = () => {
     { title: contactCards?.phoneTitle || "Phone Number", text: contactCards?.phoneValue || "+123 456 7890", icon: ContactUsArr[0]?.icon },
     { title: contactCards?.emailTitle || "Email Address", text: contactCards?.emailValue || "info@example.com", icon: ContactUsArr[1]?.icon },
     { title: contactCards?.addressTitle || "Location", text: contactCards?.addressValue || "123 Main St, City", icon: ContactUsArr[2]?.icon },
-    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "9:00 AM - 11:00 PM", icon: ContactUsArr[3]?.icon },
+    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "Open 24/7", icon: ContactUsArr[3]?.icon },
   ];
 
   return (

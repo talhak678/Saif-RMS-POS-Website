@@ -9,15 +9,8 @@ const ShopCart = () => {
   const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
-  // Deriving store closed status
-  const now = new Date();
-  let isStoreClosed = false;
-  if (activeBranch?.deliveryOffTime) {
-    const [hours, minutes] = activeBranch.deliveryOffTime.split(':').map(Number);
-    const closeTime = new Date();
-    closeTime.setHours(hours, minutes, 0, 0);
-    isStoreClosed = now > closeTime;
-  }
+  // Store is always open
+  const isStoreClosed = false;
 
   const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
   const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
@@ -160,12 +153,7 @@ const ShopCart = () => {
                       </tbody>
                     </table>
 
-                    {isStoreClosed && (
-                      <div className="alert alert-danger mb-3 p-2 small text-center" style={{ borderRadius: '10px' }}>
-                        <strong>⚠️ Kitchen is Closed</strong><br />
-                        Sorry, we are not accepting orders at this time.
-                      </div>
-                    )}
+
 
                     <Link
                       to={isStoreClosed || cartItems.length === 0 ? "#" : "/shop-checkout"}

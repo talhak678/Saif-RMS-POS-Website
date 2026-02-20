@@ -19,24 +19,7 @@ const Header2 = () => {
     activeBranch
   } = useContext(Context);
 
-  const [isStoreClosed, setIsStoreClosed] = useState(false);
-
-  useEffect(() => {
-    const checkStatus = () => {
-      if (!activeBranch?.deliveryOffTime) return;
-
-      const now = new Date();
-      const [hours, minutes] = activeBranch.deliveryOffTime.split(':').map(Number);
-      const closeTime = new Date();
-      closeTime.setHours(hours, minutes, 0, 0);
-
-      setIsStoreClosed(now > closeTime);
-    };
-
-    checkStatus();
-    const timer = setInterval(checkStatus, 60000); // Check every minute
-    return () => clearInterval(timer);
-  }, [activeBranch]);
+  const isStoreClosed = false;
 
   const navigate = useNavigate();
   const [scroll, setScroll] = useState(false);
