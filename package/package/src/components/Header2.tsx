@@ -16,7 +16,7 @@ const Header2 = () => {
     user,
     setUser,
     cartItems,
-    activeBranch
+    // activeBranch
   } = useContext(Context);
 
   const isStoreClosed = false;

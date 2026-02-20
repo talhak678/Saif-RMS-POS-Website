@@ -66,7 +66,7 @@ const ShopCheckout = () => {
   const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
 
   // Delivery is always available now
-  const isDeliveryAvailable = () => true;
+  // const isDeliveryAvailable = () => true;
 
   const handleApplyDiscount = async () => {
     if (!discountCode.trim()) {
