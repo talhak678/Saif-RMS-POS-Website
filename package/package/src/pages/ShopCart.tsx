@@ -115,7 +115,7 @@ const ShopCart = () => {
                               </span>
                             </div>
                           </div>
-                          <h5 className="price text-primary mb-0">Rs. {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
+                          <h5 className="price text-primary mb-0">$ {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
                         </div>
                       </div>
                     </div>
@@ -134,21 +134,21 @@ const ShopCart = () => {
                       <tbody>
                         <tr>
                           <td>Item Total</td>
-                          <td className="price text-primary">Rs. {subtotal.toFixed(0)}</td>
+                          <td className="price text-primary">$ {subtotal.toFixed(0)}</td>
                         </tr>
                         <tr className="charges">
                           <td>Delivery Charges</td>
-                          <td className="price text-primary">Rs. {deliveryCharge.toFixed(0)}</td>
+                          <td className="price text-primary">$ {deliveryCharge.toFixed(0)}</td>
                         </tr>
                         <tr className="tax">
                           <td>Tax ({taxPercentage}%)</td>
-                          <td className="price text-primary">Rs. {tax.toFixed(0)}</td>
+                          <td className="price text-primary">$ {tax.toFixed(0)}</td>
                         </tr>
                         <tr className="total">
                           <td>
                             <h6>Total</h6>
                           </td>
-                          <td className="price text-primary">Rs. {total.toFixed(0)}</td>
+                          <td className="price text-primary">$ {total.toFixed(0)}</td>
                         </tr>
                       </tbody>
                     </table>

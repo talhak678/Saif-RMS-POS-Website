@@ -295,7 +295,7 @@ const TrackOrder = () => {
                                                     <p style={{ color: "#888", fontSize: 13, marginBottom: 0 }}>Qty: {item.quantity}</p>
                                                 </div>
                                                 <span style={{ fontWeight: 700, color: primaryColor }}>
-                                                    Rs. {(Number(item.price) * item.quantity).toFixed(0)}
+                                                    $ {(Number(item.price) * item.quantity).toFixed(0)}
                                                 </span>
                                             </div>
                                         ))}
@@ -305,7 +305,7 @@ const TrackOrder = () => {
                                             {order.deliveryCharge > 0 && (
                                                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, color: "#666" }}>
                                                     <span>Delivery Charge</span>
-                                                    <span>Rs. {Number(order.deliveryCharge).toFixed(0)}</span>
+                                                    <span>$ {Number(order.deliveryCharge).toFixed(0)}</span>
                                                 </div>
                                             )}
                                             {order.payment && (
@@ -316,7 +316,7 @@ const TrackOrder = () => {
                                             )}
                                             <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 16 }}>
                                                 <span>Total</span>
-                                                <span style={{ color: primaryColor }}>Rs. {Number(order.total).toFixed(0)}</span>
+                                                <span style={{ color: primaryColor }}>$ {Number(order.total).toFixed(0)}</span>
                                             </div>
                                         </div>
                                     </div>

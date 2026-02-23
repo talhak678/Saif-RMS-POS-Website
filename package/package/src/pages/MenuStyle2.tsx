@@ -290,7 +290,7 @@ const MenuStyle2 = () => {
                         zIndex: 3
                       }}
                     >
-                      Rs. {parseFloat(item.price).toFixed(0)}
+                      $ {parseFloat(item.price).toFixed(0)}
                     </span>
                   </div>
 

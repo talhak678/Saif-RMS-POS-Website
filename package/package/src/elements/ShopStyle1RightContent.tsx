@@ -67,7 +67,7 @@ const ShopStyle1RightContent = () => {
                   By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
                 </p>
                 <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                  <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>Rs. {Number(item.price).toFixed(0)}</h5>
+                  <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>$ {Number(item.price).toFixed(0)}</h5>
 
                   {/* Quantity Controls */}
                   <div className="btn-quantity style-1" style={{ margin: 0 }}>

@@ -89,7 +89,7 @@ const ShopCheckout = () => {
       });
       if (res.data?.success) {
         setAppliedDiscount(res.data.data);
-        toast.success(`🎉 Discount applied! You save Rs. ${res.data.data.discountAmount?.toFixed(0)}`);
+        toast.success(`🎉 Discount applied! You save $ ${res.data.data.discountAmount?.toFixed(0)}`);
       } else {
         toast.error(res.data?.message || "Invalid discount code");
       }
@@ -340,7 +340,7 @@ const ShopCheckout = () => {
                           <p style={{ color: "#aaa", fontSize: 12, marginBottom: 0 }}>x{item.quantity}</p>
                         </div>
                         <span style={{ fontWeight: 700, color: "#333", fontSize: 13 }}>
-                          Rs. {(item.price * item.quantity).toFixed(0)}
+                          $ {(item.price * item.quantity).toFixed(0)}
                         </span>
                       </div>
                     ))}
@@ -360,7 +360,7 @@ const ShopCheckout = () => {
                         border: "1px solid #A5D6A7", display: "flex", alignItems: "center", justifyContent: "space-between"
                       }}>
                         <span style={{ color: "#2E7D32", fontWeight: 600, fontSize: 13 }}>
-                          ✅ {appliedDiscount.code} applied! Save Rs. {Number(appliedDiscount.discountAmount).toFixed(0)}
+                          ✅ {appliedDiscount.code} applied! Save $ {Number(appliedDiscount.discountAmount).toFixed(0)}
                         </span>
                         <button
                           type="button"
@@ -400,22 +400,22 @@ const ShopCheckout = () => {
                   <div style={{ background: "#f8f9fa", borderRadius: 12, padding: "16px", marginBottom: 16 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 14 }}>
                       <span style={{ color: "#666" }}>Subtotal</span>
-                      <span>Rs. {subtotal.toFixed(0)}</span>
+                      <span>$ {subtotal.toFixed(0)}</span>
                     </div>
                     {orderType === "DELIVERY" && (
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 14 }}>
                         <span style={{ color: "#666" }}>Delivery</span>
-                        <span>{Number(deliveryCharge) === 0 ? <span style={{ color: "#4CAF50" }}>FREE</span> : `Rs. ${Number(deliveryCharge).toFixed(0)}`}</span>
+                        <span>{Number(deliveryCharge) === 0 ? <span style={{ color: "#4CAF50" }}>FREE</span> : `$ ${Number(deliveryCharge).toFixed(0)}`}</span>
                       </div>
                     )}
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 14 }}>
                       <span style={{ color: "#666" }}>Tax (5%)</span>
-                      <span>Rs. {tax.toFixed(0)}</span>
+                      <span>$ {tax.toFixed(0)}</span>
                     </div>
                     {discountAmount > 0 && (
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 14 }}>
                         <span style={{ color: "#4CAF50", fontWeight: 600 }}>Discount</span>
-                        <span style={{ color: "#4CAF50", fontWeight: 600 }}>- Rs. {discountAmount.toFixed(0)}</span>
+                        <span style={{ color: "#4CAF50", fontWeight: 600 }}>- $ {discountAmount.toFixed(0)}</span>
                       </div>
                     )}
                     <div style={{
@@ -423,7 +423,7 @@ const ShopCheckout = () => {
                       marginTop: 8, borderTop: "2px solid #e0e0e0", fontWeight: 700, fontSize: 16
                     }}>
                       <span>Total</span>
-                      <span style={{ color: primaryColor }}>Rs. {total.toFixed(0)}</span>
+                      <span style={{ color: primaryColor }}>$ {total.toFixed(0)}</span>
                     </div>
                   </div>
 
@@ -479,7 +479,7 @@ const ShopCheckout = () => {
                         Processing...
                       </>
                     ) : (
-                      `🍽️ Place Order — Rs. ${total.toFixed(0)}`
+                      `🍽️ Place Order — $ ${total.toFixed(0)}`
                     )}
                   </button>
 

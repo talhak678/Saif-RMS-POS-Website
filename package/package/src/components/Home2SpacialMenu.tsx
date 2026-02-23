@@ -34,7 +34,7 @@ const Home2SpacialMenu = () => {
               </div>
               <div className="price">
                 <h6 style={{ fontSize: '16px', marginBottom: '5px' }}>{item.name}</h6>
-                <h6 className="text-primary">Rs. {item.price}</h6>
+                <h6 className="text-primary">$ {item.price}</h6>
               </div>
             </div>
             <div className="dz-media" style={{ height: '180px' }}>

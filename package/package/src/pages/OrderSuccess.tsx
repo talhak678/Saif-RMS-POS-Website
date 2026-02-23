@@ -130,24 +130,24 @@ const OrderSuccess = () => {
                                             <span style={{ color: "#999", marginLeft: 8 }}>x{item.quantity}</span>
                                         </div>
                                         <span style={{ fontWeight: 600, color: "var(--primary, #ff6b35)" }}>
-                                            Rs. {(Number(item.price) * item.quantity).toFixed(0)}
+                                            $ {(Number(item.price) * item.quantity).toFixed(0)}
                                         </span>
                                     </div>
                                 ))}
                                 <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "2px solid #f0f0f0" }}>
                                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                                         <span style={{ color: "#666" }}>Subtotal</span>
-                                        <span>Rs. {order.subtotal || Number(order.total).toFixed(0)}</span>
+                                        <span>$ {order.subtotal || Number(order.total).toFixed(0)}</span>
                                     </div>
                                     {order.deliveryCharge > 0 && (
                                         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                                             <span style={{ color: "#666" }}>Delivery</span>
-                                            <span>Rs. {Number(order.deliveryCharge).toFixed(0)}</span>
+                                            <span>$ {Number(order.deliveryCharge).toFixed(0)}</span>
                                         </div>
                                     )}
                                     <div style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 16 }}>
                                         <span>Total</span>
-                                        <span style={{ color: "var(--primary, #ff6b35)" }}>Rs. {Number(order.total).toFixed(0)}</span>
+                                        <span style={{ color: "var(--primary, #ff6b35)" }}>$ {Number(order.total).toFixed(0)}</span>
                                     </div>
                                 </div>
                             </div>

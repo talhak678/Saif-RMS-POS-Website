@@ -266,7 +266,7 @@ const Home3OurMenu = () => {
                       flexShrink: 0,
                     }}
                   >
-                    Rs. {parseFloat(item.price).toFixed(0)}
+                    $ {parseFloat(item.price).toFixed(0)}
                   </span>
                 </div>
 

@@ -51,7 +51,7 @@ const MenuStyle1 = () => {
                           <Link to="/product-detail">{item.name}</Link>
                         </span>
                         <span className="img-line"></span>
-                        <span className="header-price">Rs. {item.price}</span>
+                        <span className="header-price">$ {item.price}</span>
                       </div>
                       <p className="dz-body">
                         {item.description || "Freshly prepared with quality ingredients."}

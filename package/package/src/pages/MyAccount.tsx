@@ -303,7 +303,7 @@ const MyAccount = () => {
                                                                     {item.menuItem?.name || "Item"} × {item.quantity}
                                                                 </span>
                                                                 <span style={{ fontWeight: 600, color: "#444" }}>
-                                                                    Rs. {(Number(item.price) * item.quantity).toFixed(0)}
+                                                                    $ {(Number(item.price) * item.quantity).toFixed(0)}
                                                                 </span>
                                                             </div>
                                                         ))}
@@ -319,7 +319,7 @@ const MyAccount = () => {
                                                         <div>
                                                             <span style={{ color: "#888", fontSize: 13 }}>Total: </span>
                                                             <span style={{ fontWeight: 700, fontSize: 16, color: primaryColor }}>
-                                                                Rs. {Number(order.total).toFixed(0)}
+                                                                $ {Number(order.total).toFixed(0)}
                                                             </span>
                                                             {order.branch && (
                                                                 <span style={{ color: "#aaa", fontSize: 12, marginLeft: 12 }}>
