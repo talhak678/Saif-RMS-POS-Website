@@ -138,9 +138,20 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   useEffect(() => {
     const fetchCMS = async () => {
       try {
-        // Use environment variable or fallback to saifs-kitchen
-        const slug = import.meta.env.VITE_RESTAURANT_SLUG || "saifs-kitchen";
-        console.log("🔍 Fetching CMS for restaurant slug:", slug);
+        // 🌐 Dynamic URL Detection for Multi-Tenancy
+        const hostname = window.location.hostname;
+        let slug = hostname;
+
+        // If running on localhost or the EXACT main preview/production URL, use default
+        // Otherwise, assume the subdomain or custom domain is the restaurant's identifier
+        const mainProductionUrl = "saif-rms-pos-website.vercel.app";
+
+        if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === mainProductionUrl) {
+          slug = import.meta.env.VITE_RESTAURANT_SLUG || "saif-grill";
+        }
+
+        console.log("🔍 Detected Hostname:", hostname);
+        console.log("🏪 Using Slug/Domain for API:", slug);
 
         const apiUrl = `https://saif-rms-pos-backend.vercel.app/api/cms/config/public/${slug}`;
         console.log("🌐 API URL:", apiUrl);
