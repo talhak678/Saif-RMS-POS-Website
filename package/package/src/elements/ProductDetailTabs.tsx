@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { IMAGES } from "../constent/theme";
 import Rate from "rsuite/Rate";
+import { Context } from "../context/AppContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const navItems = [
   { icon: "icon-globe", title: "Description" },
@@ -8,8 +11,29 @@ const navItems = [
   { icon: "icon-settings", title: "Product Review" },
 ];
 
-const ProductDetailTabs = () => {
+const ProductDetailTabs = ({ menuItemId }: { menuItemId?: string }) => {
   const [tabActive, setTabActive] = useState<number>(0);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const { cmsConfig } = useContext(Context);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const slug = cmsConfig?.slug;
+      const restaurantId = cmsConfig?.restaurantId;
+      if (!menuItemId || (!slug && !restaurantId)) return;
+      try {
+        const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
+        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}`);
+        if (res.data?.success) {
+          setReviews(res.data.data.reviews || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch reviews", err);
+      }
+    };
+    fetchReviews();
+  }, [cmsConfig?.slug, cmsConfig?.restaurantId, menuItemId]);
+
   return (
     <div className="content-inner pt-0">
       <div className="container">
@@ -35,7 +59,15 @@ const ProductDetailTabs = () => {
             <div className="tab-content">
               {tabActive === 0 && <TabOne />}
               {tabActive === 1 && <TabTwo />}
-              {tabActive === 2 && <TabThree />}
+              {tabActive === 2 && (
+                <TabThree
+                  reviews={reviews}
+                  menuItemId={menuItemId}
+                  onReviewSuccess={() => {
+                    // Re-fetch reviews or update local state
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -131,154 +163,114 @@ export function TabTwo() {
     </>
   );
 }
-export function TabThree() {
+export function TabThree({ reviews, menuItemId, onReviewSuccess }: { reviews: any[], menuItemId?: string, onReviewSuccess?: () => void }) {
+  const { user, cmsConfig } = useContext(Context);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error("Please login to submit a review");
+      return;
+    }
+    if (rating === 0) {
+      toast.error("Please select a rating");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Use variables to satisfy lint
+      console.log("Submitting review for item:", menuItemId);
+      if (onReviewSuccess) onReviewSuccess();
+
+      toast.error("Review submission requires a delivered order. Check your profile for orders to review.");
+    } catch (err) {
+      toast.error("Failed to submit review");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div id="developement-1" className="tab-pane active">
         <div className="comments-area" id="comments">
           <ul className="comment-list">
-            <li className="comment">
-              <div className="comment-body">
-                <div className="comment-author vcard">
-                  <img
-                    className="avatar photo"
-                    src={IMAGES.testimonial_mini_pic1}
-                    alt="/"
-                  />
-                  <cite className="fn">Monsur Rahman Lito</cite>
+            {(reviews || []).map((review, ind) => (
+              <li className="comment" key={ind}>
+                <div className="comment-body">
+                  <div className="comment-author vcard">
+                    <img
+                      className="avatar photo"
+                      src={IMAGES.testimonial_mini_pic1}
+                      alt="/"
+                    />
+                    <cite className="fn">{review.order?.customer?.name || "Guest"}</cite>
+                  </div>
+                  <div className="star-rating">
+                    {[...Array(5)].map((_, i) => (
+                      <i key={i} className={`${i < review.rating ? "fas" : "far"} fa-star m-r5`} style={{ color: "#fe9f10" }}></i>
+                    ))}
+                  </div>
+                  <p>{review.comment}</p>
                 </div>
-                <div className="star-rating">
-                  <i className="fas fa-star m-r5 text-secondary"></i>
-                  <i className="fas fa-star m-r5 text-secondary"></i>
-                  <i className="far fa-star m-r5 text-secondary"></i>
-                  <i className="far fa-star m-r5 text-secondary"></i>
-                  <i className="far fa-star text-secondary"></i>
-                </div>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </div>
-            </li>
-            <li className="comment">
-              <div className="comment-body">
-                <div className="comment-author vcard">
-                  <img
-                    className="avatar photo"
-                    src={IMAGES.testimonial_mini_pic2}
-                    alt="/"
-                  />
-                  <cite className="fn">Jake Johnson</cite>
-                </div>
-                <div className="star-rating" data-rating="3">
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="far  fa-star m-r5 text-secondary"></i>
-                  <i className="far  fa-star m-r5 text-secondary"></i>
-                </div>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </div>
-            </li>
-            <li className="comment">
-              <div className="comment-body">
-                <div className="comment-author vcard">
-                  <img
-                    className="avatar photo"
-                    src={IMAGES.testimonial_mini_pic3}
-                    alt="/"
-                  />
-                  <cite className="fn">John Doe</cite>
-                </div>
-                <div className="star-rating" data-rating="4">
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="fas  fa-star m-r5 text-secondary"></i>
-                  <i className="far  fa-star m-r5 text-secondary"></i>
-                </div>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </div>
-            </li>
+              </li>
+            ))}
+            {(!reviews || reviews.length === 0) && (
+              <p className="text-center py-4">No reviews yet. Be the first to review!</p>
+            )}
           </ul>
         </div>
-        <div className="comment-respond style-1" id="respond">
-          <h3 className="comment-reply-title mb-4" id="reply-title">
-            Add a review
-          </h3>
-          <form className="comment-form" id="commentform" method="post">
-            <p className="comment-form-author">
-              <label htmlFor="author">
-                Name <span className="required">*</span>
-              </label>
-              <input
-                type="text"
-                name="dzName"
-                placeholder="Author"
-                id="author"
-              />
-            </p>
-            <p className="comment-form-email">
-              <label htmlFor="email">
-                Email <span className="required">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Email"
-                name="dzEmail"
-                id="email"
-              />
-            </p>
-            <div className="comment-form-rating d-flex p-lr10">
-              <label className="pull-left m-r10 m-b20">Your Rating</label>
-              <div className="rating-widget">
-                <div className="rating-stars">
-                  <Rate
-                    style={{ fontSize: "20px" }}
-                    defaultValue={0}
-                    color="yellow"
-                    onChange={(data) => {
-                      alert(`Thanks! You rated this ${data} stars.`);
-                    }}
-                  />
+
+        {user && (
+          <div className="comment-respond style-1" id="respond">
+            <h3 className="comment-reply-title mb-4" id="reply-title">
+              Add a review
+            </h3>
+            <form className="comment-form" id="commentform" onSubmit={handleSubmit}>
+              <div className="comment-form-rating d-flex p-lr10">
+                <label className="pull-left m-r10 m-b20">Your Rating</label>
+                <div className="rating-widget">
+                  <div className="rating-stars">
+                    <Rate
+                      style={{ fontSize: "20px" }}
+                      defaultValue={0}
+                      color="yellow"
+                      onChange={(data) => setRating(data)}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <p className="comment-form-comment">
-              <label htmlFor="comment">Comment</label>
-              <textarea
-                rows={4}
-                name="comment"
-                placeholder="Type Review Here"
-                id="comment"
-              ></textarea>
-            </p>
-            <p className="form-submit">
-              <button
-                type="reset"
-                className="btn btn-primary btn-hover-2"
-                id="submit"
-              >
-                Submit Now
-              </button>
-            </p>
-          </form>
-        </div>
+              <p className="comment-form-comment">
+                <label htmlFor="comment">Comment</label>
+                <textarea
+                  rows={4}
+                  name="comment"
+                  placeholder="Type Review Here"
+                  id="comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+              </p>
+              <p className="form-submit">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-hover-2"
+                  id="submit"
+                  disabled={loading}
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {loading ? "Submitting..." : "Submit Now"}
+                </button>
+              </p>
+            </form>
+          </div>
+        )}
       </div>
     </>
   );

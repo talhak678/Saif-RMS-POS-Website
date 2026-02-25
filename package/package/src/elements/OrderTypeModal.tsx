@@ -2,12 +2,15 @@ import { useState, useEffect, useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import Select from "react-select";
 import { Context } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const OrderTypeModal = () => {
-    const { showOrderModal, setShowOrderModal } = useContext(Context);
+    const { showOrderModal, setShowOrderModal, branches, cmsConfig } = useContext(Context);
     const [orderType, setOrderType] = useState("delivery");
     const [phone, setPhone] = useState("");
     const [location, setLocation] = useState(null);
+
+    const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
     useEffect(() => {
         const isSelected = localStorage.getItem("orderTypeSelected");
@@ -24,16 +27,14 @@ const OrderTypeModal = () => {
             localStorage.setItem("userLocation", JSON.stringify(location));
             setShowOrderModal(false);
         } else {
-            alert("Please fill all details");
+            toast.error("Please fill all details");
         }
     };
 
-    const options = [
-        { value: "gulshan", label: "Gulshan-e-Iqbal" },
-        { value: "johartown", label: "Johar Town" },
-        { value: "dha", label: "DHA Phase 5" },
-        { value: "clifton", label: "Clifton" },
-    ];
+    const options = branches.map((b: any) => ({
+        value: b.id,
+        label: b.name
+    }));
 
     const customStyles = {
         control: (provided: any) => ({
@@ -43,7 +44,7 @@ const OrderTypeModal = () => {
             borderColor: "#eee",
             boxShadow: "none",
             "&:hover": {
-                borderColor: "#fe9f10"
+                borderColor: primaryColor
             }
         }),
     };
@@ -83,11 +84,11 @@ const OrderTypeModal = () => {
                                 onClick={() => setOrderType("delivery")}
                                 className="btn rounded-pill px-3 py-2 border-0 fw-bold transition-all"
                                 style={{
-                                    backgroundColor: orderType === "delivery" ? "#fe9f10" : "transparent",
+                                    backgroundColor: orderType === "delivery" ? primaryColor : "transparent",
                                     color: orderType === "delivery" ? "#fff" : "#666",
                                     fontSize: "12px",
                                     transition: "all 0.3s ease",
-                                    boxShadow: orderType === "delivery" ? "0 2px 8px rgba(254, 159, 16, 0.4)" : "none"
+                                    boxShadow: orderType === "delivery" ? `0 2px 8px ${primaryColor}66` : "none"
                                 }}
                             >
                                 DELIVERY
@@ -96,11 +97,11 @@ const OrderTypeModal = () => {
                                 onClick={() => setOrderType("pickup")}
                                 className="btn rounded-pill px-3 py-2 border-0 fw-bold transition-all"
                                 style={{
-                                    backgroundColor: orderType === "pickup" ? "#fe9f10" : "transparent",
+                                    backgroundColor: orderType === "pickup" ? primaryColor : "transparent",
                                     color: orderType === "pickup" ? "#fff" : "#666",
                                     fontSize: "12px",
                                     transition: "all 0.3s ease",
-                                    boxShadow: orderType === "pickup" ? "0 2px 8px rgba(254, 159, 16, 0.4)" : "none"
+                                    boxShadow: orderType === "pickup" ? `0 2px 8px ${primaryColor}66` : "none"
                                 }}
                             >
                                 PICK-UP
@@ -114,8 +115,8 @@ const OrderTypeModal = () => {
                         variant="primary"
                         className="w-100 mb-4 rounded-pill py-2 border-0 d-flex align-items-center justify-content-center fw-bold shadow-sm text-white"
                         style={{
-                            backgroundColor: "#fe9f10",
-                            boxShadow: "0 4px 12px rgba(254, 159, 16, 0.3)",
+                            backgroundColor: primaryColor,
+                            boxShadow: `0 4px 12px ${primaryColor}4d`,
                             fontSize: "13px"
                         }}
                     >
@@ -146,9 +147,9 @@ const OrderTypeModal = () => {
                         onClick={handleSelect}
                         className="w-100 py-2 fw-bold rounded-3 border-0 mt-2 text-white"
                         style={{
-                            backgroundColor: "#fe9f10",
+                            backgroundColor: primaryColor,
                             fontSize: "16px",
-                            boxShadow: "0 4px 15px rgba(254, 159, 16, 0.4)"
+                            boxShadow: `0 4px 15px ${primaryColor}66`
                         }}
                     >
                         Select

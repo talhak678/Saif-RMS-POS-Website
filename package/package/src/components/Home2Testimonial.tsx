@@ -1,42 +1,77 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Home2TestimonialArr } from "../elements/JsonData";
 import { Autoplay, Navigation } from "swiper/modules";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "../context/AppContext";
+import axios from "axios";
+import { IMAGES } from "../constent/theme";
 
 const Home2Testimonial = () => {
+  const { cmsConfig } = useContext(Context);
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const slug = cmsConfig?.slug;
+      const restaurantId = cmsConfig?.restaurantId;
+      if (!slug && !restaurantId) return;
+      try {
+        const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
+        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&limit=5`);
+        if (res.data?.success) {
+          setReviews(res.data.data.reviews || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch testimonial reviews", err);
+      }
+    };
+    fetchReviews();
+  }, [cmsConfig?.slug, cmsConfig?.restaurantId]);
+
+  const displayReviews = reviews.length > 0 ? reviews : [
+    {
+      order: { customer: { name: "John Doe" } },
+      comment: "Amazing food and service! The burger was perfectly cooked and very juicy.",
+      rating: 5
+    },
+    {
+      order: { customer: { name: "Jane Smith" } },
+      comment: "Very fast delivery and the pasta was still hot when it arrived. Strongly recommend!",
+      rating: 4
+    }
+  ];
+
   return (
     <Swiper
       className="swiper testimonial-two-swiper swiper-btn-lr swiper-single swiper-visible"
       speed={1500}
-      loop={Home2TestimonialArr.length > 1}
+      loop={displayReviews.length > 1}
       modules={[Navigation, Autoplay]}
       autoplay={{
-        delay: 1500,
+        delay: 3000,
       }}
       navigation={{
         prevEl: ".testimonial-2-button-prev",
         nextEl: ".testimonial-2-button-next",
       }}
     >
-      {Home2TestimonialArr.map(({ img, name, position }, ind) => (
+      {displayReviews.map((review, ind) => (
         <SwiperSlide className="swiper-slide" key={ind}>
           <div className="testimonial-2">
             <div className="dz-media">
-              <img src={img} alt="/" />
+              <img src={IMAGES.testimonial_mini_pic1} alt="/" />
             </div>
             <div className="testimonial-detail">
               <div className="testimonial-text wow fadeInUp">
-                <p>
-                  There are many variations of passages of Lorem Ipsum
-                  available, but the majority have suffered alteration in some
-                  form, by injected humour, or randomised words which don't look
-                  even slightly believable. If you are going to use a passage of
-                  Lorem Ipsum, you need to be sure there isn't anything
-                  embarrassing hidden in the middle of text.
-                </p>
+                <div className="star-rating mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <i key={i} className={`${i < review.rating ? "fas" : "far"} fa-star m-r5`} style={{ color: "#fe9f10" }}></i>
+                  ))}
+                </div>
+                <p>"{review.comment}"</p>
               </div>
               <div className="testimonial-info wow fadeInUp">
-                <h5 className="testimonial-name">{name}</h5>
-                <span className="testimonial-position">{position}</span>
+                <h5 className="testimonial-name">{review.order?.customer?.name || "Happy Customer"}</h5>
+                <span className="testimonial-position">Customer</span>
               </div>
               <i className="flaticon-right-quote quote"></i>
             </div>

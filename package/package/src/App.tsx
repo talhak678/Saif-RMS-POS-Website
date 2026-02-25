@@ -69,6 +69,7 @@ import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
 import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
 import OrderTypeModal from "./elements/OrderTypeModal";
+import Loader from "./components/Loader";
 
 const Layout2 = () => {
   const { setHeaderClass } = useContext(Context);
@@ -123,7 +124,7 @@ const Layout6 = () => {
 const CmsProtectedRoute = ({ pageKey, children }: { pageKey: string, children: React.ReactNode }) => {
   const { cmsConfig, cmsLoading } = useContext(Context);
 
-  if (cmsLoading) return null; // Or a loader
+  if (cmsLoading) return <Loader />;
 
   const isEnabled = cmsConfig?.config?.configJson?.[pageKey]?.enabled !== false;
 
@@ -135,11 +136,12 @@ const CmsProtectedRoute = ({ pageKey, children }: { pageKey: string, children: R
 };
 
 function App() {
-  const { cmsConfig } = useContext(Context);
+  const { cmsConfig, cmsLoading } = useContext(Context);
   return (
     <>
       <div className="page-wraper" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white", minHeight: '100vh' }}>
         <Router>
+          {cmsLoading && <Loader />}
           <OrderTypeModal />
           <SignIn />
           <ScrollTop />
