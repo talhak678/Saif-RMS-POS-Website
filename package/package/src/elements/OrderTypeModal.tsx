@@ -78,9 +78,9 @@ const OrderTypeModal = () => {
                 <Modal.Body className="p-4 text-center" style={{ borderRadius: "20px" }}>
                     <h3 className="mb-4 fw-bold text-dark h5">Select your location</h3>
 
-                    <div className="d-flex justify-content-center mb-4" style={{ display: "none" }}>
+                    <div className="d-flex justify-content-center mb-4">
                         <div className="bg-light p-1 rounded-pill d-flex" style={{ width: "fit-content", border: "1px solid #eee" }}>
-                            {/* <button
+                            <button
                                 onClick={() => setOrderType("delivery")}
                                 className="btn rounded-pill px-3 py-2 border-0 fw-bold transition-all"
                                 style={{
@@ -92,16 +92,16 @@ const OrderTypeModal = () => {
                                 }}
                             >
                                 DELIVERY
-                            </button> */}
+                            </button>
                             <button
                                 onClick={() => setOrderType("pickup")}
-                                className="btn rounded-pill px-4 py-2 border-0 fw-bold transition-all"
+                                className="btn rounded-pill px-3 py-2 border-0 fw-bold transition-all"
                                 style={{
-                                    backgroundColor: primaryColor,
-                                    color: "#fff",
-                                    fontSize: "13px",
+                                    backgroundColor: orderType === "pickup" ? primaryColor : "transparent",
+                                    color: orderType === "pickup" ? "#fff" : "#666",
+                                    fontSize: "12px",
                                     transition: "all 0.3s ease",
-                                    boxShadow: `0 2px 8px ${primaryColor}66`
+                                    boxShadow: orderType === "pickup" ? `0 2px 8px ${primaryColor}66` : "none"
                                 }}
                             >
                                 PICK-UP

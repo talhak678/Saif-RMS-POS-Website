@@ -60,9 +60,8 @@ const CheckoutForm = () => {
 
     // 2. Sync from Modal (localStorage)
     const savedType = localStorage.getItem("orderType");
-    // Force PICKUP for now as requested
-    if (savedType) {
-      setOrderType("PICKUP");
+    if (savedType === "DELIVERY" || savedType === "PICKUP") {
+      setOrderType(savedType);
     }
 
     const savedPhone = localStorage.getItem("userPhone");
@@ -217,9 +216,9 @@ const CheckoutForm = () => {
               )}
             </div>
             <div style={{ display: "flex", gap: 12 }}>
-              {(["PICKUP"] as const).map(t => (
-                <button key={t} type="button" style={btnStyle(true)} onClick={() => setOrderType(t)}>
-                  🏪 Pickup Only
+              {(["DELIVERY", "PICKUP"] as const).map(t => (
+                <button key={t} type="button" style={btnStyle(orderType === t)} onClick={() => setOrderType(t)}>
+                  {t === "DELIVERY" ? "🚚 Delivery" : "🏪 Pickup"}
                 </button>
               ))}
             </div>
