@@ -62,7 +62,6 @@ const CheckoutForm = () => {
     const savedType = localStorage.getItem("orderType");
     // Force PICKUP for now as requested
     if (savedType) {
-      const type = savedType.toUpperCase();
       setOrderType("PICKUP");
     }
 
