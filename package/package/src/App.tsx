@@ -49,7 +49,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import TrackOrder from "./pages/TrackOrder";
 import MyAccount from "./pages/MyAccount";
 // import ShopWishlist from "./pages/ShopWishlist";
-// import ProductDetail from "./pages/ProductDetail";
+import ProductDetail from "./pages/ProductDetail";
 // import BlogGrid2 from "./pages/BlogGrid2";
 // import BlogGrid3 from "./pages/BlogGrid3";
 // import BlogGridLeftSideba from "./pages/BlogGridLeftSideba";
@@ -182,7 +182,7 @@ function App() {
                   <BlogList />
                 </CmsProtectedRoute>
               } />
-
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/contact-us" element={
                 <CmsProtectedRoute pageKey="contact">
                   <ContactUs />

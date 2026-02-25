@@ -185,6 +185,7 @@ const MenuStyle2 = () => {
               >
                 <div
                   ref={(node) => { if (node) cardRef.current[ind] = node; }}
+                  onClick={() => navigate(`/product/${item.id}`)}
                   style={{
                     borderRadius: "18px",
                     overflow: "hidden",
@@ -196,6 +197,7 @@ const MenuStyle2 = () => {
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    cursor: "pointer"
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLDivElement).style.transform = "translateY(-7px)";
@@ -380,13 +382,16 @@ const MenuStyle2 = () => {
                           transition: "transform 0.2s ease, box-shadow 0.2s ease",
                           boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${primaryColor}55`,
                         }}
-                        onClick={() => addToCart({
-                          id: item.id,
-                          name: item.name,
-                          price: parseFloat(item.price),
-                          image: item.image || null,
-                          quantity: 1
-                        })}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart({
+                            id: item.id,
+                            name: item.name,
+                            price: parseFloat(item.price),
+                            image: item.image || null,
+                            quantity: 1
+                          })
+                        }}
                         onMouseEnter={(e) => {
                           if (item.isAvailable !== false) {
                             (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.15) rotate(-8deg)";

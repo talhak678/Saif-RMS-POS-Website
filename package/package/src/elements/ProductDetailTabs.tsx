@@ -1,8 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import { IMAGES } from "../constent/theme";
-import Rate from "rsuite/Rate";
+import { Link } from "react-router-dom";
 import { Context } from "../context/AppContext";
-import toast from "react-hot-toast";
 import axios from "axios";
 
 const navItems = [
@@ -62,10 +60,6 @@ const ProductDetailTabs = ({ menuItemId }: { menuItemId?: string }) => {
               {tabActive === 2 && (
                 <TabThree
                   reviews={reviews}
-                  menuItemId={menuItemId}
-                  onReviewSuccess={() => {
-                    // Re-fetch reviews or update local state
-                  }}
                 />
               )}
             </div>
@@ -163,114 +157,105 @@ export function TabTwo() {
     </>
   );
 }
-export function TabThree({ reviews, menuItemId, onReviewSuccess }: { reviews: any[], menuItemId?: string, onReviewSuccess?: () => void }) {
-  const { user, cmsConfig } = useContext(Context);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [loading, setLoading] = useState(false);
-
+export function TabThree({ reviews }: { reviews: any[] }) {
+  const { cmsConfig } = useContext(Context);
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) {
-      toast.error("Please login to submit a review");
-      return;
-    }
-    if (rating === 0) {
-      toast.error("Please select a rating");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Use variables to satisfy lint
-      console.log("Submitting review for item:", menuItemId);
-      if (onReviewSuccess) onReviewSuccess();
-
-      toast.error("Review submission requires a delivered order. Check your profile for orders to review.");
-    } catch (err) {
-      toast.error("Failed to submit review");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <>
       <div id="developement-1" className="tab-pane active">
         <div className="comments-area" id="comments">
-          <ul className="comment-list">
-            {(reviews || []).map((review, ind) => (
-              <li className="comment" key={ind}>
-                <div className="comment-body">
-                  <div className="comment-author vcard">
-                    <img
-                      className="avatar photo"
-                      src={IMAGES.testimonial_mini_pic1}
-                      alt="/"
-                    />
-                    <cite className="fn">{review.order?.customer?.name || "Guest"}</cite>
+          {reviews.length > 0 ? (
+            <ul className="comment-list">
+              {reviews.map((review, ind) => (
+                <li className="comment" key={ind} style={{ borderBottom: '1px solid #eee', paddingBottom: '25px', marginBottom: '25px' }}>
+                  <div className="comment-body">
+                    <div className="comment-author vcard" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <div style={{
+                        width: '45px',
+                        height: '45px',
+                        borderRadius: '50%',
+                        backgroundColor: `${primaryColor}20`,
+                        color: primaryColor,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        marginRight: '15px'
+                      }}>
+                        {(review.order?.customer?.name || "G")[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <cite className="fn" style={{ fontStyle: 'normal', fontWeight: 700, fontSize: '16px' }}>
+                          {review.order?.customer?.name || "Guest Customer"}
+                        </cite>
+                        <div className="text-muted" style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                          {new Date(review.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="star-rating" style={{ marginBottom: '12px' }}>
+                      {[...Array(5)].map((_, i) => (
+                        <i key={i} className={`${i < review.rating ? "fas" : "far"} fa-star m-r5`} style={{ color: "#fe9f10", fontSize: '13px' }}></i>
+                      ))}
+                      <span style={{ fontSize: '12px', marginLeft: '8px', color: '#28a745', fontWeight: 600 }}>
+                        <i className="fas fa-check-circle" /> Verified Purchase
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '14px', color: '#555', lineHeight: '1.6', fontStyle: 'italic' }}>
+                      "{review.comment || "The food was amazing! Highly recommended."}"
+                    </p>
+
+                    {/* Merchant Reply */}
+                    {review.reply && (
+                      <div className="merchant-reply" style={{
+                        marginTop: '20px',
+                        padding: '15px 20px',
+                        backgroundColor: '#f9f9f9',
+                        borderRadius: '12px',
+                        borderLeft: `4px solid ${primaryColor}`,
+                        marginLeft: '20px'
+                      }}>
+                        <div style={{ fontWeight: 800, fontSize: '12px', textTransform: 'uppercase', color: primaryColor, marginBottom: '5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <i className="fas fa-reply" /> Restaurant Response
+                        </div>
+                        <p style={{ margin: 0, fontSize: '13px', color: '#444' }}>{review.reply}</p>
+                      </div>
+                    )}
                   </div>
-                  <div className="star-rating">
-                    {[...Array(5)].map((_, i) => (
-                      <i key={i} className={`${i < review.rating ? "fas" : "far"} fa-star m-r5`} style={{ color: "#fe9f10" }}></i>
-                    ))}
-                  </div>
-                  <p>{review.comment}</p>
-                </div>
-              </li>
-            ))}
-            {(!reviews || reviews.length === 0) && (
-              <p className="text-center py-4">No reviews yet. Be the first to review!</p>
-            )}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="text-center py-5">
+              <div style={{ fontSize: '40px', color: '#eee', marginBottom: '15px' }}>
+                <i className="fas fa-star-half-alt" />
+              </div>
+              <h5 className="text-muted">No reviews yet for this item</h5>
+              <p className="text-muted small">Be the first to share your experience after ordering!</p>
+            </div>
+          )}
         </div>
 
-        {user && (
-          <div className="comment-respond style-1" id="respond">
-            <h3 className="comment-reply-title mb-4" id="reply-title">
-              Add a review
-            </h3>
-            <form className="comment-form" id="commentform" onSubmit={handleSubmit}>
-              <div className="comment-form-rating d-flex p-lr10">
-                <label className="pull-left m-r10 m-b20">Your Rating</label>
-                <div className="rating-widget">
-                  <div className="rating-stars">
-                    <Rate
-                      style={{ fontSize: "20px" }}
-                      defaultValue={0}
-                      color="yellow"
-                      onChange={(data) => setRating(data)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <p className="comment-form-comment">
-                <label htmlFor="comment">Comment</label>
-                <textarea
-                  rows={4}
-                  name="comment"
-                  placeholder="Type Review Here"
-                  id="comment"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                ></textarea>
-              </p>
-              <p className="form-submit">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-hover-2"
-                  id="submit"
-                  disabled={loading}
-                  style={{ backgroundColor: primaryColor }}
-                >
-                  {loading ? "Submitting..." : "Submit Now"}
-                </button>
-              </p>
-            </form>
+        <div className="comment-respond style-1 mt-5" id="respond">
+          <div style={{
+            padding: '30px',
+            backgroundColor: '#fff',
+            borderRadius: '20px',
+            border: '2px dashed #eee',
+            textAlign: 'center'
+          }}>
+            <h4 className="mb-2" style={{ fontWeight: 800 }}>Want to leave a review?</h4>
+            <p className="text-muted mb-4">To ensure all reviews are genuine, you can submit a review directly from your <strong>Order History</strong> once your meal has been delivered.</p>
+            <Link
+              to="/my-account"
+              className="btn btn-primary d-inline-flex align-items-center gap-2"
+              style={{ borderRadius: '12px' }}
+            >
+              Visit My Account <i className="fas fa-arrow-right" />
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

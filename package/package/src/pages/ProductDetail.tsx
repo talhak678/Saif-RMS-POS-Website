@@ -1,100 +1,122 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ProductDetailTabs from "../elements/ProductDetailTabs";
 import HomeSpacialMenu from "../elements/HomeSpacialMenu";
+import { Context } from "../context/AppContext";
 
 const ProductDetail = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
   const [quantity, setQuantity] = useState<number>(1);
+  const [product, setProduct] = useState<any>(null);
+
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+
+  useEffect(() => {
+    if (!cmsLoading && cmsConfig?.menu) {
+      // Find product in any category
+      let found = null;
+      for (const cat of cmsConfig.menu) {
+        found = cat.menuItems.find((item: any) => item.id === id);
+        if (found) {
+          found = { ...found, categoryName: cat.name };
+          break;
+        }
+      }
+      if (found) {
+        setProduct(found);
+      }
+    }
+  }, [id, cmsConfig, cmsLoading]);
+
+  if (cmsLoading) return <div className="text-center py-5">Loading product...</div>;
+
+  if (!product) return (
+    <div className="page-content bg-white text-center py-5">
+      <h3>Product not found</h3>
+      <button onClick={() => navigate(-1)} className="btn btn-primary mt-3">Go Back</button>
+    </div>
+  );
+
   return (
     <div className="page-content bg-white">
       <CommonBanner
         img={IMAGES.banner_bnr1}
-        title="Product Detail"
+        title={product.name}
         subtitle="Product Detail"
       />
       <section className="content-inner-1 overflow-hidden">
         <div className="container">
           <div className="row product-detail">
             <div className="col-lg-4 col-md-5">
-              <div className="detail-media m-b30">
-                <img src={IMAGES.modal_pic1} alt="/" />
+              <div className="detail-media m-b30" style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+                <img src={product.image || "https://via.placeholder.com/800x800"} alt={product.name} />
               </div>
             </div>
             <div className="col-lg-8 col-md-7">
               <div className="detail-info">
-                <span className="badge">
+                <span className="badge" style={{ backgroundColor: `${primaryColor}15`, color: primaryColor, border: `1px solid ${primaryColor}30` }}>
                   <svg
                     width="18"
                     height="18"
                     viewBox="0 0 18 18"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    className="m-r5"
                   >
                     <rect
                       x="0.5"
                       y="0.5"
                       width="16"
                       height="16"
-                      stroke="#0F8A65"
+                      stroke={primaryColor}
                     />
-                    <circle cx="8.5" cy="8.5" r="5.5" fill="#0F8A65" />
+                    <circle cx="8.5" cy="8.5" r="5.5" fill={primaryColor} />
                   </svg>
-                  Pure veg
+                  {product.categoryName}
                 </span>
-                <div className="dz-head">
-                  <h2 className="title">Double Patty Veg Burger</h2>
+                <div className="dz-head mt-3">
+                  <h2 className="title" style={{ fontSize: '32px', fontWeight: 800 }}>{product.name}</h2>
                   <div className="rating">
-                    <i className="fa-solid fa-star"></i>{" "}
+                    <i className="fa-solid fa-star" style={{ color: '#fe9f10' }}></i>{" "}
                     <span>
-                      <strong className="text-dark">4.5</strong> - 20 Reviews
+                      <strong className="text-dark">4.5</strong> - Verified Feedback
                     </span>
                   </div>
                 </div>
-                <p className="text">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took Link galley of type and scrambled it to make Link
-                  type specimen book.
+                <p className="text mt-3" style={{ fontSize: '15px', color: '#666', lineHeight: '1.8' }}>
+                  {product.description || "Indulge in our freshly prepared house special. Made with premium ingredients and traditional recipes to bring you an authentic culinary experience."}
                 </p>
                 <ul className="detail-list">
                   <li>
-                    Price <span className="text-primary m-t5">$20.00</span>
+                    Price <span className="text-primary m-t5" style={{ fontSize: '24px', fontWeight: 800 }}>${parseFloat(product.price).toFixed(2)}</span>
                   </li>
                   <li>
                     Quantity
                     <div className="btn-quantity style-1 m-t5">
                       <div className="input-group bootstrap-touchspin">
-                        <span className="input-group-addon bootstrap-touchspin-prefix"></span>
                         <input
-                          id="demo_vertical2"
                           type="text"
-                          defaultValue={quantity}
-                          key={quantity}
-                          name="demo_vertical2"
+                          value={quantity}
+                          readOnly
                           className="form-control"
+                          style={{ textAlign: 'center' }}
                         />
-                        <span className="input-group-addon bootstrap-touchspin-postfix"></span>
                         <span className="input-group-btn-vertical">
                           <button
                             className="btn btn-default bootstrap-touchspin-up"
                             type="button"
-                            onClick={() => {
-                              setQuantity(quantity + 1);
-                            }}
+                            onClick={() => setQuantity(quantity + 1)}
                           >
                             <i className="ti-plus"></i>
                           </button>
                           <button
                             className="btn btn-default bootstrap-touchspin-down"
                             type="button"
-                            onClick={() => {
-                              setQuantity(
-                                quantity > 0 ? quantity - 1 : quantity
-                              );
-                            }}
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
                           >
                             <i className="ti-minus"></i>
                           </button>
@@ -103,25 +125,27 @@ const ProductDetail = () => {
                     </div>
                   </li>
                 </ul>
-                <h6 className="title">Add On</h6>
-                <DetailList />
-                <div className="d-lg-flex justify-content-between">
-                  <ul className="modal-btn-group">
+
+                <div className="d-lg-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                  <ul className="modal-btn-group" style={{ display: 'flex', gap: '15px' }}>
                     <li>
-                      <Link
-                        to="/shop-cart"
+                      <button
+                        onClick={() => addToCart({ ...product, quantity })}
                         className="btn btn-primary btn-hover-1"
+                        style={{ padding: '15px 35px', borderRadius: '15px' }}
                       >
                         <span>
                           Add To Cart{" "}
                           <i className="flaticon-shopping-bag-1 m-l10"></i>
                         </span>
-                      </Link>
+                      </button>
                     </li>
                     <li>
                       <Link
                         to="/shop-checkout"
+                        onClick={() => addToCart({ ...product, quantity })}
                         className="btn btn-outline-secondary btn-hover-1"
+                        style={{ padding: '15px 35px', borderRadius: '15px' }}
                       >
                         <span>
                           Buy Now{" "}
@@ -137,11 +161,11 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
-      <ProductDetailTabs />
-      <section className="content-inner-1 pt-0">
+      <ProductDetailTabs menuItemId={product.id} />
+      <section className="content-inner-1 pt-0 mt-5">
         <div className="container">
           <div className="section-head text-center">
-            <h2 className="title">Special Menu</h2>
+            <h2 className="title" style={{ fontWeight: 800 }}>You May Also Like</h2>
           </div>
           <HomeSpacialMenu />
         </div>
