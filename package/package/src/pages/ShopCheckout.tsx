@@ -60,7 +60,11 @@ const CheckoutForm = () => {
 
     // 2. Sync from Modal (localStorage)
     const savedType = localStorage.getItem("orderType");
-    if (savedType) setOrderType(savedType.toUpperCase() as "DELIVERY" | "PICKUP");
+    // Force PICKUP for now as requested
+    if (savedType) {
+      const type = savedType.toUpperCase();
+      setOrderType("PICKUP");
+    }
 
     const savedPhone = localStorage.getItem("userPhone");
     if (savedPhone) setFormData(prev => ({ ...prev, phone: savedPhone }));
