@@ -32,7 +32,8 @@ const CheckoutForm = () => {
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<any>(null);
   const [discountLoading, setDiscountLoading] = useState(false);
-  const [orderType, setOrderType] = useState<"DELIVERY" | "PICKUP">("DELIVERY");
+  const [orderType, setOrderType] = useState<"DELIVERY" | "PICKUP">("PICKUP");
+  const [selectedBranchId, setSelectedBranchId] = useState<string>("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -44,17 +45,39 @@ const CheckoutForm = () => {
     paymentMethod: "CASH"
   });
 
+  // Load from Storage & Context Sync
   useEffect(() => {
+    // 1. Sync User info
     if (user) {
       setFormData(prev => ({
         ...prev,
         firstName: user.name?.split(" ")[0] || "",
         lastName: user.name?.split(" ").slice(1).join(" ") || "",
         email: user.email || "",
-        phone: user.phone || "",
+        phone: user.phone || prev.phone,
       }));
     }
+
+    // 2. Sync from Modal (localStorage)
+    const savedType = localStorage.getItem("orderType");
+    if (savedType) setOrderType(savedType.toUpperCase() as "DELIVERY" | "PICKUP");
+
+    const savedPhone = localStorage.getItem("userPhone");
+    if (savedPhone) setFormData(prev => ({ ...prev, phone: savedPhone }));
+
+    const savedLoc = localStorage.getItem("userLocation");
+    if (savedLoc) {
+      try {
+        const parsed = JSON.parse(savedLoc);
+        if (parsed.value) setSelectedBranchId(parsed.value);
+        if (parsed.label) setFormData(prev => ({ ...prev, address: parsed.label }));
+      } catch (e) { }
+    }
   }, [user]);
+
+  // Use branch selection from local state or first branch from context
+  const branches = cmsConfig?.branches || [];
+  const currentBranch = branches.find((b: any) => b.id === selectedBranchId) || branches[0] || activeBranch;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -68,7 +91,7 @@ const CheckoutForm = () => {
 
   // Pricing
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const deliveryCharge = orderType === "DELIVERY" && cartItems.length > 0 ? (activeBranch?.deliveryCharge || 0) : 0;
+  const deliveryCharge = orderType === "DELIVERY" && cartItems.length > 0 ? (currentBranch?.deliveryCharge || 0) : 0;
   const tax = subtotal * 0.05;
   const discountAmount = appliedDiscount?.discountAmount || 0;
   const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
@@ -105,7 +128,7 @@ const CheckoutForm = () => {
     setLoading(true);
     try {
       const payload = {
-        branchId: activeBranch?.id,
+        branchId: currentBranch?.id,
         type: orderType,
         items: cartItems.map(i => ({ menuItemId: i.id, quantity: i.quantity, price: i.price })),
         paymentMethod: formData.paymentMethod,
@@ -172,13 +195,28 @@ const CheckoutForm = () => {
       <div className="row">
         {/* LEFT COLUMN */}
         <div className="col-lg-7">
-          {/* Order Type */}
+          {/* Order Type & Branch */}
           <div style={cardStyle}>
-            <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 16 }}>Order Type</h5>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 0 }}>Order Options</h5>
+              {branches.length > 1 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 13, color: "#666" }}>Pickup Branch:</span>
+                  <select
+                    className="form-select form-select-sm"
+                    style={{ width: "auto", borderRadius: 8 }}
+                    value={currentBranch?.id}
+                    onChange={(e) => setSelectedBranchId(e.target.value)}
+                  >
+                    {branches.map((b: any) => (<option key={b.id} value={b.id}>{b.name}</option>))}
+                  </select>
+                </div>
+              )}
+            </div>
             <div style={{ display: "flex", gap: 12 }}>
-              {(["DELIVERY", "PICKUP"] as const).map(t => (
-                <button key={t} type="button" style={btnStyle(orderType === t)} onClick={() => setOrderType(t)}>
-                  {t === "DELIVERY" ? "🚚 Home Delivery" : "🏪 Pickup"}
+              {(["PICKUP"] as const).map(t => (
+                <button key={t} type="button" style={btnStyle(true)} onClick={() => setOrderType(t)}>
+                  🏪 Pickup Only
                 </button>
               ))}
             </div>
@@ -349,7 +387,7 @@ const CheckoutForm = () => {
       <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
         <Modal.Header closeButton><Modal.Title>Select Delivery Location</Modal.Title></Modal.Header>
         <Modal.Body>
-          <LocationPicker onLocationSelect={handleLocationSelect} initialLat={activeBranch?.lat} initialLng={activeBranch?.lng} />
+          <LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} />
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-primary" onClick={() => setShowMap(false)}>Confirm Location</button>

@@ -1,11 +1,16 @@
 import React, { useContext } from "react";
 import { Context } from "../context/AppContext";
+import { IMAGES } from "../constent/theme";
 
 const Loader: React.FC = () => {
     const { cmsConfig } = useContext(Context);
     const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
-    // API returns restaurantLogo (not logo)
-    const logo = cmsConfig?.restaurantLogo || "/favicon.png";
+
+    // Match Header logo logic for exact consistency
+    const logo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
+        cmsConfig?.config?.configJson?.home?.sections?.header?.content?.logoUrl ||
+        cmsConfig?.restaurantLogo ||
+        IMAGES.logo;
 
     return (
         <div style={{
