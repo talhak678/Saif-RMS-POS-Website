@@ -21,9 +21,8 @@ const Menu = () => {
   const { headerClass, setShowSignInForm, setHeaderSidebar, setShowOrderModal, cmsConfig } = useContext(Context);
   const { pathname } = useLocation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor
-    || cmsConfig?.config?.primaryColor
-    || '#7da640';
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor
+    || '#ff6b35';
 
   const headerSettings = cmsConfig?.config?.configJson?.home?.sections?.header || {};
   const menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Contact Us, Blogs";
@@ -115,7 +114,7 @@ const Menu = () => {
             <Link
               style={{
                 color: (pathname === item.to || hoveredIndex === ind)
-                  ? primaryColor
+                  ? secondaryColor
                   : '#222222',
                 transition: 'color 0.2s ease'
               }}

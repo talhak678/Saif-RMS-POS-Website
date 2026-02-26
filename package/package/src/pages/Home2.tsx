@@ -32,7 +32,7 @@ const Home2 = () => {
         <section className="content-inner-1 overflow-hidden mt-5">
           <div className="container">
             <div className="section-head menu-align">
-              <h2 className="title mb-0 wow flipInX">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
+              <h2 className="title mb-0 wow flipInX text-secondary">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
               <div className="pagination-align wow fadeInUp">
                 <div className="menu-button-prev1 btn-prev rounded-xl btn-hover-2">
                   <i className="fa-solid fa-arrow-left"></i>
@@ -69,7 +69,7 @@ const Home2 = () => {
         <section className="content-inner-1">
           <div className="container">
             <div className="section-head text-center">
-              <h2 className="title wow flipInX">{sections.ourMenu.content?.title || "Our Menu"}</h2>
+              <h2 className="title wow flipInX text-secondary">{sections.ourMenu.content?.title || "Our Menu"}</h2>
             </div>
             <Home3OurMenu />
           </div>
@@ -80,7 +80,7 @@ const Home2 = () => {
         <section className="content-inner-2 overflow-hidden">
           <div className="container">
             <div className="section-head text-center">
-              <h2 className="title wow flipInX">{sections.customerComments.content?.title || "Customer's Comment"}</h2>
+              <h2 className="title wow flipInX text-secondary">{sections.customerComments.content?.title || "Customer's Comment"}</h2>
             </div>
             <Home2Testimonial />
           </div>

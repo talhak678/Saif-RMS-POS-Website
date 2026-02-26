@@ -65,7 +65,7 @@ const MainBanner2 = () => {
                         <span className="sub-title text-primary">
                           {bannerContent.subtitle}
                         </span>
-                        <h1 className="title text-white">
+                        <h1 className="title text-secondary">
                           {bannerContent.title}
                         </h1>
                         <p className="bnr-text">

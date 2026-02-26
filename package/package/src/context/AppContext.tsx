@@ -273,6 +273,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               }
               /* Color Helpers */
               .text-primary { color: ${pColor} !important; }
+              .text-secondary { color: ${sColor} !important; }
+              .text-white { color: #ffffff !important; }
               .bg-primary { background-color: ${pColor} !important; }
               .shadow-primary { box-shadow: 0 10px 20px -10px ${pColor}80 !important; }
               
@@ -281,7 +283,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               
               /* Typography Overrides */
               h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6, .footer-title {
-                color: ${tColor || '#222222'} !important;
+                color: ${sColor || tColor || '#222222'} !important;
               }
               
               /* Footer & Full System BG Overrides */
