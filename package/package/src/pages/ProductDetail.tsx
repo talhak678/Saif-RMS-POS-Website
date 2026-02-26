@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ const ProductDetail = () => {
   const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
   const [quantity, setQuantity] = useState<number>(1);
   const [product, setProduct] = useState<any>(null);
+  const [reviewStats, setReviewStats] = useState({ avgRating: 0, totalReviews: 0 });
 
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
@@ -28,9 +30,29 @@ const ProductDetail = () => {
       }
       if (found) {
         setProduct(found);
+        fetchReviewStats(found.id);
       }
     }
   }, [id, cmsConfig, cmsLoading]);
+
+  const fetchReviewStats = async (menuItemId: string) => {
+    const slug = cmsConfig?.slug;
+    const restaurantId = cmsConfig?.restaurantId;
+    if (!slug && !restaurantId) return;
+
+    try {
+      const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
+      const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}&limit=1`);
+      if (res.data?.success) {
+        setReviewStats({
+          avgRating: res.data.data.avgRating || 0,
+          totalReviews: res.data.data.totalReviews || 0
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch review stats", err);
+    }
+  };
 
   if (cmsLoading) return <div className="text-center py-5">Loading product...</div>;
 
@@ -81,9 +103,12 @@ const ProductDetail = () => {
                 <div className="dz-head mt-3">
                   <h2 className="title" style={{ fontSize: '32px', fontWeight: 800 }}>{product.name}</h2>
                   <div className="rating">
-                    <i className="fa-solid fa-star" style={{ color: '#fe9f10' }}></i>{" "}
+                    <i className="fa-solid fa-star" style={{ color: reviewStats.totalReviews > 0 ? '#fe9f10' : '#ccc' }}></i>{" "}
                     <span>
-                      <strong className="text-dark">4.5</strong> - Verified Feedback
+                      <strong className="text-dark">
+                        {reviewStats.totalReviews > 0 ? reviewStats.avgRating.toFixed(1) : "New"}
+                      </strong>
+                      {reviewStats.totalReviews > 0 ? ` - ${reviewStats.totalReviews} Verified Feedback` : " - No ratings yet"}
                     </span>
                   </div>
                 </div>
