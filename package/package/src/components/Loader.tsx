@@ -1,27 +1,11 @@
 import React, { useContext } from "react";
 import { Context } from "../context/AppContext";
-import { IMAGES } from "../constent/theme";
 
 const Loader: React.FC = () => {
     const { cmsConfig } = useContext(Context);
 
     // Dynamic Colors from CMS
     const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ffffff";
-    const restaurantName = cmsConfig?.restaurantName || "SAIF POS";
-
-    const cmsLogo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
-        cmsConfig?.config?.configJson?.home?.sections?.header?.content?.logoUrl ||
-        cmsConfig?.restaurantLogo;
-
-    // Default fallback logo (Kababjees for this project)
-    const KABABJEES_LOGO = "https://www.kababjees.com/assets/images/kababjees_logo.png";
-
-    // Dynamic Logo Selection
-    // If we have a valid CMS logo that isn't the dummy template logo, use it.
-    // Otherwise, use the Kababjees placeholder.
-    const logo = (cmsLogo && !cmsLogo.includes("swigo") && cmsLogo !== IMAGES.logo)
-        ? cmsLogo
-        : KABABJEES_LOGO;
 
     return (
         <div style={{
@@ -44,41 +28,9 @@ const Loader: React.FC = () => {
                 alignItems: "center",
                 zIndex: 2
             }}>
-                {/* Center Logo Area */}
-                <div style={{
-                    width: "220px",
-                    height: "160px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    animation: "logoPulse 2.5s ease-in-out infinite",
-                    position: "relative"
-                }}>
-                    {/* Dynamic Glow Effect */}
-                    <div style={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "100%",
-                        background: `radial-gradient(circle, ${primaryColor}33 0%, transparent 70%)`,
-                        filter: "blur(20px)",
-                        zIndex: -1
-                    }}></div>
-
-                    <img
-                        src={logo}
-                        alt={restaurantName}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "contain",
-                            filter: "drop-shadow(0 0 10px rgba(255,255,255,0.1))"
-                        }}
-                    />
-                </div>
-
                 {/* Dynamic Spinner */}
                 <div style={{
-                    marginTop: "40px",
+                    marginTop: "20px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
