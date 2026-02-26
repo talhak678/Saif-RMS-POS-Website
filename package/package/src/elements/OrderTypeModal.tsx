@@ -53,7 +53,7 @@ const OrderTypeModal = () => {
                     toast.error("No branches found with location data", { id: toastId });
                 }
             },
-            (error) => {
+            () => {
                 toast.error("Location access denied or unavailable", { id: toastId });
             }
         );
