@@ -5,10 +5,17 @@ import { IMAGES } from "../constent/theme";
 const Loader: React.FC = () => {
     const { cmsConfig } = useContext(Context);
 
-    const logo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
+    const cmsLogo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
         cmsConfig?.config?.configJson?.home?.sections?.header?.content?.logoUrl ||
-        cmsConfig?.restaurantLogo ||
-        IMAGES.logo;
+        cmsConfig?.restaurantLogo;
+
+    // Default fallback logo (Kababjees)
+    const KABABJEES_LOGO = "https://www.kababjees.com/assets/images/kababjees_logo.png";
+
+    // Use Kababjees logo if cmsLogo is not available or if it looks like the dummy 'Swigo' logo
+    const logo = (cmsLogo && !cmsLogo.includes("swigo") && cmsLogo !== IMAGES.logo)
+        ? cmsLogo
+        : KABABJEES_LOGO;
 
     return (
         <div style={{
