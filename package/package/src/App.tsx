@@ -141,90 +141,95 @@ function App() {
     <>
       <div className="page-wraper" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white", minHeight: '100vh' }}>
         <Router>
-          {cmsLoading && <Loader />}
-          <OrderTypeModal />
-          <SignIn />
-          <ScrollTop />
-          <Routes>
-            <Route element={<Layout2 />}>
-              <Route path="/" element={<Home2 />} />
-            </Route>
+          {cmsLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <OrderTypeModal />
+              <SignIn />
+              <ScrollTop />
+              <Routes>
+                <Route element={<Layout2 />}>
+                  <Route path="/" element={<Home2 />} />
+                </Route>
 
-            <Route element={<Layout4 />}>
-              <Route path="/about-us" element={
-                <CmsProtectedRoute pageKey="about">
-                  <AboutUs />
-                </CmsProtectedRoute>
-              } />
-              <Route path="/faq" element={
-                <CmsProtectedRoute pageKey="faq">
-                  <Faq />
-                </CmsProtectedRoute>
-              } />
-              <Route path="/our-menu-1" element={<MenuStyle1 />} />
-              <Route path="/our-menu-2" element={
-                <CmsProtectedRoute pageKey="menu">
-                  <MenuStyle2 />
-                </CmsProtectedRoute>
-              } />
-              <Route path="/our-menu-3" element={<MenuStyle3 />} />
-              <Route path="/our-menu-4" element={<MenuStyle4 />} />
-              <Route path="/our-menu-5" element={<MenuStyle5 />} />
+                <Route element={<Layout4 />}>
+                  <Route path="/about-us" element={
+                    <CmsProtectedRoute pageKey="about">
+                      <AboutUs />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route path="/faq" element={
+                    <CmsProtectedRoute pageKey="faq">
+                      <Faq />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route path="/our-menu-1" element={<MenuStyle1 />} />
+                  <Route path="/our-menu-2" element={
+                    <CmsProtectedRoute pageKey="menu">
+                      <MenuStyle2 />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route path="/our-menu-3" element={<MenuStyle3 />} />
+                  <Route path="/our-menu-4" element={<MenuStyle4 />} />
+                  <Route path="/our-menu-5" element={<MenuStyle5 />} />
 
-              <Route path="/shop-cart" element={<ShopCart />} />
-              <Route path="/shop-checkout" element={<ShopCheckout />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
-              <Route path="/track-order" element={<TrackOrder />} />
-              <Route path="/my-account" element={<MyAccount />} />
+                  <Route path="/shop-cart" element={<ShopCart />} />
+                  <Route path="/shop-checkout" element={<ShopCheckout />} />
+                  <Route path="/order-success" element={<OrderSuccess />} />
+                  <Route path="/track-order" element={<TrackOrder />} />
+                  <Route path="/my-account" element={<MyAccount />} />
 
-              <Route path="/blog-list" element={
-                <CmsProtectedRoute pageKey="blogs">
-                  <BlogList />
-                </CmsProtectedRoute>
-              } />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/contact-us" element={
-                <CmsProtectedRoute pageKey="contact">
-                  <ContactUs />
-                </CmsProtectedRoute>
-              } />
-            </Route>
+                  <Route path="/blog-list" element={
+                    <CmsProtectedRoute pageKey="blogs">
+                      <BlogList />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/contact-us" element={
+                    <CmsProtectedRoute pageKey="contact">
+                      <ContactUs />
+                    </CmsProtectedRoute>
+                  } />
+                </Route>
 
-            <Route element={<Layout5 />}>
-              <Route path="/error-404" element={<Error404 />} />
-            </Route>
-            <Route element={<Layout6 />}>
-              <Route path="/blog-standard" element={
-                <CmsProtectedRoute pageKey="blogs">
-                  <BlogDetail />
-                </CmsProtectedRoute>
-              } />
-              <Route path="/blog-open-gutenberg" element={
-                <CmsProtectedRoute pageKey="blogs">
-                  <BlogGutenberg />
-                </CmsProtectedRoute>
-              } />
-              <Route
-                path="/blog-detail-left-sidebar"
-                element={
-                  <CmsProtectedRoute pageKey="blogs">
-                    <BlogDetailLeftSidebar />
-                  </CmsProtectedRoute>
-                }
-              />
-              <Route
-                path="/blog-detail-right-sidebar"
-                element={
-                  <CmsProtectedRoute pageKey="blogs">
-                    <BlogDetailRightSidebar />
-                  </CmsProtectedRoute>
-                }
-              />
-            </Route>
-            <Route path="/coming-soon" element={<ComingSoon />} />
-            <Route path="/under-maintenance" element={<UnderMaintenance />} />
-            <Route path="*" element={<Error404 />} />
-          </Routes>
+                <Route element={<Layout5 />}>
+                  <Route path="/error-404" element={<Error404 />} />
+                </Route>
+                <Route element={<Layout6 />}>
+                  <Route path="/blog-standard" element={
+                    <CmsProtectedRoute pageKey="blogs">
+                      <BlogDetail />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route path="/blog-open-gutenberg" element={
+                    <CmsProtectedRoute pageKey="blogs">
+                      <BlogGutenberg />
+                    </CmsProtectedRoute>
+                  } />
+                  <Route
+                    path="/blog-detail-left-sidebar"
+                    element={
+                      <CmsProtectedRoute pageKey="blogs">
+                        <BlogDetailLeftSidebar />
+                      </CmsProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/blog-detail-right-sidebar"
+                    element={
+                      <CmsProtectedRoute pageKey="blogs">
+                        <BlogDetailRightSidebar />
+                      </CmsProtectedRoute>
+                    }
+                  />
+                </Route>
+                <Route path="/coming-soon" element={<ComingSoon />} />
+                <Route path="/under-maintenance" element={<UnderMaintenance />} />
+                <Route path="*" element={<Error404 />} />
+              </Routes>
+            </>
+          )}
         </Router>
       </div>
     </>
