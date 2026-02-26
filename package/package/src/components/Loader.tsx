@@ -5,17 +5,12 @@ import { IMAGES } from "../constent/theme";
 const Loader: React.FC = () => {
     const { cmsConfig } = useContext(Context);
 
-    const cmsLogo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
-        cmsConfig?.config?.configJson?.home?.sections?.header?.content?.logoUrl ||
-        cmsConfig?.restaurantLogo;
+    const headerContent = cmsConfig?.config?.configJson?.home?.sections?.header?.content || {};
 
-    // Default fallback logo (Kababjees)
-    const KABABJEES_LOGO = "https://www.kababjees.com/assets/images/kababjees_logo.png";
-
-    // Use Kababjees logo if cmsLogo is not available or if it looks like the dummy 'Swigo' logo
-    const logo = (cmsLogo && !cmsLogo.includes("swigo") && cmsLogo !== IMAGES.logo)
-        ? cmsLogo
-        : KABABJEES_LOGO;
+    const logo = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
+        headerContent.logoUrl ||
+        cmsConfig?.restaurantLogo ||
+        IMAGES.logo;
 
     return (
         <div style={{
@@ -40,12 +35,16 @@ const Loader: React.FC = () => {
             }}>
                 {/* Center Logo with Pulse Animation */}
                 <div style={{
-                    width: "200px",
-                    height: "200px",
+                    width: "240px",
+                    height: "120px",
+                    backgroundColor: "#ffffff", // White background box like in the header
+                    padding: "20px",
+                    borderRadius: "12px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    animation: "logoPulse 2s ease-in-out infinite"
+                    animation: "logoPulse 2s ease-in-out infinite",
+                    boxShadow: "0 20px 50px rgba(0,0,0,0.5)"
                 }}>
                     <img
                         src={logo}
@@ -54,7 +53,6 @@ const Loader: React.FC = () => {
                             width: "100%",
                             height: "100%",
                             objectFit: "contain",
-                            filter: "drop-shadow(0 0 20px rgba(255,255,255,0.1))"
                         }}
                     />
                 </div>
