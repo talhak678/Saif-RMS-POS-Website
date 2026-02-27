@@ -3,7 +3,6 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/AppContext";
 import axios from "axios";
-import { IMAGES } from "../constent/theme";
 
 const Home2Testimonial = () => {
   const { cmsConfig } = useContext(Context);
@@ -16,7 +15,8 @@ const Home2Testimonial = () => {
       if (!slug && !restaurantId) return;
       try {
         const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
-        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&limit=5`);
+        // Fetch more reviews to allow filtering from a larger pool if needed
+        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&limit=20`);
         if (res.data?.success) {
           setReviews(res.data.data.reviews || []);
         }
@@ -27,18 +27,31 @@ const Home2Testimonial = () => {
     fetchReviews();
   }, [cmsConfig?.slug, cmsConfig?.restaurantId]);
 
-  const displayReviews = reviews.length > 0 ? reviews : [
-    {
-      order: { customer: { name: "John Doe" } },
-      comment: "Amazing food and service! The burger was perfectly cooked and very juicy.",
-      rating: 5
-    },
-    {
-      order: { customer: { name: "Jane Smith" } },
-      comment: "Very fast delivery and the pasta was still hot when it arrived. Strongly recommend!",
-      rating: 4
-    }
-  ];
+  const selectedReviewIds = cmsConfig?.config?.configJson?.home?.sections?.customerComments?.content?.selectedReviewIds || [];
+
+  let displayReviews = reviews;
+
+  if (selectedReviewIds.length > 0) {
+    displayReviews = reviews.filter(r => selectedReviewIds.includes(r.id));
+  } else {
+    displayReviews = reviews.slice(0, 5); // Fallback to latest 5
+  }
+
+  // Final fallback for demo/default state
+  if (displayReviews.length === 0 && reviews.length === 0) {
+    displayReviews = [
+      {
+        order: { customer: { name: "John Doe" } },
+        comment: "Amazing food and service! The burger was perfectly cooked and very juicy.",
+        rating: 5
+      },
+      {
+        order: { customer: { name: "Jane Smith" } },
+        comment: "Very fast delivery and the pasta was still hot when it arrived. Strongly recommend!",
+        rating: 4
+      }
+    ];
+  }
 
   return (
     <Swiper
@@ -56,24 +69,22 @@ const Home2Testimonial = () => {
     >
       {displayReviews.map((review, ind) => (
         <SwiperSlide className="swiper-slide" key={ind}>
-          <div className="testimonial-2">
-            <div className="dz-media">
-              <img src={IMAGES.testimonial_mini_pic1} alt="/" />
-            </div>
-            <div className="testimonial-detail">
+          <div className="testimonial-2 text-center">
+            {/* Customer Image Removed as per request */}
+            <div className="testimonial-detail" style={{ paddingLeft: '0' }}>
               <div className="testimonial-text wow fadeInUp">
                 <div className="star-rating mb-3">
                   {[...Array(5)].map((_, i) => (
                     <i key={i} className={`${i < review.rating ? "fas" : "far"} fa-star m-r5`} style={{ color: "#fe9f10" }}></i>
                   ))}
                 </div>
-                <p>"{review.comment}"</p>
+                <p style={{ fontSize: '1.2rem', fontStyle: 'italic', color: '#666' }}>"{review.comment}"</p>
               </div>
               <div className="testimonial-info wow fadeInUp">
-                <h5 className="testimonial-name">{review.order?.customer?.name || "Happy Customer"}</h5>
-                <span className="testimonial-position">Customer</span>
+                <h5 className="testimonial-name" style={{ color: 'var(--primary)' }}>{review.order?.customer?.name || "Happy Customer"}</h5>
+                <span className="testimonial-position">Verified Customer</span>
               </div>
-              <i className="flaticon-right-quote quote"></i>
+              <i className="flaticon-right-quote quote" style={{ opacity: '0.1' }}></i>
             </div>
           </div>
         </SwiperSlide>
