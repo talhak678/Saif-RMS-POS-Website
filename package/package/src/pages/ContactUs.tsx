@@ -103,6 +103,18 @@ const ContactUs = () => {
                       <input name="dzOther[Person]" required type="text" className="form-control" placeholder={formContent.membersPlaceholder || "1 Person"} />
                     </div>
                   </div>
+                  <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
+                    <label className="form-label text-primary">{formContent.dateLabel || "Date"}</label>
+                    <div className="input-group input-line input-black">
+                      <input name="dzOther[Date]" required type="date" className="form-control" placeholder={formContent.datePlaceholder || "Select Date"} />
+                    </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
+                    <label className="form-label text-primary">{formContent.timeLabel || "Time"}</label>
+                    <div className="input-group input-line input-black">
+                      <input name="dzOther[Time]" required type="time" className="form-control" placeholder={formContent.timePlaceholder || "Select Time"} />
+                    </div>
+                  </div>
                   <div className="col-sm-12 m-b40">
                     <label className="form-label text-primary">{formContent.messageLabel || "Message"}</label>
                     <div className="input-group input-line input-black">
