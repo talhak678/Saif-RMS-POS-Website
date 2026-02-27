@@ -82,7 +82,11 @@ const CheckoutForm = () => {
   const currentBranch = branches.find((b: any) => b.id === selectedBranchId) || branches[0] || activeBranch;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    let { name, value } = e.target;
+    if (name === "phone") {
+      value = value.replace(/[^0-9]/g, "");
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleLocationSelect = (lat: number, lng: number, address: string) => {
@@ -243,7 +247,7 @@ const CheckoutForm = () => {
             </div>
             <div className="mb-0">
               <label className="form-label fw-semibold">Phone *</label>
-              <input name="phone" required className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.phone} onChange={handleChange} />
+              <input name="phone" type="tel" required className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.phone} onChange={handleChange} />
             </div>
           </div>
 
