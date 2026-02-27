@@ -304,6 +304,7 @@ const MenuStyle2 = () => {
                     flex: 1,
                     display: "flex",
                     flexDirection: "column",
+                    textAlign: (galleryConfig.textAlign || "left") as any,
                     opacity: item.isAvailable === false ? 0.6 : 1
                   }}>
                     <h5
@@ -335,7 +336,7 @@ const MenuStyle2 = () => {
                     </p>
 
                     {/* Stock indicator */}
-                    <div style={{ marginBottom: '10px' }}>
+                    <div style={{ marginBottom: '10px', display: 'flex', justifyContent: galleryConfig.textAlign === 'center' ? 'center' : galleryConfig.textAlign === 'right' ? 'flex-end' : 'flex-start' }}>
                       <span style={{
                         fontSize: '11px',
                         fontWeight: 600,

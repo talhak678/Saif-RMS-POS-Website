@@ -16,9 +16,8 @@ const HomeSpacialMenu = () => {
               onMouseEnter={() => {
                 setActive(ind);
               }}
-              className={`dz-img-box style-2 box-hover ${
-                addActive === ind ? "active" : ""
-              }`}
+              className={`dz-img-box style-2 box-hover ${addActive === ind ? "active" : ""
+                }`}
             >
               <div className="dz-media">
                 <img src={img} alt="/" />
@@ -27,7 +26,7 @@ const HomeSpacialMenu = () => {
                 <h4 className="dz-title">
                   <Link to="/product-detail">{name}</Link>
                 </h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing.</p>
+                <p>Freshly prepared with the best ingredients.</p>
                 <h5 className="dz-price text-primary">{price}</h5>
                 <Link to="/shop-cart" className="btn btn-primary btn-hover-2">
                   Add To Cart

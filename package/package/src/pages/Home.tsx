@@ -37,7 +37,9 @@ const Home = () => {
             <div className={`section-head ${getAlignClass('browseMenu')}`}>
               <h2 className="title wow flipInX">{sections.browseMenu?.content?.title || "Special Menu"}</h2>
             </div>
-            <HomeSpacialMenu />
+            <div className={getAlignClass('browseMenu')}>
+              <HomeSpacialMenu />
+            </div>
           </div>
           <img
             className="bg1 dz-move-down"
@@ -54,8 +56,9 @@ const Home = () => {
             <div className={`section-head ${getAlignClass('todaysSpecial')}`}>
               <h2 className="title wow flipInX">{sections.todaysSpecial?.content?.title || "Today's Menu"}</h2>
             </div>
-
-            <HomeImageBox />
+            <div className={getAlignClass('todaysSpecial')}>
+              <HomeImageBox />
+            </div>
           </div>
           <img className="bg1 dz-parallax" src={IMAGES.background_pic3} alt="/" />
           <img className="bg2 dz-parallax" src={IMAGES.background_pic4} alt="/" />
@@ -68,7 +71,9 @@ const Home = () => {
             <div className={`section-head ${getAlignClass('ourMenu')}`}>
               <h2 className="title wow flipInX">{sections.ourMenu?.content?.title || "From Our Menu"}</h2>
             </div>
-            <MenuSlider />
+            <div className={getAlignClass('ourMenu')}>
+              <MenuSlider />
+            </div>
           </div>
         </section>
       )}
@@ -94,7 +99,9 @@ const Home = () => {
             <div className={`section-head ${getAlignClass('customerComments')}`}>
               <h2 className="title wow flipInX">{sections.customerComments?.content?.title || "Customer's Comment"}</h2>
             </div>
-            <Testymonial />
+            <div className={getAlignClass('customerComments')}>
+              <Testymonial />
+            </div>
           </div>
           <img
             className="bg1 dz-move-down"

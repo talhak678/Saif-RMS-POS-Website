@@ -11,6 +11,9 @@ const ShopStyle1RightContent = () => {
     cmsConfig?.config?.primaryColor ||
     "#ff6b35";
 
+  const cartConfig = cmsConfig?.config?.configJson?.cart;
+  const textAlign = cartConfig?.sections?.cartContent?.content?.textAlign || "left";
+
   if (cartItems.length === 0) {
     return (
       <div className="text-center py-5" style={{ background: "#fff", borderRadius: "20px", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
@@ -30,7 +33,9 @@ const ShopStyle1RightContent = () => {
           borderRadius: "18px",
           overflow: "hidden",
           boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
-          transition: "transform 0.2s"
+          transition: "transform 0.2s",
+          display: "flex",
+          textAlign: textAlign as any
         }}>
           <div className="dz-media" style={{ width: "140px", height: "140px", flexShrink: 0 }}>
             <img
@@ -39,9 +44,9 @@ const ShopStyle1RightContent = () => {
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           </div>
-          <div className="dz-content" style={{ padding: "20px", flex: 1 }}>
-            <div className="dz-head" style={{ marginBottom: "10px" }}>
-              <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700 }}>
+          <div className="dz-content" style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center" }}>
                 {/* 🟢 Veg/Non-Veg indicator (Static for now based on item or default) */}
                 <svg
                   className="m-r10"
@@ -61,8 +66,8 @@ const ShopStyle1RightContent = () => {
               </div>
             </div>
 
-            <div className="dz-body" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-              <div>
+            <div className="dz-body" style={{ display: "flex", justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'space-between', alignItems: "flex-end", gap: '15px', flexWrap: 'wrap' }}>
+              <div style={{ textAlign: textAlign as any }}>
                 <p className="mb-2" style={{ color: "#888", fontSize: "13px" }}>
                   By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
                 </p>
