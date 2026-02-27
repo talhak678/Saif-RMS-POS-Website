@@ -18,28 +18,26 @@ const ShopCart = () => {
   const tax = subtotal * (taxPercentage / 100);
   const total = subtotal + deliveryCharge + tax;
 
+  const cartConfig = cmsConfig?.config?.configJson?.cart;
+  const bannerEnabled = cartConfig?.sections?.banner?.enabled ?? true;
+  const bannerContent = cartConfig?.sections?.banner?.content;
+  const contentConfig = cartConfig?.sections?.cartContent?.content;
+
   return (
     <div className="page-content bg-white">
-      <CommonBanner
-        img={IMAGES.images_bnr4}
-        title="Shop Cart"
-        subtitle="Shop Cart"
-      />
+      {bannerEnabled && (
+        <CommonBanner
+          img={bannerContent?.imageUrl || IMAGES.images_bnr4}
+          title={bannerContent?.title || "Shop Cart"}
+          subtitle={bannerContent?.breadcrumb || "Shop Cart"}
+        />
+      )}
       <section className="content-inner-1">
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="d-flex justify-content-between align-items-center">
-                <h5 className="title m-b15 m-lg-30">Your Selection</h5>
-                <Link
-                  to="#"
-                  className="btn btn-primary panel-btn"
-                  onClick={() => {
-                    setFilterSidebar(true);
-                  }}
-                >
-                  Filter
-                </Link>
+              <div className="d-flex justify-content-center align-items-center">
+                <h5 className="title m-b15 m-lg-30" style={{ textAlign: contentConfig?.textAlign || 'center' as any }}>{contentConfig?.title || "Your Selection"}</h5>
               </div>
               <ShopStyle1RightContent />
             </div>
@@ -115,7 +113,7 @@ const ShopCart = () => {
                               </span>
                             </div>
                           </div>
-                          <h5 className="price text-primary mb-0">$ {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
+                          <h5 className="price text-primary mb-0">{cmsConfig?.config?.currency || '$'} {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
                         </div>
                       </div>
                     </div>
@@ -123,32 +121,32 @@ const ShopCart = () => {
 
                   {cartItems.length === 0 && (
                     <div className="text-center py-4">
-                      <p>Your cart is empty</p>
-                      <Link to="/our-menu-2" className="btn btn-primary btn-sm">Explore Menu</Link>
+                      <p>{contentConfig?.emptyCartText || "Your cart is empty"}</p>
+                      <Link to="/our-menu-2" className="btn btn-primary btn-sm">{contentConfig?.exploreMenuText || "Explore Menu"}</Link>
                     </div>
                   )}
 
                   <div className="order-detail">
-                    <h6>Bill Details</h6>
+                    <h6>{contentConfig?.billDetailsTitle || "Bill Details"}</h6>
                     <table>
                       <tbody>
                         <tr>
-                          <td>Item Total</td>
-                          <td className="price text-primary">$ {subtotal.toFixed(0)}</td>
+                          <td>{contentConfig?.itemTotalLabel || "Item Total"}</td>
+                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(0)}</td>
                         </tr>
                         <tr className="charges">
-                          <td>Delivery Charges</td>
-                          <td className="price text-primary">$ {deliveryCharge.toFixed(0)}</td>
+                          <td>{contentConfig?.deliveryLabel || "Delivery Charges"}</td>
+                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {deliveryCharge.toFixed(0)}</td>
                         </tr>
                         <tr className="tax">
-                          <td>Tax ({taxPercentage}%)</td>
-                          <td className="price text-primary">$ {tax.toFixed(0)}</td>
+                          <td>{contentConfig?.taxLabel || "Tax"} ({taxPercentage}%)</td>
+                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {tax.toFixed(0)}</td>
                         </tr>
                         <tr className="total">
                           <td>
-                            <h6>Total</h6>
+                            <h6>{contentConfig?.totalLabel || "Total"}</h6>
                           </td>
-                          <td className="price text-primary">$ {total.toFixed(0)}</td>
+                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {total.toFixed(0)}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -161,7 +159,7 @@ const ShopCart = () => {
                       style={{ opacity: isStoreClosed || cartItems.length === 0 ? 0.6 : 1, pointerEvents: isStoreClosed || cartItems.length === 0 ? 'none' : 'auto' }}
                     >
                       <span>
-                        {cartItems.length === 0 ? 'Add Items First' : (isStoreClosed ? 'Kitchen Closed' : 'Order Now')} <i className="fa-solid fa-arrow-right"></i>
+                        {cartItems.length === 0 ? (contentConfig?.addItemsText || 'Add Items First') : (isStoreClosed ? (contentConfig?.kitchenClosedText || 'Kitchen Closed') : (contentConfig?.orderNowText || 'Order Now'))} <i className="fa-solid fa-arrow-right"></i>
                       </span>
                     </Link>
                   </div>
