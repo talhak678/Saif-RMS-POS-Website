@@ -38,18 +38,27 @@ const AboutUs = () => {
           @media (max-width: 768px) {
             .section-head {
               margin-bottom: 40px !important;
+              text-align: center !important;
             }
             .section-head .title {
               font-size: 28px !important;
+            }
+            .section-head p {
+              text-align: center !important;
             }
           }
           @media (max-width: 576px) {
             .icon-bx-wraper.style-3 {
               padding: 20px !important;
               text-align: center !important;
+              flex-direction: column !important;
+              align-items: center !important;
             }
             .icon-bx-wraper.style-3 .icon-bx {
               margin: 0 auto 15px !important;
+            }
+            .icon-content {
+              text-align: center !important;
             }
           }
         `}

@@ -75,7 +75,7 @@ import { Toaster } from "react-hot-toast";
 const Layout2 = () => {
   const { setHeaderClass } = useContext(Context);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setHeaderClass(false), []);
+  useEffect(() => setHeaderClass(true), []);
   return (
     <>
       <Header2 />
@@ -111,7 +111,7 @@ const Layout5 = () => {
 const Layout6 = () => {
   const { setHeaderClass } = useContext(Context);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setHeaderClass(false), []);
+  useEffect(() => setHeaderClass(true), []);
   return (
     <>
       <Header2 />

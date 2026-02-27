@@ -82,12 +82,17 @@ const ContactUs = () => {
             .section-wrapper-8 {
               padding-top: 50px !important;
             }
+            .section-head {
+              text-align: center !important;
+            }
           }
           @media (max-width: 576px) {
             .icon-bx-wraper.style-5 {
               margin-bottom: 20px !important;
               padding: 20px !important;
               text-align: center !important;
+              flex-direction: column !important;
+              align-items: center !important;
             }
             .icon-bx-wraper.style-5 .icon-bx {
               margin: 0 auto 15px !important;

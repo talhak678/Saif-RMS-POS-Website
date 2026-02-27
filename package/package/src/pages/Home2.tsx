@@ -25,6 +25,31 @@ const Home2 = () => {
       className="page-content"
       style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}
     >
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .content-inner, .content-inner-1 {
+              padding-top: 40px !important;
+              padding-bottom: 40px !important;
+            }
+            .section-head {
+              margin-bottom: 30px !important;
+              flex-direction: column !important;
+              text-align: center !important;
+              gap: 15px;
+            }
+            .section-head.menu-align {
+               justify-content: center !important;
+            }
+            .section-head .title {
+              font-size: 26px !important;
+            }
+            .pagination-align {
+               display: none !important;
+            }
+          }
+        `}
+      </style>
       <MainBanner2 />
       <Home2PromoBanners />
 
