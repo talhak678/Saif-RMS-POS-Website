@@ -30,8 +30,20 @@ const Footer2 = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       {footerEnabled && (
-        <footer className="site-footer style-2" id="footer" style={{ backgroundColor: `${bgColor} !important`, color: 'white' }}>
-          <div className="footer-top" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '60px' }}>
+        <footer className="site-footer style-2" id="footer" style={{ backgroundColor: bgColor, color: 'white', position: 'relative' }}>
+          <style>
+            {`
+              .site-footer.style-2#footer {
+                background-color: ${bgColor} !important;
+                background-image: none !important;
+              }
+              .site-footer.style-2 .footer-top, 
+              .site-footer.style-2 .footer-bottom {
+                background-color: transparent !important;
+              }
+            `}
+          </style>
+          <div className="footer-top" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '60px', position: 'relative', zIndex: 1 }}>
             <div className="container">
               {/* TOP SECTION: LOGO & NEWSLETTER */}
               <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
