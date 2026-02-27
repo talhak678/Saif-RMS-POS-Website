@@ -45,7 +45,7 @@ const MainBanner2 = () => {
             }
             .main-bnr-three .banner-content {
                padding: 20px !important;
-               text-align: center !important;
+               text-align: left !important;
             }
             .main-bnr-three .banner-content .title {
                font-size: 32px !important;

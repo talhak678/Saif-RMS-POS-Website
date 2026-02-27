@@ -21,7 +21,7 @@ const MainBanner = () => {
         {`
           @media (max-width: 991px) {
             .main-bnr-one .banner-content {
-              text-align: center !important;
+              text-align: left !important;
               padding-top: 40px;
             }
             .main-bnr-one .banner-content .title {
