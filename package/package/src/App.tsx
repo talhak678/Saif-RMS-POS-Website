@@ -70,6 +70,7 @@ import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
 import OrderTypeModal from "./elements/OrderTypeModal";
 import Loader from "./components/Loader";
+import { Toaster } from "react-hot-toast";
 
 const Layout2 = () => {
   const { setHeaderClass } = useContext(Context);
@@ -139,6 +140,7 @@ function App() {
   const { cmsConfig, cmsLoading } = useContext(Context);
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="page-wraper" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white", minHeight: '100vh' }}>
         <Router>
           {cmsLoading ? (
