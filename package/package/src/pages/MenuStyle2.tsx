@@ -114,6 +114,24 @@ const MenuStyle2 = () => {
         />
       )}
 
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .content-inner {
+              padding-top: 40px !important;
+            }
+            .gallery-grid-item {
+              margin-bottom: 20px !important;
+            }
+          }
+           @media (max-width: 576px) {
+            .menu-card-img {
+              height: 180px !important;
+            }
+          }
+        `}
+      </style>
+
       <section className="content-inner" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
         <div className="container">
 
@@ -211,7 +229,7 @@ const MenuStyle2 = () => {
                   }}
                 >
                   {/* Image */}
-                  <div style={{
+                  <div className="menu-card-img" style={{
                     position: "relative",
                     height: "230px",
                     overflow: "hidden",

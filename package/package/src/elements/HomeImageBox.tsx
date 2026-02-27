@@ -7,6 +7,22 @@ const HomeImageBox = () => {
   const [activebox, setActivebox] = useState<number>(1);
   return (
     <>
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .dz-img-box.style-3 {
+              margin-bottom: 20px !important;
+            }
+            .dz-img-box.style-3 .dz-media {
+              height: 200px !important;
+            }
+            .icon- bx-wraper.style-1 {
+              padding: 20px !important;
+              margin-bottom: 15px !important;
+            }
+          }
+        `}
+      </style>
       <div className="row inner-section-wrapper">
         {HomeImageBoxArr.map(({ img, name, price }, ind) => (
           <div className="col-lg-3 col-md-6 col-sm-6 m-b30" key={ind}>

@@ -27,6 +27,31 @@ const ShopStyle1RightContent = () => {
 
   return (
     <>
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .dz-shop-card.style-1 {
+              flex-direction: column !important;
+              text-align: center !important;
+            }
+            .dz-shop-card.style-1 .dz-media {
+              width: 100% !important;
+              height: 200px !important;
+            }
+            .dz-shop-card.style-1 .dz-content {
+              padding: 15px !important;
+            }
+            .dz-shop-card.style-1 .dz-head {
+              justify-content: center !important;
+            }
+            .dz-shop-card.style-1 .dz-body {
+              justify-content: center !important;
+              flex-direction: column !important;
+              align-items: center !important;
+            }
+          }
+        `}
+      </style>
       {cartItems.map((item) => (
         <div className="dz-shop-card style-1 mb-3" key={item.id} style={{
           background: "#fff",
@@ -47,7 +72,7 @@ const ShopStyle1RightContent = () => {
           <div className="dz-content" style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center" }}>
-                {/* 🟢 Veg/Non-Veg indicator (Static for now based on item or default) */}
+                {/* 🟢 Veg/Non-Veg indicator */}
                 <svg
                   className="m-r10"
                   width="16"
@@ -71,7 +96,7 @@ const ShopStyle1RightContent = () => {
                 <p className="mb-2" style={{ color: "#888", fontSize: "13px" }}>
                   By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: 'wrap', justifyContent: textAlign === 'center' ? 'center' : 'flex-start' }}>
                   <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>$ {Number(item.price).toFixed(0)}</h5>
 
                   {/* Quantity Controls */}

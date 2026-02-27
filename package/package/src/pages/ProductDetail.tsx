@@ -167,7 +167,7 @@ const ProductDetail = () => {
                     </li>
                     <li>
                       <Link
-                        to="/shop-checkout"
+                        to="/shop-cart"
                         onClick={() => addToCart({ ...product, quantity })}
                         className="btn btn-outline-secondary btn-hover-1"
                         style={{ padding: '15px 35px', borderRadius: '15px' }}

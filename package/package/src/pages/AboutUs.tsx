@@ -33,6 +33,27 @@ const AboutUs = () => {
 
   return (
     <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .section-head {
+              margin-bottom: 40px !important;
+            }
+            .section-head .title {
+              font-size: 28px !important;
+            }
+          }
+          @media (max-width: 576px) {
+            .icon-bx-wraper.style-3 {
+              padding: 20px !important;
+              text-align: center !important;
+            }
+            .icon-bx-wraper.style-3 .icon-bx {
+              margin: 0 auto 15px !important;
+            }
+          }
+        `}
+      </style>
       {sections.banner?.enabled !== false && (
         <CommonBanner
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}

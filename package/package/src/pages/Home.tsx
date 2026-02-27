@@ -29,6 +29,22 @@ const Home = () => {
 
   return (
     <div className="page-content bg-white">
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .content-inner, .content-inner-1 {
+              padding-top: 50px !important;
+              padding-bottom: 50px !important;
+            }
+            .section-head {
+               margin-bottom: 30px !important;
+            }
+            .section-head .title {
+               font-size: 28px !important;
+            }
+          }
+        `}
+      </style>
       {sections.banner?.enabled !== false && <MainBanner />}
 
       {sections.browseMenu?.enabled !== false && (

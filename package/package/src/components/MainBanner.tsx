@@ -17,6 +17,48 @@ const MainBanner = () => {
   };
   return (
     <div className="main-bnr-one">
+      <style>
+        {`
+          @media (max-width: 991px) {
+            .main-bnr-one .banner-content {
+              text-align: center !important;
+              padding-top: 40px;
+            }
+            .main-bnr-one .banner-content .title {
+              font-size: 42px !important;
+              line-height: 1.2 !important;
+            }
+            .main-bnr-one .banner-btn {
+              justify-content: center !important;
+            }
+            .main-bnr-one .banner-media {
+              margin-top: 30px;
+            }
+            .main-bnr-one .banner-inner {
+               padding-bottom: 50px !important;
+            }
+          }
+          @media (max-width: 576px) {
+            .main-bnr-one .banner-content .title {
+              font-size: 32px !important;
+            }
+            .main-bnr-one .banner-content .sub-title {
+              font-size: 14px !important;
+            }
+            .main-bnr-one .banner-btn .btn {
+              padding: 10px 20px !important;
+              font-size: 14px !important;
+            }
+            .main-bnr-one .banner-btn {
+               flex-direction: column;
+               gap: 15px;
+            }
+            .main-bnr-one .banner-btn .m-r30 {
+               margin-right: 0 !important;
+            }
+          }
+        `}
+      </style>
       <div className="slider-pagination">
         <div className="main-button-prev">
           <i className="icon-arrow-up"></i>

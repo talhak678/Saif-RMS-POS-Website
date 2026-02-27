@@ -13,6 +13,25 @@ const Sidebar = () => {
 
   return (
     <>
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .contact-sidebar {
+              width: 280px !important;
+              padding: 30px 20px !important;
+            }
+            .contact-sidebar .logo-contact img {
+              max-height: 45px !important;
+            }
+            .contact-sidebar h4 {
+              font-size: 18px !important;
+            }
+            .contact-text p {
+              font-size: 14px !important;
+            }
+          }
+        `}
+      </style>
       <div className={`contact-sidebar ${showSidebar ? "active" : ""}`}>
         <div className="contact-box1">
           <div className="logo-contact logo-header">

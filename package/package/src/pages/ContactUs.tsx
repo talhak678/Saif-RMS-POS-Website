@@ -76,6 +76,28 @@ const ContactUs = () => {
 
   return (
     <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
+      <style>
+        {`
+          @media (max-width: 991px) {
+            .section-wrapper-8 {
+              padding-top: 50px !important;
+            }
+          }
+          @media (max-width: 576px) {
+            .icon-bx-wraper.style-5 {
+              margin-bottom: 20px !important;
+              padding: 20px !important;
+              text-align: center !important;
+            }
+            .icon-bx-wraper.style-5 .icon-bx {
+              margin: 0 auto 15px !important;
+            }
+            .dzForm .m-b30 {
+              margin-bottom: 20px !important;
+            }
+          }
+        `}
+      </style>
       {sections.banner?.enabled !== false && (
         <CommonBanner
           img={bannerContent.imageUrl || IMAGES.banner_bnr1}

@@ -25,6 +25,38 @@ const ShopCart = () => {
 
   return (
     <div className="page-content bg-white">
+      <style>
+        {`
+          @media (max-width: 991px) {
+            .side-bar.sticky-top {
+              position: static !important;
+              margin-top: 40px;
+            }
+          }
+          @media (max-width: 576px) {
+            .cart-item.style-1 {
+              flex-direction: row;
+              align-items: center;
+              padding: 10px 0;
+            }
+            .cart-item.style-1 .dz-media {
+              width: 70px !important;
+              height: 70px !important;
+            }
+            .cart-item.style-1 .dz-content {
+              padding-left: 15px;
+            }
+            .cart-item.style-1 .dz-body {
+              flex-direction: column;
+              align-items: flex-start !important;
+              gap: 8px;
+            }
+            .order-detail table td {
+              font-size: 14px;
+            }
+          }
+        `}
+      </style>
       {bannerEnabled && (
         <CommonBanner
           img={bannerContent?.imageUrl || IMAGES.images_bnr4}

@@ -28,7 +28,7 @@ const Footer2 = () => {
       "blog": "/blog-list",
       "shop": "/shop-cart",
       "cart": "/shop-cart",
-      "checkout": "/shop-checkout",
+      "checkout": "/shop-cart",
       "frequently asked questions": "/faq"
     };
 
@@ -59,6 +59,40 @@ const Footer2 = () => {
               .site-footer.style-2 .footer-top, 
               .site-footer.style-2 .footer-bottom {
                 background-color: transparent !important;
+              }
+              @media (max-width: 768px) {
+                .footer-top {
+                  padding-top: 40px !important;
+                }
+                .newsletter-box {
+                  text-align: center !important;
+                  margin: 0 auto;
+                }
+                .dz-social-icon {
+                  justify-content: center !important;
+                }
+                .footer-logo {
+                   text-align: center !important;
+                }
+                .footer-logo img {
+                   margin: 0 auto;
+                }
+                .max-w-md {
+                   text-align: center !important;
+                }
+              }
+              @media (max-width: 576px) {
+                .dz-social-icon a {
+                  width: 45px !important;
+                  height: 45px !important;
+                }
+                .dz-social-icon a i {
+                  font-size: 18px !important;
+                }
+                .footer-title {
+                  font-size: 16px !important;
+                  margin-bottom: 15px !important;
+                }
               }
             `}
           </style>

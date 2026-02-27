@@ -6,6 +6,26 @@ const HomeSpacialMenu = () => {
   const [addActive, setActive] = useState<number>(1);
   return (
     <>
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .dz-img-box.style-2 {
+              text-align: center !important;
+              padding: 15px !important;
+            }
+            .dz-img-box.style-2 .dz-media {
+              height: 180px !important;
+              margin-bottom: 15px !important;
+            }
+            .dz-img-box.style-2 .dz-title {
+              font-size: 18px !important;
+            }
+            .dz-img-box.style-2 p {
+              font-size: 13px !important;
+            }
+          }
+        `}
+      </style>
       <div className="row">
         {HomeSpacialMenunArr.map(({ name, price, img }, ind) => (
           <div
