@@ -64,14 +64,14 @@ const AboutUs = () => {
             <div className="row">
               {displayCards.map(({ icon, title, desc }: { icon: string; title: string; desc: string }, ind: number) => (
                 <div className="col-lg-3 col-sm-6 m-b30" key={ind}>
-                  <div className={`icon-bx-wraper style-3 h-100 text-${textAlignClass}`}>
+                  <div className={`icon-bx-wraper style-3 h-100 text-${textAlignClass}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                     <div className="icon-bx">
                       <div className="icon-cell">
                         <i className={icon}></i>
                       </div>
                     </div>
-                    <div className="icon-content">
-                      <h5 className="title">
+                    <div className="icon-content" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                      <h5 className="title" style={{ marginTop: '20px' }}>
                         <Link to="#">{title}</Link>
                       </h5>
                       <p>{desc}</p>
