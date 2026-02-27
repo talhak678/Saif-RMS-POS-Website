@@ -1,5 +1,4 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { MainBanner2Arr } from "../elements/JsonData";
 import { Parallax, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -23,6 +22,11 @@ const MainBanner2 = () => {
     },
   };
 
+  // Use CMS Promos if available, otherwise fallback to Hero section content
+  const banners = (cmsConfig?.promos && cmsConfig.promos.length > 0)
+    ? cmsConfig.promos
+    : [bannerContent];
+
   return (
     <div className="main-bnr-three overflow-hidden top-space">
       <div className="swiper-bnr-pagination left-align">
@@ -41,107 +45,58 @@ const MainBanner2 = () => {
         pagination={pagination}
         parallax={true}
         speed={1500}
-        loop={true}
+        loop={banners.length > 1}
       >
-        {MainBanner2Arr.map(
-          ({ title, name, price, bgimg, img1, img2, img3, img4 }, ind) => (
-            <SwiperSlide className="swiper-slide" key={ind}>
-              <div
-                className="banner-inner overflow-hidden"
-                data-swiper-parallax="-10"
-                data-swiper-parallax-duration="0.5"
-                style={{
-                  backgroundImage: `url(${bannerContent.imageUrl || bgimg})`,
-                  backgroundSize: "cover",
-                }}
-              >
-                <div className="container">
-                  <div
-                    className="row align-items-center"
-                    data-swiper-parallax="-100"
-                  >
-                    <div className="col-xl-7 col-lg-7 col-md-8">
-                      <div className="banner-content">
-                        <span className="sub-title text-primary">
-                          {bannerContent.subtitle}
-                        </span>
-                        <h1 className="title text-secondary">
-                          {bannerContent.title}
-                        </h1>
-                        <p className="bnr-text">
-                          {bannerContent.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients."}
-                        </p>
+        {banners.map((item: any, ind: number) => (
+          <SwiperSlide className="swiper-slide" key={ind}>
+            <div
+              className="banner-inner overflow-hidden"
+              data-swiper-parallax="-10"
+              data-swiper-parallax-duration="0.5"
+              style={{
+                backgroundImage: `url(${item.imageUrl || item.bgimg || ""})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}
+            >
+              <div className="container">
+                <div
+                  className="row align-items-center justify-content-center"
+                  data-swiper-parallax="-100"
+                >
+                  <div className="col-xl-10 col-lg-10 col-md-11">
+                    <div className="banner-content text-center py-5" style={{ background: 'rgba(0,0,0,0.4)', borderRadius: '30px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '900px', margin: '0 auto' }}>
+                      <span className="sub-title text-primary" style={{ fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                        {item.subtitle || bannerContent.subtitle}
+                      </span>
+                      <h1 className="title text-white mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '900', lineHeight: '1.1' }}>
+                        {item.title || bannerContent.title}
+                      </h1>
+                      <p className="bnr-text text-white opacity-90 mx-auto mb-5" style={{ fontSize: '1.1rem', maxWidth: '700px', lineHeight: '1.6' }}>
+                        {item.description || bannerContent.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients."}
+                      </p>
 
-                        <div className="banner-btn d-flex align-items-center">
-                          <Link
-                            to={bannerContent.buttonLink || "/our-menu-2"}
-                            className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
-                          >
-                            <span>{bannerContent.buttonText}</span>
-                          </Link>
-                          <Link
-                            to="/our-menu-2"
-                            className="btn btn-outline-primary btn-md shadow-primary btn-hover-1"
-                          >
-                            <span>View More</span>
-                          </Link>
-                        </div>
-                        <div className="food-card">
-                          <div className="dz-head">
-                            <h5 className="text-white title">{title}</h5>
-                            <ul className="rating">
-                              <li><i className="fa-solid fa-star m-r5"></i></li>
-                              <li><i className="fa-solid fa-star m-r5"></i></li>
-                              <li><i className="fa-solid fa-star m-r5"></i></li>
-                              <li><i className="fa-solid fa-star m-r5"></i></li>
-                              <li><i className="fa-solid fa-star "></i></li>
-                            </ul>
-                          </div>
-                          <div className="dz-body">
-                            <div className="dz-left">
-                              <div className="profile-info">
-                                <div className="dz-media">
-                                  <img src={img1} alt="/" />
-                                </div>
-                                <div className="dz-content">
-                                  <h6 className="title text-white">{name}</h6>
-                                  <p>Master Chef</p>
-                                </div>
-                              </div>
-                              <p className="text">
-                                Prepared with fresh ingredients and traditional spices...
-                              </p>
-                            </div>
-                            <div className="dz-right">
-                              <h5 className="text-primary">{price}</h5>
-                              <Link
-                                to="/shop-cart"
-                                className="btn btn-primary btn-cart"
-                              >
-                                <i className="flaticon-shopping-cart"></i>
-                              </Link>
-                            </div>
-                          </div>
-                          <img className="target-line" src={img2} alt="/" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-5 col-lg-5 col-md-4">
-                      <div className="banner-media">
-                        <img
-                          src={img4}
-                          alt="/"
-                          data-swiper-parallax-scale="0.8"
-                        />
+                      <div className="banner-btn d-flex align-items-center justify-content-center gap-3">
+                        <Link
+                          to={item.linkUrl || item.buttonLink || bannerContent.buttonLink || "/our-menu-2"}
+                          className="btn btn-primary btn-lg shadow-primary btn-hover-1 py-3 px-5 rounded-pill"
+                        >
+                          <span className="fw-bold">{item.buttonText || bannerContent.buttonText || "Order Now"}</span>
+                        </Link>
+                        <Link
+                          to="/our-menu-2"
+                          className="btn btn-outline-light btn-lg btn-hover-1 py-3 px-5 rounded-pill"
+                        >
+                          <span className="fw-bold">View More</span>
+                        </Link>
                       </div>
                     </div>
                   </div>
                 </div>
-                <img className="leaf" src={img3} alt="/" />
               </div>
-            </SwiperSlide>
-          )
-        )}
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
