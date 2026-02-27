@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ModalVideo from "react-modal-video";
-import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 
 const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?: string; description?: string; videoUrl?: string; thumbnailUrl?: string }) => {
