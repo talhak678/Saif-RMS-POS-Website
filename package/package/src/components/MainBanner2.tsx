@@ -10,6 +10,7 @@ const MainBanner2 = () => {
   const bannerContent = cmsConfig?.config?.configJson?.home?.sections?.banner?.content || {
     title: "We believe Good Food Offer Great Smile",
     subtitle: "High Quality Test Station",
+    description: "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients.",
     buttonText: "OUR SPECIALITIES",
     buttonLink: "/our-menu-2"
   };
