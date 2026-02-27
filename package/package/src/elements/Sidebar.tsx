@@ -2,16 +2,26 @@ import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
+import SocialLinks from "./SocialLinks";
 
 const Sidebar = () => {
-  const { showSidebar, setShowSidebar, setShowOrderModal } = useContext(Context);
+  const { showSidebar, setShowSidebar, setShowOrderModal, cmsConfig } = useContext(Context);
+
+  const footerContent = cmsConfig?.config?.configJson?.home?.sections?.footer?.content || {};
+  const logoUrl = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo || IMAGES.logo;
+  const restaurantName = cmsConfig?.restaurantName || "Saif Kitchen";
+
   return (
     <>
       <div className={`contact-sidebar ${showSidebar ? "active" : ""}`}>
         <div className="contact-box1">
           <div className="logo-contact logo-header">
-            <Link to="/" className="anim-logo">
-              <img src={IMAGES.logo} alt="/" />
+            <Link to="/" className="anim-logo" onClick={() => setShowSidebar(false)}>
+              <img
+                src={logoUrl}
+                alt={restaurantName}
+                style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain' }}
+              />
             </Link>
           </div>
           <div className="m-b50 contact-text">
@@ -19,10 +29,9 @@ const Sidebar = () => {
               <h4 className="m-b0">About us</h4>
             </div>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+              {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
             </p>
-            <Link to="/about-us" className="btn btn-primary btn-hover-2">
+            <Link to="/about-us" className="btn btn-primary btn-hover-2" onClick={() => setShowSidebar(false)}>
               <span>READ MORE</span>
             </Link>
           </div>
@@ -33,7 +42,11 @@ const Sidebar = () => {
             <div className="customer-buttons d-flex flex-column gap-2">
               <button
                 className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                style={{ backgroundColor: "#fe9f10", borderColor: "#fe9f10", color: "#fff" }}
+                style={{
+                  backgroundColor: cmsConfig?.config?.primaryColor || "#fe9f10",
+                  borderColor: cmsConfig?.config?.primaryColor || "#fe9f10",
+                  color: "#fff"
+                }}
                 onClick={() => {
                   setShowSidebar(false);
                   setShowOrderModal(true);
@@ -42,13 +55,15 @@ const Sidebar = () => {
                 <i className="fa-solid fa-location-dot"></i>
                 <span>Change Location</span>
               </button>
-              <button
-                className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
-                onClick={() => window.open('tel:+911234567890')}
-              >
-                <i className="fa-solid fa-phone"></i>
-                <span>Phone Number</span>
-              </button>
+              {footerContent.contactPhone && (
+                <button
+                  className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
+                  onClick={() => window.open(`tel:${footerContent.contactPhone}`)}
+                >
+                  <i className="fa-solid fa-phone"></i>
+                  <span>{footerContent.contactPhone}</span>
+                </button>
+              )}
             </div>
           </div>
           <div className="dz-title">
@@ -63,20 +78,8 @@ const Sidebar = () => {
             <div className="icon-content">
               <h6 className="tilte">Call Now</h6>
               <p className="m-b0">
-                +91 123 456 7890,
-                <br /> +91 987 654 3210
+                {footerContent.contactPhone || "+123 456 7890"}
               </p>
-            </div>
-          </div>
-          <div className="icon-bx-wraper left">
-            <div className="icon-md m-r20">
-              <span className="icon-cell">
-                <i className="las la-envelope-open"></i>
-              </span>
-            </div>
-            <div className="icon-content">
-              <h6 className="tilte">Location</h6>
-              <p className="m-b0">15/B Miranda House, New York, US</p>
             </div>
           </div>
           <div className="icon-bx-wraper left">
@@ -86,9 +89,23 @@ const Sidebar = () => {
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte">Email Now</h6>
-              <p className="m-b0">info@gmail.com, services@gmail.com</p>
+              <h6 className="tilte">Location</h6>
+              <p className="m-b0">{footerContent.address || "123 Street, City, Country"}</p>
             </div>
+          </div>
+          <div className="icon-bx-wraper left">
+            <div className="icon-md m-r20">
+              <span className="icon-cell">
+                <i className="las la-envelope-open"></i>
+              </span>
+            </div>
+            <div className="icon-content">
+              <h6 className="tilte">Email Now</h6>
+              <p className="m-b0">{footerContent.contactEmail || "info@example.com"}</p>
+            </div>
+          </div>
+          <div className="m-t50 dz-social-icon style-1">
+            <SocialLinks />
           </div>
         </div>
       </div>
