@@ -41,7 +41,7 @@ const Footer3 = () => {
                   <div className="row justify-content-between">
                     <div className="col-xl-4 col-lg-4 mb-lg-0 m-b20 wow fadeInUp">
                       <div className="footer-logo">
-                        <Link to="/" className="anim-logo">
+                        <Link to="/">
                           <img src={IMAGES.logo} alt="swigo logo" />
                         </Link>
                       </div>

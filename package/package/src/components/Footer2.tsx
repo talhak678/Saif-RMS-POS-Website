@@ -48,8 +48,8 @@ const Footer2 = () => {
               {/* TOP SECTION: LOGO & NEWSLETTER */}
               <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                 <div className="col-lg-6 col-md-12 mb-5 mb-lg-0">
-                  <div className="footer-logo mb-4">
-                    <Link to="/" className="anim-logo-white">
+                  <div className="footer-logo">
+                    <Link to="/">
                       <img
                         src={
                           cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.footerLogo ||
@@ -66,7 +66,7 @@ const Footer2 = () => {
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
 
-                 
+
                   <div className="dz-social-icon" style={{ display: 'flex', gap: '20px', marginTop: '25px' }}>
                     {footerContent.facebook && (
                       <a href={footerContent.facebook} target="_blank" rel="noreferrer"
