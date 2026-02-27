@@ -66,21 +66,51 @@ const Footer2 = () => {
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
 
-                  {/* DYNAMIC SOCIAL ICONS - MUCH LARGER & BRAND COLORS */}
-                  <div className="dz-social-icon flex gap-5 mt-4">
+                  {/* DYNAMIC SOCIAL ICONS - FORCED SIZE WITH INLINE STYLES */}
+                  <div className="dz-social-icon" style={{ display: 'flex', gap: '20px', marginTop: '25px' }}>
                     {footerContent.facebook && (
-                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-16 h-16 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-xl" style={{ backgroundColor: '#1877F2' }}>
-                        <i className="fab fa-facebook-f text-white text-2xl"></i>
+                      <a href={footerContent.facebook} target="_blank" rel="noreferrer"
+                        className="rounded-full shadow-xl hover:scale-110 transition-all"
+                        style={{
+                          backgroundColor: '#1877F2',
+                          width: '55px',
+                          height: '55px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textDecoration: 'none'
+                        }}>
+                        <i className="fab fa-facebook-f text-white" style={{ fontSize: '24px' }}></i>
                       </a>
                     )}
                     {footerContent.instagram && (
-                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-16 h-16 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-xl" style={{ backgroundColor: '#E4405F' }}>
-                        <i className="fab fa-instagram text-white text-2xl"></i>
+                      <a href={footerContent.instagram} target="_blank" rel="noreferrer"
+                        className="rounded-full shadow-xl hover:scale-110 transition-all"
+                        style={{
+                          backgroundColor: '#E4405F',
+                          width: '55px',
+                          height: '55px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textDecoration: 'none'
+                        }}>
+                        <i className="fab fa-instagram text-white" style={{ fontSize: '24px' }}></i>
                       </a>
                     )}
                     {footerContent.tiktok && (
-                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-16 h-16 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-xl" style={{ backgroundColor: '#000000' }}>
-                        <i className="fab fa-tiktok text-white text-2xl"></i>
+                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer"
+                        className="rounded-full shadow-xl hover:scale-110 transition-all"
+                        style={{
+                          backgroundColor: '#000000',
+                          width: '55px',
+                          height: '55px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textDecoration: 'none'
+                        }}>
+                        <i className="fab fa-tiktok text-white" style={{ fontSize: '24px' }}></i>
                       </a>
                     )}
                   </div>
