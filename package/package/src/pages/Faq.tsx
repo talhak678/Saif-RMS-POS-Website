@@ -43,10 +43,10 @@ const Faq = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
-        {bannerEnabled && <CommonBanner img={bannerContent.imageUrl || IMAGES.banner_bnr2} title={bannerContent.title} subtitle={bannerContent.breadcrumb} showTitle={bannerContent.showTitle !== "false"} />}
+        {bannerEnabled && <CommonBanner img={bannerContent.imageUrl || IMAGES.banner_bnr2} title={bannerContent.title} subtitle={bannerContent.breadcrumb} showTitle={bannerContent.showTitle !== "false"} textAlign={bannerContent.textAlign} />}
         <section className="content-inner">
           <div className="min-container">
-            <div className="row search-wraper style-1 text-center">
+            <div className={`row search-wraper style-1 text-${cmsConfig?.config?.configJson?.faq?.sections?.faqList?.content?.textAlign || "center"}`}>
               <div className="col-lg-10 m-auto">
                 <form>
                   <div className="input-group">

@@ -11,6 +11,7 @@ const ContactUs = () => {
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
 
   const sections = cmsConfig?.config?.configJson?.contact?.sections || {};
+  const bannerContent = sections.banner?.content || {};
   const contactCards = sections.cards?.enabled !== false ? sections.cards?.content : null;
   const formContent = sections.form?.content || {};
 
@@ -26,10 +27,11 @@ const ContactUs = () => {
     <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
       {sections.banner?.enabled !== false && (
         <CommonBanner
-          img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
-          title={sections.banner?.content?.title || "Contact Us"}
-          subtitle={sections.banner?.content?.breadcrumb || "Get In Touch"}
-          showTitle={sections.banner?.content?.showTitle !== "false"}
+          img={bannerContent.imageUrl || IMAGES.banner_bnr1}
+          title={bannerContent.title || "Contact Us"}
+          subtitle={bannerContent.breadcrumb || "Get In Touch"}
+          showTitle={bannerContent.showTitle !== "false"}
+          textAlign={bannerContent.textAlign}
         />
       )}
 
@@ -61,7 +63,7 @@ const ContactUs = () => {
 
           {sections.form?.enabled !== false && (
             <>
-              <div className="section-head text-center">
+              <div className={`section-head text-${formContent.textAlign === "left" ? "start" : formContent.textAlign === "right" ? "end" : "center"}`}>
                 {formContent.showTitle !== "false" && <h2 className="title">{formContent.title || "Reservation"}</h2>}
                 {formContent.description && <p className="mt-2">{formContent.description}</p>}
               </div>

@@ -38,6 +38,7 @@ const AboutUs = () => {
           title={sections.banner?.content?.title || "About Us"}
           subtitle={sections.banner?.content?.breadcrumb || "Our Story"}
           showTitle={sections.banner?.content?.showTitle !== "false"}
+          textAlign={sections.banner?.content?.textAlign}
         />
       )}
 
@@ -46,7 +47,7 @@ const AboutUs = () => {
       {sections.whatWeDo?.enabled !== false && (
         <section className="content-inner">
           <div className="container">
-            <div className="section-head text-center">
+            <div className={`section-head text-${whatWeDoContent.textAlign === "left" ? "start" : whatWeDoContent.textAlign === "right" ? "end" : "center"}`}>
               {whatWeDoContent.showTitle !== "false" && <h2 className="title">{whatWeDoContent.title || "What We Do"}</h2>}
               {whatWeDoContent.description && (
                 <p className="mt-3 max-w-2xl mx-auto text-muted">{whatWeDoContent.description}</p>

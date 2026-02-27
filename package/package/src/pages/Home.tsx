@@ -11,48 +11,67 @@ import HomeSpacialMenu from "../elements/HomeSpacialMenu";
 import Reservation from "../elements/Reservation";
 
 const Home = () => {
-  const { setHeaderClass } = useContext(Context);
+  const { setHeaderClass, cmsConfig, cmsLoading } = useContext(Context);
   useEffect(() => {
     // document.body.setAttribute("data-color", "color_1");
   }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo(() => setHeaderClass(false), []);
+
+  if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
+
+  const sections = cmsConfig?.config?.configJson?.home?.sections || {};
+
+  const getAlignClass = (sectionKey: string) => {
+    const align = sections[sectionKey]?.content?.textAlign || "center";
+    return `text-${align === "left" ? "start" : align === "right" ? "end" : "center"}`;
+  };
+
   return (
     <div className="page-content bg-white">
-      <MainBanner />
-      <section className="content-inner bg-white section-wrapper-2 overflow-hidden">
-        <div className="container">
-          <div className="section-head text-center">
-            <h2 className="title wow flipInX">Special Menu</h2>
-          </div>
-          <HomeSpacialMenu />
-        </div>
-        <img
-          className="bg1 dz-move-down"
-          src={IMAGES.background_pic2}
-          alt="/"
-        />
-        <img className="bg2 dz-parallax" src={IMAGES.background_pic3} alt="/" />
-      </section>
-      <section className="content-inner-1 section-wrapper-3 overflow-hidden">
-        <div className="container">
-          <div className="section-head text-center">
-            <h2 className="title wow flipInX">Today's Menu</h2>
-          </div>
+      {sections.banner?.enabled !== false && <MainBanner />}
 
-          <HomeImageBox />
-        </div>
-        <img className="bg1 dz-parallax" src={IMAGES.background_pic3} alt="/" />
-        <img className="bg2 dz-parallax" src={IMAGES.background_pic4} alt="/" />
-      </section>
-      <section className="content-inner-1 bg-white overflow-hidden pt-sm-0">
-        <div className="container">
-          <div className="section-head text-center">
-            <h2 className="title wow flipInX">From Our Menu</h2>
+      {sections.browseMenu?.enabled !== false && (
+        <section className="content-inner bg-white section-wrapper-2 overflow-hidden">
+          <div className="container">
+            <div className={`section-head ${getAlignClass('browseMenu')}`}>
+              <h2 className="title wow flipInX">{sections.browseMenu?.content?.title || "Special Menu"}</h2>
+            </div>
+            <HomeSpacialMenu />
           </div>
-          <MenuSlider />
-        </div>
-      </section>
+          <img
+            className="bg1 dz-move-down"
+            src={IMAGES.background_pic2}
+            alt="/"
+          />
+          <img className="bg2 dz-parallax" src={IMAGES.background_pic3} alt="/" />
+        </section>
+      )}
+
+      {sections.todaysSpecial?.enabled !== false && (
+        <section className="content-inner-1 section-wrapper-3 overflow-hidden">
+          <div className="container">
+            <div className={`section-head ${getAlignClass('todaysSpecial')}`}>
+              <h2 className="title wow flipInX">{sections.todaysSpecial?.content?.title || "Today's Menu"}</h2>
+            </div>
+
+            <HomeImageBox />
+          </div>
+          <img className="bg1 dz-parallax" src={IMAGES.background_pic3} alt="/" />
+          <img className="bg2 dz-parallax" src={IMAGES.background_pic4} alt="/" />
+        </section>
+      )}
+
+      {sections.ourMenu?.enabled !== false && (
+        <section className="content-inner-1 bg-white overflow-hidden pt-sm-0">
+          <div className="container">
+            <div className={`section-head ${getAlignClass('ourMenu')}`}>
+              <h2 className="title wow flipInX">{sections.ourMenu?.content?.title || "From Our Menu"}</h2>
+            </div>
+            <MenuSlider />
+          </div>
+        </section>
+      )}
 
       <section
         className="content-inner-1 section-wrapper-1 bg-parallax"
@@ -68,19 +87,23 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="content-inner-1 section-wrapper-2 right overflow-hidden">
-        <div className="container">
-          <div className="section-head text-center">
-            <h2 className="title wow flipInX">Customer's Comment</h2>
+
+      {sections.customerComments?.enabled !== false && (
+        <section className="content-inner-1 section-wrapper-2 right overflow-hidden">
+          <div className="container">
+            <div className={`section-head ${getAlignClass('customerComments')}`}>
+              <h2 className="title wow flipInX">{sections.customerComments?.content?.title || "Customer's Comment"}</h2>
+            </div>
+            <Testymonial />
           </div>
-          <Testymonial />
-        </div>
-        <img
-          className="bg1 dz-move-down"
-          src={IMAGES.background_pic2}
-          alt="/"
-        />
-      </section>
+          <img
+            className="bg1 dz-move-down"
+            src={IMAGES.background_pic2}
+            alt="/"
+          />
+        </section>
+      )}
+
       <section className="content-inner-1 overflow-hidden bg-light">
         <div className="container">
           <div className="section-head text-center">
@@ -89,6 +112,7 @@ const Home = () => {
         </div>
         <TeamCarosel />
       </section>
+
       <section className="content-inner-1 overflow-hidden">
         <div className="container">
           <div className="section-head text-center">
@@ -97,6 +121,7 @@ const Home = () => {
           <OurBlog />
         </div>
       </section>
+
       <div className="map-iframe style-1">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244934.17139458598!2d75.27787773507539!3d25.125368923263647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1678086292169!5m2!1sen!2sin"

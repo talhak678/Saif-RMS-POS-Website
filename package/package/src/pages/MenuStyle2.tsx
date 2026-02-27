@@ -110,6 +110,7 @@ const MenuStyle2 = () => {
           title={sections.banner?.content?.title || "Our Menu"}
           subtitle={sections.banner?.content?.breadcrumb || "Delicious Selection"}
           showTitle={sections.banner?.content?.showTitle !== "false"}
+          textAlign={sections.banner?.content?.textAlign}
         />
       )}
 

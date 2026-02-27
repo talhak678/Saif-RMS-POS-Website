@@ -10,6 +10,7 @@ const MenuStyle1 = () => {
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
 
   const sections = cmsConfig?.config?.configJson?.menu?.sections || {};
+  const bannerContent = sections.banner?.content || {};
   const galleryConfig = sections.menuGallery?.content || {};
   const selectedCategoryIds = galleryConfig.selectedCategoryIds || [];
   const allAvailableCategories = cmsConfig?.menu || [];
@@ -23,15 +24,16 @@ const MenuStyle1 = () => {
     <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
       {sections.banner?.enabled !== false && (
         <CommonBanner
-          img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
-          title={sections.banner?.content?.title || "Our Menu"}
-          subtitle={sections.banner?.content?.breadcrumb || "Delicious Selection"}
-          showTitle={sections.banner?.content?.showTitle !== "false"}
+          img={bannerContent.imageUrl || IMAGES.banner_bnr1}
+          title={bannerContent.title || "Our Menu"}
+          subtitle={bannerContent.breadcrumb || "Our Menu 1"}
+          showTitle={bannerContent.showTitle !== "false"}
+          textAlign={bannerContent.textAlign}
         />
       )}
       <section className="content-inner section-wrapper-7 overflow-hidden">
         <div className="container">
-          <div className="section-head text-center">
+          <div className={`section-head text-${galleryConfig.textAlign === "left" ? "start" : galleryConfig.textAlign === "right" ? "end" : "center"}`}>
             {galleryConfig.showTitle !== "false" && <h2 className="title">{galleryConfig.title || "Menu Gallery"}</h2>}
             {galleryConfig.description && <p className="mt-2 text-muted">{galleryConfig.description}</p>}
           </div>

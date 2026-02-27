@@ -20,6 +20,7 @@ const BlogList = () => {
         title={bannerContent.title}
         subtitle={bannerContent.breadcrumb}
         showTitle={bannerContent.showTitle !== "false"}
+        textAlign={bannerContent.textAlign}
       />}
       <section className="content-inner-1">
         <div className="container">

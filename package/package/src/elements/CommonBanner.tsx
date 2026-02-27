@@ -3,12 +3,13 @@ interface propFile {
   title: string;
   subtitle?: string;
   showTitle?: boolean;
+  textAlign?: string;
 }
 
-const CommonBanner = ({ img, title, showTitle = true }: propFile) => {
+const CommonBanner = ({ img, title, showTitle = true, textAlign = "center" }: propFile) => {
   return (
     <div
-      className="dz-bnr-inr style-1 text-center bg-parallax"
+      className="dz-bnr-inr style-1 bg-parallax"
       style={{
         backgroundImage: `url(${img})`,
         backgroundSize: "cover",
@@ -26,7 +27,7 @@ const CommonBanner = ({ img, title, showTitle = true }: propFile) => {
           }
         `}
       </style>
-      <div className="container">
+      <div className="container" style={{ textAlign: textAlign as any }}>
         <div className="dz-bnr-inr-entry">
           {showTitle && <h1>{title}</h1>}
         </div>
