@@ -55,10 +55,19 @@ const Home2 = () => {
             backgroundColor: sections.todaysSpecial.content?.backgroundColor || "#222222",
             backgroundImage: sections.todaysSpecial.content?.backgroundImageUrl
               ? `url(${sections.todaysSpecial.content.backgroundImageUrl})`
-              : `url(${IMAGES.background_pic1})`,
+              : sections.todaysSpecial.content?.backgroundColor && sections.todaysSpecial.content.backgroundColor !== "#222222"
+                ? "none"
+                : `url(${IMAGES.background_pic1})`,
             backgroundAttachment: "fixed",
           }}
         >
+          {sections.todaysSpecial.content?.backgroundColor && sections.todaysSpecial.content.backgroundColor !== "#222222" && (
+            <style>{`
+              #todays-special::after {
+                background-color: rgba(0, 0, 0, 0.4) !important;
+              }
+            `}</style>
+          )}
           <div className="container">
             <div className="section-head text-center">
               <h2 className="title text-white wow flipInX">{sections.todaysSpecial.content?.title || "Today's Special"}</h2>
