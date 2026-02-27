@@ -116,11 +116,18 @@ const Footer2 = () => {
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-12">
-                  <div className="newsletter-box pl-lg-5">
+                  <div className="newsletter-box pl-lg-5" style={{ maxWidth: '450px' }}>
                     <h4 className="text-white mb-4" style={{ fontWeight: '600', fontSize: '22px' }}>
                       {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                     </h4>
-                    <form className="dzSubscribe flex gap-0 overflow-hidden" action="#" method="post" style={{ borderRadius: '12px' }}>
+                    <form className="dzSubscribe" action="#" method="post" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      backgroundColor: 'white'
+                    }}>
                       <input
                         name="dzEmail"
                         required
@@ -128,27 +135,34 @@ const Footer2 = () => {
                         className="form-control"
                         placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
                         style={{
-                          backgroundColor: 'white',
+                          backgroundColor: 'transparent',
                           border: 'none',
                           color: '#333',
                           height: '60px',
-                          borderRadius: '12px 0 0 12px',
-                          padding: '0 25px',
+                          padding: '0 20px',
                           fontSize: '15px',
-                          flexGrow: 1
+                          flexGrow: 1,
+                          width: '100%',
+                          outline: 'none',
+                          boxShadow: 'none'
                         }}
                       />
                       <button
                         name="submit"
                         value="Submit"
                         type="submit"
-                        className="btn btn-primary shadow-none flex items-center justify-center"
+                        className="btn btn-primary"
                         style={{
                           height: '60px',
                           width: '70px',
-                          borderRadius: '0 12px 12px 0',
+                          minWidth: '70px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                           backgroundColor: 'var(--primary)',
                           border: 'none',
+                          borderRadius: '0',
+                          padding: 0,
                           fontSize: '20px'
                         }}
                       >
