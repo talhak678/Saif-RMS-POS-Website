@@ -30,7 +30,7 @@ const Footer2 = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       {footerEnabled && (
-        <footer className="site-footer style-2" id="footer" style={{ backgroundColor: bgColor, color: 'white' }}>
+        <footer className="site-footer style-2" id="footer" style={{ backgroundColor: `${bgColor} !important`, color: 'white' }}>
           <div className="footer-top" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '60px' }}>
             <div className="container">
               {/* TOP SECTION: LOGO & NEWSLETTER */}
@@ -53,9 +53,28 @@ const Footer2 = () => {
                       {footerContent.logoTitle || cmsConfig?.restaurantName || "Saif RMS"}
                     </h3>
                   </div>
-                  <p className="max-w-md" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: '1.8' }}>
+                  <p className="max-w-md mb-4" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: '1.8' }}>
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
+
+                  {/* DYNAMIC SOCIAL ICONS */}
+                  <div className="dz-social-icon flex gap-3">
+                    {footerContent.facebook && (
+                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
+                        <i className="fab fa-facebook-f text-white"></i>
+                      </a>
+                    )}
+                    {footerContent.instagram && (
+                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
+                        <i className="fab fa-instagram text-white"></i>
+                      </a>
+                    )}
+                    {footerContent.tiktok && (
+                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
+                        <i className="fab fa-tiktok text-white"></i>
+                      </a>
+                    )}
+                  </div>
                 </div>
                 <div className="col-lg-6 col-md-12">
                   <div className="newsletter-box">
