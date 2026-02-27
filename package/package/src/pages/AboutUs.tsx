@@ -47,6 +47,7 @@ const AboutUs = () => {
           title={sections.video?.content?.title}
           description={sections.video?.content?.description}
           videoUrl={sections.video?.content?.videoUrl}
+          thumbnailUrl={sections.video?.content?.thumbnailUrl}
         />
       )}
 

@@ -3,7 +3,7 @@ import ModalVideo from "react-modal-video";
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 
-const ModalVideoBox = ({ title, description, videoUrl }: { title?: string; description?: string; videoUrl?: string }) => {
+const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?: string; description?: string; videoUrl?: string; thumbnailUrl?: string }) => {
   const [open, setOpen] = useState(false);
 
   // Extract video ID from youtube URL if possible
@@ -36,7 +36,7 @@ const ModalVideoBox = ({ title, description, videoUrl }: { title?: string; descr
           <div className="row">
             <div className="col-lg-12">
               <div className="about-media dz-media rounded-md">
-                <img src={IMAGES.background_pic11} alt="/" />
+                <img src={thumbnailUrl || IMAGES.background_pic11} alt="/" />
                 <Link
                   className="video video-btn popup-youtube"
                   to={"#"}
