@@ -21,33 +21,46 @@ const ContactUs = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!activeBranch?.id) {
-      toast.error("Branch information not found. Cannot book reservation.");
+      toast.error("Branch information not found. Please try again later.");
       return;
     }
 
     const formData = new FormData(e.currentTarget);
-    const data = {
-      customerName: formData.get("dzName"),
-      email: formData.get("dzEmail"),
-      phone: formData.get("dzPhoneNumber"),
-      guestCount: parseInt(formData.get("dzOther[Person]") as string) || 1,
-      startTime: new Date(`${formData.get("dzOther[Date]")}T${formData.get("dzOther[Time]")}`).toISOString(),
-      message: formData.get("dzMessage"),
-      branchId: activeBranch.id,
-    };
+    const dateVal = formData.get("dzOther[Date]");
+    const timeVal = formData.get("dzOther[Time]");
+
+    if (!dateVal || !timeVal) {
+      toast.error("Please select both Date and Time for your reservation.");
+      return;
+    }
 
     try {
       setLoading(true);
+      const startTime = new Date(`${dateVal}T${timeVal}`).toISOString();
+      const data = {
+        customerName: formData.get("dzName"),
+        email: formData.get("dzEmail"),
+        phone: formData.get("dzPhoneNumber"),
+        guestCount: parseInt(formData.get("dzOther[Person]") as string) || 1,
+        startTime,
+        message: formData.get("dzMessage"),
+        branchId: activeBranch.id,
+      };
+
       const res = await axios.post("https://saif-rms-pos-backend.vercel.app/api/reservations/public", data);
       if (res.data?.success) {
-        toast.success("Reservation Booked! Admin notified.");
+        toast.success("Reservation Booked Successfully!");
         (e.target as HTMLFormElement).reset();
       } else {
         toast.error(res.data?.message || "Something went wrong.");
       }
     } catch (error: any) {
       console.error("Booking Error:", error);
-      toast.error(error.response?.data?.message || "Failed to book table. Please try again.");
+      if (error instanceof RangeError) {
+        toast.error("Invalid Date or Time selected. Please check your input.");
+      } else {
+        toast.error(error.response?.data?.message || "Failed to book table. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
