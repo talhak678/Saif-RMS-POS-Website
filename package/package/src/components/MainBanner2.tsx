@@ -59,24 +59,24 @@ const MainBanner2 = () => {
                 backgroundPosition: "center"
               }}
             >
-              <div className="container">
+              <div className="container h-100">
                 <div
-                  className="row align-items-center justify-content-center"
+                  className="row align-items-center h-100"
                   data-swiper-parallax="-100"
                 >
-                  <div className="col-xl-10 col-lg-10 col-md-11">
-                    <div className="banner-content text-center py-5" style={{ background: 'rgba(0,0,0,0.4)', borderRadius: '30px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '900px', margin: '0 auto' }}>
-                      <span className="sub-title text-primary" style={{ fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                  <div className="col-xl-8 col-lg-9 col-md-10">
+                    <div className="banner-content text-left py-5">
+                      <span className="sub-title text-primary" style={{ fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '15px', display: 'block' }}>
                         {item.subtitle || bannerContent.subtitle}
                       </span>
-                      <h1 className="title text-white mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '900', lineHeight: '1.1' }}>
+                      <h1 className="title text-white mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '900', lineHeight: '1.1', textShadow: '2px 2px 10px rgba(0,0,0,0.5)' }}>
                         {item.title || bannerContent.title}
                       </h1>
-                      <p className="bnr-text text-white opacity-90 mx-auto mb-5" style={{ fontSize: '1.1rem', maxWidth: '700px', lineHeight: '1.6' }}>
+                      <p className="bnr-text text-white opacity-90 mb-5" style={{ fontSize: '1.1rem', maxWidth: '600px', lineHeight: '1.6', textShadow: '1px 1px 5px rgba(0,0,0,0.5)' }}>
                         {item.description || bannerContent.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients."}
                       </p>
 
-                      <div className="banner-btn d-flex align-items-center justify-content-center gap-3">
+                      <div className="banner-btn d-flex align-items-center justify-content-start gap-3">
                         <Link
                           to={item.linkUrl || item.buttonLink || bannerContent.buttonLink || "/our-menu-2"}
                           className="btn btn-primary btn-lg shadow-primary btn-hover-1 py-3 px-5 rounded-pill"
