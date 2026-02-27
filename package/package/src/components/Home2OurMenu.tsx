@@ -64,8 +64,9 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
                 </div>
               </div>
               <div className="menu-footer">
-                <span>Items Available</span>
-                <span className="price">{cat.menuItems?.length || 0}</span>
+                <span className={`fw-bold ${cat.menuItems?.length > 0 ? "text-success" : "text-danger"}`}>
+                  {cat.menuItems?.length > 0 ? "In Stock" : "Out of Stock"}
+                </span>
               </div>
               <Link className="detail-btn" to="/our-menu-2">
                 <i className="fa-solid fa-plus"></i>

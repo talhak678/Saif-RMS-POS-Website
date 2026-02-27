@@ -334,23 +334,17 @@ const MenuStyle2 = () => {
 
                     {/* Stock indicator */}
                     <div style={{ marginBottom: '10px' }}>
-                      {item.isAvailable !== false ? (
-                        <span style={{
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          color: (item.stock && item.stock < 5) ? '#ff4b2b' : '#28a745',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}>
-                          <i className="fa fa-check-circle" style={{ fontSize: '10px' }} />
-                          {item.stock ? `Stock: ${item.stock} left` : 'In Stock'}
-                        </span>
-                      ) : (
-                        <span style={{ fontSize: '11px', fontWeight: 600, color: '#999' }}>
-                          Currently Unavailable
-                        </span>
-                      )}
+                      <span style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: item.isAvailable !== false ? '#28a745' : '#ff4b2b',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        <i className={`fa ${item.isAvailable !== false ? "fa-check-circle" : "fa-times-circle"}`} style={{ fontSize: '10px' }} />
+                        {item.isAvailable !== false ? 'In Stock' : 'Out of Stock'}
+                      </span>
                     </div>
 
                     {/* Footer actions */}

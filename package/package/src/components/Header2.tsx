@@ -81,8 +81,8 @@ const Header2 = () => {
             <div className="container-fluid clearfix">
 
               {/* Logo */}
-              <div className="logo-header mostion">
-                <Link to="/" className="anim-logo">
+              <div className="logo-header">
+                <Link to="/" className="d-flex align-items-center">
                   <img
                     src={
                       cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo ||
@@ -91,6 +91,7 @@ const Header2 = () => {
                       IMAGES.logo
                     }
                     alt={cmsConfig?.restaurantName || "Saif Kitchen"}
+                    style={{ maxHeight: '55px', width: 'auto', objectFit: 'contain' }}
                   />
                 </Link>
                 {isStoreClosed && (

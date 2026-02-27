@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header2 = () => {
-  const { headerClass, headerSidebar, setHeaderSidebar, setShowSignInForm } =
+  const { headerClass, headerSidebar, setHeaderSidebar, setShowSignInForm, cmsConfig } =
     useContext(Context);
   const [cart, setCart] = useState<boolean>(false);
   const cartRef = useRef<HTMLLIElement[]>([]);
@@ -43,18 +43,24 @@ const Header2 = () => {
       >
         <div className="main-bar clearfix ">
           <div className="container clearfix">
-            <div className="logo-header mostion">
-              <div className="logo-header mostion">
-                {headerClass ? (
-                  <Link to="/" className="anim-logo-white">
-                    <img src={IMAGES.logo2} alt="/" />
-                  </Link>
-                ) : (
-                  <Link to="/" className="anim-logo">
-                    <img src={IMAGES.logo} alt="/" />
-                  </Link>
-                )}
-              </div>
+            <div className="logo-header">
+              {headerClass ? (
+                <Link to="/" className="d-flex align-items-center">
+                  <img
+                    src={cmsConfig?.restaurantLogo || IMAGES.logo2}
+                    alt={cmsConfig?.restaurantName || "Logo"}
+                    style={{ maxHeight: '55px', width: 'auto', objectFit: 'contain' }}
+                  />
+                </Link>
+              ) : (
+                <Link to="/" className="d-flex align-items-center">
+                  <img
+                    src={cmsConfig?.restaurantLogo || IMAGES.logo}
+                    alt={cmsConfig?.restaurantName || "Logo"}
+                    style={{ maxHeight: '55px', width: 'auto', objectFit: 'contain' }}
+                  />
+                </Link>
+              )}
             </div>
             <button
               className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""

@@ -58,8 +58,12 @@ const Menu = () => {
   return (
     <>
       <div className="logo-header">
-        <Link to="/" className="anim-logo">
-          <img src={cmsConfig?.restaurantLogo || IMAGES.logo} alt="/" />
+        <Link to="/" className="d-flex align-items-center">
+          <img
+            src={cmsConfig?.restaurantLogo || IMAGES.logo}
+            alt={cmsConfig?.restaurantName || "Logo"}
+            style={{ maxHeight: '45px', width: 'auto', objectFit: 'contain' }}
+          />
         </Link>
       </div>
       <ul

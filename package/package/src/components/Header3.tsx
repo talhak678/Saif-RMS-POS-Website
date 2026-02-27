@@ -5,7 +5,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header3 = () => {
-  const { setShowSignInForm, headerSidebar, setHeaderSidebar } =
+  const { setShowSignInForm, headerSidebar, setHeaderSidebar, cmsConfig } =
     useContext(Context);
   const [cart, setCart] = useState<boolean>(false);
   const [scroll, setScroll] = useState(false);
@@ -44,12 +44,14 @@ const Header3 = () => {
       >
         <div className="main-bar clearfix ">
           <div className="container clearfix">
-            <div className="logo-header mostion">
-              <div className="logo-header mostion">
-                <Link to="/" className="anim-logo">
-                  <img src={IMAGES.logo} alt="/" />
-                </Link>
-              </div>
+            <div className="logo-header">
+              <Link to="/" className="d-flex align-items-center">
+                <img
+                  src={cmsConfig?.restaurantLogo || IMAGES.logo}
+                  alt={cmsConfig?.restaurantName || "Logo"}
+                  style={{ maxHeight: '55px', width: 'auto', objectFit: 'contain' }}
+                />
+              </Link>
             </div>
 
             <button
