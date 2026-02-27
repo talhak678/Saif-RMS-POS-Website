@@ -100,7 +100,11 @@ const Home3OurMenu = () => {
                   boxShadow: addActive === ind + 1 ? `0 4px 14px ${primaryColor}55` : "none",
                 }}
               >
-                <i className="flaticon-pizza-slice" style={{ fontSize: "14px" }} />
+                {cat.image ? (
+                  <img src={cat.image} alt="" style={{ width: "16px", height: "16px", objectFit: "contain", borderRadius: "2px" }} />
+                ) : (
+                  <i className="flaticon-pizza-slice" style={{ fontSize: "14px" }} />
+                )}
                 {cat.name}
               </button>
             ))}
