@@ -42,7 +42,13 @@ const AboutUs = () => {
         />
       )}
 
-      {sections.video?.enabled && <ModalVideoBox />}
+      {sections.video?.enabled && (
+        <ModalVideoBox
+          title={sections.video?.content?.title}
+          description={sections.video?.content?.description}
+          videoUrl={sections.video?.content?.videoUrl}
+        />
+      )}
 
       {sections.whatWeDo?.enabled !== false && (
         <section className="content-inner">
