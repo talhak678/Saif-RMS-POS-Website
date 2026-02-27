@@ -52,7 +52,10 @@ const Home2 = () => {
           id="todays-special"
           className="section-wrapper-5 content-inner overflow-hidden bg-parallax"
           style={{
-            backgroundImage: `url(${IMAGES.background_pic1})`,
+            backgroundColor: sections.todaysSpecial.content?.backgroundColor || "#222222",
+            backgroundImage: sections.todaysSpecial.content?.backgroundImageUrl
+              ? `url(${sections.todaysSpecial.content.backgroundImageUrl})`
+              : `url(${IMAGES.background_pic1})`,
             backgroundAttachment: "fixed",
           }}
         >
