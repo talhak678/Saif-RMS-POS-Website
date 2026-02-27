@@ -29,7 +29,30 @@ const MainBanner2 = () => {
     : [bannerContent];
 
   return (
-    <div className="main-bnr-three overflow-hidden top-space">
+    <div className="main-bnr-three overflow-hidden">
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .banner-btn {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              gap: 10px !important;
+            }
+            .banner-btn .btn {
+              width: 100% !important;
+              padding: 12px !important;
+              font-size: 14px !important;
+            }
+            .main-bnr-three .banner-content {
+               padding: 20px !important;
+               text-align: center !important;
+            }
+            .main-bnr-three .banner-content .title {
+               font-size: 32px !important;
+            }
+          }
+        `}
+      </style>
       <div className="swiper-bnr-pagination left-align">
         <div className="main-button-prev">
           <i className="icon-arrow-up"></i>

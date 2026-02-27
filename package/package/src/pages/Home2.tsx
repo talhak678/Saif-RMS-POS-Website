@@ -54,7 +54,7 @@ const Home2 = () => {
       <Home2PromoBanners />
 
       {sections.browseMenu?.enabled && (
-        <section className="content-inner-1 overflow-hidden mt-5">
+        <section className="content-inner-1 overflow-hidden">
           <div className="container">
             <div className="section-head menu-align">
               <h2 className="title mb-0 wow flipInX text-secondary">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
