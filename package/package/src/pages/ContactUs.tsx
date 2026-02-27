@@ -3,10 +3,13 @@ import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { ContactUsArr } from "../elements/JsonData";
 import { Context } from "../context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
-  const { cmsConfig, cmsLoading } = useContext(Context);
+  const { cmsConfig, cmsLoading, activeBranch } = useContext(Context);
   const [active, setActive] = useState<number>(1);
+  const [loading, setLoading] = useState(false);
 
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
 
@@ -14,6 +17,41 @@ const ContactUs = () => {
   const bannerContent = sections.banner?.content || {};
   const contactCards = sections.cards?.enabled !== false ? sections.cards?.content : null;
   const formContent = sections.form?.content || {};
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!activeBranch?.id) {
+      toast.error("Branch information not found. Cannot book reservation.");
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      customerName: formData.get("dzName"),
+      email: formData.get("dzEmail"),
+      phone: formData.get("dzPhoneNumber"),
+      guestCount: parseInt(formData.get("dzOther[Person]") as string) || 1,
+      startTime: new Date(`${formData.get("dzOther[Date]")}T${formData.get("dzOther[Time]")}`).toISOString(),
+      message: formData.get("dzMessage"),
+      branchId: activeBranch.id,
+    };
+
+    try {
+      setLoading(true);
+      const res = await axios.post("https://saif-rms-pos-backend.vercel.app/api/reservations/public", data);
+      if (res.data?.success) {
+        toast.success("Reservation Booked! Admin notified.");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        toast.error(res.data?.message || "Something went wrong.");
+      }
+    } catch (error: any) {
+      console.error("Booking Error:", error);
+      toast.error(error.response?.data?.message || "Failed to book table. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Map CMS data or fallback to defaults
   const displayInfo = [
@@ -67,7 +105,7 @@ const ContactUs = () => {
                 {formContent.showTitle !== "false" && <h2 className="title">{formContent.title || "Reservation"}</h2>}
                 {formContent.description && <p className="mt-2">{formContent.description}</p>}
               </div>
-              <form className="dzForm dezPlaceAni" method="POST">
+              <form className="dzForm dezPlaceAni" onSubmit={handleSubmit}>
                 <input type="hidden" name="dzToDo" value="Contact" />
                 <div className="row">
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
@@ -79,7 +117,7 @@ const ContactUs = () => {
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
                     <label className="form-label text-primary">{formContent.emailLabel || "Your Email"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzEmail" required type="text" className="form-control" placeholder={formContent.emailPlaceholder || "info@example.com"} />
+                      <input name="dzEmail" required type="email" className="form-control" placeholder={formContent.emailPlaceholder || "info@example.com"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
@@ -100,7 +138,7 @@ const ContactUs = () => {
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
                     <label className="form-label text-primary">{formContent.membersLabel || "Members"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzOther[Person]" required type="text" className="form-control" placeholder={formContent.membersPlaceholder || "1 Person"} />
+                      <input name="dzOther[Person]" required type="number" min="1" className="form-control" placeholder={formContent.membersPlaceholder || "1 Person"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
@@ -122,8 +160,8 @@ const ContactUs = () => {
                     </div>
                   </div>
                   <div className="col-12 text-center">
-                    <button name="submit" value="submit" type="reset" className="btn btn-primary btn-hover-1">
-                      <span>{formContent.buttonText || "Book A Table"}</span>
+                    <button name="submit" value="submit" type="submit" className="btn btn-primary btn-hover-1" disabled={loading}>
+                      <span>{loading ? "Processing..." : (formContent.buttonText || "Book A Table")}</span>
                     </button>
                   </div>
                 </div>
