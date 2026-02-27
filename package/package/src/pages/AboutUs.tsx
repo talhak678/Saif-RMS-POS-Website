@@ -37,6 +37,7 @@ const AboutUs = () => {
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
           title={sections.banner?.content?.title || "About Us"}
           subtitle={sections.banner?.content?.breadcrumb || "Our Story"}
+          showTitle={sections.banner?.content?.showTitle !== "false"}
         />
       )}
 
@@ -46,7 +47,7 @@ const AboutUs = () => {
         <section className="content-inner">
           <div className="container">
             <div className="section-head text-center">
-              <h2 className="title">{whatWeDoContent.title || "What We Do"}</h2>
+              {whatWeDoContent.showTitle !== "false" && <h2 className="title">{whatWeDoContent.title || "What We Do"}</h2>}
               {whatWeDoContent.description && (
                 <p className="mt-3 max-w-2xl mx-auto text-muted">{whatWeDoContent.description}</p>
               )}

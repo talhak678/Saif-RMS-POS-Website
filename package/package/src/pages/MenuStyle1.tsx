@@ -26,12 +26,13 @@ const MenuStyle1 = () => {
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
           title={sections.banner?.content?.title || "Our Menu"}
           subtitle={sections.banner?.content?.breadcrumb || "Delicious Selection"}
+          showTitle={sections.banner?.content?.showTitle !== "false"}
         />
       )}
       <section className="content-inner section-wrapper-7 overflow-hidden">
         <div className="container">
           <div className="section-head text-center">
-            <h2 className="title">{galleryConfig.title || "Menu Gallery"}</h2>
+            {galleryConfig.showTitle !== "false" && <h2 className="title">{galleryConfig.title || "Menu Gallery"}</h2>}
             {galleryConfig.description && <p className="mt-2 text-muted">{galleryConfig.description}</p>}
           </div>
           <div className="row inner-section-wrapper">

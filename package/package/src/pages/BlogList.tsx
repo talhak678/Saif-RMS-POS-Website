@@ -19,6 +19,7 @@ const BlogList = () => {
         img={bannerContent.imageUrl || IMAGES.images_bnr3}
         title={bannerContent.title}
         subtitle={bannerContent.breadcrumb}
+        showTitle={bannerContent.showTitle !== "false"}
       />}
       <section className="content-inner-1">
         <div className="container">

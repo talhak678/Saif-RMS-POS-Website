@@ -29,6 +29,7 @@ const ContactUs = () => {
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
           title={sections.banner?.content?.title || "Contact Us"}
           subtitle={sections.banner?.content?.breadcrumb || "Get In Touch"}
+          showTitle={sections.banner?.content?.showTitle !== "false"}
         />
       )}
 
@@ -61,7 +62,7 @@ const ContactUs = () => {
           {sections.form?.enabled !== false && (
             <>
               <div className="section-head text-center">
-                <h2 className="title">{formContent.title || "Reservation"}</h2>
+                {formContent.showTitle !== "false" && <h2 className="title">{formContent.title || "Reservation"}</h2>}
                 {formContent.description && <p className="mt-2">{formContent.description}</p>}
               </div>
               <form className="dzForm dezPlaceAni" method="POST">

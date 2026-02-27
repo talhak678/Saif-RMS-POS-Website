@@ -2,9 +2,10 @@ interface propFile {
   img: string;
   title: string;
   subtitle?: string;
+  showTitle?: boolean;
 }
 
-const CommonBanner = ({ img, title }: propFile) => {
+const CommonBanner = ({ img, title, showTitle = true }: propFile) => {
   return (
     <div
       className="dz-bnr-inr style-1 text-center bg-parallax"
@@ -27,7 +28,7 @@ const CommonBanner = ({ img, title }: propFile) => {
       </style>
       <div className="container">
         <div className="dz-bnr-inr-entry">
-          <h1>{title}</h1>
+          {showTitle && <h1>{title}</h1>}
         </div>
       </div>
     </div>
