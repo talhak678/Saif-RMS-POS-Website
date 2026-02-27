@@ -2,8 +2,6 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
-import { IMAGES } from "../constent/theme";
-import CommonBanner from "../elements/CommonBanner";
 import LocationPicker from "../elements/LocationPicker";
 import { Modal } from "react-bootstrap";
 import toast from "react-hot-toast";
@@ -410,8 +408,7 @@ const ShopCheckout = () => {
 
   return (
     <div className="page-content bg-white">
-      <CommonBanner img={IMAGES.images_bnr3} title="Checkout" subtitle="Checkout" />
-      <section className="content-inner" style={{ background: "#f8f9fa" }}>
+      <section className="content-inner" style={{ background: "#f8f9fa", paddingTop: '100px' }}>
         <div className="container">
           {/* Sign-in nudge */}
           {!user && (
