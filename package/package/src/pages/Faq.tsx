@@ -1,41 +1,16 @@
 import CommonBanner from "../elements/CommonBanner";
 import { Accordion } from "react-bootstrap";
 import { IMAGES } from "../constent/theme";
-import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
-import { FormEvent, useRef, useState, useContext } from "react";
+import { useContext } from "react";
 import { Context } from "../context/AppContext";
 
 const Faq = () => {
   const { cmsConfig, cmsLoading } = useContext(Context);
-  const [input, setInput] = useState<string>("");
-  const form = useRef<HTMLFormElement | null>(null);
 
   const bannerConfig = cmsConfig?.config?.configJson?.faq?.sections?.banner;
   const bannerEnabled = bannerConfig?.enabled !== false;
   const bannerContent = bannerConfig?.content || { title: "Faq", breadcrumb: "Faq", imageUrl: IMAGES.banner_bnr2 };
-
-  const sendEmail = (e: FormEvent) => {
-    e.preventDefault();
-    setInput("");
-    if (form.current) {
-      emailjs
-        .sendForm(
-          "emailId",
-          "template_0byuv32",
-          form.current,
-          "qUDIPykc776NYHv4m"
-        )
-        .then(
-          () => {
-            toast.success("Successfully send!");
-          },
-          (error) => {
-            toast.error(error.text);
-          }
-        );
-    }
-  };
 
   if (cmsLoading) return <div className="text-center py-20">Loading...</div>;
 
@@ -105,51 +80,7 @@ const Faq = () => {
               </div>
             </div>
 
-            {/* Newsletter Section */}
-            <div className="row align-items-center mt-10">
-              <div className="col-lg-5 m-b20">
-                <div className="dz-media faq-media move-2">
-                  <img src={IMAGES.faq_pic1} alt="/" />
-                </div>
-              </div>
-              <div className="col-lg-7 m-b20">
-                <div className="faq-info">
-                  <h2 className="title">Newsletter</h2>
-                  <p className="m-b30">
-                    We hope this newsletter finds you well. We are excited to
-                    announce some new additions to our menu that we think you'll
-                    love. Our culinary team has been
-                  </p>
-                  <form className="dzSubscribe" ref={form} onSubmit={sendEmail}>
-                    <div className="dzSubscribeMsg text-white"></div>
-                    <div className="input-group">
-                      <input
-                        name="dzEmail"
-                        required
-                        type="text"
-                        value={input}
-                        onChange={(e) => {
-                          setInput(e.target.value);
-                        }}
-                        className="form-control"
-                        placeholder="Enter Your Email"
-                      />
-                      <div className="input-group-addon">
-                        <button
-                          name="submit"
-                          value="submit"
-                          type="submit"
-                          className="btn btn-primary btn-hover-2"
-                        >
-                          <span>Submit</span>{" "}
-                          <i className="fa-solid fa-paper-plane"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+
           </div>
         </section>
       </div>

@@ -17,11 +17,30 @@ const Footer2 = () => {
 
   const renderLinks = (linksString: string) => {
     if (!linksString) return null;
-    return linksString.split(",").map((item: string, index: number) => (
-      <li key={index}>
-        <Link to="/#"><span>{item.trim()}</span></Link>
-      </li>
-    ));
+
+    const routeMap: Record<string, string> = {
+      "home": "/",
+      "about us": "/about-us",
+      "contact us": "/contact-us",
+      "faq": "/faq",
+      "our menu": "/our-menu-2",
+      "blogs": "/blog-list",
+      "blog": "/blog-list",
+      "shop": "/shop-cart",
+      "cart": "/shop-cart",
+      "checkout": "/shop-checkout",
+      "frequently asked questions": "/faq"
+    };
+
+    return linksString.split(",").map((item: string, index: number) => {
+      const label = item.trim();
+      const target = routeMap[label.toLowerCase()] || "/#";
+      return (
+        <li key={index}>
+          <Link to={target}><span>{label}</span></Link>
+        </li>
+      );
+    });
   };
 
   if (!footerEnabled && !copyrightEnabled) return <Toaster position="bottom-right" reverseOrder={true} />;
