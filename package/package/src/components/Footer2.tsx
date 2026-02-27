@@ -47,8 +47,8 @@ const Footer2 = () => {
             <div className="container">
               {/* TOP SECTION: LOGO & NEWSLETTER */}
               <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <div className="col-lg-6 col-md-12 mb-4 mb-lg-0">
-                  <div className="footer-logo mb-3 flex items-center gap-3">
+                <div className="col-lg-6 col-md-12 mb-5 mb-lg-0">
+                  <div className="footer-logo mb-4 flex items-center gap-4">
                     <Link to="/" className="anim-logo-white">
                       <img
                         src={
@@ -58,42 +58,42 @@ const Footer2 = () => {
                           IMAGES.logo2
                         }
                         alt="/"
-                        style={{ maxWidth: '150px' }}
+                        style={{ maxWidth: '160px', height: 'auto' }}
                       />
                     </Link>
-                    <h3 className="mb-0 text-white font-bold tracking-wider" style={{ fontSize: '24px' }}>
+                    <h3 className="mb-0 text-white font-bold tracking-wider" style={{ fontSize: '28px' }}>
                       {footerContent.logoTitle || cmsConfig?.restaurantName || "Saif RMS"}
                     </h3>
                   </div>
-                  <p className="max-w-md mb-4" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: '1.8' }}>
+                  <p className="max-w-md mb-5" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', lineHeight: '1.9' }}>
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
 
-                  {/* DYNAMIC SOCIAL ICONS */}
-                  <div className="dz-social-icon flex gap-3">
+                  {/* DYNAMIC SOCIAL ICONS - IMPROVED SPACING & STYLE */}
+                  <div className="dz-social-icon flex gap-4 mt-2">
                     {footerContent.facebook && (
-                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
-                        <i className="fab fa-facebook-f text-white"></i>
+                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
+                        <i className="fab fa-facebook-f text-white text-lg"></i>
                       </a>
                     )}
                     {footerContent.instagram && (
-                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
-                        <i className="fab fa-instagram text-white"></i>
+                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
+                        <i className="fab fa-instagram text-white text-lg"></i>
                       </a>
                     )}
                     {footerContent.tiktok && (
-                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all">
-                        <i className="fab fa-tiktok text-white"></i>
+                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
+                        <i className="fab fa-tiktok text-white text-lg"></i>
                       </a>
                     )}
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-12">
-                  <div className="newsletter-box">
-                    <h5 className="text-white mb-3" style={{ fontWeight: '600' }}>
+                  <div className="newsletter-box pl-lg-5">
+                    <h4 className="text-white mb-4" style={{ fontWeight: '600', fontSize: '22px' }}>
                       {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
-                    </h5>
-                    <form className="dzSubscribe flex gap-2" action="script/mail-php.php" method="post">
+                    </h4>
+                    <form className="dzSubscribe flex gap-3" action="#" method="post">
                       <div className="flex-grow">
                         <input
                           name="dzEmail"
@@ -103,10 +103,12 @@ const Footer2 = () => {
                           placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
                           style={{
                             backgroundColor: 'white',
-                            border: 'none',
+                            border: '1px solid rgba(255,255,255,0.1)',
                             color: '#333',
-                            height: '50px',
-                            borderRadius: '8px'
+                            height: '55px',
+                            borderRadius: '10px',
+                            padding: '0 20px',
+                            fontSize: '14px'
                           }}
                         />
                       </div>
@@ -114,13 +116,17 @@ const Footer2 = () => {
                         name="submit"
                         value="Submit"
                         type="submit"
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary shadow-none"
                         style={{
-                          height: '50px',
-                          padding: '0 30px',
-                          borderRadius: '8px',
+                          height: '55px',
+                          padding: '0 35px',
+                          borderRadius: '10px',
                           backgroundColor: 'var(--primary)',
-                          border: 'none'
+                          border: 'none',
+                          fontWeight: '700',
+                          fontSize: '14px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px'
                         }}
                       >
                         <span>{footerContent.newsletterButtonText || "Subscribe"}</span>
