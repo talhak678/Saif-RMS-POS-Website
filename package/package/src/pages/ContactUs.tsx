@@ -17,10 +17,10 @@ const ContactUs = () => {
 
   // Map CMS data or fallback to defaults
   const displayInfo = [
-    { title: contactCards?.phoneTitle || "Phone Number", text: contactCards?.phoneValue || "+123 456 7890", icon: ContactUsArr[0]?.icon },
-    { title: contactCards?.emailTitle || "Email Address", text: contactCards?.emailValue || "info@example.com", icon: ContactUsArr[1]?.icon },
-    { title: contactCards?.addressTitle || "Location", text: contactCards?.addressValue || "123 Main St, City", icon: ContactUsArr[2]?.icon },
-    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "Open 24/7", icon: ContactUsArr[3]?.icon },
+    { title: contactCards?.phoneTitle || "Phone Number", text: contactCards?.phoneValue || "+123 456 7890", icon: contactCards?.phoneIcon || ContactUsArr[0]?.icon },
+    { title: contactCards?.emailTitle || "Email Address", text: contactCards?.emailValue || "info@example.com", icon: contactCards?.emailIcon || ContactUsArr[1]?.icon },
+    { title: contactCards?.addressTitle || "Location", text: contactCards?.addressValue || "123 Main St, City", icon: contactCards?.addressIcon || ContactUsArr[2]?.icon },
+    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "Open 24/7", icon: contactCards?.hoursIcon || ContactUsArr[3]?.icon },
   ];
 
   return (
@@ -71,38 +71,38 @@ const ContactUs = () => {
                 <input type="hidden" name="dzToDo" value="Contact" />
                 <div className="row">
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
-                    <label className="form-label text-primary">Your Name</label>
+                    <label className="form-label text-primary">{formContent.nameLabel || "Your Name"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzName" required type="text" className="form-control" placeholder="John Doe" />
+                      <input name="dzName" required type="text" className="form-control" placeholder={formContent.namePlaceholder || "John Doe"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
-                    <label className="form-label text-primary">Your Email</label>
+                    <label className="form-label text-primary">{formContent.emailLabel || "Your Email"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzEmail" required type="text" className="form-control" placeholder="info@example.com" />
+                      <input name="dzEmail" required type="text" className="form-control" placeholder={formContent.emailPlaceholder || "info@example.com"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
-                    <label className="form-label text-primary">Your Number</label>
+                    <label className="form-label text-primary">{formContent.phoneLabel || "Your Number"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzPhoneNumber" required type="text" className="form-control dz-number" placeholder="9876543210" />
+                      <input name="dzPhoneNumber" required type="text" className="form-control dz-number" placeholder={formContent.phonePlaceholder || "9876543210"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
-                    <label className="form-label text-primary">Members</label>
+                    <label className="form-label text-primary">{formContent.membersLabel || "Members"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzOther[Person]" required type="text" className="form-control" placeholder="1 Person" />
+                      <input name="dzOther[Person]" required type="text" className="form-control" placeholder={formContent.membersPlaceholder || "1 Person"} />
                     </div>
                   </div>
                   <div className="col-sm-12 m-b40">
-                    <label className="form-label text-primary">Message</label>
+                    <label className="form-label text-primary">{formContent.messageLabel || "Message"}</label>
                     <div className="input-group input-line input-black">
-                      <textarea name="dzMessage" required className="form-control" placeholder="Hi, let's talk!" />
+                      <textarea name="dzMessage" required className="form-control" placeholder={formContent.messagePlaceholder || "Hi, let's talk!"} />
                     </div>
                   </div>
                   <div className="col-12 text-center">
                     <button name="submit" value="submit" type="reset" className="btn btn-primary btn-hover-1">
-                      <span>Book A Table</span>
+                      <span>{formContent.buttonText || "Book A Table"}</span>
                     </button>
                   </div>
                 </div>
