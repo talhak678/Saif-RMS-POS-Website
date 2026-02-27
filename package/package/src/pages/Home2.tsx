@@ -69,8 +69,16 @@ const Home2 = () => {
             `}</style>
           )}
           <div className="container">
-            <div className="section-head text-center">
-              <h2 className="title text-white wow flipInX">{sections.todaysSpecial.content?.title || "Today's Special"}</h2>
+            <div className="section-head menu-align">
+              <h2 className="title mb-0 wow flipInX text-white">{sections.todaysSpecial.content?.title || "Today's Special"}</h2>
+              <div className="pagination-align wow fadeInUp">
+                <div className="special-button-prev btn-prev rounded-xl btn-hover-2 text-white border-white">
+                  <i className="fa-solid fa-arrow-left"></i>
+                </div>
+                <div className="special-button-next btn-next rounded-xl btn-hover-2 text-white border-white">
+                  <i className="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
             </div>
             <Home2SpacialMenu />
           </div>

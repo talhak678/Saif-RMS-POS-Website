@@ -78,10 +78,10 @@ const MainBanner2 = () => {
 
                       <div className="banner-btn d-flex align-items-center justify-content-start gap-3">
                         <Link
-                          to={item.linkUrl || item.buttonLink || bannerContent.buttonLink || "/our-menu-2"}
+                          to="/our-menu-1"
                           className="btn btn-primary btn-lg shadow-primary btn-hover-1 py-3 px-5 rounded-pill"
                         >
-                          <span className="fw-bold">{item.buttonText || bannerContent.buttonText || "Order Now"}</span>
+                          <span className="fw-bold">Order Now</span>
                         </Link>
                         <Link
                           to="/our-menu-2"
