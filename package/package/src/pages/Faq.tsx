@@ -1,7 +1,7 @@
 import CommonBanner from "../elements/CommonBanner";
 import { Accordion } from "react-bootstrap";
 import { IMAGES } from "../constent/theme";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 
