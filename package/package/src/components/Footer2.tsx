@@ -66,7 +66,7 @@ const Footer2 = () => {
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
 
-                  {/* DYNAMIC SOCIAL ICONS - FORCED SIZE WITH INLINE STYLES */}
+                 
                   <div className="dz-social-icon" style={{ display: 'flex', gap: '20px', marginTop: '25px' }}>
                     {footerContent.facebook && (
                       <a href={footerContent.facebook} target="_blank" rel="noreferrer"
