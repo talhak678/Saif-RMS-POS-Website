@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import ModalVideoBox from "../elements/ModalVideoBox";
-import { AboutServiceArr } from "../elements/JsonData";
 import { Link } from "react-router-dom";
 import { Context } from "../context/AppContext";
 
@@ -18,17 +17,19 @@ const AboutUs = () => {
   const cmsCards = whatWeDoContent.cards || [];
 
   const displayCards = cmsCards.length > 0
-    ? cmsCards.map((card: any, idx: number) => ({
+    ? cmsCards.map((card: any) => ({
       title: card.title,
       desc: card.description,
-      icon: AboutServiceArr[idx % AboutServiceArr.length]?.icon || "flaticon-fast-food"
+      icon: card.icon || "flaticon-fast-food"
     }))
     : [
-      { title: "Fresh Ingredients", desc: "Quality ingredients used.", icon: AboutServiceArr[0]?.icon },
-      { title: "Expert Chefs", desc: "Years of experience.", icon: AboutServiceArr[1]?.icon },
-      { title: "Professional Service", desc: "Priority satisfaction.", icon: AboutServiceArr[2]?.icon },
-      { title: "Cozy Atmosphere", desc: "Warm environment.", icon: AboutServiceArr[3]?.icon },
+      { title: "Fresh Ingredients", desc: "Quality ingredients used.", icon: "flaticon-fast-food" },
+      { title: "Expert Chefs", desc: "Years of experience.", icon: "flaticon-chef" },
+      { title: "Professional Service", desc: "Priority satisfaction.", icon: "flaticon-customer-service" },
+      { title: "Cozy Atmosphere", desc: "Warm environment.", icon: "flaticon-restaurant" },
     ];
+
+  const textAlignClass = whatWeDoContent.textAlign === "left" ? "start" : whatWeDoContent.textAlign === "right" ? "end" : "center";
 
   return (
     <div className="page-content" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white" }}>
@@ -54,16 +55,16 @@ const AboutUs = () => {
       {sections.whatWeDo?.enabled !== false && (
         <section className="content-inner">
           <div className="container">
-            <div className={`section-head text-${whatWeDoContent.textAlign === "left" ? "start" : whatWeDoContent.textAlign === "right" ? "end" : "center"}`}>
+            <div className={`section-head text-${textAlignClass}`}>
               {whatWeDoContent.showTitle !== "false" && <h2 className="title">{whatWeDoContent.title || "What We Do"}</h2>}
               {whatWeDoContent.description && (
                 <p className="mt-3 max-w-2xl mx-auto text-muted">{whatWeDoContent.description}</p>
               )}
             </div>
-            <div className="row justify-content-center">
+            <div className="row">
               {displayCards.map(({ icon, title, desc }: { icon: string; title: string; desc: string }, ind: number) => (
                 <div className="col-lg-3 col-sm-6 m-b30" key={ind}>
-                  <div className="icon-bx-wraper style-3 h-100">
+                  <div className={`icon-bx-wraper style-3 h-100 text-${textAlignClass}`}>
                     <div className="icon-bx">
                       <div className="icon-cell">
                         <i className={icon}></i>
@@ -71,7 +72,7 @@ const AboutUs = () => {
                     </div>
                     <div className="icon-content">
                       <h5 className="title">
-                        <Link to="/service-detail">{title}</Link>
+                        <Link to="#">{title}</Link>
                       </h5>
                       <p>{desc}</p>
                     </div>
