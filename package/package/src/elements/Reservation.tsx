@@ -35,9 +35,12 @@ const Reservation = () => {
             <input
               name="dzPhoneNumber"
               required
-              type="text"
+              type="tel"
               className="form-control dz-number"
               placeholder="Phone Number"
+              onInput={(e) => {
+                e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+              }}
             />
           </div>
         </div>

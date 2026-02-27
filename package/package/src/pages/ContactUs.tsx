@@ -85,7 +85,16 @@ const ContactUs = () => {
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
                     <label className="form-label text-primary">{formContent.phoneLabel || "Your Number"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzPhoneNumber" required type="text" className="form-control dz-number" placeholder={formContent.phonePlaceholder || "9876543210"} />
+                      <input
+                        name="dzPhoneNumber"
+                        required
+                        type="tel"
+                        className="form-control dz-number"
+                        placeholder={formContent.phonePlaceholder || "9876543210"}
+                        onInput={(e) => {
+                          e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+                        }}
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">

@@ -1,5 +1,5 @@
 import { IMAGES } from "../constent/theme";
-import  SelectPicker  from "rsuite/SelectPicker";
+import SelectPicker from "rsuite/SelectPicker";
 
 const data = [
   "Number Of People",
@@ -57,9 +57,12 @@ const Home3BookTable = () => {
                   <input
                     name="dzPhoneNumber"
                     required
-                    type="text"
+                    type="tel"
                     className="form-control dz-number"
                     placeholder="Phone Number"
+                    onInput={(e) => {
+                      e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+                    }}
                   />
                 </div>
               </div>
