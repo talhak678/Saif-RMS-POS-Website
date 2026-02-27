@@ -48,7 +48,7 @@ const Footer2 = () => {
               {/* TOP SECTION: LOGO & NEWSLETTER */}
               <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                 <div className="col-lg-6 col-md-12 mb-5 mb-lg-0">
-                  <div className="footer-logo mb-4 flex items-center gap-4">
+                  <div className="footer-logo mb-4">
                     <Link to="/" className="anim-logo-white">
                       <img
                         src={
@@ -58,32 +58,29 @@ const Footer2 = () => {
                           IMAGES.logo2
                         }
                         alt="/"
-                        style={{ maxWidth: '160px', height: 'auto' }}
+                        style={{ maxWidth: '180px', height: 'auto' }}
                       />
                     </Link>
-                    <h3 className="mb-0 text-white font-bold tracking-wider" style={{ fontSize: '28px' }}>
-                      {footerContent.logoTitle || cmsConfig?.restaurantName || "Saif RMS"}
-                    </h3>
                   </div>
                   <p className="max-w-md mb-5" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', lineHeight: '1.9' }}>
                     {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
                   </p>
 
-                  {/* DYNAMIC SOCIAL ICONS - IMPROVED SPACING & STYLE */}
+                  {/* DYNAMIC SOCIAL ICONS - BRAND COLORS & NO BORDER */}
                   <div className="dz-social-icon flex gap-4 mt-2">
                     {footerContent.facebook && (
-                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
-                        <i className="fab fa-facebook-f text-white text-lg"></i>
+                      <a href={footerContent.facebook} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg" style={{ backgroundColor: '#1877F2' }}>
+                        <i className="fab fa-facebook-f text-white text-xl"></i>
                       </a>
                     )}
                     {footerContent.instagram && (
-                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
-                        <i className="fab fa-instagram text-white text-lg"></i>
+                      <a href={footerContent.instagram} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg" style={{ backgroundColor: '#E4405F' }}>
+                        <i className="fab fa-instagram text-white text-xl"></i>
                       </a>
                     )}
                     {footerContent.tiktok && (
-                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-500 transition-all border border-white/5 hover:border-brand-500">
-                        <i className="fab fa-tiktok text-white text-lg"></i>
+                      <a href={footerContent.tiktok} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg" style={{ backgroundColor: '#000000' }}>
+                        <i className="fab fa-tiktok text-white text-xl"></i>
                       </a>
                     )}
                   </div>
@@ -93,43 +90,39 @@ const Footer2 = () => {
                     <h4 className="text-white mb-4" style={{ fontWeight: '600', fontSize: '22px' }}>
                       {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                     </h4>
-                    <form className="dzSubscribe flex gap-3" action="#" method="post">
-                      <div className="flex-grow">
-                        <input
-                          name="dzEmail"
-                          required
-                          type="email"
-                          className="form-control"
-                          placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
-                          style={{
-                            backgroundColor: 'white',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            color: '#333',
-                            height: '55px',
-                            borderRadius: '10px',
-                            padding: '0 20px',
-                            fontSize: '14px'
-                          }}
-                        />
-                      </div>
+                    <form className="dzSubscribe flex gap-0 overflow-hidden" action="#" method="post" style={{ borderRadius: '12px' }}>
+                      <input
+                        name="dzEmail"
+                        required
+                        type="email"
+                        className="form-control"
+                        placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
+                        style={{
+                          backgroundColor: 'white',
+                          border: 'none',
+                          color: '#333',
+                          height: '60px',
+                          borderRadius: '12px 0 0 12px',
+                          padding: '0 25px',
+                          fontSize: '15px',
+                          flexGrow: 1
+                        }}
+                      />
                       <button
                         name="submit"
                         value="Submit"
                         type="submit"
-                        className="btn btn-primary shadow-none"
+                        className="btn btn-primary shadow-none flex items-center justify-center"
                         style={{
-                          height: '55px',
-                          padding: '0 35px',
-                          borderRadius: '10px',
+                          height: '60px',
+                          width: '70px',
+                          borderRadius: '0 12px 12px 0',
                           backgroundColor: 'var(--primary)',
                           border: 'none',
-                          fontWeight: '700',
-                          fontSize: '14px',
-                          textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          fontSize: '20px'
                         }}
                       >
-                        <span>{footerContent.newsletterButtonText || "Subscribe"}</span>
+                        <i className="fas fa-arrow-right"></i>
                       </button>
                     </form>
                   </div>
