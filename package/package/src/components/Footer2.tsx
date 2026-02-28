@@ -154,7 +154,7 @@ const Footer2 = () => {
             <div className="footer-top" style={{ position: 'relative', zIndex: 1, padding: 0 }}>
               <div className="container">
                 {/* TOP SECTION: LOGO & NEWSLETTER */}
-                <div className="row align-items-center mb-5 pb-5">
+                <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="col-lg-7 col-md-12 mb-5 mb-lg-0">
                     <div className="footer-logo mb-4">
                       <Link to="/">
@@ -235,7 +235,7 @@ const Footer2 = () => {
                 </div>
 
                 {/* BOTTOM SECTION: 4 COLUMNS */}
-                <div className="row border-top !border-gray-500 mb-5">
+                <div className="row">
                   {/* CONTACT COLUMN */}
                   <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
                     <div className="widget widget_getintuch">
