@@ -9,7 +9,7 @@ const Header2 = () => {
   const {
     setShowSidebar,
     headerSidebar,
-    setHeaderSidebar,
+    // setHeaderSidebar,
     headerClass,
     setShowSignInForm,
     cmsConfig,
@@ -113,22 +113,13 @@ const Header2 = () => {
               justify-content: center !important;
               align-items: center !important;
             }
-            .header-right {
-               display: flex !important;
-               gap: 8px !important;
+            .extra-nav {
+               display: none !important;
             }
-            .header-right .nav-item {
-               padding: 0 !important;
-               margin: 0 !important;
-            }
-            .header-right .btn {
-               width: 38px !important;
-               height: 38px !important;
-               padding: 0 !important;
+            .extra-nav-mobile {
                display: flex !important;
                align-items: center !important;
-               justify-content: center !important;
-               font-size: 16px !important;
+               gap: 10px !important;
             }
             .header-right .badge {
                top: -5px !important;
@@ -195,16 +186,18 @@ const Header2 = () => {
               {/* ─── Mobile Right Area (Icons + Toggler) ─── */}
               <div className="d-lg-none d-flex align-items-center gap-2">
                 {/* Cart Icon */}
-                <ul className="header-right m-0">
-                  {headerContent.showCart !== "false" && (
-                    <li className="nav-item cart-link">
-                      <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px' }}>
-                        <i className="flaticon-shopping-bag-1"></i>
-                        <span className="badge">{cartItems.length}</span>
-                      </Link>
-                    </li>
-                  )}
-                </ul>
+                <div className="extra-nav-mobile">
+                  <ul className="header-right m-0 p-0" style={{ listStyle: 'none' }}>
+                    {headerContent.showCart !== "false" && (
+                      <li className="nav-item cart-link">
+                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px', display: 'flex' }}>
+                          <i className="flaticon-shopping-bag-1"></i>
+                          <span className="badge">{cartItems.length}</span>
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </div>
 
                 {/* Main Menu Hamburger */}
                 <button
@@ -215,7 +208,7 @@ const Header2 = () => {
                     background: 'none',
                     border: 'none',
                     padding: '5px',
-                    marginLeft: '10px'
+                    marginLeft: '5px'
                   }}
                 >
                   <span></span><span></span><span></span>

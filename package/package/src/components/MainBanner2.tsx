@@ -190,13 +190,14 @@ const MainBanner2 = () => {
 
                       {selectedReview && (
                         <div className="review-card-banner mt-4 animate__animated animate__fadeInUp" style={{
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          backdropFilter: 'blur(12px)',
-                          padding: '20px',
+                          background: '#ffffff',
+                          padding: '24px',
                           borderRadius: '24px',
-                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          border: '1px solid rgba(0, 0, 0, 0.08)',
                           maxWidth: '450px',
-                          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                          boxShadow: '0 15px 40px rgba(0, 0, 0, 0.12)',
+                          position: 'relative',
+                          zIndex: 1
                         }}>
                           <div className="d-flex align-items-center mb-3">
                             <div className="rating d-flex gap-1 mr-3">
@@ -204,25 +205,31 @@ const MainBanner2 = () => {
                                 <StarIcon key={i} filled={i < selectedReview.rating} />
                               ))}
                             </div>
-                            <span className="text-white-50 small font-weight-bold" style={{ letterSpacing: '1px' }}>{selectedReview.rating.toFixed(1)} RATING</span>
+                            <span className="small font-weight-bold" style={{ letterSpacing: '1px', color: '#666' }}>
+                              {selectedReview.rating.toFixed(1)} RATING
+                            </span>
                           </div>
-                          <p className="text-white mb-3" style={{
+                          <p className="mb-3" style={{
                             fontSize: '15px',
                             lineHeight: '1.6',
                             fontStyle: 'italic',
-                            opacity: '0.9'
+                            color: '#444',
+                            fontWeight: '500'
                           }}>
                             "{selectedReview.comment || "Fast service and delicious food! Highly recommended."}"
                           </p>
-                          <div className="d-flex align-items-center gap-3">
-                            <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-center text-white font-weight-bold" style={{ width: '38px', height: '38px', fontSize: '14px' }}>
+                          <div className="d-flex align-items-center gap-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                            <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center text-white font-weight-bold" style={{ width: '42px', height: '42px', fontSize: '16px', boxShadow: '0 4px 10px rgba(255, 107, 53, 0.3)' }}>
                               {(selectedReview.order?.customer?.name || "G")[0].toUpperCase()}
                             </div>
                             <div>
-                              <h6 className="text-white mb-0" style={{ fontSize: '14px', fontWeight: '700' }}>
+                              <h6 className="mb-0" style={{ fontSize: '15px', fontWeight: '800', color: '#222' }}>
                                 {selectedReview.order?.customer?.name || "Verified Guest"}
                               </h6>
-                              <span className="text-primary small font-weight-bold uppercase" style={{ fontSize: '10px', letterSpacing: '1px' }}>Happy Customer</span>
+                              <div className="d-flex align-items-center gap-1">
+                                <i className="fa fa-check-circle text-success" style={{ fontSize: '10px' }}></i>
+                                <span className="text-primary small font-weight-bold uppercase" style={{ fontSize: '10px', letterSpacing: '1px' }}>Verified Customer</span>
+                              </div>
                             </div>
                           </div>
                         </div>
