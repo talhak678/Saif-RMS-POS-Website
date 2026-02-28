@@ -95,6 +95,15 @@ const Header2 = () => {
             .logo-header img {
               max-height: 40px !important;
             }
+            .logo-header {
+              flex: 1 !important;
+            }
+            .mobile-nav-area {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: flex-end !important;
+              gap: 12px !important;
+            }
             .extra-nav-mobile {
               display: flex !important;
               align-items: center !important;
@@ -184,13 +193,13 @@ const Header2 = () => {
               </div>
 
               {/* ─── Mobile Right Area (Icons + Toggler) ─── */}
-              <div className="d-lg-none d-flex align-items-center gap-2">
+              <div className="d-lg-none mobile-nav-area">
                 {/* Cart Icon */}
                 <div className="extra-nav-mobile">
                   <ul className="header-right m-0 p-0" style={{ listStyle: 'none' }}>
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link">
-                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px', display: 'flex' }}>
+                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <i className="flaticon-shopping-bag-1"></i>
                           <span className="badge">{cartItems.length}</span>
                         </Link>
@@ -201,14 +210,18 @@ const Header2 = () => {
 
                 {/* Main Menu Hamburger */}
                 <button
-                  className={`navbar-toggler navicon ${headerSidebar ? "open" : ""}`}
+                  className={`navbar-toggler navicon p-0 ${headerSidebar ? "open" : ""}`}
                   type="button"
                   onClick={() => setShowSidebar(true)}
                   style={{
                     background: 'none',
                     border: 'none',
-                    padding: '5px',
-                    marginLeft: '5px'
+                    width: '35px',
+                    height: '35px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <span></span><span></span><span></span>
