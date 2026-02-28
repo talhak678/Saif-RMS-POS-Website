@@ -13,10 +13,15 @@ const MainBanner2 = () => {
   const reviewSection = cmsConfig?.config?.configJson?.home?.sections?.customerComments?.content || {};
   const allReviews = cmsConfig?.reviews || [];
 
-  // Get selected reviews for dynamic display
-  const selectedReviews = allReviews.filter((r: any) =>
+  // 1. Try to get manually selected reviews from CMS
+  let selectedReviews = allReviews.filter((r: any) =>
     reviewSection.selectedReviewIds?.includes(r.id)
   );
+
+  // 2. Fallback: If no reviews are selected, just use the first few reviews from allReviews
+  if (selectedReviews.length === 0 && allReviews.length > 0) {
+    selectedReviews = allReviews.slice(0, 5);
+  }
 
   const getReviewData = (index: number) => {
     if (selectedReviews.length > 0) {
