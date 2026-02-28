@@ -49,31 +49,34 @@ const Footer2 = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       {footerEnabled && (
-        <footer className="site-footer style-2" id="footer" style={{ color: 'white', position: 'relative', backgroundColor: 'transparent' }}>
+        <footer className="site-footer style-2" id="footer" style={{ border: 'none', backgroundImage: 'none', color: 'white', position: 'relative', backgroundColor: 'transparent' }}>
           <style>
             {`
               .site-footer.style-2#footer {
                 background-color: transparent !important;
                 background-image: none !important;
+                border: none !important;
               }
               .footer-card {
                 background-color: ${bgColor} !important;
-                margin: 0 40px 40px 40px;
+                margin: 0 120px 40px 120px;
                 border-radius: 50px;
                 padding: 60px 40px;
                 position: relative;
                 overflow: hidden;
+                border: none !important;
               }
               .site-footer.style-2 .footer-top, 
               .site-footer.style-2 .footer-bottom {
                 background-color: transparent !important;
+                border: none !important;
               }
               .widget_services ul li {
-                margin-bottom: 12px !important;
+                margin-bottom: 15px !important;
               }
               .widget_services ul li a {
                 color: rgba(255,255,255,0.7) !important;
-                font-size: 14px !important;
+                font-size: 18px !important;
                 transition: 0.3s;
               }
               .widget_services ul li a:hover {
@@ -82,23 +85,24 @@ const Footer2 = () => {
               }
               .footer-title {
                 font-weight: 700 !important;
-                font-size: 18px !important;
+                font-size: 24px !important;
                 letter-spacing: 1px;
                 color: white !important;
+                margin-bottom: 35px !important;
               }
               .widget_getintuch ul li {
                 display: flex;
                 align-items: center;
-                gap: 15px;
-                margin-bottom: 15px;
+                gap: 20px;
+                margin-bottom: 25px;
               }
               .widget_getintuch ul li i {
-                font-size: 22px;
+                font-size: 28px;
                 color: var(--primary);
               }
               .widget_getintuch ul li p {
                 color: rgba(255,255,255,0.7) !important;
-                font-size: 14px !important;
+                font-size: 18px !important;
                 margin: 0;
               }
               @media (max-width: 991px) {
@@ -150,7 +154,7 @@ const Footer2 = () => {
             <div className="footer-top" style={{ position: 'relative', zIndex: 1, padding: 0 }}>
               <div className="container">
                 {/* TOP SECTION: LOGO & NEWSLETTER */}
-                <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div className="row align-items-center mb-5 pb-5">
                   <div className="col-lg-7 col-md-12 mb-5 mb-lg-0">
                     <div className="footer-logo mb-4">
                       <Link to="/">
