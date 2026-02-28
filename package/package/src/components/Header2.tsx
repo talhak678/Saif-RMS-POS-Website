@@ -95,7 +95,7 @@ const Header2 = () => {
             .logo-header img {
               max-height: 40px !important;
             }
-            .extra-nav {
+            .extra-nav-mobile {
               display: flex !important;
               align-items: center !important;
               float: none !important;
@@ -210,7 +210,7 @@ const Header2 = () => {
                 <button
                   className={`navbar-toggler navicon ${headerSidebar ? "open" : ""}`}
                   type="button"
-                  onClick={() => setHeaderSidebar(!headerSidebar)}
+                  onClick={() => setShowSidebar(true)}
                   style={{
                     background: 'none',
                     border: 'none',
@@ -358,7 +358,7 @@ const Header2 = () => {
 
               {/* Nav Menu */}
               <div
-                className={`header-nav navbar-collapse justify-content-center ${headerSidebar ? "show" : ""}`}
+                className={`header-nav navbar-collapse justify-content-center d-none d-lg-flex ${headerSidebar ? "show" : ""}`}
                 id="navbarNavDropdown"
               >
                 <Menu />
