@@ -19,14 +19,8 @@ const MainBanner2 = () => {
     subtitle: bannerSection.subtitle || "High Quality Test Station",
     description: bannerSection.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients.",
     bgimg: bannerSection.bgImage || bannerSection.imageUrl || MainBanner2Arr[0].bgimg,
-    img4: bannerSection.rightImage || MainBanner2Arr[0].img4,
-    // Remove decorative template images for CMS-driven banners
-    name: MainBanner2Arr[0].name,
-    price: MainBanner2Arr[0].price,
-    img1: "",
-    img2: "",
     img3: "",
-    cardTitle: MainBanner2Arr[0].title
+    img4: bannerSection.rightImage || MainBanner2Arr[0].img4
   });
 
   // 2. Additional Banners from items array
@@ -38,13 +32,8 @@ const MainBanner2 = () => {
         subtitle: item.subtitle || "Best quality food in town",
         description: item.description || "Experience the best culinary delights with us.",
         bgimg: item.bgImage || fallback.bgimg,
-        img4: item.rightImage || fallback.img4,
-        name: fallback.name,
-        price: fallback.price,
-        img1: "",
-        img2: "",
         img3: "",
-        cardTitle: fallback.title
+        img4: item.rightImage || fallback.img4
       });
     });
   } else {
@@ -113,7 +102,7 @@ const MainBanner2 = () => {
         speed={1500}
         loop={true}
       >
-        {displayBanners.map(({ title, subtitle, description,  bgimg,  img3, img4,  }, ind) => (
+        {displayBanners.map(({ title, subtitle, description, bgimg, img3, img4 }, ind) => (
           <SwiperSlide className="swiper-slide" key={ind}>
             <div
               className="banner-inner overflow-hidden"
