@@ -422,11 +422,34 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             }
           }
 
-          // 3. Favicon
-          if (themeSettings.logos?.enabled && themeSettings.logos.content?.favicon) {
-            const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-            if (link) {
-              link.href = themeSettings.logos.content.favicon;
+          // 3. Favicon, Title and Description
+          if (themeSettings.logos?.enabled) {
+            const logoContent = themeSettings.logos.content || {};
+
+            // Favicon
+            if (logoContent.favicon) {
+              const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+              if (link) {
+                link.href = logoContent.favicon;
+              }
+            }
+
+            // Title
+            if (logoContent.websiteTitle) {
+              document.title = logoContent.websiteTitle;
+            } else if (data.restaurantName) {
+              document.title = data.restaurantName;
+            }
+
+            // Description
+            if (logoContent.websiteDescription) {
+              let metaDescription = document.querySelector('meta[name="description"]');
+              if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+              }
+              metaDescription.setAttribute('content', logoContent.websiteDescription);
             }
           }
         } else {

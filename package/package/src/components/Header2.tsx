@@ -75,6 +75,68 @@ const Header2 = () => {
 
   return (
     <>
+      <style>
+        {`
+          @media (max-width: 991px) {
+            .main-bar .container-fluid {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: space-between !important;
+              padding: 0 15px !important;
+            }
+            .logo-header {
+              height: 70px !important;
+              display: flex !important;
+              align-items: center !important;
+              float: none !important;
+              margin: 0 !important;
+              width: auto !important;
+            }
+            .logo-header img {
+              max-height: 40px !important;
+            }
+            .extra-nav {
+              display: flex !important;
+              align-items: center !important;
+              float: none !important;
+              margin: 0 !important;
+              height: 70px !important;
+            }
+            .navbar-toggler {
+              margin: 0 0 0 10px !important;
+              float: none !important;
+              height: 40px !important;
+              width: 40px !important;
+              padding: 0 !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: center !important;
+              align-items: center !important;
+            }
+            .header-right {
+               display: flex !important;
+               gap: 8px !important;
+            }
+            .header-right .nav-item {
+               padding: 0 !important;
+               margin: 0 !important;
+            }
+            .header-right .btn {
+               width: 38px !important;
+               height: 38px !important;
+               padding: 0 !important;
+               display: flex !important;
+               align-items: center !important;
+               justify-content: center !important;
+               font-size: 16px !important;
+            }
+            .header-right .badge {
+               top: -5px !important;
+               right: -5px !important;
+            }
+          }
+        `}
+      </style>
       <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
         <div className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""}`}>
           <div className="main-bar clearfix">
@@ -112,42 +174,80 @@ const Header2 = () => {
                 )}
               </div>
 
-              {/* Mobile toggle */}
-              <button
-                className={`navbar-toggler collapsed navicon justify-content-end ${headerSidebar ? "open" : ""}`}
-                type="button"
-                onClick={() => setHeaderSidebar(!headerSidebar)}
-              >
-                <span></span><span></span><span></span>
-              </button>
-
-              {/* ─── Mobile Right Icons ─── */}
-              <div className="extra-nav d-lg-none d-flex align-items-center" style={{ float: "right", height: "var(--headerheight)" }}>
-                <div className="extra-cell">
-                  <ul className="header-right m-0">
-                    {headerContent.showLogin !== "false" && (
-                      <li className="nav-item">
-                        {user ? (
-                          <Link to="/my-account" className="btn btn-white btn-square btn-shadow me-2" style={{ border: "none" }}>
-                            <i className="flaticon-user"></i>
+              {/* ─── Mobile Right Area (Icons + Toggler) ─── */}
+              <div className="d-lg-none d-flex align-items-center gap-2">
+                {/* Mobile Right Icons */}
+                <div className="extra-nav d-flex align-items-center" style={{ height: "70px" }}>
+                  <div className="extra-cell">
+                    <ul className="header-right m-0">
+                      {headerContent.showLogin !== "false" && (
+                        <li className="nav-item">
+                          {user ? (
+                            <Link to="/my-account" className="btn btn-white btn-square btn-shadow me-2" style={{ border: "none" }}>
+                              <i className="flaticon-user"></i>
+                            </Link>
+                          ) : (
+                            <button className="btn btn-white btn-square btn-shadow me-2" onClick={() => setShowSignInForm(true)} style={{ border: "none" }}>
+                              <i className="flaticon-user"></i>
+                            </button>
+                          )}
+                        </li>
+                      )}
+                      {headerContent.showCart !== "false" && (
+                        <li className="nav-item cart-link">
+                          <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
+                            <i className="flaticon-shopping-bag-1"></i>
+                            <span className="badge">{cartItems.length}</span>
                           </Link>
-                        ) : (
-                          <button className="btn btn-white btn-square btn-shadow me-2" onClick={() => setShowSignInForm(true)} style={{ border: "none" }}>
-                            <i className="flaticon-user"></i>
-                          </button>
-                        )}
-                      </li>
-                    )}
-                    {headerContent.showCart !== "false" && (
-                      <li className="nav-item cart-link">
-                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
-                          <i className="flaticon-shopping-bag-1"></i>
-                          <span className="badge">{cartItems.length}</span>
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
                 </div>
+
+                {/* Mobile Toggler */}
+                <button
+                  className={`navbar-toggler collapsed navicon ${headerSidebar ? "open" : ""}`}
+                  type="button"
+                  onClick={() => setHeaderSidebar(!headerSidebar)}
+                  style={{ background: 'none', border: 'none', padding: 0 }}
+                >
+                  <span></span><span></span><span></span>
+                </button>
+              </div>
+
+              {/* ─── Mobile Search Bar (Only Mobile) ─── */}
+              <div className="d-lg-none w-100 px-3 pb-3">
+                <form onSubmit={handleSearchSubmit} style={{ position: "relative" }}>
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.15)",
+                    borderRadius: 12,
+                    padding: "10px 15px",
+                    gap: 10,
+                    border: "1px solid rgba(0,0,0,0.05)"
+                  }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#666" : "#fff"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input
+                      type="text"
+                      placeholder="Search for dishes..."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      style={{
+                        border: "none",
+                        outline: "none",
+                        background: "transparent",
+                        fontSize: 14,
+                        fontWeight: 500,
+                        color: isLight ? "#333" : "#fff",
+                        width: "100%",
+                      }}
+                    />
+                  </div>
+                </form>
               </div>
 
               {/* ─── Desktop Right Area ─── */}

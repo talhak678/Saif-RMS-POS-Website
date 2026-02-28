@@ -138,13 +138,13 @@ const Footer2 = () => {
                    margin: 0 auto;
                 }
                 .site-footer.style-2 .footer-top .row > div {
-                  text-align: center !important;
+                  text-align: left !important;
                 }
                 .widget_getintuch ul li {
-                  justify-content: center;
+                  justify-content: flex-start;
                 }
                 .widget_services ul li {
-                  text-align: center;
+                  text-align: left;
                 }
               }
             `}
