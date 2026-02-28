@@ -134,6 +134,24 @@ const Header2 = () => {
                top: -5px !important;
                right: -5px !important;
             }
+            .navbar-toggler span {
+               background: ${iconColor} !important;
+               height: 3px !important;
+               width: 30px !important;
+               display: block !important;
+               margin: 6px 0 !important;
+               border-radius: 3px !important;
+               transition: all 0.3s ease !important;
+            }
+            .navbar-toggler.open span:nth-child(1) {
+               transform: translateY(9px) rotate(45deg) !important;
+            }
+            .navbar-toggler.open span:nth-child(2) {
+               opacity: 0 !important;
+            }
+            .navbar-toggler.open span:nth-child(3) {
+               transform: translateY(-9px) rotate(-45deg) !important;
+            }
           }
         `}
       </style>
@@ -176,79 +194,34 @@ const Header2 = () => {
 
               {/* ─── Mobile Right Area (Icons + Toggler) ─── */}
               <div className="d-lg-none d-flex align-items-center gap-2">
-                {/* Mobile Right Icons */}
-                <div className="extra-nav d-flex align-items-center" style={{ height: "70px" }}>
-                  <div className="extra-cell">
-                    <ul className="header-right m-0">
-                      {headerContent.showLogin !== "false" && (
-                        <li className="nav-item">
-                          {user ? (
-                            <Link to="/my-account" className="btn btn-white btn-square btn-shadow me-2" style={{ border: "none" }}>
-                              <i className="flaticon-user"></i>
-                            </Link>
-                          ) : (
-                            <button className="btn btn-white btn-square btn-shadow me-2" onClick={() => setShowSignInForm(true)} style={{ border: "none" }}>
-                              <i className="flaticon-user"></i>
-                            </button>
-                          )}
-                        </li>
-                      )}
-                      {headerContent.showCart !== "false" && (
-                        <li className="nav-item cart-link">
-                          <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
-                            <i className="flaticon-shopping-bag-1"></i>
-                            <span className="badge">{cartItems.length}</span>
-                          </Link>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
+                {/* Cart Icon */}
+                <ul className="header-right m-0">
+                  {headerContent.showCart !== "false" && (
+                    <li className="nav-item cart-link">
+                      <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px' }}>
+                        <i className="flaticon-shopping-bag-1"></i>
+                        <span className="badge">{cartItems.length}</span>
+                      </Link>
+                    </li>
+                  )}
+                </ul>
 
-                {/* Mobile Toggler */}
+                {/* Main Menu Hamburger */}
                 <button
-                  className={`navbar-toggler collapsed navicon ${headerSidebar ? "open" : ""}`}
+                  className={`navbar-toggler navicon ${headerSidebar ? "open" : ""}`}
                   type="button"
                   onClick={() => setHeaderSidebar(!headerSidebar)}
-                  style={{ background: 'none', border: 'none', padding: 0 }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: '5px',
+                    marginLeft: '10px'
+                  }}
                 >
                   <span></span><span></span><span></span>
                 </button>
               </div>
 
-              {/* ─── Mobile Search Bar (Only Mobile) ─── */}
-              <div className="d-lg-none w-100 px-3 pb-3">
-                <form onSubmit={handleSearchSubmit} style={{ position: "relative" }}>
-                  <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.15)",
-                    borderRadius: 12,
-                    padding: "10px 15px",
-                    gap: 10,
-                    border: "1px solid rgba(0,0,0,0.05)"
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#666" : "#fff"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                    <input
-                      type="text"
-                      placeholder="Search for dishes..."
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                      style={{
-                        border: "none",
-                        outline: "none",
-                        background: "transparent",
-                        fontSize: 14,
-                        fontWeight: 500,
-                        color: isLight ? "#333" : "#fff",
-                        width: "100%",
-                      }}
-                    />
-                  </div>
-                </form>
-              </div>
 
               {/* ─── Desktop Right Area ─── */}
               <div className="extra-nav d-none d-lg-flex align-items-center">

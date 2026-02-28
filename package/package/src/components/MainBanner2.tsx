@@ -166,7 +166,7 @@ const MainBanner2 = () => {
                       <span className="sub-title text-primary">
                         {subtitle}
                       </span>
-                      <h1 className="title font-bold text-white">
+                      <h1 className="title text-white" style={{ fontWeight: 800 }}>
                         {title}
                       </h1>
                       <p className="bnr-text">
