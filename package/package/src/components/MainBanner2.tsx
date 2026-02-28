@@ -8,13 +8,53 @@ import { MainBanner2Arr } from "../elements/JsonData";
 const MainBanner2 = () => {
   const { cmsConfig } = useContext(Context);
 
-  const bannerContent = cmsConfig?.config?.configJson?.home?.sections?.banner?.content || {
-    title: "We believe Good Food Offer Great Smile",
-    subtitle: "High Quality Test Station",
-    description: "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients.",
-    buttonText: "OUR SPECIALITIES",
-    buttonLink: "/our-menu-2"
-  };
+  const bannerSection = cmsConfig?.config?.configJson?.home?.sections?.banner?.content || {};
+
+  // Construct the list of banners dynamically
+  const banners = [];
+
+  // 1. Primary Banner (Top-level fields)
+  banners.push({
+    title: bannerSection.title || "We believe Good Food Offer Great Smile",
+    subtitle: bannerSection.subtitle || "High Quality Test Station",
+    description: bannerSection.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients.",
+    bgimg: bannerSection.bgImage || bannerSection.imageUrl || MainBanner2Arr[0].bgimg,
+    img4: bannerSection.rightImage || MainBanner2Arr[0].img4,
+    // Static / Fallback card details
+    name: MainBanner2Arr[0].name,
+    price: MainBanner2Arr[0].price,
+    img1: MainBanner2Arr[0].img1,
+    img2: MainBanner2Arr[0].img2,
+    img3: MainBanner2Arr[0].img3,
+    cardTitle: MainBanner2Arr[0].title
+  });
+
+  // 2. Additional Banners from items array
+  if (bannerSection.items && bannerSection.items.length > 0) {
+    bannerSection.items.forEach((item: any, ind: number) => {
+      const fallback = MainBanner2Arr[(ind + 1) % MainBanner2Arr.length];
+      banners.push({
+        title: item.title || "Delicious Food For You",
+        subtitle: item.subtitle || "Best quality food in town",
+        description: item.description || "Experience the best culinary delights with us.",
+        bgimg: item.bgImage || fallback.bgimg,
+        img4: item.rightImage || fallback.img4,
+        name: fallback.name,
+        price: fallback.price,
+        img1: fallback.img1,
+        img2: fallback.img2,
+        img3: fallback.img3,
+        cardTitle: fallback.title
+      });
+    });
+  } else {
+    // If no extra banners in CMS, add the other fallbacks to keep it populated
+    MainBanner2Arr.slice(1, 3).forEach((item) => {
+      banners.push({ ...item, cardTitle: item.title });
+    });
+  }
+
+  const displayBanners = banners;
 
   const pagination = {
     clickable: true,
@@ -23,9 +63,6 @@ const MainBanner2 = () => {
       return '<span class="' + className + '">' + (index + 1) + "</span>";
     },
   };
-
-  // We take the first 3 from the array as requested by user
-  const displayBanners = MainBanner2Arr.slice(0, 3);
 
   return (
     <div className="main-bnr-three overflow-hidden top-space">
@@ -76,7 +113,7 @@ const MainBanner2 = () => {
         speed={1500}
         loop={true}
       >
-        {displayBanners.map(({ title, name, price, bgimg, img1, img2, img3, img4 }, ind) => (
+        {displayBanners.map(({ title, subtitle, description, name, price, bgimg, img1, img2, img3, img4, cardTitle }, ind) => (
           <SwiperSlide className="swiper-slide" key={ind}>
             <div
               className="banner-inner overflow-hidden"
@@ -95,13 +132,13 @@ const MainBanner2 = () => {
                   <div className="col-xl-7 col-lg-7 col-md-8">
                     <div className="banner-content">
                       <span className="sub-title text-primary">
-                        {ind === 0 ? bannerContent.subtitle : "High Quality Test Station"}
+                        {subtitle}
                       </span>
                       <h1 className="title text-white">
-                        {ind === 0 ? bannerContent.title : "We believe Good Food Offer Great Smile"}
+                        {title}
                       </h1>
                       <p className="bnr-text">
-                        {ind === 0 ? bannerContent.description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."}
+                        {description}
                       </p>
 
                       <div className="banner-btn d-flex align-items-center">
@@ -109,7 +146,7 @@ const MainBanner2 = () => {
                           to="/contact-us"
                           className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
                         >
-                          <span>{ind === 0 ? bannerContent.buttonText : "Book Link Table"}</span>
+                          <span>{ind === 0 ? (bannerSection.buttonText || "OUR SPECIALITIES") : "Book Link Table"}</span>
                         </Link>
                         <Link
                           to="/about-us"
@@ -120,7 +157,7 @@ const MainBanner2 = () => {
                       </div>
                       <div className="food-card">
                         <div className="dz-head">
-                          <h5 className="text-white title">{title}</h5>
+                          <h5 className="text-white title">{cardTitle || title}</h5>
                           <ul className="rating">
                             <li><i className="fa-solid fa-star m-r5"></i></li>
                             <li><i className="fa-solid fa-star m-r5"></i></li>
