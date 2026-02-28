@@ -235,7 +235,7 @@ const Footer2 = () => {
                 </div>
 
                 {/* BOTTOM SECTION: 4 COLUMNS */}
-                <div className="row border-top !border-gray-500">
+                <div className="row border-top !border-gray-500 mb-5">
                   {/* CONTACT COLUMN */}
                   <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
                     <div className="widget widget_getintuch">
