@@ -3,6 +3,7 @@ import { Parallax, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
+import { MainBanner2Arr } from "../elements/JsonData";
 
 const MainBanner2 = () => {
   const { cmsConfig } = useContext(Context);
@@ -23,13 +24,11 @@ const MainBanner2 = () => {
     },
   };
 
-  // Use CMS Promos if available, otherwise fallback to Hero section content
-  const banners = (cmsConfig?.promos && cmsConfig.promos.length > 0)
-    ? cmsConfig.promos
-    : [bannerContent];
+  // We take the first 3 from the array as requested by user
+  const displayBanners = MainBanner2Arr.slice(0, 3);
 
   return (
-    <div className="main-bnr-three overflow-hidden">
+    <div className="main-bnr-three overflow-hidden top-space">
       <style>
         {`
           @media (max-width: 576px) {
@@ -50,6 +49,12 @@ const MainBanner2 = () => {
             .main-bnr-three .banner-content .title {
                font-size: 32px !important;
             }
+            .food-card {
+              display: none !important;
+            }
+            .banner-media {
+              display: none !important;
+            }
           }
         `}
       </style>
@@ -69,60 +74,103 @@ const MainBanner2 = () => {
         pagination={pagination}
         parallax={true}
         speed={1500}
-        loop={banners.length > 1}
+        loop={true}
       >
-        {banners.map((item: any, ind: number) => (
+        {displayBanners.map(({ title, name, price, bgimg, img1, img2, img3, img4 }, ind) => (
           <SwiperSlide className="swiper-slide" key={ind}>
             <div
               className="banner-inner overflow-hidden"
               data-swiper-parallax="-10"
               data-swiper-parallax-duration="0.5"
               style={{
-                backgroundImage: `url(${item.imageUrl || item.bgimg || ""})`,
+                backgroundImage: `url(${bgimg})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center"
               }}
             >
-              <div className="container h-100">
+              <div className="container">
                 <div
-                  className="row align-items-center h-100"
+                  className="row align-items-center"
                   data-swiper-parallax="-100"
                 >
-                  <div className="col-xl-8 col-lg-9 col-md-10">
-                    <div className="banner-content text-left py-5">
-                      <span className="sub-title text-primary" style={{ fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '15px', display: 'block' }}>
-                        {item.subtitle || bannerContent.subtitle}
+                  <div className="col-xl-7 col-lg-7 col-md-8">
+                    <div className="banner-content">
+                      <span className="sub-title text-primary">
+                        {ind === 0 ? bannerContent.subtitle : "High Quality Test Station"}
                       </span>
-                      <h1 className="title text-white mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '900', lineHeight: '1.1', textShadow: '2px 2px 10px rgba(0,0,0,0.5)' }}>
-                        {item.title || bannerContent.title}
+                      <h1 className="title text-white">
+                        {ind === 0 ? bannerContent.title : "We believe Good Food Offer Great Smile"}
                       </h1>
-                      <p className="bnr-text text-white opacity-90 mb-5" style={{ fontSize: '1.1rem', maxWidth: '600px', lineHeight: '1.6', textShadow: '1px 1px 5px rgba(0,0,0,0.5)' }}>
-                        {item.description || bannerContent.description || "Discover the best culinary experience with our expertly crafted dishes prepared with the freshest ingredients."}
+                      <p className="bnr-text">
+                        {ind === 0 ? bannerContent.description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."}
                       </p>
 
-                      <div className="banner-btn d-flex align-items-center justify-content-start gap-3">
-                        <button
-                          onClick={() => {
-                            const element = document.getElementById('todays-special');
-                            if (element) {
-                              element.scrollIntoView({ behavior: 'smooth' });
-                            }
-                          }}
-                          className="btn btn-primary btn-lg shadow-primary btn-hover-1 py-3 px-5 rounded-pill"
-                        >
-                          <span className="fw-bold">Order Now</span>
-                        </button>
+                      <div className="banner-btn d-flex align-items-center">
                         <Link
-                          to="/our-menu-2"
-                          className="btn btn-outline-light btn-lg btn-hover-1 py-3 px-5 rounded-pill"
+                          to="/contact-us"
+                          className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
                         >
-                          <span className="fw-bold">View More</span>
+                          <span>{ind === 0 ? bannerContent.buttonText : "Book Link Table"}</span>
+                        </Link>
+                        <Link
+                          to="/about-us"
+                          className="btn btn-outline-primary btn-md shadow-primary btn-hover-1"
+                        >
+                          <span>View More</span>
                         </Link>
                       </div>
+                      <div className="food-card">
+                        <div className="dz-head">
+                          <h5 className="text-white title">{title}</h5>
+                          <ul className="rating">
+                            <li><i className="fa-solid fa-star m-r5"></i></li>
+                            <li><i className="fa-solid fa-star m-r5"></i></li>
+                            <li><i className="fa-solid fa-star m-r5"></i></li>
+                            <li><i className="fa-solid fa-star m-r5"></i></li>
+                            <li><i className="fa-solid fa-star"></i></li>
+                          </ul>
+                        </div>
+                        <div className="dz-body">
+                          <div className="dz-left">
+                            <div className="profile-info">
+                              <div className="dz-media">
+                                <img src={img1} alt="/" />
+                              </div>
+                              <div className="dz-content">
+                                <h6 className="title text-white">{name}</h6>
+                                <p>Master Chief</p>
+                              </div>
+                            </div>
+                            <p className="text">
+                              Lorem ipsum dolor shit amet...
+                            </p>
+                          </div>
+                          <div className="dz-right">
+                            <h5 className="text-primary">{price}</h5>
+                            <Link
+                              to="/shop-cart"
+                              className="btn btn-primary btn-cart"
+                            >
+                              <i className="flaticon-shopping-cart"></i>
+                            </Link>
+                          </div>
+                        </div>
+                        <img className="target-line" src={img2} alt="/" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-5 col-lg-5 col-md-4 text-center">
+                    <div className="banner-media">
+                      <img
+                        src={img4}
+                        alt="/"
+                        data-swiper-parallax-scale="0.8"
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
+              <img className="leaf" src={img3} alt="/" />
             </div>
           </SwiperSlide>
         ))}
