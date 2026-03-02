@@ -27,6 +27,21 @@ const Home2SpacialMenu = () => {
 
   return (
     <>
+      <style>{`
+        .dz-img-box.style-5:hover {
+          background-color: white !important;
+        }
+        .dz-img-box.style-5:hover .dz-content h6,
+        .dz-img-box.style-5:hover .dz-content span {
+          color: inherit !important;
+        }
+        .dz-img-box.style-5:hover .dz-content h6 {
+          color: #333 !important;
+        }
+        .dz-img-box.style-5:hover .dz-content h6.text-primary {
+          color: var(--primary) !important;
+        }
+      `}</style>
       <Swiper
         className="swiper menu-swiper swiper-visible swiper-item-4"
         slidesPerView={4}
@@ -51,14 +66,12 @@ const Home2SpacialMenu = () => {
         {displayItems.map((item: any, ind: number) => (
           <SwiperSlide key={item.id || ind}>
             <div className="dz-img-box style-5" style={{ margin: '0' }}>
-              <div className="dz-content" style={{ padding: '15px' }}>
-                <div className="weight">
-                  <span className="text-muted text-xs">Recommended</span>
+              <div className="dz-content" style={{ padding: '20px', background: 'white', borderRadius: '20px 20px 0 0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+                  <span className="text-muted" style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }}>Recommended</span>
+                  <h6 className="text-primary mb-0" style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>$ {item.price}</h6>
                 </div>
-                <div className="price">
-                  <h6 style={{ fontSize: '16px', marginBottom: '5px' }}>{item.name}</h6>
-                  <h6 className="text-primary">$ {item.price}</h6>
-                </div>
+                <h6 style={{ fontSize: '16px', marginBottom: '0', fontWeight: 'bold', color: '#333' }} className="line-clamp-1">{item.name}</h6>
               </div>
               <div className="dz-media" style={{ height: '180px' }}>
                 <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
