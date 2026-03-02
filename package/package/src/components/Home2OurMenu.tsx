@@ -25,17 +25,22 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
   return (
     <div className="container">
       <style>{`
-        .dz-img-box.style-4:hover {
-          background-color: white !important;
+        .dz-img-box.style-4.active,
+        .dz-img-box.style-4.box-hover:hover {
+          background-color: var(--primary) !important;
         }
+        .dz-img-box.style-4.active .dz-content h6 a,
+        .dz-img-box.style-4.active .dz-content p,
         .dz-img-box.style-4.box-hover:hover .dz-content h6 a,
         .dz-img-box.style-4.box-hover:hover .dz-content p {
-          color: inherit !important;
+          color: white !important;
         }
-        .dz-img-box.style-4.box-hover:hover .dz-content h6 a {
-          color: #222 !important;
+        .dz-img-box.style-4.active .detail-btn,
+        .dz-img-box.style-4.box-hover:hover .detail-btn {
+          background-color: white !important;
+          color: var(--primary) !important;
         }
-        .dz-img-box.style-4.box-hover:hover {
+        .dz-img-box.style-4.active {
           transform: translateY(-5px);
           box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
