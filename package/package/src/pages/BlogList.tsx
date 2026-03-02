@@ -27,14 +27,14 @@ const BlogList = () => {
         <div className="container">
           <div className="row loadmore-content">
             {cmsConfig?.blogs?.map((blog: any, ind: number) => (
-              <div className="col-lg-4 col-md-6" key={blog.id || ind}>
-                <div className="dz-card style-1 overlay-shine dz-img-effect zoom m-b30">
-                  <div className="dz-media" style={{ height: '240px', overflow: 'hidden' }}>
+              <div className="col-lg-4 col-md-6 d-flex" key={blog.id || ind}>
+                <div className="dz-card style-1 overlay-shine dz-img-effect zoom m-b30 d-flex flex-column w-100">
+                  <div className="dz-media" style={{ height: '240px', overflow: 'hidden', minHeight: '240px' }}>
                     <Link to="/blog-standard" state={{ blog }} style={{ height: '100%', display: 'block' }}>
                       <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
                     </Link>
                   </div>
-                  <div className="dz-info">
+                  <div className="dz-info d-flex flex-column flex-grow-1">
                     <div className="dz-meta">
                       <ul>
                         <li className="dz-date">
@@ -49,19 +49,21 @@ const BlogList = () => {
                         </li>
                       </ul>
                     </div>
-                    <h5 className="dz-title">
+                    <h5 className="dz-title line-clamp-2" style={{ height: '2.8rem' }}>
                       <Link to="/blog-standard" state={{ blog }}>{blog.title}</Link>
                     </h5>
                     <p className="line-clamp-3">
                       {blog.snippet || (blog.content && blog.content.substring(0, 100) + "...") || "No description available."}
                     </p>
-                    <Link
-                      to="/blog-standard"
-                      state={{ blog }}
-                      className="btn btn-primary btn-hover-2"
-                    >
-                      Read More
-                    </Link>
+                    <div className="mt-auto">
+                      <Link
+                        to="/blog-standard"
+                        state={{ blog }}
+                        className="btn btn-primary btn-hover-2"
+                      >
+                        Read More
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
