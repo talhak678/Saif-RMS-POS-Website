@@ -88,10 +88,12 @@ const TrackOrder = () => {
     return (
         <div className="page-content bg-white">
             <CommonBanner
-                img={IMAGES.images_bnr3}
-                title="Track Order"
-                subtitle="Track Order"
-                description="Monitor your order status in real-time from our kitchen to your doorstep."
+                img={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr3}
+                title={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.title || "Track Order"}
+                subtitle={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.breadcrumb || "Track Order"}
+                description={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.description}
+                showTitle={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.showTitle !== "false"}
+                textAlign={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.textAlign}
             />
 
             <section className="content-inner" style={{ background: "#f8f9fa" }}>
