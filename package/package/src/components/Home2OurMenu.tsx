@@ -29,6 +29,10 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4.box-hover:hover {
           background-color: var(--primary) !important;
         }
+        .dz-img-box.style-4.active::before,
+        .dz-img-box.style-4.box-hover:hover::before {
+          background-color: var(--primary) !important;
+        }
         .dz-img-box.style-4.active .dz-content h6 a,
         .dz-img-box.style-4.active .dz-content p,
         .dz-img-box.style-4.box-hover:hover .dz-content h6 a,
