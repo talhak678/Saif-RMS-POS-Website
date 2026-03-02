@@ -23,13 +23,13 @@ const BlogList = () => {
         showTitle={bannerContent.showTitle !== "false"}
         textAlign={bannerContent.textAlign}
       />}
-      <section className="content-inner p-b0">
+      <section className="content-inner">
         <div className="container">
-          <div className="row justify-content-center loadmore-content">
+          <div className="row loadmore-content">
             {cmsConfig?.blogs?.map((blog: any, ind: number) => (
-              <div className="col-xl-6 col-lg-8" key={blog.id || ind}>
-                <div className="dz-card style-1 blog-half overlay-shine dz-img-effect zoom m-b30">
-                  <div className="dz-media rounded-md">
+              <div className="col-lg-4 col-md-6" key={blog.id || ind}>
+                <div className="dz-card style-1 overlay-shine dz-img-effect zoom m-b30">
+                  <div className="dz-media">
                     <Link to="/blog-standard" state={{ blog }}>
                       <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} className="object-cover h-64 w-full" />
                     </Link>
@@ -42,28 +42,26 @@ const BlogList = () => {
                             <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </Link>
                         </li>
-                        <li className="dz-user">
+                        <li className="dz-comment">
                           <Link to="#">
-                            <i className="flaticon-user"></i> {blog.author || "Admin"}
+                            <i className="flaticon-chat-bubble"></i> No Comments
                           </Link>
                         </li>
                       </ul>
                     </div>
-                    <h4 className="dz-title">
+                    <h5 className="dz-title">
                       <Link to="/blog-standard" state={{ blog }}>{blog.title}</Link>
-                    </h4>
-                    <p className="line-clamp-2">
-                      {blog.snippet || (blog.content && blog.content.substring(0, 120) + "...") || "No description available."}
+                    </h5>
+                    <p className="line-clamp-3">
+                      {blog.snippet || (blog.content && blog.content.substring(0, 100) + "...") || "No description available."}
                     </p>
-                    <div className="read-btn">
-                      <Link
-                        to="/blog-standard"
-                        state={{ blog }}
-                        className="btn btn-primary btn-hover-2"
-                      >
-                        Read More
-                      </Link>
-                    </div>
+                    <Link
+                      to="/blog-standard"
+                      state={{ blog }}
+                      className="btn btn-primary btn-hover-2"
+                    >
+                      Read More
+                    </Link>
                   </div>
                 </div>
               </div>
