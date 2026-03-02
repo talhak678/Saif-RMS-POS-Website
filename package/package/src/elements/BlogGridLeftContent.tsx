@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
+import { useContext } from "react";
+import { Context } from "../context/AppContext";
+
 const BlogGridLeftContent = () => {
+  const { cmsConfig } = useContext(Context);
+  const latestBlogs = cmsConfig?.blogs?.slice(0, 3) || [];
+
   return (
     <aside className="side-bar sticky-top left">
       <div className="widget">
@@ -54,19 +60,16 @@ const BlogGridLeftContent = () => {
         </div>
         <ul>
           <li className="cat-item">
-            <Link to="/blog-standard">Pepperoni Pizza</Link>
+            <Link to="/blog-list">Food & Recipes</Link>
           </li>
           <li className="cat-item">
-            <Link to="/blog-standard">Apricot Chicken</Link>
+            <Link to="/blog-list">Restaurant News</Link>
           </li>
           <li className="cat-item">
-            <Link to="/blog-standard">Pizza Veronese</Link>
+            <Link to="/blog-list">Chef's Specials</Link>
           </li>
           <li className="cat-item">
-            <Link to="/blog-standard">Summer Pizza</Link>
-          </li>
-          <li className="cat-item">
-            <Link to="/blog-standard">Italian Tuna</Link>
+            <Link to="/blog-list">Dining Experience</Link>
           </li>
         </ul>
       </div>
@@ -76,84 +79,31 @@ const BlogGridLeftContent = () => {
           <h4 className="title">Latest Post</h4>
         </div>
         <div className="widget-post-bx">
-          <div className="widget-post clearfix">
-            <div className="dz-media">
-              <img src={IMAGES.recent_blog_pic1} alt="/" />
-            </div>
-            <div className="dz-info">
-              <h6 className="title">
-                <Link to="/blog-standard">Explore the Food Taste</Link>
-              </h6>
-              <div className="dz-meta">
-                <ul>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-calendar-date"></i>
-                      10 Dec, 2023
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-chat-bubble"></i>
-                      2.5K
-                    </Link>
-                  </li>
-                </ul>
+          {latestBlogs.map((blog: any, ind: number) => (
+            <div className="widget-post clearfix" key={blog.id || ind}>
+              <div className="dz-media">
+                <img src={blog.imageUrl || IMAGES.recent_blog_pic1} alt="/" />
+              </div>
+              <div className="dz-info">
+                <h6 className="title">
+                  <Link to="/blog-standard" state={{ blog }}>
+                    {blog.title}
+                  </Link>
+                </h6>
+                <div className="dz-meta">
+                  <ul>
+                    <li>
+                      <Link to={"#"}>
+                        <i className="flaticon-calendar-date"></i>
+                        {new Date(blog.publishedAt).toLocaleDateString()}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="widget-post clearfix">
-            <div className="dz-media">
-              <img src={IMAGES.recent_blog_pic2} alt="/" />
-            </div>
-            <div className="dz-info">
-              <h6 className="title">
-                <Link to="/blog-standard">Secrets of Delicious Food</Link>
-              </h6>
-              <div className="dz-meta">
-                <ul>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-calendar-date"></i>
-                      16 May, 2023
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-chat-bubble"></i>
-                      1.5K
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="widget-post clearfix">
-            <div className="dz-media">
-              <img src={IMAGES.recent_blog_pic3} alt="/" />
-            </div>
-            <div className="dz-info">
-              <h6 className="title">
-                <Link to="/blog-standard"> Inspiration for Food</Link>
-              </h6>
-              <div className="dz-meta">
-                <ul>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-calendar-date"></i>
-                      20 Jan, 2023
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>
-                      <i className="flaticon-chat-bubble"></i>
-                      3.5K
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          ))}
+          {latestBlogs.length === 0 && <p className="text-gray-400">No recent posts.</p>}
         </div>
       </div>
 
@@ -162,11 +112,10 @@ const BlogGridLeftContent = () => {
           <h4 className="title">Popular Tags</h4>
         </div>
         <div className="tagcloud">
-          <Link to="/product-detail">Pizza</Link>
-          <Link to="/product-detail">Chicken</Link>
-          <Link to="/product-detail">Pizza Veronese</Link>
-          <Link to="/product-detail">Burger</Link>
-          <Link to="/product-detail">Sandwich</Link>
+          <Link to="#">Pizza</Link>
+          <Link to="#">Chicken</Link>
+          <Link to="#">Healthy</Link>
+          <Link to="#">Organic</Link>
         </div>
       </div>
     </aside>

@@ -3,6 +3,8 @@ import { IMAGES } from "../constent/theme";
 import CommentList from "../elements/CommentList";
 import CommonBanner2 from "../elements/CommonBanner2";
 
+import BlogGridLeftContent from "../elements/BlogGridLeftContent";
+
 const BlogDetail = () => {
   const location = useLocation();
   const blog = location.state?.blog;
@@ -11,10 +13,13 @@ const BlogDetail = () => {
     <div className="page-content bg-white">
       <CommonBanner2 pages={blog?.title || "Blog Standard"} />
       <section className="content-inner">
-        <div className="min-container">
+        <div className="container">
           <div className="row">
-            <div className="col-xl-12 col-lg-12">
+            <div className="col-xl-8 col-lg-8 m-b30">
               <OurBlog blog={blog} />
+            </div>
+            <div className="col-xl-4 col-lg-4">
+              <BlogGridLeftContent />
             </div>
           </div>
         </div>
