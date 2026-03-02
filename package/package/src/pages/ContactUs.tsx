@@ -107,7 +107,7 @@ const ContactUs = () => {
             object-fit: contain;
           }
           .dzForm .form-control::placeholder {
-            opacity: 0.4 !important;
+            opacity: 0.2 !important;
           }
         `}
       </style>
