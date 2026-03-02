@@ -26,7 +26,6 @@ const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?:
           .video-wrapper {
             position: relative;
             width: 100%;
-            max-width: 800px;
             margin: 0 auto;
             border-radius: 15px;
             overflow: hidden;
