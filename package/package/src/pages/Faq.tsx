@@ -61,6 +61,25 @@ const Faq = () => {
                   id="accordionFaq2"
                   defaultActiveKey="0"
                 >
+                  <style>{`
+                    .dz-accordion .accordion-header .accordion-button {
+                        color: #000 !important;
+                        background-color: #fff !important;
+                    }
+                    .dz-accordion .accordion-header .accordion-button.collapsed {
+                        color: #000 !important;
+                        background-color: #fff !important;
+                    }
+                    .dz-accordion .accordion-header .accordion-button .toggle-close {
+                        position: absolute;
+                        right: 15px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+                    .dz-accordion .accordion-item {
+                        border-bottom: 1px solid #ebebeb !important;
+                    }
+                  `}</style>
                   {cmsConfig?.faqs?.map(({ question, answer }: any, ind: number) => (
                     <Accordion.Item
                       className="accordion-item"
