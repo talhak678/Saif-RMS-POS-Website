@@ -29,9 +29,9 @@ const BlogList = () => {
             {cmsConfig?.blogs?.map((blog: any, ind: number) => (
               <div className="col-lg-4 col-md-6" key={blog.id || ind}>
                 <div className="dz-card style-1 overlay-shine dz-img-effect zoom m-b30">
-                  <div className="dz-media">
-                    <Link to="/blog-standard" state={{ blog }}>
-                      <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} className="object-cover h-64 w-full" />
+                  <div className="dz-media" style={{ height: '240px', overflow: 'hidden' }}>
+                    <Link to="/blog-standard" state={{ blog }} style={{ height: '100%', display: 'block' }}>
+                      <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
                     </Link>
                   </div>
                   <div className="dz-info">
