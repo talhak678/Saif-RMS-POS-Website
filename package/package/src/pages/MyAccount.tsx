@@ -158,7 +158,14 @@ const MyAccount = () => {
 
     return (
         <div className="page-content bg-white">
-            <CommonBanner img={IMAGES.images_bnr3} title="My Account" subtitle="My Account" />
+            <CommonBanner
+                img={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr3}
+                title={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.title || "My Account"}
+                subtitle={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.breadcrumb || "My Account"}
+                description={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.description}
+                showTitle={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.showTitle !== "false"}
+                textAlign={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.textAlign}
+            />
 
             <section className="content-inner" style={{ background: "#f8f9fa" }}>
                 <div className="container">

@@ -19,6 +19,7 @@ const BlogList = () => {
         img={bannerContent.imageUrl || IMAGES.images_bnr3}
         title={bannerContent.title}
         subtitle={bannerContent.breadcrumb}
+        description={bannerContent.description}
         showTitle={bannerContent.showTitle !== "false"}
         textAlign={bannerContent.textAlign}
       />}

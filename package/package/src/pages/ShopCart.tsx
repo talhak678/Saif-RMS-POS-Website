@@ -62,6 +62,7 @@ const ShopCart = () => {
           img={bannerContent?.imageUrl || IMAGES.images_bnr4}
           title={bannerContent?.title || "Shop Cart"}
           subtitle={bannerContent?.breadcrumb || "Shop Cart"}
+          description={bannerContent?.description}
         />
       )}
       <section className="content-inner-1">

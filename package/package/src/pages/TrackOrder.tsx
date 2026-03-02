@@ -87,7 +87,12 @@ const TrackOrder = () => {
 
     return (
         <div className="page-content bg-white">
-            <CommonBanner img={IMAGES.images_bnr3} title="Track Order" subtitle="Track Order" />
+            <CommonBanner
+                img={IMAGES.images_bnr3}
+                title="Track Order"
+                subtitle="Track Order"
+                description="Monitor your order status in real-time from our kitchen to your doorstep."
+            />
 
             <section className="content-inner" style={{ background: "#f8f9fa" }}>
                 <div className="container">

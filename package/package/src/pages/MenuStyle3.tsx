@@ -26,7 +26,7 @@ const MenuStyle3 = () => {
   const [active, setActive] = useState<number>(0);
   const [data, setData] = useState<MenuFile[]>(MenuStyle3Arr);
   const cardRef = useRef<HTMLLIElement[]>([]);
-  const { setShowCategeryFilter } = useContext(Context);
+  const { setShowCategeryFilter, cmsConfig } = useContext(Context);
   const location = useLocation();
 
   const filterGallery = (name: string) => {
@@ -75,9 +75,12 @@ const MenuStyle3 = () => {
     <>
       <div className="page-content bg-white">
         <CommonBanner
-          img={IMAGES.images_bnr3}
-          title="Our Menu 3"
-          subtitle="Our Menu 3"
+          img={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr3}
+          title={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.title || "Our Menu 3"}
+          subtitle={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.breadcrumb || "Our Menu 3"}
+          description={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.description}
+          showTitle={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.showTitle !== "false"}
+          textAlign={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.textAlign}
         />
 
         <section className="content-inner">

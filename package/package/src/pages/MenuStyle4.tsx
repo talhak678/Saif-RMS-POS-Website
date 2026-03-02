@@ -27,8 +27,8 @@ const MenuStyle4 = () => {
   const [active, setActive] = useState<number>(0);
   const [hoverActive, setHoverActive] = useState<number>();
   const [data, setData] = useState<MenuFile[]>(MenuStyle4Arr);
-  const cardRef = useRef<HTMLLIElement[]>([]); 
-  const { setShowCategeryFilter } = useContext(Context);
+  const cardRef = useRef<HTMLLIElement[]>([]);
+  const { setShowCategeryFilter, cmsConfig } = useContext(Context);
   const filterGallery = (name: string) => {
     if (cardRef.current) {
       cardRef.current.forEach((ele) => {
@@ -56,9 +56,12 @@ const MenuStyle4 = () => {
   return (
     <div className="page-content bg-white">
       <CommonBanner
-        img={IMAGES.images_bnr4}
-        title="Our Menu 4"
-        subtitle="Our Menu 4"
+        img={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr4}
+        title={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.title || "Our Menu 4"}
+        subtitle={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.breadcrumb || "Our Menu 4"}
+        description={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.description}
+        showTitle={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.showTitle !== "false"}
+        textAlign={cmsConfig?.config?.configJson?.menu?.sections?.banner?.content?.textAlign}
       />
 
       <section className="content-inner">
@@ -120,9 +123,8 @@ const MenuStyle4 = () => {
                 }}
               >
                 <div
-                  className={`dz-img-box style-4 box-hover ${
-                    hoverActive === ind ? "active" : ""
-                  }`}
+                  className={`dz-img-box style-4 box-hover ${hoverActive === ind ? "active" : ""
+                    }`}
                   onMouseEnter={() => {
                     setHoverActive(ind);
                   }}

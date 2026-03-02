@@ -27,6 +27,7 @@ const MenuStyle1 = () => {
           img={bannerContent.imageUrl || IMAGES.banner_bnr1}
           title={bannerContent.title || "Our Menu"}
           subtitle={bannerContent.breadcrumb || "Our Menu 1"}
+          description={bannerContent.description}
           showTitle={bannerContent.showTitle !== "false"}
           textAlign={bannerContent.textAlign}
         />

@@ -68,6 +68,7 @@ const AboutUs = () => {
           img={sections.banner?.content?.imageUrl || IMAGES.banner_bnr1}
           title={sections.banner?.content?.title || "About Us"}
           subtitle={sections.banner?.content?.breadcrumb || "Our Story"}
+          description={sections.banner?.content?.description}
           showTitle={sections.banner?.content?.showTitle !== "false"}
           textAlign={sections.banner?.content?.textAlign}
         />

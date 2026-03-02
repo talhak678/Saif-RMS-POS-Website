@@ -108,6 +108,7 @@ const ContactUs = () => {
           img={bannerContent.imageUrl || IMAGES.banner_bnr1}
           title={bannerContent.title || "Contact Us"}
           subtitle={bannerContent.breadcrumb || "Get In Touch"}
+          description={bannerContent.description}
           showTitle={bannerContent.showTitle !== "false"}
           textAlign={bannerContent.textAlign}
         />
