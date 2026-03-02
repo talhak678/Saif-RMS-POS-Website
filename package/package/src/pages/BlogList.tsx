@@ -23,13 +23,13 @@ const BlogList = () => {
         showTitle={bannerContent.showTitle !== "false"}
         textAlign={bannerContent.textAlign}
       />}
-      <section className="content-inner-1">
+      <section className="content-inner p-b0">
         <div className="container">
           <div className="row justify-content-center loadmore-content">
-            {cmsConfig?.blogs?.map((blog: any) => (
-              <div className="col-xl-6 col-lg-8" key={blog.id}>
+            {cmsConfig?.blogs?.map((blog: any, ind: number) => (
+              <div className="col-xl-6 col-lg-8" key={blog.id || ind}>
                 <div className="dz-card style-1 blog-half overlay-shine dz-img-effect zoom m-b30">
-                  <div className="dz-media">
+                  <div className="dz-media rounded-md">
                     <Link to="/blog-standard" state={{ blog }}>
                       <img src={blog.imageUrl || IMAGES.blog_grid2_pic1} alt={blog.title} className="object-cover h-64 w-full" />
                     </Link>
@@ -37,23 +37,23 @@ const BlogList = () => {
                   <div className="dz-info">
                     <div className="dz-meta">
                       <ul>
-                        <li>
+                        <li className="dz-date">
                           <Link to="#">
-                            <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString()}
+                            <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </Link>
                         </li>
-                        <li className="dz-comment">
+                        <li className="dz-user">
                           <Link to="#">
                             <i className="flaticon-user"></i> {blog.author || "Admin"}
                           </Link>
                         </li>
                       </ul>
                     </div>
-                    <h5 className="dz-title">
+                    <h4 className="dz-title">
                       <Link to="/blog-standard" state={{ blog }}>{blog.title}</Link>
-                    </h5>
-                    <p className="line-clamp-3">
-                      {blog.snippet || blog.content.substring(0, 100) + "..."}
+                    </h4>
+                    <p className="line-clamp-2">
+                      {blog.snippet || (blog.content && blog.content.substring(0, 120) + "...") || "No description available."}
                     </p>
                     <div className="read-btn">
                       <Link
@@ -69,9 +69,21 @@ const BlogList = () => {
               </div>
             ))}
             {(!cmsConfig?.blogs || cmsConfig.blogs.length === 0) && (
-              <div className="text-center py-10 w-full">No blog posts found.</div>
+              <div className="text-center py-20 w-full">
+                <h3 className="text-gray-400">No blog posts found.</h3>
+              </div>
             )}
           </div>
+          {cmsConfig?.blogs?.length > 0 && (
+            <div className="text-center m-t10 m-b30">
+              <Link
+                className="btn btn-primary dz-load-more btn-hover-2"
+                to={"#"}
+              >
+                Load More
+              </Link>
+            </div>
+          )}
         </div>
       </section>
     </div>

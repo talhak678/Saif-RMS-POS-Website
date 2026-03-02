@@ -27,36 +27,29 @@ export default BlogDetail;
 
 export function OurBlog({ blog }: { blog?: any }) {
   if (!blog) {
-    // Static content fallback
     return (
       <div className="blog-single dz-card sidebar">
         <div className="dz-media rounded-md">
           <img src={IMAGES.blog_detail_pic1} alt="/" />
         </div>
         <div className="dz-info">
-          <h1 className="title">Restaurant Has The Answer</h1>
-          {/* ...rest of static content... */}
-          <div className="dz-meta">
-            {/* ... */}
-          </div>
+          <h1 className="title">Blog Post Not Found</h1>
           <div className="dz-post-text">
-            <p>To see real content, please navigate from the Blog List page.</p>
+            <p>Please navigate back to the blog list and select a post to view.</p>
           </div>
-        </div>
-        <div className="dz-share-post">
-          <div className="post-tags">
-            {/* ... */}
+          <div className="read-btn">
+            <Link to="/blog-list" className="btn btn-primary btn-hover-2">Back to Blogs</Link>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <>
       <div className="blog-single dz-card sidebar">
         <div className="dz-media rounded-md">
-          {blog.imageUrl ? <img src={blog.imageUrl} alt={blog.title} /> : <div className="h-64 bg-gray-200 flex items-center justify-center">No Image</div>}
+          <img src={blog.imageUrl || IMAGES.blog_detail_pic1} alt={blog.title} className="w-full object-cover" />
         </div>
         <div className="dz-info">
           <h1 className="title">{blog.title}</h1>
@@ -69,13 +62,54 @@ export function OurBlog({ blog }: { blog?: any }) {
               </li>
               <li className="dz-date">
                 <Link to={"#"}>
-                  <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString()}
+                  <i className="flaticon-calendar-date"></i> {new Date(blog.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </Link>
+              </li>
+              <li className="dz-comment">
+                <Link to={"#"}>
+                  <i className="flaticon-chat-bubble"></i> No Comments
                 </Link>
               </li>
             </ul>
           </div>
           <div className="dz-post-text">
-            <p className="whitespace-pre-wrap">{blog.content}</p>
+            <div className="whitespace-pre-wrap text-gray-600 leading-relaxed font-medium">
+              {blog.content}
+            </div>
+            {blog.snippet && (
+              <blockquote className="wp-block-quote">
+                <p>{blog.snippet}</p>
+                <cite>{blog.author || "Admin"}</cite>
+                <i className="flaticon-right-quote quotes"></i>
+              </blockquote>
+            )}
+          </div>
+        </div>
+
+        <div className="dz-share-post">
+          <div className="post-tags">
+            <h6 className="font-14 m-b0 m-r10 d-inline">Tags:</h6>
+            <Link to="#">Food</Link>
+            <Link to="#">Restaurant</Link>
+          </div>
+          <div className="dz-social-icon">
+            <ul>
+              <li>
+                <Link target="_blank" className="btn-social btn-sm text-primary" to="https://www.facebook.com/">
+                  <i className="fab fa-facebook-f"></i>
+                </Link>
+              </li>
+              <li>
+                <Link target="_blank" className="btn-social btn-sm text-primary" to="https://twitter.com/">
+                  <i className="fab fa-twitter"></i>
+                </Link>
+              </li>
+              <li>
+                <Link target="_blank" className="btn-social btn-sm text-primary" to="https://www.instagram.com/">
+                  <i className="fab fa-instagram"></i>
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
