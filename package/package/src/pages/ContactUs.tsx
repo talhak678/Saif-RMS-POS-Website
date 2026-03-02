@@ -68,10 +68,10 @@ const ContactUs = () => {
 
   // Map CMS data or fallback to defaults
   const displayInfo = [
-    { title: contactCards?.phoneTitle || "Phone Number", text: contactCards?.phoneValue || "+123 456 7890", icon: contactCards?.phoneIcon || ContactUsArr[0]?.icon },
-    { title: contactCards?.emailTitle || "Email Address", text: contactCards?.emailValue || "info@example.com", icon: contactCards?.emailIcon || ContactUsArr[1]?.icon },
-    { title: contactCards?.addressTitle || "Location", text: contactCards?.addressValue || "123 Main St, City", icon: contactCards?.addressIcon || ContactUsArr[2]?.icon },
-    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "Open 24/7", icon: contactCards?.hoursIcon || ContactUsArr[3]?.icon },
+    { title: contactCards?.phoneTitle || "Phone Number", text: contactCards?.phoneValue || "+123 456 7890", icon: contactCards?.phoneIcon || ContactUsArr[0]?.icon, iconUrl: contactCards?.phoneIconUrl },
+    { title: contactCards?.emailTitle || "Email Address", text: contactCards?.emailValue || "info@example.com", icon: contactCards?.emailIcon || ContactUsArr[1]?.icon, iconUrl: contactCards?.emailIconUrl },
+    { title: contactCards?.addressTitle || "Location", text: contactCards?.addressValue || "123 Main St, City", icon: contactCards?.addressIcon || ContactUsArr[2]?.icon, iconUrl: contactCards?.addressIconUrl },
+    { title: contactCards?.hoursTitle || "Opening Hours", text: contactCards?.hoursValue || "Open 24/7", icon: contactCards?.hoursIcon || ContactUsArr[3]?.icon, iconUrl: contactCards?.hoursIconUrl },
   ];
 
   return (
@@ -101,6 +101,14 @@ const ContactUs = () => {
               margin-bottom: 20px !important;
             }
           }
+          .icon-cell img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+          }
+          .dzForm .form-control::placeholder {
+            opacity: 0.4 !important;
+          }
         `}
       </style>
       {sections.banner?.enabled !== false && (
@@ -118,7 +126,7 @@ const ContactUs = () => {
         <div className="container">
           {contactCards && (
             <div className="row inner-section-wrapper align-items-center">
-              {displayInfo.map(({ icon, text, title }, ind) => (
+              {displayInfo.map(({ icon, text, title, iconUrl }: any, ind) => (
                 <div className="col-lg-3 col-sm-6" key={ind}>
                   <div
                     className={`icon-bx-wraper style-5 hover-aware box-hover ${active === ind ? "active" : ""}`}
@@ -126,7 +134,11 @@ const ContactUs = () => {
                   >
                     <div className="icon-bx">
                       <div className="icon-cell">
-                        <i className={icon || "flaticon-placeholder"}></i>
+                        {iconUrl ? (
+                          <img src={iconUrl} alt={title} />
+                        ) : (
+                          <i className={icon || "flaticon-placeholder"}></i>
+                        )}
                       </div>
                     </div>
                     <div className="icon-content">

@@ -20,13 +20,14 @@ const AboutUs = () => {
     ? cmsCards.map((card: any) => ({
       title: card.title,
       desc: card.description,
-      icon: card.icon || "flaticon-fast-food"
+      icon: card.icon || "flaticon-fast-food",
+      iconUrl: card.iconUrl
     }))
     : [
-      { title: "Fresh Ingredients", desc: "Quality ingredients used.", icon: "flaticon-fast-food" },
-      { title: "Expert Chefs", desc: "Years of experience.", icon: "flaticon-chef" },
-      { title: "Professional Service", desc: "Priority satisfaction.", icon: "flaticon-customer-service" },
-      { title: "Cozy Atmosphere", desc: "Warm environment.", icon: "flaticon-restaurant" },
+      { title: "Fresh Ingredients", desc: "We use only the finest and freshest ingredients.", icon: "flaticon-fast-food" },
+      { title: "Expert Chefs", desc: "Our chefs have years of experience.", icon: "flaticon-chef" },
+      { title: "Professional Service", desc: "Customer satisfaction is our top priority.", icon: "flaticon-customer-service" },
+      { title: "Cozy Atmosphere", desc: "Enjoy your meal in a warm environment.", icon: "flaticon-restaurant" },
     ];
 
   const textAlignClass = whatWeDoContent.textAlign === "left" ? "start" : whatWeDoContent.textAlign === "right" ? "end" : "center";
@@ -61,6 +62,11 @@ const AboutUs = () => {
               text-align: center !important;
             }
           }
+          .icon-cell img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+          }
         `}
       </style>
       {sections.banner?.enabled !== false && (
@@ -93,12 +99,16 @@ const AboutUs = () => {
               )}
             </div>
             <div className="row">
-              {displayCards.map(({ icon, title, desc }: { icon: string; title: string; desc: string }, ind: number) => (
+              {displayCards.map(({ icon, title, desc, iconUrl }: { icon: string; title: string; desc: string; iconUrl?: string }, ind: number) => (
                 <div className="col-lg-3 col-sm-6 m-b30" key={ind}>
                   <div className={`icon-bx-wraper style-3 h-100 text-${textAlignClass}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                     <div className="icon-bx">
                       <div className="icon-cell">
-                        <i className={icon}></i>
+                        {iconUrl ? (
+                          <img src={iconUrl} alt={title} />
+                        ) : (
+                          <i className={icon}></i>
+                        )}
                       </div>
                     </div>
                     <div className="icon-content" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
