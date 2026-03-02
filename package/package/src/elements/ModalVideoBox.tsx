@@ -28,15 +28,9 @@ const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?:
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-          }
-          .video-wrapper.expanded {
-            max-width: 100%;
-            border-radius: 0;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
           }
           .video-container {
             position: relative;
@@ -121,7 +115,7 @@ const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?:
           </div>
           <div className="row">
             <div className="col-lg-12 px-0 px-md-3">
-              <div className={`video-wrapper ${playing ? 'expanded' : ''}`}>
+              <div className="video-wrapper">
                 {!playing ? (
                   <div
                     className="video-thumbnail-overlay"
