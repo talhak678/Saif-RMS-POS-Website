@@ -13,7 +13,13 @@ const Footer2 = () => {
   const copyrightEnabled = homeSections.copyrightBar?.enabled !== false;
   const copyrightContent = homeSections.copyrightBar?.content || {};
 
-  const bgColor = footerContent.backgroundColor || "#0d0d0d";
+  const themeColors = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content || {};
+  const themeFonts = cmsConfig?.config?.configJson?.theme?.sections?.fonts?.content || {};
+
+  const fbgColor = themeColors.footerBgColor || footerContent.backgroundColor || "#0d0d0d";
+  const ftColor = themeColors.footerTextColor || "white";
+  const fHeadingWeight = themeFonts.secondaryFontWeight || "700";
+  const fTextWeight = themeFonts.paragraphFontWeight || "400";
 
   const renderLinks = (linksString: string) => {
     if (!linksString) return null;
@@ -49,7 +55,7 @@ const Footer2 = () => {
     <>
       <Toaster position="bottom-right" reverseOrder={true} />
       {footerEnabled && (
-        <footer className="site-footer style-2" id="footer" style={{ border: 'none', backgroundImage: 'none', color: 'white', position: 'relative', backgroundColor: 'transparent' }}>
+        <footer className="site-footer style-2" id="footer" style={{ border: 'none', backgroundImage: 'none', color: ftColor, position: 'relative', backgroundColor: 'transparent' }}>
           <style>
             {`
               .site-footer.style-2#footer {
@@ -58,7 +64,7 @@ const Footer2 = () => {
                 border: none !important;
               }
               .footer-card {
-                background-color: ${bgColor} !important;
+                background-color: ${fbgColor} !important;
                 margin: 0 120px 40px 120px;
                 border-radius: 50px;
                 padding: 60px 40px;
@@ -75,19 +81,22 @@ const Footer2 = () => {
                 margin-bottom: 15px !important;
               }
               .widget_services ul li a {
-                color: rgba(255,255,255,0.7) !important;
+                color: ${ftColor} !important;
+                opacity: 0.7;
                 font-size: 18px !important;
+                font-weight: ${fTextWeight} !important;
                 transition: 0.3s;
               }
               .widget_services ul li a:hover {
                 color: var(--primary) !important;
+                opacity: 1;
                 padding-left: 5px;
               }
               .footer-title {
-                font-weight: 700 !important;
+                font-weight: ${fHeadingWeight} !important;
                 font-size: 24px !important;
                 letter-spacing: 1px;
-                color: white !important;
+                color: ${ftColor} !important;
                 margin-bottom: 35px !important;
               }
               .widget_getintuch ul li {
@@ -101,9 +110,15 @@ const Footer2 = () => {
                 color: var(--primary);
               }
               .widget_getintuch ul li p {
-                color: rgba(255,255,255,0.7) !important;
+                color: ${ftColor} !important;
+                opacity: 0.8 !important;
                 font-size: 18px !important;
+                font-weight: ${fTextWeight} !important;
                 margin: 0;
+              }
+              .site-footer p, .site-footer span {
+                color: ${ftColor} !important;
+                font-weight: ${fTextWeight} !important;
               }
               @media (max-width: 991px) {
                 .footer-card {

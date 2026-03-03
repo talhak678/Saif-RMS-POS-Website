@@ -194,6 +194,10 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           // 1. Colors & Global Styles Implementation
           if (pColor || bColor || tColor) {
             const root = document.documentElement;
+            const colors = themeSettings.colors?.content || {};
+            const hColor = colors.headingColor;
+            const fbgColor = colors.footerBgColor;
+            const ftColor = colors.footerTextColor;
 
             // Set CSS Variables on Root
             if (pColor) {
@@ -216,7 +220,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
             if (tColor) {
               root.style.setProperty('--bs-body-color', tColor);
-              root.style.setProperty('--title', tColor);
+              root.style.setProperty('--title', hColor || tColor);
               document.body.style.color = tColor;
             }
 
@@ -281,20 +285,27 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               /* Border Overrides */
               .border-primary { border-color: ${pColor} !important; }
               
-              /* Typography Overrides */
-              h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6, .footer-title {
-                color: ${sColor || tColor || '#222222'} !important;
+              /* Typography Overrides (UNMIXED COLORS) */
+              h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
+                color: ${hColor || sColor || tColor || '#222222'} !important;
               }
               
-              /* Footer & Full System BG Overrides */
+              /* Footer & Full System BG Overrides (UNMIXED COLORS) */
               .site-footer, .footer-bg-wrapper, .footer-top, .footer-bottom {
-                background-color: ${bColor || '#222222'} !important;
+                background-color: ${fbgColor || bColor || '#222222'} !important;
               }
               .site-footer {
                 border-top: 1px solid ${aColor || (pColor ? pColor + '20' : '#e1e1f0')} !important;
               }
               .footer-top {
-                border-bottom: 1px solid ${aColor || (pColor ? pColor + '10' : '#eeeeee')} !important;
+                border-bottom: 1px solid ${fbgColor ? 'rgba(255,255,255,0.05)' : (aColor || (pColor ? pColor + '10' : '#eeeeee'))} !important;
+              }
+              .site-footer p, .site-footer span, .site-footer li, .site-footer a, .site-footer .footer-title {
+                color: ${ftColor || '#ffffff'} !important;
+              }
+              .site-footer .footer-title {
+                 color: ${ftColor || '#ffffff'} !important;
+                 opacity: 0.9;
               }
 
               /* Link Overrides */
@@ -369,15 +380,18 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
                 color: #ffffff !important;
               }
               .footer-link li a:hover,
-              .widget_services ul li a:hover { color: ${pColor} !important; }
+              .widget_services ul li a:hover { color: ${pColor} !important; opacity: 1 !important; }
             `;
           }
 
           // 2. Fonts Implementation
           if (themeSettings.fonts?.enabled) {
-            const { primaryFont, secondaryFont } = themeSettings.fonts.content || {};
+            const {
+              primaryFont, secondaryFont, paragraphFont,
+              primaryFontWeight, secondaryFontWeight, paragraphFontWeight
+            } = themeSettings.fonts.content || {};
 
-            const fontsToLoad = [primaryFont, secondaryFont].filter(Boolean);
+            const fontsToLoad = [primaryFont, secondaryFont, paragraphFont].filter(Boolean);
             if (fontsToLoad.length > 0) {
               const fontLink = document.getElementById('cms-fonts') as HTMLLinkElement || document.createElement('link');
               fontLink.id = 'cms-fonts';
@@ -393,25 +407,35 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               }
             }
 
-            if (primaryFont || secondaryFont) {
+            if (primaryFont || secondaryFont || paragraphFont) {
               const fontOverrides = document.getElementById('cms-font-overrides') || document.createElement('style');
               fontOverrides.id = 'cms-font-overrides';
 
               let css = "";
-              if (primaryFont) {
-                document.documentElement.style.setProperty('--font-family-base', `"${primaryFont}", sans-serif`);
-                document.documentElement.style.setProperty('--bs-body-font-family', `"${primaryFont}", sans-serif`);
+              if (paragraphFont) {
+                document.documentElement.style.setProperty('--font-family-base', `"${paragraphFont}", sans-serif`);
+                document.documentElement.style.setProperty('--bs-body-font-family', `"${paragraphFont}", sans-serif`);
                 css += `
-                  body, p, span:not(.title), a, li, input, textarea, button, .sub-title {
+                  body, p, span, a, li, input, textarea, button, label {
+                    font-family: "${paragraphFont}", sans-serif !important;
+                    font-weight: ${paragraphFontWeight || '400'} !important;
+                  }
+                `;
+              }
+              if (primaryFont) {
+                document.documentElement.style.setProperty('--font-family-title', `"${primaryFont}", sans-serif`);
+                css += `
+                  h1, h2, .h1, .h2, .title {
                     font-family: "${primaryFont}", sans-serif !important;
+                    font-weight: ${primaryFontWeight || '700'} !important;
                   }
                 `;
               }
               if (secondaryFont) {
-                document.documentElement.style.setProperty('--font-family-title', `"${secondaryFont}", sans-serif`);
                 css += `
-                  h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
+                  h3, h4, h5, h6, .h3, .h4, .h5, .h6, .sub-title, .footer-title {
                     font-family: "${secondaryFont}", sans-serif !important;
+                    font-weight: ${secondaryFontWeight || '600'} !important;
                   }
                 `;
               }
