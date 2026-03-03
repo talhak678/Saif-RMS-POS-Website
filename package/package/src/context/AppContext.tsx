@@ -264,14 +264,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               /* 🏠 Banner Text Color Overrides (Specific to Home Banners) */
               ${bntColor ? `
               .main-bnr-one .sub-title, .main-bnr-three .sub-title,
-              .main-bnr-one .title, .main-bnr-three .title,
-              .main-bnr-one .title span, .main-bnr-three .title span,
               .main-bnr-one .banner-content p, .main-bnr-three .bnr-text,
               .main-bnr-one .banner-btn .btn span, .main-bnr-three .banner-btn .btn span {
-                color: ${bntColor} !important;
-              }
-              .main-bnr-one h1, .main-bnr-one h2, .main-bnr-one h3, .main-bnr-one h4,
-              .main-bnr-three h1, .main-bnr-three h2, .main-bnr-three h3, .main-bnr-three h4 {
                 color: ${bntColor} !important;
               }
               .main-bnr-one .banner-btn .btn-outline-primary, 
