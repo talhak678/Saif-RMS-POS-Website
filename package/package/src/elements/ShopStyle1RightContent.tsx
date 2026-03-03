@@ -11,8 +11,7 @@ const ShopStyle1RightContent = () => {
     cmsConfig?.config?.primaryColor ||
     "#ff6b35";
 
-  const cartConfig = cmsConfig?.config?.configJson?.cart;
-  const textAlign = cartConfig?.sections?.cartContent?.content?.textAlign || "left";
+
 
   if (cartItems.length === 0) {
     return (
@@ -60,7 +59,8 @@ const ShopStyle1RightContent = () => {
           boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
           transition: "transform 0.2s",
           display: "flex",
-          textAlign: textAlign as any
+          textAlign: 'left' as any,
+          color: '#222'
         }}>
           <div className="dz-media" style={{ width: "140px", height: "140px", flexShrink: 0 }}>
             <img
@@ -70,8 +70,8 @@ const ShopStyle1RightContent = () => {
             />
           </div>
           <div className="dz-content" style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-              <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center" }}>
+            <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center", color: '#222' }}>
                 {/* 🟢 Veg/Non-Veg indicator */}
                 <svg
                   className="m-r10"
@@ -91,12 +91,12 @@ const ShopStyle1RightContent = () => {
               </div>
             </div>
 
-            <div className="dz-body" style={{ display: "flex", justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'space-between', alignItems: "flex-end", gap: '15px', flexWrap: 'wrap' }}>
-              <div style={{ textAlign: textAlign as any }}>
+            <div className="dz-body" style={{ display: "flex", justifyContent: 'space-between', alignItems: "flex-end", gap: '15px', flexWrap: 'wrap' }}>
+              <div style={{ textAlign: 'left' as any }}>
                 <p className="mb-2" style={{ color: "#888", fontSize: "13px" }}>
                   By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: 'wrap', justifyContent: textAlign === 'center' ? 'center' : 'flex-start' }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                   <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>$ {Number(item.price).toFixed(0)}</h5>
 
                   {/* Quantity Controls */}

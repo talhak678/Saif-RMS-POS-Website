@@ -251,6 +251,17 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
                 background-color: ${bColor || '#ffffff'} !important;
                 color: ${tColor || '#666666'} !important;
               }
+              /* Paragraph & Text Overrides */
+              p, .page-content p, .content-inner p, .content-inner-1 p,
+              .page-content span, .page-content li,
+              .text-muted, .dz-content p, .about-content p,
+              section p, .container p {
+                color: ${tColor || '#666666'} !important;
+              }
+              /* Exclude footer text - it has its own color */
+              .site-footer p, .site-footer span, .site-footer li, .site-footer a {
+                color: ${ftColor || '#ffffff'} !important;
+              }
               /* Button Overrides */
               .btn-primary, .wp-block-button__link {
                 --bs-btn-bg: ${pColor} !important;

@@ -69,8 +69,8 @@ const ShopCart = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className={`d-flex align-items-center ${contentConfig?.textAlign === 'left' ? 'justify-content-start' : contentConfig?.textAlign === 'right' ? 'justify-content-end' : 'justify-content-center'}`}>
-                <h5 className="title m-b15 m-lg-30" style={{ textAlign: contentConfig?.textAlign || 'center' as any }}>{contentConfig?.title || "Your Selection"}</h5>
+              <div className="d-flex align-items-center justify-content-start">
+                <h5 className="title m-b15 m-lg-30" style={{ color: '#222' }}>{contentConfig?.title || "Your Selection"}</h5>
               </div>
               <ShopStyle1RightContent />
             </div>
