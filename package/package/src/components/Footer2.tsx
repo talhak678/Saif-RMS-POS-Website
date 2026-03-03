@@ -168,7 +168,7 @@ const Footer2 = () => {
           <div className="footer-card shadow-lg">
             <div className="footer-top" style={{ position: 'relative', zIndex: 1, padding: 0 }}>
               <div className="container">
-                {/* TOP SECTION: LOGO & NEWSLETTER */}
+        
                 <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="col-lg-7 col-md-12 mb-5 mb-lg-0">
                     <div className="footer-logo mb-4">
