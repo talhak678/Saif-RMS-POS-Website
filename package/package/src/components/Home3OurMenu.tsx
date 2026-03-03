@@ -12,6 +12,10 @@ const Home3OurMenu = () => {
     cmsConfig?.config?.primaryColor ||
     "#7da640";
 
+  const secondaryColor =
+    cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor ||
+    "#3498db";
+
   // Filter categories based on CMS selection
   const selectedCategoryIds =
     cmsConfig?.config?.configJson?.home?.sections?.ourMenu?.content?.selectedCategoryIds || [];
@@ -204,7 +208,7 @@ const Home3OurMenu = () => {
                     position: "absolute",
                     top: "12px",
                     left: "12px",
-                    background: `${primaryColor}ee`,
+                    background: `${secondaryColor}ee`,
                     color: "#fff",
                     fontSize: "11px",
                     fontWeight: 700,
@@ -234,7 +238,7 @@ const Home3OurMenu = () => {
                       margin: 0,
                       fontSize: "17px",
                       fontWeight: 700,
-                      color: "#222",
+                      color: secondaryColor,
                       lineHeight: 1.3,
                       flex: 1,
                       paddingRight: "10px",
@@ -248,10 +252,10 @@ const Home3OurMenu = () => {
                         transition: "color 0.2s",
                       }}
                       onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color = primaryColor)
+                        ((e.currentTarget as HTMLAnchorElement).style.color = secondaryColor)
                       }
                       onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color = "#222")
+                        ((e.currentTarget as HTMLAnchorElement).style.color = secondaryColor)
                       }
                     >
                       {item.name}
@@ -260,8 +264,8 @@ const Home3OurMenu = () => {
                   {/* Price pill */}
                   <span
                     style={{
-                      background: `${primaryColor}18`,
-                      color: primaryColor,
+                      background: `${secondaryColor}18`,
+                      color: secondaryColor,
                       fontWeight: 800,
                       fontSize: "15px",
                       padding: "4px 12px",
@@ -304,7 +308,7 @@ const Home3OurMenu = () => {
                     style={{
                       fontSize: "13px",
                       fontWeight: 600,
-                      color: primaryColor,
+                      color: secondaryColor,
                       textDecoration: "none",
                       display: "flex",
                       alignItems: "center",
@@ -327,7 +331,7 @@ const Home3OurMenu = () => {
                       width: "34px",
                       height: "34px",
                       borderRadius: "50%",
-                      background: primaryColor,
+                      background: secondaryColor,
                       color: "#fff",
                       border: "none",
                       display: "flex",
@@ -336,7 +340,7 @@ const Home3OurMenu = () => {
                       fontSize: "14px",
                       textDecoration: "none",
                       transition: "all 0.2s ease",
-                      boxShadow: `0 4px 12px ${primaryColor}55`,
+                      boxShadow: `0 4px 12px ${secondaryColor}55`,
                       cursor: "pointer"
                     }}
                     onMouseEnter={(e) => {

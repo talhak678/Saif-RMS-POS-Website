@@ -17,6 +17,10 @@ const MenuStyle2 = () => {
     cmsConfig?.config?.primaryColor ||
     "#7da640";
 
+  const secondaryColor =
+    cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor ||
+    "#3498db";
+
   const sections = cmsConfig?.config?.configJson?.menu?.sections || {};
   const galleryConfig = sections.menuGallery?.content || {};
   const selectedCategoryIds = galleryConfig.selectedCategoryIds || [];
@@ -283,7 +287,7 @@ const MenuStyle2 = () => {
                         position: "absolute",
                         top: "13px",
                         left: "13px",
-                        background: `${primaryColor}ee`,
+                        background: `${secondaryColor}ee`,
                         color: "#fff",
                         fontSize: "10px",
                         fontWeight: 700,
@@ -303,13 +307,13 @@ const MenuStyle2 = () => {
                         position: "absolute",
                         bottom: "12px",
                         right: "13px",
-                        background: primaryColor,
+                        background: secondaryColor,
                         color: "#fff",
                         fontSize: "13px",
                         fontWeight: 800,
                         padding: "5px 14px",
                         borderRadius: "50px",
-                        boxShadow: `0 3px 12px ${primaryColor}66`,
+                        boxShadow: `0 3px 12px ${secondaryColor}66`,
                         zIndex: 3
                       }}
                     >
@@ -330,7 +334,7 @@ const MenuStyle2 = () => {
                       style={{
                         fontSize: "17px",
                         fontWeight: 700,
-                        color: "#1a1a1a",
+                        color: secondaryColor,
                         margin: "0 0 8px",
                         lineHeight: 1.35,
                       }}
@@ -386,7 +390,7 @@ const MenuStyle2 = () => {
                           width: "36px",
                           height: "36px",
                           borderRadius: "50%",
-                          background: item.isAvailable === false ? '#cbd5e0' : primaryColor,
+                          background: item.isAvailable === false ? '#cbd5e0' : secondaryColor,
                           color: "#fff",
                           display: "inline-flex",
                           alignItems: "center",
@@ -396,7 +400,7 @@ const MenuStyle2 = () => {
                           cursor: item.isAvailable === false ? 'not-allowed' : "pointer",
                           flexShrink: 0,
                           transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                          boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${primaryColor}55`,
+                          boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${secondaryColor}55`,
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
