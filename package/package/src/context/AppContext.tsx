@@ -177,6 +177,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           let aColor = "";
           let bColor = "";
           let tColor = "";
+          let bntColor = "";
 
           if (themeSettings.colors?.enabled) {
             const content = themeSettings.colors.content || {};
@@ -185,6 +186,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             aColor = content.accentColor;
             bColor = content.backgroundColor;
             tColor = content.textColor;
+            bntColor = content.bannerTextColor;
           } else {
             // Fallback to legacy fields
             pColor = config.primaryColor;
@@ -192,13 +194,12 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           }
 
           // 1. Colors & Global Styles Implementation
-          if (pColor || bColor || tColor) {
+          if (pColor || bColor || tColor || bntColor) {
             const root = document.documentElement;
             const colors = themeSettings.colors?.content || {};
             const hColor = colors.headingColor;
             const fbgColor = colors.footerBgColor;
             const ftColor = colors.footerTextColor;
-            const bnrTextColor = colors.bannerTextColor;
 
             // Set CSS Variables on Root
             if (pColor) {
@@ -252,17 +253,33 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
                 background-color: ${bColor || '#ffffff'} !important;
                 color: ${tColor || '#666666'} !important;
               }
-              /* Paragraph & Text Overrides (exclude home banner) */
-              p:not(.main-bnr-one .banner-content p),
-              .page-content p:not(.main-bnr-one .banner-content p),
-              .content-inner p, .content-inner-1 p,
-              .page-content span:not(.main-bnr-one .banner-content span),
-              .page-content li,
+              /* Paragraph & Text Overrides */
+              p, .page-content p, .content-inner p, .content-inner-1 p,
+              .page-content span, .page-content li,
               .text-muted, .dz-content p, .about-content p,
-              section p:not(.main-bnr-one .banner-content p),
-              .container p:not(.main-bnr-one .banner-content p) {
+              section p, .container p {
                 color: ${tColor || '#666666'} !important;
               }
+
+              /* 🏠 Banner Text Color Overrides (Specific to Home Banners) */
+              ${bntColor ? `
+              .main-bnr-one .sub-title, .main-bnr-three .sub-title,
+              .main-bnr-one .title, .main-bnr-three .title,
+              .main-bnr-one .title span, .main-bnr-three .title span,
+              .main-bnr-one .banner-content p, .main-bnr-three .bnr-text,
+              .main-bnr-one .banner-btn .btn span, .main-bnr-three .banner-btn .btn span {
+                color: ${bntColor} !important;
+              }
+              .main-bnr-one h1, .main-bnr-one h2, .main-bnr-one h3, .main-bnr-one h4,
+              .main-bnr-three h1, .main-bnr-three h2, .main-bnr-three h3, .main-bnr-three h4 {
+                color: ${bntColor} !important;
+              }
+              .main-bnr-one .banner-btn .btn-outline-primary, 
+              .main-bnr-three .banner-btn .btn-outline-primary {
+                border-color: ${bntColor} !important;
+              }
+              ` : ''}
+
               /* Exclude footer text - it has its own color */
               .site-footer p, .site-footer span, .site-footer li, .site-footer a {
                 color: ${ftColor || '#ffffff'} !important;
@@ -305,7 +322,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
                 color: ${hColor || sColor || tColor || '#222222'} !important;
               }
-
               
               /* Footer & Full System BG Overrides (UNMIXED COLORS) */
               .site-footer, .footer-bg-wrapper, .footer-top, .footer-bottom {
@@ -398,27 +414,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               }
               .footer-link li a:hover,
               .widget_services ul li a:hover { color: ${pColor} !important; opacity: 1 !important; }
-
-              /* === HOME BANNER TEXT COLOR (MUST BE LAST TO WIN) === */
-              ${bnrTextColor ? `
-              .main-bnr-one .banner-inner .banner-content .sub-title {
-                color: ${bnrTextColor} !important;
-              }
-              .main-bnr-one .banner-inner .banner-content p {
-                color: ${bnrTextColor} !important;
-              }
-              .main-bnr-one .banner-inner .banner-content p.wow {
-                color: ${bnrTextColor} !important;
-              }
-              .main-bnr-one .banner-inner .banner-btn .btn {
-                color: ${bnrTextColor} !important;
-                border-color: ${bnrTextColor} !important;
-              }
-              .main-bnr-one .banner-inner .banner-btn .btn:hover {
-                background-color: ${bnrTextColor} !important;
-                color: ${pColor || '#222'} !important;
-              }
-              ` : ''}
             `;
           }
 
