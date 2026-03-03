@@ -198,6 +198,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             const hColor = colors.headingColor;
             const fbgColor = colors.footerBgColor;
             const ftColor = colors.footerTextColor;
+            const bnrTextColor = colors.bannerTextColor;
 
             // Set CSS Variables on Root
             if (pColor) {
@@ -300,6 +301,24 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {
                 color: ${hColor || sColor || tColor || '#222222'} !important;
               }
+
+              /* Home Banner Text Overrides */
+              ${bnrTextColor ? `
+              .main-bnr-one .banner-content .sub-title {
+                color: ${bnrTextColor} !important;
+              }
+              .main-bnr-one .banner-content p {
+                color: ${bnrTextColor} !important;
+              }
+              .main-bnr-one .banner-btn .btn {
+                color: ${bnrTextColor} !important;
+                border-color: ${bnrTextColor} !important;
+              }
+              .main-bnr-one .banner-btn .btn:hover {
+                background-color: ${bnrTextColor} !important;
+                color: ${pColor || '#222'} !important;
+              }
+              ` : ''}
               
               /* Footer & Full System BG Overrides (UNMIXED COLORS) */
               .site-footer, .footer-bg-wrapper, .footer-top, .footer-bottom {
