@@ -27,6 +27,7 @@ export const MenuArr: MenuProps[] = [
   { menu: "BLOGS", to: "/blog-list" },
 ];
 
+// hello world
 /* Original MenuArr for reference
 export const MenuArr = [
   { menu: "Home", to: "/" },
