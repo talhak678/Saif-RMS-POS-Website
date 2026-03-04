@@ -7,6 +7,7 @@ import { Context } from "../context/AppContext";
 
 const ShopCart = () => {
   const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
   // Store is always open
@@ -164,22 +165,22 @@ const ShopCart = () => {
                       <tbody>
                         <tr>
                           <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.itemTotalLabel || "Item Total"}</td>
-                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
+                          <td className="text-end" style={{ color: primaryColor, fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
                         </tr>
                         <tr className="charges">
                           <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.deliveryLabel || "Delivery Charges"}</td>
-                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {deliveryCharge.toFixed(2)}</td>
+                          <td className="text-end" style={{ color: primaryColor, fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {deliveryCharge.toFixed(2)}</td>
                         </tr>
                         <tr className="tax" style={{ borderBottom: '1px solid #eee' }}>
                           <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.taxLabel || "Govt Taxes & Other Charges"}</td>
-                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {tax.toFixed(2)}</td>
+                          <td className="text-end" style={{ color: primaryColor, fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {tax.toFixed(2)}</td>
                         </tr>
                         <tr className="total">
                           <td>
                             <h5 style={{ fontWeight: 700, margin: '15px 0' }}>{contentConfig?.totalLabel || "Total"}</h5>
                           </td>
                           <td className="text-end">
-                            <h5 style={{ color: '#ff6b35', fontWeight: 800, margin: '15px 0' }}>{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</h5>
+                            <h5 style={{ color: primaryColor, fontWeight: 800, margin: '15px 0' }}>{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</h5>
                           </td>
                         </tr>
                       </tbody>
@@ -190,7 +191,12 @@ const ShopCart = () => {
                     <Link
                       to={isStoreClosed || cartItems.length === 0 ? "#" : "/shop-checkout"}
                       className={`btn btn-primary d-block text-center btn-md w-100 btn-hover-1 ${isStoreClosed || cartItems.length === 0 ? 'disabled' : ''}`}
-                      style={{ opacity: isStoreClosed || cartItems.length === 0 ? 0.6 : 1, pointerEvents: isStoreClosed || cartItems.length === 0 ? 'none' : 'auto' }}
+                      style={{
+                        opacity: isStoreClosed || cartItems.length === 0 ? 0.6 : 1,
+                        pointerEvents: isStoreClosed || cartItems.length === 0 ? 'none' : 'auto',
+                        background: primaryColor,
+                        borderColor: primaryColor
+                      }}
                     >
                       <span>
                         {cartItems.length === 0 ? (contentConfig?.addItemsText || 'Add Items First') : (isStoreClosed ? (contentConfig?.kitchenClosedText || 'Kitchen Closed') : (contentConfig?.orderNowText || 'Order Now'))} <i className="fa-solid fa-arrow-right"></i>
