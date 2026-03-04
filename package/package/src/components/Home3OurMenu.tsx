@@ -266,7 +266,7 @@ const Home3OurMenu = () => {
                   <span
                     style={{
                       background: primaryColor,
-                      color: "#fff",
+                      color: secondaryColor,
                       fontSize: "13px",
                       fontWeight: 800,
                       padding: "5px 14px",
@@ -311,7 +311,7 @@ const Home3OurMenu = () => {
                     style={{
                       fontSize: "13px",
                       fontWeight: 600,
-                      color: secondaryColor,
+                      color: primaryColor,
                       textDecoration: "none",
                       display: "flex",
                       alignItems: "center",
