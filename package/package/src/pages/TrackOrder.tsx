@@ -186,7 +186,7 @@ const TrackOrder = () => {
                                                     color: currentStepIndex >= 0 ? STATUS_STEPS[currentStepIndex].color : "#888",
                                                     fontWeight: 600, fontSize: 13
                                                 }}>
-                                                    {STATUS_STEPS[currentStepIndex]?.icon || ""} {order.status?.replace(/_/g, " ")}
+                                                    {STATUS_STEPS[currentStepIndex]?.icon || ""} {STATUS_STEPS[currentStepIndex]?.label || order.status?.replace(/_/g, " ")}
                                                 </div>
                                                 {lastRefresh && (
                                                     <p style={{ color: "#aaa", fontSize: 11, marginTop: 4, marginBottom: 0 }}>

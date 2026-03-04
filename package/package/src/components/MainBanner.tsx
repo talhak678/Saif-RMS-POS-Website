@@ -3,11 +3,62 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { MainBannerArr } from "../elements/JsonData";
 import { EffectFade, Thumbs, Navigation, Pagination } from "swiper/modules";
 import { IMAGES } from "../constent/theme";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
+import { Context } from "../context/AppContext";
 
 const MainBanner = () => {
-  const [thumbsSwiper, setThumbsSwiper] = useState();
+  const { cmsConfig } = useContext(Context);
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>();
   const ref = useRef<SwiperRef | null>(null);
+
+  const bannerSection = cmsConfig?.config?.configJson?.home?.sections?.banner;
+  const bannerContent = bannerSection?.content || {};
+  const themeColors = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content || {};
+  const bannerTextColor = themeColors.bannerTextColor || "inherit";
+
+  // Merge Main Banner and Additional Banners
+  const banners: any[] = [];
+  if (bannerSection?.enabled !== false && bannerContent) {
+    // 1. Add Main Banner
+    if (bannerContent.title || bannerContent.rightImage || bannerContent.bgImage) {
+      banners.push({
+        img: bannerContent.rightImage || IMAGES.main_slide_pic1,
+        bgImage: bannerContent.bgImage || IMAGES.main_slide_img3,
+        subtitle: bannerContent.subtitle || "",
+        title: bannerContent.title || "Choosing The Best Quality Food",
+        text: bannerContent.description || "",
+        imgThumb: bannerContent.rightImage || IMAGES.main_slide_pic1,
+        textAlign: bannerContent.textAlign || "left"
+      });
+    }
+
+    // 2. Add Additional Banners from 'items' array
+    if (bannerContent.items && Array.isArray(bannerContent.items)) {
+      bannerContent.items.forEach((item: any) => {
+        banners.push({
+          img: item.rightImage || IMAGES.main_slide_pic1,
+          bgImage: item.bgImage || IMAGES.main_slide_img3,
+          subtitle: item.subtitle || "",
+          title: item.title || "Choosing The Best Quality Food",
+          text: item.description || "",
+          imgThumb: item.rightImage || IMAGES.main_slide_pic1,
+          textAlign: bannerContent.textAlign || "left"
+        });
+      });
+    }
+  }
+
+  // Final Banners List (Fallback to static data if none in CMS)
+  const displayBanners = banners.length > 0 ? banners : MainBannerArr.map(item => ({
+    img: item.img,
+    bgImage: IMAGES.main_slide_img3,
+    subtitle: item.subtitle,
+    title: `${item.title} ${item.title2} ${item.title3 || ""}`,
+    text: item.text,
+    imgThumb: item.imgThumb,
+    textAlign: "left"
+  }));
+
   const pagination = {
     clickable: true,
     el: ".main-slider-pagination",
@@ -15,10 +66,15 @@ const MainBanner = () => {
       return '<span class="' + className + '">' + (index + 1) + "</span>";
     },
   };
+
   return (
     <div className="main-bnr-one">
       <style>
         {`
+          .main-bnr-one .banner-content .sub-title,
+          .main-bnr-one .banner-content p {
+            color: ${bannerTextColor} !important;
+          }
           @media (max-width: 991px) {
             .main-bnr-one .banner-content {
               text-align: left !important;
@@ -84,23 +140,27 @@ const MainBanner = () => {
           if (ref.current) ref.current.swiper = swiper;
         }}
       >
-        {MainBannerArr.map(
-          ({ img, subtitle, title, title2, title3, text }, ind) => (
+        {displayBanners.map(
+          ({ img, bgImage, subtitle, title, text, textAlign }, ind) => (
             <SwiperSlide className="swiper-slide" key={ind}>
-              <div className="banner-inner">
-                <div className="container">
+              <div
+                className="banner-inner"
+                style={{
+                  backgroundImage: bgImage ? `url(${bgImage})` : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              >
+                <div className="container" style={{ position: 'relative', zIndex: 2 }}>
                   <div className="row align-items-center">
                     <div className="col-xl-7 col-lg-7 col-md-7">
-                      <div className="banner-content">
+                      <div className="banner-content" style={{ textAlign: textAlign as any }}>
                         <span className="sub-title">{subtitle}</span>
-                        <h1 className="title  ">
+                        <h1 className="title">
                           {title}
-                          <br />
-                          {title2}{" "}
-                          <span className="text-primary">{title3}</span>
                         </h1>
                         <p className="wow fadeInUp">{text}</p>
-                        <div className="banner-btn d-flex align-items-center wow fadeInUp">
+                        <div className="banner-btn d-flex align-items-center wow fadeInUp" style={{ justifyContent: textAlign === 'center' ? 'center' : textAlign === 'right' ? 'flex-end' : 'flex-start' }}>
                           <Link
                             to="/contact-us"
                             className="btn btn-primary btn-md shadow-primary m-r30 btn-hover-1"
@@ -123,9 +183,10 @@ const MainBanner = () => {
                     </div>
                   </div>
                 </div>
-                <img src={IMAGES.main_slide_img3} className="img1" alt="/" />
-                <img src={IMAGES.main_slide_img1} className="img2" alt="/" />
-                <img src={IMAGES.main_slide_img2} className="img3" alt="/" />
+                {/* Decorative images only if no custom background is set, or keep them as floating elements */}
+                <img src={IMAGES.main_slide_img3} className="img1" alt="/" style={{ opacity: bgImage ? 0.3 : 1 }} />
+                <img src={IMAGES.main_slide_img1} className="img2" alt="/" style={{ opacity: bgImage ? 0.3 : 1 }} />
+                <img src={IMAGES.main_slide_img2} className="img3" alt="/" style={{ opacity: bgImage ? 0.3 : 1 }} />
               </div>
             </SwiperSlide>
           )
@@ -135,11 +196,10 @@ const MainBanner = () => {
         <div className="main-thumb1-area swiper-btn-lr wow fadeInUp">
           <Swiper
             className="swiper main-thumb1"
-            slidesPerView={2}
+            slidesPerView={displayBanners.length < 2 ? 1 : 2}
             freeMode={true}
-            loop={true}
+            loop={displayBanners.length > 1}
             modules={[Navigation]}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onSwiper={(swiper: any) => {
               setThumbsSwiper(swiper);
             }}
@@ -148,17 +208,15 @@ const MainBanner = () => {
               nextEl: ".thumb-button-next",
             }}
           >
-            {MainBannerArr.map(({ imgThumb }, ind) => (
+            {displayBanners.map(({ imgThumb, title }, ind) => (
               <SwiperSlide className="swiper-slide" key={ind}>
                 <div className="food-card">
                   <div className="dz-media">
                     <img src={imgThumb} alt="/" />
                   </div>
                   <div className="dz-content">
-                    <h5 className="title">BreakFast</h5>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </p>
+                    <h5 className="title" style={{ fontSize: '14px' }}>{title.substring(0, 20)}...</h5>
+                    <p>Delicious Taste</p>
                   </div>
                 </div>
               </SwiperSlide>

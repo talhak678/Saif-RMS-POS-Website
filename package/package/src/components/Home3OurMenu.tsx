@@ -265,12 +265,14 @@ const Home3OurMenu = () => {
                   {/* Price pill */}
                   <span
                     style={{
-                      background: `${secondaryColor}18`,
-                      color: secondaryColor,
+                      background: primaryColor,
+                      color: "#fff",
+                      fontSize: "13px",
                       fontWeight: 800,
-                      fontSize: "15px",
-                      padding: "4px 12px",
+                      padding: "5px 14px",
                       borderRadius: "50px",
+                      boxShadow: `0 4px 10px ${primaryColor}44`,
+                      zIndex: 3,
                       whiteSpace: "nowrap",
                       flexShrink: 0,
                     }}
@@ -332,7 +334,7 @@ const Home3OurMenu = () => {
                       width: "34px",
                       height: "34px",
                       borderRadius: "50%",
-                      background: secondaryColor,
+                      background: primaryColor,
                       color: "#fff",
                       border: "none",
                       display: "flex",
@@ -341,7 +343,7 @@ const Home3OurMenu = () => {
                       fontSize: "14px",
                       textDecoration: "none",
                       transition: "all 0.2s ease",
-                      boxShadow: `0 4px 12px ${secondaryColor}55`,
+                      boxShadow: `0 4px 12px ${primaryColor}55`,
                       cursor: "pointer"
                     }}
                     onMouseEnter={(e) => {

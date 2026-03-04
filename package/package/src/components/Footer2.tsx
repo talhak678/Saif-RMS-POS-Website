@@ -15,7 +15,7 @@ const Footer2 = () => {
   const themeColors = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content || {};
   const themeFonts = cmsConfig?.config?.configJson?.theme?.sections?.fonts?.content || {};
 
-  const fbgColor = themeColors.footerBgColor || footerContent.backgroundColor || "#0d0d0d";
+  const fbgColor = themeColors.footerBgColor || "#0d0d0d";
   const ftColor = themeColors.footerTextColor || "white";
   const fHeadingWeight = themeFonts.secondaryFontWeight || "700";
   const fTextWeight = themeFonts.paragraphFontWeight || "400";
@@ -219,7 +219,7 @@ const Footer2 = () => {
                   </div>
                   <div className="col-lg-5 col-md-12">
                     <div className="newsletter-box">
-                      <h4 style={{ color: ftColor, fontWeight: '600', fontSize: '20px', marginBottom: '10px' }}>
+                      <h4 style={{ color: `${ftColor} !important`, fontWeight: '600', fontSize: '22px', marginBottom: '25px' }}>
                         {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                       </h4>
                       <form>

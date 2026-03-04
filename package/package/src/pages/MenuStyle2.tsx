@@ -316,13 +316,13 @@ const MenuStyle2 = () => {
                         position: "absolute",
                         bottom: "12px",
                         right: "13px",
-                        background: secondaryColor,
+                        background: primaryColor,
                         color: "#fff",
                         fontSize: "13px",
                         fontWeight: 800,
                         padding: "5px 14px",
                         borderRadius: "50px",
-                        boxShadow: `0 3px 12px ${secondaryColor}66`,
+                        boxShadow: `0 4px 10px ${primaryColor}44`,
                         zIndex: 3
                       }}
                     >
@@ -399,7 +399,7 @@ const MenuStyle2 = () => {
                           width: "36px",
                           height: "36px",
                           borderRadius: "50%",
-                          background: item.isAvailable === false ? '#cbd5e0' : secondaryColor,
+                          background: item.isAvailable === false ? '#cbd5e0' : primaryColor,
                           color: "#fff",
                           display: "inline-flex",
                           alignItems: "center",
@@ -409,7 +409,7 @@ const MenuStyle2 = () => {
                           cursor: item.isAvailable === false ? 'not-allowed' : "pointer",
                           flexShrink: 0,
                           transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                          boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${secondaryColor}55`,
+                          boxShadow: item.isAvailable === false ? 'none' : `0 4px 14px ${primaryColor}55`,
                         }}
                         onClick={(e) => {
                           e.stopPropagation();

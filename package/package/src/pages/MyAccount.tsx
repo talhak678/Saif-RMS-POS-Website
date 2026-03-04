@@ -295,7 +295,7 @@ const MyAccount = () => {
                                                             color: STATUS_COLORS[order.status] || "#999",
                                                             display: "flex", alignItems: "center", gap: 4
                                                         }}>
-                                                            {STATUS_ICONS[order.status] || "•"} {order.status?.replace(/_/g, " ")}
+                                                            {STATUS_ICONS[order.status] || "•"} {order.status === "OUT_FOR_DELIVERY" ? "On the Way" : order.status?.replace(/_/g, " ")}
                                                         </div>
                                                     </div>
 
