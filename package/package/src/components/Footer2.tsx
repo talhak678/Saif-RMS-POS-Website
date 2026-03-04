@@ -83,19 +83,19 @@ const Footer2 = () => {
               }
               .footer-title {
                 font-weight: ${fHeadingWeight} !important;
-                font-size: 20px !important;
+                font-size: 24px !important;
                 letter-spacing: 1px;
                 color: ${ftColor} !important;
-                margin-bottom: 15px !important;
+                margin-bottom: 25px !important;
                 text-transform: uppercase;
               }
               .widget_services ul li {
-                margin-bottom: 12px !important;
+                margin-bottom: 15px !important;
               }
               .widget_services ul li a {
                 color: ${ftColor} !important;
                 opacity: 0.8;
-                font-size: 17px !important;
+                font-size: 19px !important;
                 font-weight: ${fTextWeight} !important;
                 transition: 0.3s;
               }
@@ -108,7 +108,7 @@ const Footer2 = () => {
                 display: flex;
                 align-items: flex-start;
                 gap: 15px;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
               }
               .widget_getintuch ul li i {
                 font-size: 28px;
@@ -118,7 +118,7 @@ const Footer2 = () => {
               .widget_getintuch ul li p {
                 color: ${ftColor} !important;
                 opacity: 0.8 !important;
-                font-size: 17px !important;
+                font-size: 19px !important;
                 font-weight: ${fTextWeight} !important;
                 margin: 0;
                 line-height: 1.6;
@@ -290,7 +290,7 @@ const Footer2 = () => {
                   <div className="col-lg-3 col-md-6 mb-2">
                     <div className="widget">
                       <h5 className="footer-title">{footerContent.serviceHoursTitle || "SERVICE HOURS"}</h5>
-                      <p style={{ opacity: 0.8, fontSize: '17px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
+                      <p style={{ opacity: 0.8, fontSize: '19px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
                         {footerContent.serviceHours || "Saturday - Sunday : 6:30 pm - 11:59 pm\nSunday : closed"}
                       </p>
 
