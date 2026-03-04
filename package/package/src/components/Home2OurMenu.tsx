@@ -70,8 +70,8 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            transform: scale(1.08);
         }
         .browse-content {
-           padding-left: 18px;
-           padding-right: 55px;
+           padding-left: 16px;
+           padding-right: 58px;
            flex: 1;
            min-width: 0;
            display: flex;
@@ -79,23 +79,24 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            justify-content: center;
         }
         .browse-title {
-           font-size: 16px;
+           font-size: 15px;
            font-weight: 700;
            color: #1a1a1a;
-           margin-bottom: 5px;
-           line-height: 1.3;
-           white-space: nowrap;
+           margin-bottom: 4px;
+           line-height: 1.35;
+           display: -webkit-box;
+           -webkit-line-clamp: 2;
+           -webkit-box-orient: vertical;
            overflow: hidden;
-           text-overflow: ellipsis;
         }
         .browse-subtitle {
-           font-size: 13px;
+           font-size: 12px;
            color: #888;
-           margin-bottom: 14px;
-           display: block;
-           white-space: nowrap;
+           margin-bottom: 10px;
+           display: -webkit-box;
+           -webkit-line-clamp: 1;
+           -webkit-box-orient: vertical;
            overflow: hidden;
-           text-overflow: ellipsis;
         }
         .browse-price-label {
            font-size: 11px;
