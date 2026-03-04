@@ -6,7 +6,7 @@ import ShopStyle1RightContent from "../elements/ShopStyle1RightContent";
 import { Context } from "../context/AppContext";
 
 const ShopCart = () => {
-  const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
+  const { cartItems, activeBranch, cmsConfig } = useContext(Context);
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
   // Store is always open
@@ -96,61 +96,6 @@ const ShopCart = () => {
                       <i className="fa-solid fa-xmark"></i>
                     </Link>
                   </div>
-                  {cartItems.map((item) => (
-                    <div className="cart-item style-1" key={item.id}>
-                      <div className="dz-media" style={{ filter: item.isAvailable === false ? 'grayscale(1)' : 'none' }}>
-                        <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
-                      </div>
-                      <div className="dz-content">
-                        <div className="dz-head">
-                          <h6 className="title mb-0">{item.name} {item.isAvailable === false && <span className="text-danger small">(Out of Stock)</span>}</h6>
-                          <button
-                            style={{ border: 'none', background: 'none' }}
-                            onClick={() => {
-                              removeFromCart(item.id);
-                            }}
-                          >
-                            <i className="fa-solid fa-xmark text-danger"></i>
-                          </button>
-                        </div>
-                        <div className="dz-body">
-                          <div className="btn-quantity style-1">
-                            <div className="input-group bootstrap-touchspin">
-                              <span className="input-group-addon bootstrap-touchspin-prefix"></span>
-                              <input
-                                type="text"
-                                value={item.quantity}
-                                readOnly
-                                className="form-control"
-                              />
-                              <span className="input-group-addon bootstrap-touchspin-postfix"></span>
-                              <span className="input-group-btn-vertical">
-                                <button
-                                  className="btn btn-default bootstrap-touchspin-up"
-                                  type="button"
-                                  onClick={() => {
-                                    updateQuantity(item.id, item.quantity + 1);
-                                  }}
-                                >
-                                  <i className="ti-plus"></i>
-                                </button>
-                                <button
-                                  className="btn btn-default bootstrap-touchspin-down"
-                                  type="button"
-                                  onClick={() => {
-                                    updateQuantity(item.id, item.quantity - 1);
-                                  }}
-                                >
-                                  <i className="ti-minus"></i>
-                                </button>
-                              </span>
-                            </div>
-                          </div>
-                          <h5 className="price text-primary mb-0">{cmsConfig?.config?.currency || '$'} {(Number(item.price) * Number(item.quantity)).toFixed(0)}</h5>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
 
                   {cartItems.length === 0 && (
                     <div className="text-center py-4">

@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const Home2SpacialMenu = () => {
-  const { cmsConfig, cmsLoading } = useContext(Context);
+  const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
 
   if (cmsLoading) return null;
 
@@ -50,7 +49,7 @@ const Home2SpacialMenu = () => {
         loop={displayItems.length > 4}
         modules={[Autoplay, Navigation, Pagination]}
         autoplay={{ delay: 3000 }}
-        pagination={{ clickable: true, dynamicBullets: true }}
+        pagination={false}
         navigation={{
           prevEl: ".special-button-prev",
           nextEl: ".special-button-next",
@@ -75,9 +74,13 @@ const Home2SpacialMenu = () => {
               </div>
               <div className="dz-media" style={{ height: '180px' }}>
                 <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
-                <Link className="detail-btn" to="/our-menu-2">
+                <button
+                  className="detail-btn"
+                  onClick={() => addToCart(item)}
+                  style={{ border: 'none', cursor: 'pointer' }}
+                >
                   <i className="fa-solid fa-plus"></i>
-                </Link>
+                </button>
               </div>
             </div>
           </SwiperSlide>
