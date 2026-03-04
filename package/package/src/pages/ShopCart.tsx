@@ -117,11 +117,11 @@ const ShopCart = () => {
 
                           <div className="d-flex align-items-center justify-content-between mt-2">
                             <div className="btn-quantity style-1" style={{ margin: 0 }}>
-                              <div className="d-flex align-items-center" style={{ width: "100px", height: "32px", border: '1px solid #eee', borderRadius: '8px', overflow: 'hidden' }}>
+                              <div className="d-flex align-items-center" style={{ width: "95px", height: "32px", border: '1px solid #d1d1d1', borderRadius: '4px', overflow: 'hidden', background: '#fff' }}>
                                 <button
                                   className="btn p-0"
                                   type="button"
-                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f8f9fa', fontSize: '14px', transition: 'all 0.2s' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: '#666' }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 >
                                   <i className="fa-solid fa-minus" style={{ fontSize: '10px' }}></i>
@@ -130,12 +130,12 @@ const ShopCart = () => {
                                   type="text"
                                   value={item.quantity}
                                   readOnly
-                                  style={{ flex: 1, height: "100%", padding: 0, textAlign: "center", fontWeight: 700, border: 'none', background: '#fff', fontSize: '13px', color: '#222' }}
+                                  style={{ flex: 1, height: "100%", padding: 0, textAlign: "center", fontWeight: 700, border: 'none', background: 'transparent', fontSize: '14px', color: '#222', minWidth: '0' }}
                                 />
                                 <button
                                   className="btn p-0"
                                   type="button"
-                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f8f9fa', fontSize: '14px', transition: 'all 0.2s' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: '#666' }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 >
                                   <i className="fa-solid fa-plus" style={{ fontSize: '10px' }}></i>

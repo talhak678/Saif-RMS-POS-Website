@@ -54,17 +54,43 @@ const Home2 = () => {
       <Home2PromoBanners />
 
       {sections.browseMenu?.enabled && (
-        <section className="content-inner-1 overflow-hidden">
+        <section className="content-inner-1 overflow-hidden" style={{ background: '#fafafa' }}>
+          <style>{`
+            .browse-title-cursive {
+               font-family: 'Lobster', cursive, sans-serif;
+               font-size: 55px !important;
+               font-weight: 400 !important;
+               color: #222 !important;
+            }
+            .browse-nav-btn {
+               width: 50px !important;
+               height: 50px !important;
+               background: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35"} !important;
+               color: #fff !important;
+               border-radius: 50% !important;
+               display: flex !important;
+               align-items: center !important;
+               justify-content: center !important;
+               cursor: pointer !important;
+               box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3) !important;
+               border: none !important;
+               transition: all 0.3s ease !important;
+            }
+            .browse-nav-btn:hover {
+               transform: scale(1.1);
+               opacity: 0.9;
+            }
+          `}</style>
           <div className="container">
-            <div className="section-head menu-align">
-              <h2 className="title mb-0 wow flipInX text-secondary">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
-              <div className="pagination-align wow fadeInUp">
-                <div className="menu-button-prev1 btn-prev rounded-xl btn-hover-2">
+            <div className="section-head menu-align d-flex justify-content-between align-items-center mb-0">
+              <h2 className="browse-title-cursive mb-0">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
+              <div className="pagination-align d-flex gap-3">
+                <button className="menu-button-prev1 browse-nav-btn">
                   <i className="fa-solid fa-arrow-left"></i>
-                </div>
-                <div className="menu-button-next1 btn-next rounded-xl btn-hover-2">
+                </button>
+                <button className="menu-button-next1 browse-nav-btn">
                   <i className="fa-solid fa-arrow-right"></i>
-                </div>
+                </button>
               </div>
             </div>
           </div>
