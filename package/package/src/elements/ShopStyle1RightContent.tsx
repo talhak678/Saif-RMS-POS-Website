@@ -1,159 +1,154 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { IMAGES } from "../constent/theme";
 
 const ShopStyle1RightContent = () => {
-  const { cartItems, removeFromCart, updateQuantity, cmsConfig } = useContext(Context);
+  const { cmsConfig, addToCart } = useContext(Context);
 
   const primaryColor =
     cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor ||
     cmsConfig?.config?.primaryColor ||
     "#ff6b35";
 
+  // Get a few items from menu for 'Related Products'
+  const allItems = (cmsConfig?.menu || []).flatMap((cat: any) =>
+    cat.menuItems.map((item: any) => ({ ...item, categoryName: cat.name }))
+  );
 
-
-  if (cartItems.length === 0) {
-    return (
-      <div className="text-center py-5" style={{ background: "#fff", borderRadius: "20px", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
-        <i className="flaticon-shopping-bag-1" style={{ fontSize: "60px", color: "#eee", display: "block", marginBottom: "15px" }} />
-        <h5 className="mb-2">Your selection is empty</h5>
-        <p className="text-muted mb-4">Add some delicious items from our menu to get started!</p>
-        <Link to="/our-menu-2" className="btn btn-primary" style={{ borderRadius: "10px" }}>Browse Menu</Link>
-      </div>
-    );
-  }
+  const relatedProducts = allItems.slice(0, 6); // Show first 6 as related
 
   return (
-    <>
+    <div className="related-products-list">
       <style>
         {`
-          @media (max-width: 576px) {
-            .dz-shop-card.style-1 {
-              flex-direction: column !important;
-              text-align: center !important;
-            }
-            .dz-shop-card.style-1 .dz-media {
-              width: 100% !important;
-              height: 200px !important;
-            }
-            .dz-shop-card.style-1 .dz-content {
-              padding: 15px !important;
-            }
-            .dz-shop-card.style-1 .dz-head {
-              justify-content: center !important;
-            }
-            .dz-shop-card.style-1 .dz-body {
-              justify-content: center !important;
-              flex-direction: column !important;
-              align-items: center !important;
-            }
+          .related-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+          }
+          .related-card:hover {
+            transform: translateY(-3px);
+          }
+          .related-media {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f5f5f5;
+          }
+          .related-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          .related-info {
+            flex: 1;
+            padding-left: 20px;
+          }
+          .related-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+          }
+          .veg-icon {
+             width: 16px;
+             height: 16px;
+             border: 1px solid #0f8a65;
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             margin-right: 8px;
+             padding: 2px;
+          }
+          .veg-dot {
+             width: 8px;
+             height: 8px;
+             background: #0f8a65;
+             border-radius: 50%;
+          }
+          .rating-badge {
+            background: #ffb800;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 700;
+          }
+          .related-meta {
+            font-size: 13px;
+            color: #888;
+            margin: 5px 0;
+          }
+          .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+          }
+          .price-tag {
+            color: ${primaryColor};
+            font-weight: 800;
+            font-size: 16px;
+          }
+          .for-one {
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 400;
+          }
+          .add-related-btn {
+            background: ${primaryColor};
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
           }
         `}
       </style>
-      {cartItems.map((item) => (
-        <div className="dz-shop-card style-1 mb-3" key={item.id} style={{
-          background: "#fff",
-          borderRadius: "18px",
-          overflow: "hidden",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
-          transition: "transform 0.2s",
-          display: "flex",
-          textAlign: 'left' as any,
-          color: '#222'
-        }}>
-          <div className="dz-media" style={{ width: "140px", height: "140px", flexShrink: 0 }}>
-            <img
-              src={item.image || IMAGES.shop_pic1}
-              alt={item.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
+      {relatedProducts.map((item: any) => (
+        <div className="related-card" key={item.id}>
+          <div className="related-media">
+            <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
           </div>
-          <div className="dz-content" style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-              <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center", color: '#222' }}>
-                {/* 🟢 Veg/Non-Veg indicator */}
-                <svg
-                  className="m-r10"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="0.5" y="0.5" width="16" height="16" stroke="#0F8A65" />
-                  <circle cx="8.5" cy="8.5" r="5.5" fill="#0F8A65" />
-                </svg>
-                {item.name}
-              </h6>
-              <div className="rate" style={{ background: "#FFB800", color: "#fff", padding: "2px 8px", borderRadius: "5px", fontSize: "12px", fontWeight: 700 }}>
-                <i className="fa-solid fa-star"></i> 4.8
+          <div className="related-info">
+            <div className="related-title-row">
+              <div className="d-flex align-items-center">
+                <div className="veg-icon"><div className="veg-dot"></div></div>
+                <h6 className="mb-0" style={{ fontWeight: 700 }}>{item.name}</h6>
+              </div>
+              <div className="rating-badge">
+                <i className="fa-solid fa-star me-1"></i> 4.5
               </div>
             </div>
 
-            <div className="dz-body" style={{ display: "flex", justifyContent: 'space-between', alignItems: "flex-end", gap: '15px', flexWrap: 'wrap' }}>
-              <div style={{ textAlign: 'left' as any }}>
-                <p className="mb-2" style={{ color: "#888", fontSize: "13px" }}>
-                  By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                  <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>$ {Number(item.price).toFixed(0)}</h5>
+            <div className="related-meta">
+              By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Burger Farm"}</span>
+              <span className="ms-3"><i className="fa-solid fa-motorcycle me-1"></i> 30 min</span>
+            </div>
 
-                  {/* Quantity Controls */}
-                  <div className="btn-quantity style-1" style={{ margin: 0 }}>
-                    <div className="input-group bootstrap-touchspin" style={{ width: "100px", height: "34px" }}>
-                      <button
-                        className="btn btn-default"
-                        type="button"
-                        style={{ padding: "0 8px" }}
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      >
-                        <i className="ti-minus"></i>
-                      </button>
-                      <input
-                        type="text"
-                        value={item.quantity}
-                        readOnly
-                        className="form-control"
-                        style={{ height: "34px", padding: 0, textAlign: "center", fontWeight: 700 }}
-                      />
-                      <button
-                        className="btn btn-default"
-                        type="button"
-                        style={{ padding: "0 8px" }}
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      >
-                        <i className="ti-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+            <div className="price-row">
+              <div>
+                <span className="price-tag">{cmsConfig?.config?.currency || '$'} {Number(item.price).toFixed(2)}</span>
+                <span className="for-one ms-2">For a one</span>
               </div>
-
-              {/* Remove button */}
-              <button
-                onClick={() => removeFromCart(item.id)}
-                style={{
-                  background: "#fff5f5",
-                  color: "#e53e3e",
-                  border: "none",
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  transition: "all 0.2s"
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#fed7d7")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#fff5f5")}
-                title="Remove Item"
-              >
-                <i className="fa-solid fa-trash-can"></i>
+              <button className="add-related-btn" onClick={() => addToCart(item)}>
+                <i className="fa-solid fa-plus"></i>
               </button>
             </div>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

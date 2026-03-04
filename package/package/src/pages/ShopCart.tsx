@@ -6,7 +6,7 @@ import ShopStyle1RightContent from "../elements/ShopStyle1RightContent";
 import { Context } from "../context/AppContext";
 
 const ShopCart = () => {
-  const { cartItems, activeBranch, cmsConfig } = useContext(Context);
+  const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
   // Store is always open
@@ -69,8 +69,8 @@ const ShopCart = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="d-flex align-items-center justify-content-start">
-                <h5 className="title m-b15 m-lg-30" style={{ color: '#222' }}>{contentConfig?.title || "Your Selection"}</h5>
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h4 className="title mb-0" style={{ color: '#222', fontWeight: 700 }}>Related Products</h4>
               </div>
               <ShopStyle1RightContent />
             </div>
@@ -97,6 +97,60 @@ const ShopCart = () => {
                     </Link>
                   </div>
 
+                  <div style={{ maxHeight: '450px', overflowY: 'auto', paddingRight: '5px' }}>
+                    {cartItems.map((item) => (
+                      <div className="cart-item style-1 mb-4" key={item.id} style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '15px' }}>
+                        <div className="dz-media" style={{ width: '80px', height: '80px', borderRadius: '12px', overflow: 'hidden' }}>
+                          <img src={item.image || IMAGES.shop_pic1} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div className="dz-content" style={{ flex: 1, paddingLeft: '15px', position: 'relative' }}>
+                          <div className="dz-head d-flex justify-content-between align-items-start">
+                            <h6 className="title mb-1" style={{ fontSize: '15px', fontWeight: 700, color: '#222', maxWidth: '80%' }}>{item.name}</h6>
+                            <button
+                              style={{ border: 'none', background: 'none', padding: 0, marginTop: '-5px' }}
+                              onClick={() => removeFromCart(item.id)}
+                            >
+                              <i className="fa-solid fa-xmark text-danger" style={{ fontSize: '14px' }}></i>
+                            </button>
+                          </div>
+
+                          <div className="d-flex align-items-center justify-content-between mt-2">
+                            <div className="btn-quantity style-1" style={{ margin: 0 }}>
+                              <div className="input-group bootstrap-touchspin" style={{ width: "90px", height: "30px", border: '1px solid #eee', borderRadius: '6px' }}>
+                                <button
+                                  className="btn btn-default"
+                                  type="button"
+                                  style={{ padding: "0 5px", background: 'none', border: 'none' }}
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                >
+                                  <i className="ti-minus" style={{ fontSize: '10px' }}></i>
+                                </button>
+                                <input
+                                  type="text"
+                                  value={item.quantity}
+                                  readOnly
+                                  className="form-control"
+                                  style={{ height: "28px", padding: 0, textAlign: "center", fontWeight: 700, border: 'none', background: 'none', fontSize: '13px' }}
+                                />
+                                <button
+                                  className="btn btn-default"
+                                  type="button"
+                                  style={{ padding: "0 5px", background: 'none', border: 'none' }}
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                >
+                                  <i className="ti-plus" style={{ fontSize: '10px' }}></i>
+                                </button>
+                              </div>
+                            </div>
+                            <h6 className="price text-primary mb-0" style={{ fontWeight: 800 }}>
+                              {cmsConfig?.config?.currency || '$'} {(Number(item.price) * Number(item.quantity)).toFixed(2)}
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                   {cartItems.length === 0 && (
                     <div className="text-center py-4">
                       <p>{contentConfig?.emptyCartText || "Your cart is empty"}</p>
@@ -109,22 +163,24 @@ const ShopCart = () => {
                     <table>
                       <tbody>
                         <tr>
-                          <td>{contentConfig?.itemTotalLabel || "Item Total"}</td>
-                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(0)}</td>
+                          <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.itemTotalLabel || "Item Total"}</td>
+                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
                         </tr>
                         <tr className="charges">
-                          <td>{contentConfig?.deliveryLabel || "Delivery Charges"}</td>
-                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {deliveryCharge.toFixed(0)}</td>
+                          <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.deliveryLabel || "Delivery Charges"}</td>
+                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {deliveryCharge.toFixed(2)}</td>
                         </tr>
-                        <tr className="tax">
-                          <td>{contentConfig?.taxLabel || "Tax"} ({taxPercentage}%)</td>
-                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {tax.toFixed(0)}</td>
+                        <tr className="tax" style={{ borderBottom: '1px solid #eee' }}>
+                          <td style={{ color: '#666', fontSize: '14px' }}>{contentConfig?.taxLabel || "Govt Taxes & Other Charges"}</td>
+                          <td className="text-end" style={{ color: '#ff6b35', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {tax.toFixed(2)}</td>
                         </tr>
                         <tr className="total">
                           <td>
-                            <h6>{contentConfig?.totalLabel || "Total"}</h6>
+                            <h5 style={{ fontWeight: 700, margin: '15px 0' }}>{contentConfig?.totalLabel || "Total"}</h5>
                           </td>
-                          <td className="price text-primary">{cmsConfig?.config?.currency || '$'} {total.toFixed(0)}</td>
+                          <td className="text-end">
+                            <h5 style={{ color: '#ff6b35', fontWeight: 800, margin: '15px 0' }}>{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</h5>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
