@@ -67,7 +67,7 @@ const Footer2 = () => {
                 background-color: ${fbgColor} !important;
                 margin: 0 100px 40px 100px;
                 border-radius: 40px;
-                padding: 60px 50px;
+                padding: 50px 50px;
                 position: relative;
                 overflow: hidden;
                 border: none !important;
@@ -83,10 +83,10 @@ const Footer2 = () => {
               }
               .footer-title {
                 font-weight: ${fHeadingWeight} !important;
-                font-size: 20px !important;
+                font-size: 22px !important;
                 letter-spacing: 1px;
                 color: ${ftColor} !important;
-                margin-bottom: 30px !important;
+                margin-bottom: 25px !important;
                 text-transform: uppercase;
               }
               .widget_services ul li {
@@ -95,7 +95,7 @@ const Footer2 = () => {
               .widget_services ul li a {
                 color: ${ftColor} !important;
                 opacity: 0.8;
-                font-size: 15px !important;
+                font-size: 17px !important;
                 font-weight: ${fTextWeight} !important;
                 transition: 0.3s;
               }
@@ -111,18 +111,19 @@ const Footer2 = () => {
                 margin-bottom: 20px;
               }
               .widget_getintuch ul li i {
-                font-size: 20px;
+                font-size: 28px;
                 color: var(--primary);
                 margin-top: 5px;
               }
               .widget_getintuch ul li p {
                 color: ${ftColor} !important;
                 opacity: 0.8 !important;
-                font-size: 15px !important;
+                font-size: 17px !important;
                 font-weight: ${fTextWeight} !important;
                 margin: 0;
                 line-height: 1.6;
               }
+
               /* Footer newsletter design */
               .newsletter-box form {
                 display: flex;
@@ -212,7 +213,7 @@ const Footer2 = () => {
                         />
                       </Link>
                     </div>
-                    <p style={{ opacity: 0.8, fontSize: '15px', maxWidth: '400px', lineHeight: '1.7', color: ftColor }}>
+                    <p style={{ opacity: 0.8, fontSize: '17px', maxWidth: '450px', lineHeight: '1.7', color: ftColor }}>
                       {footerContent.description || "Lorem ipsum is simply dummy text of the printing and typesetting industry."}
                     </p>
                   </div>
@@ -289,7 +290,7 @@ const Footer2 = () => {
                   <div className="col-lg-3 col-md-6 mb-4">
                     <div className="widget">
                       <h5 className="footer-title">{footerContent.serviceHoursTitle || "SERVICE HOURS"}</h5>
-                      <p style={{ opacity: 0.8, fontSize: '15px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
+                      <p style={{ opacity: 0.8, fontSize: '17px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
                         {footerContent.serviceHours || "Saturday - Sunday : 6:30 pm - 11:59 pm\nSunday : closed"}
                       </p>
 
