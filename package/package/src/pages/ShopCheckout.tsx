@@ -431,7 +431,7 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm} = useContext(Context);
+  const { user, setShowSignInForm } = useContext(Context);
 
   return (
     <div className="page-content bg-white">

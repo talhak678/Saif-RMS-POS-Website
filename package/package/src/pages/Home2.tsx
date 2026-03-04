@@ -67,8 +67,8 @@ const Home2 = () => {
                 </div>
               </div>
             </div>
-            <Home2OurMenu prev={"menu-button-prev1"} next={"menu-button-next1"} />
           </div>
+          <Home2OurMenu prev={"menu-button-prev1"} next={"menu-button-next1"} />
         </section>
       )}
 

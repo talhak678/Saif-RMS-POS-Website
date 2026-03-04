@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-// import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
 import { Context } from "../context/AppContext";
 import { IMAGES } from "../constent/theme";
 
@@ -9,12 +9,15 @@ interface PropFile {
   prev: string;
   next: string;
 }
+
 const Home2OurMenu = ({ prev, next }: PropFile) => {
+  const [active, setActive] = useState<number>();
   const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
 
   if (cmsLoading) return null;
 
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#1a73e8";
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#1a73e8";
 
   // Filter based on CMS selection
   const selectedCategoryIds = cmsConfig?.config?.configJson?.home?.sections?.browseMenu?.content?.selectedCategoryIds || [];
@@ -22,135 +25,131 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
 
   const categories = selectedCategoryIds.length > 0
     ? allAvailableCategories.filter((cat: any) => selectedCategoryIds.includes(cat.id))
-    : allAvailableCategories.slice(0, 8); // Default 8 if none selected
+    : allAvailableCategories.slice(0, 8);
 
-  // Flatten items for the scroller to show products in the card format like the theme image
   const items = categories.flatMap((cat: any) =>
     cat.menuItems.map((item: any) => ({ ...item, categoryName: cat.name }))
   ).slice(0, 10);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", paddingLeft: "12px", paddingRight: "12px" }}>
       <style>{`
-        .browse-menu-card {
-           background: #fff;
-           border-radius: 20px;
-           padding: 22px 20px;
-           display: flex;
-           align-items: center;
-           position: relative;
-           box-shadow: 0 8px 30px rgba(0,0,0,0.07);
-           transition: all 0.3s ease;
-           overflow: hidden;
-           border: 1px solid #efefef;
-           min-height: 185px;
-           height: 185px;
-           width: 100%;
-           box-sizing: border-box;
+        .dz-img-box.style-4 {
+          background: #fff;
+          border-radius: 20px;
+          padding: 20px;
+          position: relative;
+          box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+          transition: all 0.3s ease;
+          border: 1px solid #efefef;
+          overflow: hidden;
+          height: 100%;
+          box-sizing: border-box;
         }
-        .browse-menu-card:hover {
-           transform: translateY(-6px);
-           box-shadow: 0 16px 40px rgba(0,0,0,0.12);
-           border-color: ${primaryColor}30;
+        .dz-img-box.style-4:hover,
+        .dz-img-box.style-4.active {
+          transform: translateY(-6px);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.13);
+          border-color: ${primaryColor}40;
         }
-        .browse-media {
-           width: 100px;
-           height: 100px;
-           border-radius: 16px;
-           overflow: hidden;
-           flex-shrink: 0;
-           background: #f5f5f5;
+        .dz-img-box.style-4 .menu-detail {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 14px;
         }
-        .browse-media img {
-           width: 100%;
-           height: 100%;
-           object-fit: cover;
-           transition: transform 0.4s ease;
+        .dz-img-box.style-4 .dz-media {
+          width: 100px;
+          height: 100px;
+          border-radius: 14px;
+          overflow: hidden;
+          flex-shrink: 0;
+          background: #f5f5f5;
         }
-        .browse-menu-card:hover .browse-media img {
-           transform: scale(1.08);
+        .dz-img-box.style-4 .dz-media img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s ease;
         }
-        .browse-content {
-           padding-left: 16px;
-           padding-right: 58px;
-           flex: 1;
-           min-width: 0;
-           display: flex;
-           flex-direction: column;
-           justify-content: center;
+        .dz-img-box.style-4:hover .dz-media img,
+        .dz-img-box.style-4.active .dz-media img {
+          transform: scale(1.08);
         }
-        .browse-title {
-           font-size: 15px;
-           font-weight: 700;
-           color: #1a1a1a;
-           margin-bottom: 4px;
-           line-height: 1.35;
-           display: -webkit-box;
-           -webkit-line-clamp: 2;
-           -webkit-box-orient: vertical;
-           overflow: hidden;
+        .dz-img-box.style-4 .dz-content .title {
+          font-size: 15px;
+          font-weight: 700;
+          color: #1a1a1a;
+          margin: 0 0 4px 0;
+          line-height: 1.3;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
-        .browse-subtitle {
-           font-size: 12px;
-           color: #888;
-           margin-bottom: 10px;
-           display: -webkit-box;
-           -webkit-line-clamp: 1;
-           -webkit-box-orient: vertical;
-           overflow: hidden;
+        .dz-img-box.style-4 .dz-content .title a {
+          color: inherit;
+          text-decoration: none;
         }
-        .browse-price-label {
-           font-size: 11px;
-           color: #aaa;
-           display: block;
-           text-transform: uppercase;
-           letter-spacing: 0.8px;
-           margin-bottom: 3px;
-           font-weight: 600;
+        .dz-img-box.style-4 .dz-content p {
+          font-size: 12px;
+          color: #888;
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
-        .browse-price {
-           font-size: 20px;
-           font-weight: 800;
-           color: ${primaryColor};
+        .dz-img-box.style-4 .menu-footer {
+          display: flex;
+          flex-direction: column;
+          padding-right: 55px;
         }
-        .browse-add-btn {
-           position: absolute;
-           bottom: 0px;
-           right: 0px;
-           width: 52px;
-           height: 52px;
-           background: ${primaryColor};
-           color: #fff;
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           border-radius: 20px 0 0 0;
-           cursor: pointer;
-           transition: all 0.25s ease;
-           border: none;
+        .dz-img-box.style-4 .menu-footer span:first-child {
+          font-size: 11px;
+          color: #aaa;
+          text-transform: uppercase;
+          letter-spacing: 0.8px;
+          font-weight: 600;
         }
-        .browse-add-btn:hover {
-           filter: brightness(1.1);
+        .dz-img-box.style-4 .menu-footer .price {
+          font-size: 20px;
+          font-weight: 800;
+          color: ${secondaryColor};
         }
-        .browse-add-btn i {
-           font-size: 16px;
+        .dz-img-box.style-4 .detail-btn {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 50px;
+          height: 50px;
+          background: ${primaryColor};
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 20px 0 0 0;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          border: none;
+          text-decoration: none;
+          font-size: 16px;
         }
-        .browse-menu-swiper {
-           width: 100% !important;
-           overflow: visible !important;
+        .dz-img-box.style-4 .detail-btn:hover {
+          filter: brightness(1.1);
         }
-        .browse-menu-swiper .swiper-wrapper {
-           width: 100% !important;
+        .menu-swiper {
+          width: 100%;
+          overflow: visible !important;
         }
-        .browse-menu-swiper .swiper-slide {
-           height: auto !important;
-           display: flex !important;
+        .menu-swiper .swiper-slide {
+          height: auto;
         }
       `}</style>
       <Swiper
-        className="swiper browse-menu-swiper py-5"
+        className="swiper menu-swiper swiper-visible swiper-item-4"
         slidesPerView={4}
-        spaceBetween={25}
+        spaceBetween={30}
         speed={1500}
         loop={items.length > 4}
         modules={[Autoplay, Navigation]}
@@ -162,23 +161,33 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         breakpoints={{
           1200: { slidesPerView: 4 },
           991: { slidesPerView: 3 },
-          768: { slidesPerView: 2 },
+          575: { slidesPerView: 2 },
           240: { slidesPerView: 1 },
         }}
       >
         {items.map((item: any, ind: number) => (
-          <SwiperSlide key={item.id || ind}>
-            <div className="browse-menu-card">
-              <div className="browse-media">
-                <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
+          <SwiperSlide className="swiper-slide" key={item.id || ind}>
+            <div
+              className={`dz-img-box style-4 box-hover ${active === ind ? "active" : ""}`}
+              onMouseEnter={() => setActive(ind)}
+              onMouseLeave={() => setActive(undefined)}
+            >
+              <div className="menu-detail">
+                <div className="dz-media">
+                  <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
+                </div>
+                <div className="dz-content">
+                  <h6 className="title">
+                    <Link to={`/shop-product-details/${item.id}`}>{item.name}</Link>
+                  </h6>
+                  <p>{item.description || "Delicious and Spicy"}</p>
+                </div>
               </div>
-              <div className="browse-content">
-                <h6 className="browse-title">{item.name}</h6>
-                <span className="browse-subtitle">{item.description || "Delicious and Spicy"}</span>
-                <span className="browse-price-label">Regular Price</span>
-                <span className="browse-price">{cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(2)}</span>
+              <div className="menu-footer">
+                <span>Regular Price</span>
+                <span className="price">{cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(2)}</span>
               </div>
-              <button className="browse-add-btn" onClick={() => addToCart(item)}>
+              <button className="detail-btn" onClick={() => addToCart(item)}>
                 <i className="fa-solid fa-plus"></i>
               </button>
             </div>
