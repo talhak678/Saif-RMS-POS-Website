@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
@@ -23,8 +23,6 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -302,6 +300,42 @@ const CheckoutForm = () => {
             </table>
           </div>
 
+          <div className="widget billing-details mt-4">
+            <h4 className="widget-title">Promo Code</h4>
+            {!appliedDiscount ? (
+              <div className="d-flex gap-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Code"
+                  value={discountCode}
+                  onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={handleApplyDiscount}
+                  disabled={discountLoading}
+                >
+                  {discountLoading ? "..." : "Apply"}
+                </button>
+              </div>
+            ) : (
+              <div className="alert alert-success d-flex justify-content-between align-items-center mb-0 p-2 px-3" style={{ borderRadius: '10px' }}>
+                <span className="small">Code <strong>{appliedDiscount.code}</strong> Applied!</span>
+                <button
+                  type="button"
+                  className="btn-close small"
+                  style={{ fontSize: '10px' }}
+                  onClick={() => {
+                    setAppliedDiscount(null);
+                    setDiscountCode("");
+                  }}
+                ></button>
+              </div>
+            )}
+          </div>
+
           <div className="widget payment-method mt-4">
             <h4 className="widget-title">Payment Method</h4>
             <div className="form-group mb-3">
@@ -339,8 +373,7 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm, cmsConfig } = useContext(Context);
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const { user, setShowSignInForm } = useContext(Context);
 
   return (
     <div className="page-content bg-white">
