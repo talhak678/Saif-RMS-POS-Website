@@ -34,69 +34,76 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       <style>{`
         .browse-menu-card {
            background: #fff;
-           border-radius: 12px;
-           padding: 15px;
+           border-radius: 28px;
+           padding: 30px;
            display: flex;
            align-items: center;
            position: relative;
-           box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-           transition: all 0.3s ease;
-           margin: 10px 5px;
+           box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+           transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+           margin: 15px 12px;
            overflow: hidden;
-           border: 1px solid #f8f8f8;
-           min-height: 140px;
-           height: 140px;
+           border: 1px solid #f2f2f2;
+           min-height: 190px;
+           height: 190px;
         }
         .browse-menu-card:hover {
-           transform: translateY(-5px);
-           box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+           transform: translateY(-10px);
+           box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+           border-color: ${primaryColor}22;
         }
         .browse-media {
-           width: 80px;
-           height: 80px;
-           border-radius: 8px;
+           width: 120px;
+           height: 120px;
+           border-radius: 20px;
            overflow: hidden;
            flex-shrink: 0;
-           background: #eee;
+           background: #f8f8f8;
+           box-shadow: 0 8px 20px rgba(0,0,0,0.04);
         }
         .browse-media img {
            width: 100%;
            height: 100%;
            object-fit: cover;
+           transition: all 0.5s ease;
+        }
+        .browse-menu-card:hover .browse-media img {
+           transform: scale(1.1);
         }
         .browse-content {
-           padding-left: 15px;
+           padding-left: 25px;
            flex: 1;
            display: flex;
            flex-direction: column;
            justify-content: center;
         }
         .browse-title {
-           font-size: 16px;
+           font-size: 20px;
            font-weight: 700;
-           color: #222;
-           margin-bottom: 2px;
+           color: #1a1a1a;
+           margin-bottom: 6px;
            line-height: 1.2;
         }
         .browse-subtitle {
-           font-size: 12px;
-           color: #888;
-           margin-bottom: 8px;
+           font-size: 15px;
+           color: #666;
+           margin-bottom: 18px;
            display: block;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
         }
         .browse-price-label {
-           font-size: 10px;
-           color: #aaa;
+           font-size: 11px;
+           color: #999;
            display: block;
            text-transform: uppercase;
-           letter-spacing: 0.5px;
-           margin-bottom: 0;
+           letter-spacing: 1px;
+           margin-bottom: 2px;
+           font-weight: 700;
         }
         .browse-price {
-           font-size: 18px;
+           font-size: 24px;
            font-weight: 800;
            color: ${primaryColor};
         }
@@ -104,29 +111,32 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            position: absolute;
            bottom: 0px;
            right: 0px;
-           width: 45px;
-           height: 45px;
+           width: 65px;
+           height: 65px;
            background: ${primaryColor};
            color: #fff;
            display: flex;
            align-items: center;
            justify-content: center;
-           border-radius: 12px 0 0 0;
+           border-radius: 28px 0 0 0;
            cursor: pointer;
-           transition: all 0.2s;
+           transition: all 0.3s ease;
            border: none;
+           font-size: 22px;
         }
         .browse-add-btn:hover {
-           opacity: 0.9;
+           background: #222; /* Add a nice hover state for the button too */
+           width: 70px;
+           height: 70px;
         }
         .browse-add-btn i {
-           font-size: 16px;
+           font-size: 20px;
         }
       `}</style>
       <Swiper
-        className="swiper browse-menu-swiper py-4"
+        className="swiper browse-menu-swiper py-5"
         slidesPerView={4}
-        spaceBetween={20}
+        spaceBetween={25}
         speed={1500}
         loop={items.length > 4}
         modules={[Autoplay, Navigation]}
@@ -152,7 +162,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
                 <h6 className="browse-title">{item.name}</h6>
                 <span className="browse-subtitle">{item.description || "Delicious and Spicy"}</span>
                 <span className="browse-price-label">Regular Price</span>
-                <span className="browse-price">{cmsConfig?.config?.currency || '$'} {Number(item.price).toFixed(2)}</span>
+                <span className="browse-price">{cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(2)}</span>
               </div>
               <button className="browse-add-btn" onClick={() => addToCart(item)}>
                 <i className="fa-solid fa-plus"></i>
