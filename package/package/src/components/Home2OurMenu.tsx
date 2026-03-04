@@ -32,7 +32,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
   ).slice(0, 10);
 
   return (
-    <div style={{ width: "100%", paddingLeft: "12px", paddingRight: "12px" }}>
+    <div className="container" style={{ overflow: "visible" }}>
       <style>{`
         .dz-img-box.style-4 {
           background: #fff;
@@ -142,8 +142,12 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           width: 100%;
           overflow: visible !important;
         }
+        .menu-swiper .swiper-wrapper {
+          flex-wrap: nowrap !important;
+        }
         .menu-swiper .swiper-slide {
           height: auto;
+          flex-shrink: 0;
         }
       `}</style>
       <Swiper
