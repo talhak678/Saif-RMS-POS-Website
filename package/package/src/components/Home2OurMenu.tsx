@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { IMAGES } from "../constent/theme";
 
@@ -9,7 +9,6 @@ interface PropFile {
   next: string;
 }
 const Home2OurMenu = ({ prev, next }: PropFile) => {
-  const [active, setActive] = useState<number>(1);
   const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
 
   if (cmsLoading) return null;
@@ -24,7 +23,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
     ? allAvailableCategories.filter((cat: any) => selectedCategoryIds.includes(cat.id))
     : allAvailableCategories.slice(0, 8); // Default 8 if none selected
 
-  // Flatten items for the scroller
+  // Flatten items for the scroller - as the user wants products here like in the theme image
   const items = categories.flatMap((cat: any) =>
     cat.menuItems.map((item: any) => ({ ...item, categoryName: cat.name }))
   ).slice(0, 10);
@@ -45,10 +44,6 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            overflow: hidden;
            border: 1px solid #f8f8f8;
            min-height: 140px;
-        }
-        .browse-menu-card.active {
-           background: #ccc;
-           opacity: 0.9;
         }
         .browse-menu-card:hover {
            transform: translateY(-5px);
@@ -115,9 +110,6 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            opacity: 0.9;
            transform: scale(1.05);
         }
-        .browse-add-btn i {
-           font-size: 16px;
-        }
       `}</style>
       <Swiper
         className="swiper browse-menu-swiper py-4"
@@ -140,7 +132,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       >
         {items.map((item: any, ind: number) => (
           <SwiperSlide key={item.id || ind}>
-            <div className={`browse-menu-card ${active === ind ? "active" : ""}`} onMouseEnter={() => setActive(ind)}>
+            <div className={`browse-menu-card`}>
               <div className="browse-media">
                 <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
               </div>

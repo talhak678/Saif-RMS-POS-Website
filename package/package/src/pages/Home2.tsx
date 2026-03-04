@@ -62,6 +62,11 @@ const Home2 = () => {
                font-weight: 400 !important;
                color: #222 !important;
             }
+            @media (max-width: 768px) {
+               .browse-title-cursive {
+                  font-size: 35px !important;
+               }
+            }
             .browse-nav-btn {
                width: 50px !important;
                height: 50px !important;
