@@ -1,14 +1,15 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
 import LocationPicker from "../elements/LocationPicker";
-import { Modal, Button,  } from "react-bootstrap";
+import { Modal, Button, Collapse } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
+import Select from "react-select";
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
@@ -40,10 +41,13 @@ const CheckoutForm = () => {
     address: "",
     city: "",
     notes: "",
-    paymentMethod: "CASH"
+    paymentMethod: "CASH",
+    cardName: ""
   });
 
-  // RESTORED: Local Storage & Context Sync
+  const [openShipDifferent, setOpenShipDifferent] = useState(false);
+  const [openCreateAccount, setOpenCreateAccount] = useState(false);
+
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
@@ -92,7 +96,6 @@ const CheckoutForm = () => {
   const discountAmount = appliedDiscount?.discountAmount || 0;
   const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
 
-  // RESTORED: Promo Code Application Logic
   const handleApplyDiscount = async () => {
     if (!discountCode.trim()) { toast.error("Please enter a discount code"); return; }
     const restaurantId = cmsConfig?.restaurantId;
@@ -152,8 +155,15 @@ const CheckoutForm = () => {
         if (intentRes.data?.success) {
           const cardEl = elements.getElement(CardElement);
           if (cardEl) {
-            const { error, } = await stripe.confirmCardPayment(intentRes.data.data.clientSecret, {
-              payment_method: { card: cardEl, billing_details: { name: `${formData.firstName} ${formData.lastName}`, email: formData.email, phone: formData.phone } }
+            const { error } = await stripe.confirmCardPayment(intentRes.data.data.clientSecret, {
+              payment_method: {
+                card: cardEl,
+                billing_details: {
+                  name: formData.cardName || `${formData.firstName} ${formData.lastName}`,
+                  email: formData.email,
+                  phone: formData.phone
+                }
+              }
             });
             if (error) { toast.error(error.message || "Payment failed"); setLoading(false); return; }
           }
@@ -170,265 +180,264 @@ const CheckoutForm = () => {
     }
   };
 
+  const customStyles = {
+    control: (base: any) => ({
+      ...base,
+      height: '50px',
+      borderRadius: '10px',
+      border: '1px solid #eee',
+    }),
+    option: (styles: any, { isFocused, isSelected }: any) => ({
+      ...styles,
+      backgroundColor: isSelected ? primaryColor : isFocused ? primaryColor + '10' : null,
+      color: isSelected ? "#fff" : "#333",
+    }),
+  };
+
   return (
     <form className="shop-form" onSubmit={handlePlaceOrder}>
+      {/* SECTION 1 & 2: ADDRESSES */}
       <div className="row">
-        {/* BILLING SECTION */}
         <div className="col-lg-6">
-          <div className="widget" style={{ background: '#fff', borderRadius: '20px', padding: '30px', boxShadow: '0 5px 25px rgba(0,0,0,0.05)', marginBottom: '30px' }}>
-            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '25px', display: 'flex', alignItems: 'center' }}>
-              <i className="fa-solid fa-address-book me-2" style={{ color: primaryColor }}></i>
-              Contact & Branch details
-            </h4>
+          <div className="widget">
+            <h4 className="widget-title">Billing & Shipping Address</h4>
 
-            {/* RESTORED: Branch Selection */}
             {branches.length > 1 && (
               <div className="form-group mb-3">
-                <label className="fw-bold mb-2 small text-uppercase" style={{ letterSpacing: '1px', color: '#888' }}>Select Restaurant Branch</label>
-                <select
-                  className="form-control"
-                  style={{ borderRadius: '12px', height: '50px' }}
-                  value={selectedBranchId || activeBranch?.id}
-                  onChange={(e) => setSelectedBranchId(e.target.value)}
-                >
-                  {branches.map((b: any) => (
-                    <option key={b.id} value={b.id}>{b.name}</option>
-                  ))}
-                </select>
+                <Select
+                  styles={customStyles}
+                  options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
+                  value={{ value: currentBranch?.id, label: currentBranch?.name }}
+                  onChange={(opt: any) => setSelectedBranchId(opt.value)}
+                />
               </div>
             )}
 
             <div className="row">
               <div className="form-group col-md-6 m-b20">
-                <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} style={{ borderRadius: '12px', height: '50px' }} />
+                <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
               </div>
               <div className="form-group col-md-6 m-b20">
-                <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} style={{ borderRadius: '12px', height: '50px' }} />
+                <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
               </div>
             </div>
 
             <div className="form-group m-b20">
-              <input name="email" required type="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} style={{ borderRadius: '12px', height: '50px' }} />
+              <input name="email" required type="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} />
             </div>
 
             <div className="form-group m-b20">
-              <input name="phone" required type="tel" className="form-control" placeholder="Mobile Number" value={formData.phone} onChange={handleChange} style={{ borderRadius: '12px', height: '50px' }} />
+              <input name="phone" required type="tel" className="form-control" placeholder="Mobile Number" value={formData.phone} onChange={handleChange} />
             </div>
 
+            {/* Service Selection logic merged into Billing to keep it functional */}
             <div style={{ padding: '20px', background: '#f8f9fa', borderRadius: '15px', marginBottom: '20px' }}>
-              <h6 className="mb-3" style={{ fontWeight: 700 }}>Service Method</h6>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  type="button"
-                  onClick={() => setOrderType("PICKUP")}
-                  style={{
-                    flex: 1, padding: '12px', borderRadius: '10px',
-                    border: `2px solid ${orderType === "PICKUP" ? primaryColor : "#eee"}`,
-                    background: orderType === "PICKUP" ? primaryColor + '10' : '#fff',
-                    color: orderType === "PICKUP" ? primaryColor : '#888',
-                    fontWeight: 700
-                  }}
-                >
-                  🏪 Pickup
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setOrderType("DELIVERY")}
-                  style={{
-                    flex: 1, padding: '12px', borderRadius: '10px',
-                    border: `2px solid ${orderType === "DELIVERY" ? primaryColor : "#eee"}`,
-                    background: orderType === "DELIVERY" ? primaryColor + '10' : '#fff',
-                    color: orderType === "DELIVERY" ? primaryColor : '#888',
-                    fontWeight: 700
-                  }}
-                >
-                  🚚 Delivery
-                </button>
-              </div>
-            </div>
-
-            {orderType === "DELIVERY" && (
-              <div className="m-b20">
-                <div className="d-flex justify-content-between mb-2">
-                  <label className="fw-semibold">Delivery Address *</label>
-                  <button type="button" className="text-primary border-0 bg-transparent p-0 small fw-bold" onClick={() => setShowMap(true)}>📍 Pick on Map</button>
+              <div className="d-flex justify-content-between mb-3 align-items-center">
+                <h6 className="mb-0" style={{ fontWeight: 700 }}>Service Method</h6>
+                <div style={{ display: "flex", gap: "5px" }}>
+                  <button type="button" onClick={() => setOrderType("PICKUP")} className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`} style={{ background: orderType === "PICKUP" ? primaryColor : '#eee', border: 'none' }}>Pickup</button>
+                  <button type="button" onClick={() => setOrderType("DELIVERY")} className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`} style={{ background: orderType === "DELIVERY" ? primaryColor : '#eee', border: 'none' }}>Delivery</button>
                 </div>
-                <textarea name="address" required className="form-control mb-3" rows={3} placeholder="Street, Apartment, Unit..." value={formData.address} onChange={handleChange} style={{ borderRadius: '12px' }} />
-                <input name="city" required type="text" className="form-control" placeholder="City" value={formData.city} onChange={handleChange} style={{ borderRadius: '12px', height: '50px' }} />
               </div>
-            )}
-
-            <div className="form-group">
-              <textarea name="notes" className="form-control" rows={3} placeholder="Notes about your order, e.g. special notes for delivery" value={formData.notes} onChange={handleChange} style={{ borderRadius: '12px' }}></textarea>
+              {orderType === "DELIVERY" && (
+                <div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <label className="small fw-bold">Delivery Address *</label>
+                    <button type="button" className="text-primary border-0 bg-transparent p-0 small fw-bold" onClick={() => setShowMap(true)}>📍 Pick on Map</button>
+                  </div>
+                  <textarea name="address" required className="form-control mb-2" rows={2} placeholder="Street, Apartment..." value={formData.address} onChange={handleChange} />
+                </div>
+              )}
             </div>
+
+            <Button
+              variant="white"
+              onClick={() => setOpenCreateAccount(!openCreateAccount)}
+              className="btn btn-gray btnhover mb-3"
+              style={{ width: '100%', textAlign: 'left', border: '1px solid #eee' }}
+            >
+              Create an account <i className={`fa fa-angle-${openCreateAccount ? 'up' : 'down'} m-l10`}></i>
+            </Button>
+            <Collapse in={openCreateAccount}>
+              <div>
+                <p className="small text-muted mb-3">Create an account by entering a password below. If you are a returning customer please login at the top.</p>
+                <div className="form-group mb-3">
+                  <input name="Password" type="password" className="form-control" placeholder="Password" />
+                </div>
+              </div>
+            </Collapse>
           </div>
         </div>
 
-        {/* ORDER SUMMARY & PAYMENT SECTION */}
         <div className="col-lg-6">
-          <div className="widget" style={{ background: '#fff', borderRadius: '20px', padding: '30px', boxShadow: '0 5px 25px rgba(0,0,0,0.05)' }}>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h4 className="widget-title m-0" style={{ fontWeight: 700 }}>Your Order</h4>
-              <Link to="/shop-cart" className="text-primary small fw-bold"><i className="fa-solid fa-pencil me-1"></i> Edit Cart</Link>
-            </div>
+          <div className="widget h-100">
+            <Button
+              variant="white"
+              onClick={() => setOpenShipDifferent(!openShipDifferent)}
+              className="btn btn-gray btnhover mb-4"
+              style={{ width: '100%', textAlign: 'left', border: '1px solid #eee', background: openShipDifferent ? primaryColor : '#f8f9fa', color: openShipDifferent ? '#fff' : '#000' }}
+            >
+              Ship to a different address <i className={`fa fa-angle-${openShipDifferent ? 'up' : 'down'} m-l10`}></i>
+            </Button>
 
-            <table className="table-bordered check-tbl mb-4" style={{ width: '100%', borderRadius: '15px', overflow: 'hidden' }}>
-              <thead className="text-center" style={{ background: '#f8f9fa' }}>
+            <Collapse in={openShipDifferent}>
+              <div className="mb-4">
+                <p className="small text-muted">If you want to ship to another location, please provide details below.</p>
+                <div className="form-group mb-3">
+                  <input type="text" className="form-control" placeholder="Full Name" />
+                </div>
+                <div className="form-group mb-3">
+                  <textarea className="form-control" rows={3} placeholder="Different Shipping Address"></textarea>
+                </div>
+              </div>
+            </Collapse>
+
+            <div className="form-group mb-4">
+              <label className="fw-bold mb-2 small text-uppercase" style={{ letterSpacing: '1px', color: '#888' }}>Order Notes (Optional)</label>
+              <textarea name="notes" className="form-control" rows={6} placeholder="Notes about your order, e.g. special notes for delivery" value={formData.notes} onChange={handleChange} style={{ borderRadius: '12px' }}></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="dz-divider bg-gray-dark icon-center my-5">
+        <i className="fa fa-circle bg-white text-primary" style={{ color: primaryColor }}></i>
+      </div>
+
+      {/* SECTION 3 & 4: ORDER & PAYMENT */}
+      <div className="row">
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Your Order</h4>
+            <table className="table-bordered check-tbl">
+              <thead className="text-center" style={{ background: '#222', color: '#fff' }}>
                 <tr>
-                  <th style={{ padding: '15px' }}>PRODUCT</th>
-                  <th style={{ padding: '15px' }}>TOTAL</th>
+                  <th>IMAGE</th>
+                  <th>PRODUCT NAME</th>
+                  <th>TOTAL</th>
                 </tr>
               </thead>
               <tbody>
                 {cartItems.map(item => (
                   <tr key={item.id}>
-                    <td className="product-item-name" style={{ padding: '15px' }}>
-                      <div className="d-flex align-items-center">
-                        <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '45px', height: '45px', borderRadius: '8px', objectFit: 'cover', marginRight: '15px' }} />
-                        <div>
-                          <h6 className="mb-0" style={{ fontWeight: 600, fontSize: '14px' }}>{item.name}</h6>
-                          <span className="small text-muted">Qty: {item.quantity}</span>
-                        </div>
-                      </div>
+                    <td className="product-item-img text-center">
+                      <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px', borderRadius: '5px' }} />
                     </td>
-                    <td className="product-price text-end" style={{ padding: '15px', fontWeight: 700 }}>
+                    <td className="product-item-name">{item.name} x {item.quantity}</td>
+                    <td className="product-price text-end">
                       {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
 
-            {/* RESTORED: Promo Code Block */}
-            <div className="mb-4">
-              <label className="fw-bold mb-2 small text-uppercase" style={{ letterSpacing: '1px', color: '#888' }}>Apply Promo Code</label>
-              {appliedDiscount ? (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#e8f5e9", borderRadius: '12px', padding: "12px 20px", border: '1px dashed #2ecc71' }}>
-                  <span style={{ color: "#2E7D32", fontWeight: 700 }}>🎉 Applied: {appliedDiscount.code}</span>
-                  <button type="button" onClick={() => setAppliedDiscount(null)} style={{ background: "none", border: "none", color: "#c62828", fontSize: '20px' }}>×</button>
-                </div>
-              ) : (
-                <div className="d-flex gap-2">
-                  <input
-                    className="form-control"
-                    style={{ borderRadius: '12px', height: '50px', flex: 1 }}
-                    placeholder="Enter code"
-                    value={discountCode}
-                    onChange={e => setDiscountCode(e.target.value.toUpperCase())}
-                  />
-                  <button
-                    type="button"
-                    onClick={handleApplyDiscount}
-                    disabled={discountLoading}
-                    className="btn btn-primary"
-                    style={{ borderRadius: '12px', padding: '0 25px', background: primaryColor, border: 'none' }}
-                  >
-                    {discountLoading ? "..." : "Apply"}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '20px' }}>Order Billing</h4>
-            <table className="table-bordered check-tbl mb-4" style={{ width: '100%' }}>
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Order Total</h4>
+            <table className="table-bordered check-tbl mb-4">
               <tbody>
                 <tr>
-                  <td style={{ padding: '15px' }}>Order Subtotal</td>
-                  <td className="product-price text-end" style={{ padding: '15px', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
+                  <td>Order Subtotal</td>
+                  <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
                 </tr>
-                {orderType === "DELIVERY" && (
-                  <tr>
-                    <td style={{ padding: '15px' }}>Shipping</td>
-                    <td className="text-end" style={{ padding: '15px' }}>{cmsConfig?.config?.currency || '$'} {Number(deliveryCharge).toFixed(2)}</td>
-                  </tr>
-                )}
                 <tr>
-                  <td style={{ padding: '15px' }}>Tax (5%)</td>
-                  <td className="product-price text-end" style={{ padding: '15px', fontWeight: 700 }}>{cmsConfig?.config?.currency || '$'} {tax.toFixed(2)}</td>
+                  <td>Shipping</td>
+                  <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free Pickup"}</td>
                 </tr>
-                {discountAmount > 0 && (
-                  <tr>
-                    <td style={{ padding: '15px' }}>Coupon Saved</td>
-                    <td className="product-price text-end" style={{ padding: '15px', color: '#2ecc71', fontWeight: 700 }}>- {cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                <tr style={{ background: '#fcfcfc' }}>
-                  <td style={{ padding: '15px', fontWeight: 700 }}>Total</td>
-                  <td className="product-price-total text-end" style={{ padding: '15px', fontWeight: 800, color: primaryColor, fontSize: '20px' }}>
+                <tr>
+                  <td>Coupon</td>
+                  <td className="product-price text-end text-success">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
+                </tr>
+                <tr style={{ background: '#f8f9fa' }}>
+                  <td className="fw-bold">Total</td>
+                  <td className="product-price-total text-end fw-bold" style={{ color: primaryColor, fontSize: '24px' }}>
                     {cmsConfig?.config?.currency || '$'} {total.toFixed(2)}
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '20px' }}>Payment Method</h4>
-            <div className="payment-options mb-4">
-              <div className="form-group mb-2">
-                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "CASH" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer', background: formData.paymentMethod === "CASH" ? primaryColor + '05' : 'transparent' }}>
-                  <input type="radio" name="paymentMethod" value="CASH" checked={formData.paymentMethod === "CASH"} onChange={handleChange} className="me-3" style={{ accentColor: primaryColor }} />
-                  <span className="fw-bold">Cash on Delivery</span>
-                </label>
-              </div>
-              <div className="form-group">
-                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "STRIPE" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer', background: formData.paymentMethod === "STRIPE" ? primaryColor + '05' : 'transparent' }}>
-                  <input type="radio" name="paymentMethod" value="STRIPE" checked={formData.paymentMethod === "STRIPE"} onChange={handleChange} className="me-3" style={{ accentColor: primaryColor }} />
-                  <span className="fw-bold">Credit / Debit Card (Stripe)</span>
-                </label>
-              </div>
-
-              {formData.paymentMethod === "STRIPE" && (
-                <div className="mt-3 p-3" style={{ border: '2px solid #f0f0f0', borderRadius: '12px', background: '#fcfcfc' }}>
-                  <CardElement options={{ style: { base: { fontSize: "16px", color: "#424770", "::placeholder": { color: "#aab7c4" } } } }} />
+            {/* Promo Code Block */}
+            <div className="mb-4">
+              {appliedDiscount ? (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#e8f5e9", borderRadius: '10px', padding: "10px 15px", border: '1px dashed #2ecc71' }}>
+                  <span className="small fw-bold" style={{ color: "#2E7D32" }}>🎉 Applied: {appliedDiscount.code}</span>
+                  <button type="button" onClick={() => setAppliedDiscount(null)} style={{ background: "none", border: "none", color: "#c62828" }}>×</button>
+                </div>
+              ) : (
+                <div className="input-group">
+                  <input className="form-control" placeholder="Promo Code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} />
+                  <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-primary" style={{ background: primaryColor, border: 'none' }}>{discountLoading ? "..." : "Apply"}</button>
                 </div>
               )}
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-primary btn-hover-2 w-100 py-3"
-              disabled={loading || cartItems.length === 0}
-              style={{
-                borderRadius: "15px", fontWeight: 700, fontSize: "18px",
-                background: primaryColor, border: 'none',
-                boxShadow: `0 10px 20px ${primaryColor}30`
-              }}
-            >
-              {loading ? <><span className="spinner-border spinner-border-sm me-2"></span>Processing...</> : `Place Order — ${cmsConfig?.config?.currency || '$'} ${total.toFixed(2)}`}
-            </button>
+            <h4 className="widget-title">Payment Method</h4>
+            <div className="payment-method-selector mb-3">
+              <div className="d-flex gap-3 mb-3">
+                <div className={`p-3 border rounded-3 flex-fill text-center cursor-pointer ${formData.paymentMethod === "CASH" ? "border-primary bg-light" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "CASH" }))} style={{ borderColor: formData.paymentMethod === "CASH" ? primaryColor : '#eee', cursor: 'pointer' }}>
+                  <i className="fa-solid fa-money-bill-1-wave mb-2 d-block h4"></i>
+                  <span className="small fw-bold">Cash</span>
+                </div>
+                <div className={`p-3 border rounded-3 flex-fill text-center cursor-pointer ${formData.paymentMethod === "STRIPE" ? "border-primary bg-light" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "STRIPE" }))} style={{ borderColor: formData.paymentMethod === "STRIPE" ? primaryColor : '#eee', cursor: 'pointer' }}>
+                  <i className="fa-solid fa-credit-card mb-2 d-block h4"></i>
+                  <span className="small fw-bold">Card</span>
+                </div>
+              </div>
+
+              {formData.paymentMethod === "STRIPE" && (
+                <div className="stripe-card-container">
+                  <div className="form-group mb-3">
+                    <input type="text" name="cardName" className="form-control" placeholder="Name on Card" value={formData.cardName} onChange={handleChange} />
+                  </div>
+                  <div className="p-3 border rounded-3 mb-3 bg-white">
+                    <CardElement options={{ style: { base: { fontSize: '16px', color: '#333' } } }} />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="form-group">
+              <button
+                className="btn btn-primary w-100 py-3 mt-2"
+                type="submit"
+                disabled={loading || cartItems.length === 0}
+                style={{ background: primaryColor, border: 'none', borderRadius: '10px', fontSize: '18px', fontWeight: 700 }}
+              >
+                {loading ? "Processing..." : "Place Order Now"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
-        <Modal.Header closeButton><Modal.Title style={{ fontWeight: 700 }}>Select Delivery Location</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title style={{ fontWeight: 700 }}>Pick Delivery Location</Modal.Title></Modal.Header>
         <Modal.Body><LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} /></Modal.Body>
-        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)} style={{ borderRadius: '10px' }}>Cancel</Button><Button variant="primary" onClick={() => setShowMap(false)} style={{ background: primaryColor, border: 'none', borderRadius: '10px' }}>Confirm Location</Button></Modal.Footer>
+        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)}>Cancel</Button><Button variant="primary" onClick={() => setShowMap(false)} style={{ background: primaryColor, border: 'none' }}>Use this Address</Button></Modal.Footer>
       </Modal>
     </form>
   );
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm, cmsConfig } = useContext(Context);
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const { user, setShowSignInForm } = useContext(Context);
+  // const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
   return (
     <div className="page-content bg-white">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" subtitle="Shop Checkout" />
-      <section className="content-inner" style={{ background: '#f9f9f9' }}>
+      <section className="content-inner">
         <div className="container">
-
-          {/* RESTORED: Sign-in Nudge Banner */}
           {!user && (
-            <div className="alert alert-warning mb-5" style={{ borderRadius: '20px', padding: '25px', border: '1px dashed #f1c40f', background: '#fff9e6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h5 className="mb-1" style={{ fontWeight: 700, color: '#916d03' }}>Account required!</h5>
-                <p className="mb-0 text-muted small">Please sign in to your account for a better experience and to track your order.</p>
-              </div>
-              <button className="btn btn-primary btn-sm" onClick={() => setShowSignInForm(true)} style={{ background: primaryColor, border: 'none', borderRadius: '10px', padding: '10px 20px', fontWeight: 700 }}>Sign In Now</button>
+            <div className="alert alert-warning mb-4 d-flex justify-content-between align-items-center" style={{ borderRadius: '15px' }}>
+              <span>Login to your account to track your orders and earn rewards!</span>
+              <button className="btn btn-sm btn-dark" onClick={() => setShowSignInForm(true)}>Login Now</button>
             </div>
           )}
-
           <Elements stripe={stripePromise}>
             <CheckoutForm />
           </Elements>
