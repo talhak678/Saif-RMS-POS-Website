@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
@@ -7,8 +7,6 @@ import { Modal } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import CommonBanner from "../elements/CommonBanner";
-import { IMAGES } from "../constent/theme";
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
@@ -23,6 +21,8 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -45,6 +45,7 @@ const CheckoutForm = () => {
 
   // Load from Storage & Context Sync
   useEffect(() => {
+    // 1. Sync User info
     if (user) {
       setFormData(prev => ({
         ...prev,
@@ -55,6 +56,7 @@ const CheckoutForm = () => {
       }));
     }
 
+    // 2. Sync from Modal (localStorage)
     const savedType = localStorage.getItem("orderType");
     if (savedType === "DELIVERY" || savedType === "PICKUP") {
       setOrderType(savedType);
@@ -73,6 +75,7 @@ const CheckoutForm = () => {
     }
   }, [user]);
 
+  // Use branch selection from local state or first branch from context
   const branches = cmsConfig?.branches || [];
   const currentBranch = branches.find((b: any) => b.id === selectedBranchId) || branches[0] || activeBranch;
 
@@ -142,6 +145,7 @@ const CheckoutForm = () => {
         notes: formData.notes
       };
 
+      // 1. Create Order
       const res = await axios.post(`${BASE_URL}/api/customers/orders`, payload, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
@@ -149,6 +153,7 @@ const CheckoutForm = () => {
       if (!res.data?.success) { toast.error(res.data?.message || "Order failed"); setLoading(false); return; }
       const order = res.data.data;
 
+      // 2. Stripe Payment (if selected)
       if (formData.paymentMethod === "STRIPE" && stripe && elements) {
         const intentRes = await axios.post(`${BASE_URL}/api/stripe-intent`, {
           orderId: order.id, amount: total
@@ -180,217 +185,244 @@ const CheckoutForm = () => {
     }
   };
 
+  const btnStyle = (active: boolean) => ({
+    flex: 1, padding: "14px", borderRadius: 12, border: `2px solid ${active ? primaryColor : "#e0e0e0"}`,
+    background: active ? primaryColor + "15" : "#fff",
+    color: active ? primaryColor : "#888",
+    fontWeight: 600, fontSize: 14, cursor: "pointer", transition: "all 0.2s"
+  });
+
+  const cardStyle = { background: "#fff", borderRadius: 20, padding: 24, boxShadow: "0 4px 24px rgba(0,0,0,0.07)", marginBottom: 20 };
+
   return (
     <form onSubmit={handlePlaceOrder}>
       <div className="row">
+        {/* LEFT COLUMN */}
         <div className="col-lg-7">
-          <div className="widget billing-details">
-            <h4 className="widget-title">Billing Details</h4>
-            <div className="row">
-              <div className="form-group col-md-6 mb-3">
-                <label className="form-label">First Name</label>
-                <input name="firstName" required className="form-control" value={formData.firstName} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-6 mb-3">
-                <label className="form-label">Last Name</label>
-                <input name="lastName" className="form-control" value={formData.lastName} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-6 mb-3">
-                <label className="form-label">Email Address</label>
-                <input name="email" type="email" required className="form-control" value={formData.email} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-6 mb-3">
-                <label className="form-label">Phone Number</label>
-                <input name="phone" type="tel" required className="form-control" value={formData.phone} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-12 mb-3">
-                <label className="form-label">Order Type</label>
-                <div className="d-flex gap-3 mt-2">
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="orderType" id="delivery" checked={orderType === "DELIVERY"} onChange={() => setOrderType("DELIVERY")} />
-                    <label className="form-check-label" htmlFor="delivery">Delivery</label>
-                  </div>
-                  <div className="form-check">
-                    <input className="form-check-input" type="radio" name="orderType" id="pickup" checked={orderType === "PICKUP"} onChange={() => setOrderType("PICKUP")} />
-                    <label className="form-check-label" htmlFor="pickup">Pickup</label>
-                  </div>
+          {/* Order Type & Branch */}
+          <div style={cardStyle}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 0 }}>Order Options</h5>
+              {branches.length > 1 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 13, color: "#666" }}>Pickup Branch:</span>
+                  <select
+                    className="form-select form-select-sm"
+                    style={{ width: "auto", borderRadius: 8 }}
+                    value={currentBranch?.id}
+                    onChange={(e) => setSelectedBranchId(e.target.value)}
+                  >
+                    {branches.map((b: any) => (<option key={b.id} value={b.id}>{b.name}</option>))}
+                  </select>
                 </div>
-              </div>
-              {orderType === "DELIVERY" && (
-                <>
-                  <div className="form-group col-md-12 mb-3">
-                    <div className="d-flex justify-content-between align-items-center mb-1">
-                      <label className="form-label">Delivery Address</label>
-                      <button type="button" className="btn-link text-primary" style={{ border: 'none', background: 'none', fontSize: '13px' }} onClick={() => setShowMap(true)}>Pick from Map</button>
-                    </div>
-                    <textarea name="address" required className="form-control" rows={3} value={formData.address} onChange={handleChange} />
-                  </div>
-                  <div className="form-group col-md-12 mb-3">
-                    <label className="form-label">Town / City</label>
-                    <input name="city" required className="form-control" value={formData.city} onChange={handleChange} />
-                  </div>
-                </>
               )}
-              <div className="form-group col-md-12">
-                <label className="form-label">Order Notes</label>
-                <textarea name="notes" className="form-control" rows={3} placeholder="Notes about your order, e.g. special notes for delivery." value={formData.notes} onChange={handleChange} />
+            </div>
+            <div style={{ display: "flex", gap: 12 }}>
+              {(["DELIVERY", "PICKUP"] as const).map(t => (
+                <button key={t} type="button" style={btnStyle(orderType === t)} onClick={() => setOrderType(t)}>
+                  {t === "DELIVERY" ? "🚚 Delivery" : "🏪 Pickup"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Contact Details */}
+          <div style={cardStyle}>
+            <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 20 }}>Contact Details</h5>
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="form-label fw-semibold">First Name *</label>
+                <input name="firstName" required className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.firstName} onChange={handleChange} />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label className="form-label fw-semibold">Last Name</label>
+                <input name="lastName" className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.lastName} onChange={handleChange} />
               </div>
             </div>
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Email *</label>
+              <input name="email" type="email" required className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.email} onChange={handleChange} />
+            </div>
+            <div className="mb-0">
+              <label className="form-label fw-semibold">Phone *</label>
+              <input name="phone" type="tel" required className="form-control" style={{ borderRadius: 10, height: 46 }} value={formData.phone} onChange={handleChange} />
+            </div>
+          </div>
+
+          {/* Delivery Address */}
+          {orderType === "DELIVERY" && (
+            <div style={cardStyle}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 0 }}>Delivery Address</h5>
+                <button type="button" style={{ background: "none", border: "none", color: primaryColor, fontWeight: 600, fontSize: 13, cursor: "pointer" }} onClick={() => setShowMap(true)}>📍 Pick on Map</button>
+              </div>
+              <textarea name="address" required className="form-control mb-3" rows={3} style={{ borderRadius: 10 }} placeholder="House #, Street name, Area" value={formData.address} onChange={handleChange} />
+              <input name="city" required className="form-control" style={{ borderRadius: 10, height: 46 }} placeholder="City" value={formData.city} onChange={handleChange} />
+            </div>
+          )}
+
+          {/* Notes */}
+          <div style={cardStyle}>
+            <label className="form-label fw-semibold">Order Notes (Optional)</label>
+            <textarea name="notes" className="form-control" rows={2} style={{ borderRadius: 10 }} placeholder="Any special instructions..." value={formData.notes} onChange={handleChange} />
           </div>
         </div>
 
+        {/* RIGHT COLUMN */}
         <div className="col-lg-5">
-          <div className="widget-title">
-            <h4 className="title">Your Order</h4>
-          </div>
-          <table className="table-bordered check-tbl">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Name</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div style={{ ...cardStyle, position: "sticky", top: 90 }}>
+            {/* Cart Items */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+              <h5 style={{ fontWeight: 700, color: "#222", marginBottom: 0 }}>Your Order</h5>
+              <Link to="/shop-cart" style={{ color: primaryColor, fontSize: 13, fontWeight: 600 }}>← Edit Cart</Link>
+            </div>
+
+            <div style={{ maxHeight: 220, overflowY: "auto", marginBottom: 16 }}>
+              {cartItems.length === 0 && <p style={{ color: "#aaa", textAlign: "center", padding: "16px 0" }}>Cart is empty</p>}
               {cartItems.map(item => (
-                <tr key={item.id}>
-                  <td className="product-item-img">
-                    <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
-                  </td>
-                  <td className="product-item-name">
-                    {item.name} × {item.quantity}
-                  </td>
-                  <td className="product-price">
-                    {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(0)}
-                  </td>
-                </tr>
+                <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: "1px solid #f5f5f5" }}>
+                  {item.image && <img src={item.image} alt={item.name} style={{ width: 42, height: 42, borderRadius: 8, objectFit: "cover" }} />}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontWeight: 600, fontSize: 13, marginBottom: 0, color: "#222" }}>{item.name}</p>
+                    <span style={{ color: "#aaa", fontSize: 12 }}>×{item.quantity}</span>
+                  </div>
+                  <span style={{ fontWeight: 700, fontSize: 13 }}>$ {(item.price * item.quantity).toFixed(0)}</span>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
 
-          <div className="widget billing-details mt-4">
-            <h4 className="widget-title">Order Totals</h4>
-            <table className="table-bordered check-tbl">
-              <tbody>
-                <tr>
-                  <td>Subtotal</td>
-                  <td className="product-price">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(0)}</td>
-                </tr>
-                {orderType === "DELIVERY" && (
-                  <tr>
-                    <td>Delivery</td>
-                    <td className="product-price">{cmsConfig?.config?.currency || '$'} {Number(deliveryCharge).toFixed(0)}</td>
-                  </tr>
-                )}
-                <tr>
-                  <td>Tax (5%)</td>
-                  <td className="product-price">{cmsConfig?.config?.currency || '$'} {tax.toFixed(0)}</td>
-                </tr>
-                {discountAmount > 0 && (
-                  <tr>
-                    <td>Discount</td>
-                    <td className="product-price">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(0)}</td>
-                  </tr>
-                )}
-                <tr className="total">
-                  <td><strong>Total</strong></td>
-                  <td className="product-price"><strong>{cmsConfig?.config?.currency || '$'} {total.toFixed(0)}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            {/* Discount */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontWeight: 600, fontSize: 13, marginBottom: 8, display: "block" }}>🏷️ Promo Code</label>
+              {appliedDiscount ? (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#E8F5E9", borderRadius: 10, padding: "10px 14px" }}>
+                  <span style={{ color: "#2E7D32", fontWeight: 600, fontSize: 13 }}>✅ -{appliedDiscount.code} (- $ {Number(appliedDiscount.discountAmount).toFixed(0)})</span>
+                  <button type="button" onClick={() => { setAppliedDiscount(null); setDiscountCode(""); }} style={{ background: "none", border: "none", color: "#c62828", cursor: "pointer", fontSize: 18 }}>×</button>
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input className="form-control" style={{ borderRadius: 10, height: 42, flex: 1 }} placeholder="Enter code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} />
+                  <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} style={{ padding: "0 16px", height: 42, borderRadius: 10, background: primaryColor, color: "#fff", border: "none", fontWeight: 600, fontSize: 13, cursor: "pointer" }}>
+                    {discountLoading ? "..." : "Apply"}
+                  </button>
+                </div>
+              )}
+            </div>
 
-          <div className="widget billing-details mt-4">
-            <h4 className="widget-title">Promo Code</h4>
-            {!appliedDiscount ? (
-              <div className="d-flex gap-2">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Code"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                  onClick={handleApplyDiscount}
-                  disabled={discountLoading}
-                >
-                  {discountLoading ? "..." : "Apply"}
-                </button>
-              </div>
-            ) : (
-              <div className="alert alert-success d-flex justify-content-between align-items-center mb-0 p-2 px-3" style={{ borderRadius: '10px' }}>
-                <span className="small">Code <strong>{appliedDiscount.code}</strong> Applied!</span>
-                <button
-                  type="button"
-                  className="btn-close small"
-                  style={{ fontSize: '10px' }}
-                  onClick={() => {
-                    setAppliedDiscount(null);
-                    setDiscountCode("");
-                  }}
-                ></button>
-              </div>
-            )}
-          </div>
-
-          <div className="widget payment-method mt-4">
-            <h4 className="widget-title">Payment Method</h4>
-            <div className="form-group mb-3">
-              <div className="form-check custom-radio">
-                <input className="form-check-input" type="radio" name="paymentMethod" id="cash" checked={formData.paymentMethod === "CASH"} value="CASH" onChange={handleChange} />
-                <label className="form-check-label" htmlFor="cash">Cash on Delivery</label>
-              </div>
-              <div className="form-check custom-radio">
-                <input className="form-check-input" type="radio" name="paymentMethod" id="stripe" checked={formData.paymentMethod === "STRIPE"} value="STRIPE" onChange={handleChange} />
-                <label className="form-check-label" htmlFor="stripe">Credit Card (Stripe)</label>
+            {/* Bill Summary */}
+            <div style={{ background: "#f8f9fa", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+              {[
+                { label: "Subtotal", value: `$ ${subtotal.toFixed(0)}` },
+                ...(orderType === "DELIVERY" ? [{ label: "Delivery", value: Number(deliveryCharge) === 0 ? "FREE" : `$ ${Number(deliveryCharge).toFixed(0)}` }] : []),
+                { label: "Tax (5%)", value: `$ ${tax.toFixed(0)}` },
+                ...(discountAmount > 0 ? [{ label: "Discount", value: `- $ ${discountAmount.toFixed(0)}` }] : []),
+              ].map((row, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 14, color: "#555" }}>
+                  <span>{row.label}</span>
+                  <span style={row.label === "Discount" ? { color: "#4CAF50", fontWeight: 600 } : {}}>{row.value}</span>
+                </div>
+              ))}
+              <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 10, borderTop: "2px solid #e0e0e0", fontWeight: 700, fontSize: 16 }}>
+                <span>Total</span>
+                <span style={{ color: primaryColor }}>$ {total.toFixed(0)}</span>
               </div>
             </div>
 
-            {formData.paymentMethod === "STRIPE" && (
-              <div className="stripe-element-container mb-3 p-3 border rounded">
-                <CardElement options={{ style: { base: { fontSize: "16px", color: "#424770" } } }} />
-              </div>
-            )}
+            {/* Payment Method */}
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ fontWeight: 600, fontSize: 13, display: "block", marginBottom: 10 }}>💳 Payment Method</label>
+              {[
+                { value: "CASH", label: "💵 Cash on Delivery", desc: "Pay at your doorstep" },
+                { value: "STRIPE", label: "💳 Pay by Card", desc: "Secure online payment via Stripe" },
+              ].map(pay => (
+                <label key={pay.value} style={{
+                  display: "flex", alignItems: "center", gap: 12, padding: "12px 14px",
+                  border: `2px solid ${formData.paymentMethod === pay.value ? primaryColor : "#e0e0e0"}`,
+                  borderRadius: 10, cursor: "pointer", marginBottom: 8,
+                  background: formData.paymentMethod === pay.value ? primaryColor + "08" : "#fff"
+                }}>
+                  <input type="radio" name="paymentMethod" value={pay.value} checked={formData.paymentMethod === pay.value} onChange={handleChange} style={{ accentColor: primaryColor }} />
+                  <div>
+                    <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 0 }}>{pay.label}</p>
+                    <p style={{ color: "#999", fontSize: 12, marginBottom: 0 }}>{pay.desc}</p>
+                  </div>
+                </label>
+              ))}
 
-            <button type="submit" className="btn btn-primary d-block w-100" disabled={loading || cartItems.length === 0}>
-              {loading ? "Processing..." : "Place Order"}
+              {/* Stripe Card Element */}
+              {formData.paymentMethod === "STRIPE" && (
+                <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 10, background: "#fdfdfd", marginTop: 4 }}>
+                  <CardElement options={{
+                    style: { base: { fontSize: "16px", color: "#424770", "::placeholder": { color: "#aab7c4" } }, invalid: { color: "#9e2146" } },
+                    hidePostalCode: true
+                  }} />
+                </div>
+              )}
+            </div>
+
+            {/* Place Order */}
+            <button
+              type="submit"
+              className="w-100"
+              disabled={loading || cartItems.length === 0}
+              style={{
+                height: 52, borderRadius: 14, fontWeight: 700, fontSize: 16,
+                background: cartItems.length === 0 ? "#ccc" : `linear-gradient(135deg, ${primaryColor}, ${primaryColor}cc)`,
+                color: "#fff", border: "none", cursor: cartItems.length === 0 ? "not-allowed" : "pointer",
+                boxShadow: cartItems.length > 0 ? `0 8px 20px ${primaryColor}40` : "none",
+                transition: "all 0.2s"
+              }}
+            >
+              {loading ? (
+                <><span className="spinner-border spinner-border-sm me-2" />Processing...</>
+              ) : (
+                `🍽️ Place Order — $ ${total.toFixed(0)}`
+              )}
             </button>
+
+            <p style={{ textAlign: "center", color: "#bbb", fontSize: 11, marginTop: 10, marginBottom: 0 }}>
+              🔒 Secure & encrypted checkout
+            </p>
           </div>
         </div>
       </div>
 
+      {/* Map Modal */}
       <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
         <Modal.Header closeButton><Modal.Title>Select Delivery Location</Modal.Title></Modal.Header>
         <Modal.Body>
           <LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} />
         </Modal.Body>
+        <Modal.Footer>
+          <button type="button" className="btn btn-primary" onClick={() => setShowMap(false)}>Confirm Location</button>
+        </Modal.Footer>
       </Modal>
-    </form>
+    </form >
   );
 };
 
+// ─── Main Page ──────────────────────────────────────────────────────────────
 const ShopCheckout = () => {
-  const { user, setShowSignInForm } = useContext(Context);
+  const { user, setShowSignInForm, cmsConfig } = useContext(Context);
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
   return (
     <div className="page-content bg-white">
-      <CommonBanner
-        img={IMAGES.images_bnr4}
-        title="Shop Checkout"
-        subtitle="Shop Checkout"
-      />
-      <section className="content-inner" style={{ background: "#f8f9fa" }}>
+      <section className="content-inner" style={{ background: "#f8f9fa", paddingTop: '100px' }}>
         <div className="container">
+          {/* Sign-in nudge */}
           {!user && (
-            <div className="alert alert-warning d-flex align-items-center justify-content-between p-4 mb-4" style={{ borderRadius: '15px' }}>
+            <div style={{
+              background: "linear-gradient(135deg,#FFF9C4,#FFFDE7)", border: "1px solid #FFE082",
+              borderRadius: 16, padding: "16px 24px", marginBottom: 24,
+              display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12
+            }}>
               <div>
-                <h6 className="mb-1">Sign in to complete your order</h6>
-                <p className="mb-0 small">Save your details & track order history</p>
+                <p style={{ fontWeight: 600, color: "#F57F17", marginBottom: 2 }}>👋 Sign in to complete your order</p>
+                <p style={{ color: "#888", fontSize: 13, marginBottom: 0 }}>Save your details & track order history</p>
               </div>
-              <button className="btn btn-primary btn-sm" onClick={() => setShowSignInForm(true)}>Sign In</button>
+              <button className="btn btn-sm" style={{ borderRadius: 10, background: primaryColor, color: "#fff" }}
+                onClick={() => setShowSignInForm(true)}>Sign In / Register</button>
             </div>
           )}
 

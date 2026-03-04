@@ -1,17 +1,24 @@
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import Menu from "./Menu";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context/AppContext";
 
 const Header = () => {
-  const { headerClass, setShowSignInForm, headerSidebar, setHeaderSidebar, cmsConfig, cartItems, removeFromCart } =
+  const { headerClass, setShowSignInForm, headerSidebar, setHeaderSidebar, cmsConfig } =
     useContext(Context);
   const [cart, setCart] = useState<boolean>(false);
+  const cartRef = useRef<HTMLLIElement[]>([]);
   const [scroll, setScroll] = useState<boolean>(false);
 
   const cartButton = () => {
     setCart(!cart);
+  };
+  const deletItems = (ind: number) => {
+    cartRef.current[ind].classList.add("cartListItems");
+    setTimeout(() => {
+      cartRef.current[ind].remove();
+    }, 500);
   };
 
   const scrollHandler = () => {
@@ -103,7 +110,7 @@ const Header = () => {
                       onClick={cartButton}
                     >
                       <i className="flaticon-shopping-bag-1"></i>
-                      <span className="badge">{cartItems.length}</span>
+                      <span className="badge">6</span>
                     </button>
                     <div
                       style={{
@@ -120,50 +127,126 @@ const Header = () => {
                           overflow: "hidden",
                         }}
                       >
-                        {cartItems.map((item, ind) => (
-                          <li className="cart-item" key={item.id || ind}>
-                            <div className="media">
-                              <div className="media-left">
-                                <Link to="/product-detail">
-                                  <img
-                                    alt={item.name}
-                                    className="media-object"
-                                    src={item.image || IMAGES.shop_pic2}
-                                  />
-                                </Link>
-                              </div>
-                              <div className="media-body">
-                                <h6 className="dz-title">
-                                  <Link
-                                    to="/product-detail"
-                                    className="media-heading"
-                                  >
-                                    {item.name}
-                                  </Link>
-                                </h6>
-                                <span className="dz-price">{cmsConfig?.config?.currency || '$'} {Number(item.price).toFixed(0)} x {item.quantity}</span>
-                                <span
-                                  className="item-close"
-                                  onClick={() => {
-                                    removeFromCart(item.id);
-                                  }}
-                                >
-                                  &times;
-                                </span>
-                              </div>
+                        <li
+                          className="cart-item"
+                          ref={(node) => {
+                            if (node) {
+                              cartRef.current.push(node);
+                            }
+                          }}
+                        >
+                          <div className="media">
+                            <div className="media-left">
+                              <Link to="/product-detail">
+                                <img
+                                  alt="/"
+                                  className="media-object"
+                                  src={IMAGES.shop_pic2}
+                                />
+                              </Link>
                             </div>
-                          </li>
-                        ))}
-                        {cartItems.length === 0 && (
-                          <li className="cart-item text-center">
-                            <h6 className="mb-0">Your cart is empty</h6>
-                          </li>
-                        )}
+                            <div className="media-body">
+                              <h6 className="dz-title">
+                                <Link
+                                  to="/product-detail"
+                                  className="media-heading"
+                                >
+                                  Double Burger
+                                </Link>
+                              </h6>
+                              <span className="dz-price">$28.00</span>
+                              <span
+                                className="item-close"
+                                onClick={() => {
+                                  deletItems(0);
+                                }}
+                              >
+                                &times;
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          className="cart-item"
+                          ref={(node) => {
+                            if (node) {
+                              cartRef.current.push(node);
+                            }
+                          }}
+                        >
+                          <div className="media">
+                            <div className="media-left">
+                              <Link to="/product-detail">
+                                <img
+                                  alt="/"
+                                  className="media-object"
+                                  src={IMAGES.shop_pic3}
+                                />
+                              </Link>
+                            </div>
+                            <div className="media-body">
+                              <h6 className="dz-title">
+                                <Link
+                                  to="/product-detail"
+                                  className="media-heading"
+                                >
+                                  Cheese Burger
+                                </Link>
+                              </h6>
+                              <span className="dz-price">$20.00</span>
+                              <span
+                                className="item-close"
+                                onClick={() => {
+                                  deletItems(1);
+                                }}
+                              >
+                                &times;
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          className="cart-item"
+                          ref={(node) => {
+                            if (node) {
+                              cartRef.current.push(node);
+                            }
+                          }}
+                        >
+                          <div className="media">
+                            <div className="media-left">
+                              <Link to="/product-detail">
+                                <img
+                                  alt="/"
+                                  className="media-object"
+                                  src={IMAGES.shop_pic4}
+                                />
+                              </Link>
+                            </div>
+                            <div className="media-body">
+                              <h6 className="dz-title">
+                                <Link
+                                  to="/product-detail"
+                                  className="media-heading"
+                                >
+                                  Burger
+                                </Link>
+                              </h6>
+                              <span className="dz-price">$15.00</span>
+                              <span
+                                className="item-close"
+                                onClick={() => {
+                                  deletItems(2);
+                                }}
+                              >
+                                &times;
+                              </span>
+                            </div>
+                          </div>
+                        </li>
                         <li className="cart-item text-center d-flex justify-content-between">
                           <h6 className="text-primary mb-0">Total:</h6>
-                          <h6 className="text-primary mb-0">
-                            {cmsConfig?.config?.currency || '$'} {cartItems.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0).toFixed(0)}
-                          </h6>
+                          <h6 className="text-primary mb-0">$63</h6>
                         </li>
                         <li className="text-center d-flex">
                           <Link

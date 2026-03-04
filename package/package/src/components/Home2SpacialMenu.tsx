@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const Home2SpacialMenu = () => {
-  const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
+  const { cmsConfig, cmsLoading } = useContext(Context);
 
   if (cmsLoading) return null;
 
@@ -47,8 +48,9 @@ const Home2SpacialMenu = () => {
         spaceBetween={20}
         speed={1500}
         loop={displayItems.length > 4}
-        modules={[Autoplay, Navigation]}
+        modules={[Autoplay, Navigation, Pagination]}
         autoplay={{ delay: 3000 }}
+        pagination={{ clickable: true, dynamicBullets: true }}
         navigation={{
           prevEl: ".special-button-prev",
           nextEl: ".special-button-next",
@@ -73,21 +75,9 @@ const Home2SpacialMenu = () => {
               </div>
               <div className="dz-media" style={{ height: '180px' }}>
                 <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
-                <button
-                  className="detail-btn"
-                  style={{ border: 'none', cursor: 'pointer' }}
-                  onClick={() => {
-                    addToCart({
-                      id: item.id,
-                      name: item.name,
-                      price: item.price,
-                      image: item.image,
-                      restaurantId: item.restaurantId
-                    });
-                  }}
-                >
+                <Link className="detail-btn" to="/our-menu-2">
                   <i className="fa-solid fa-plus"></i>
-                </button>
+                </Link>
               </div>
             </div>
           </SwiperSlide>

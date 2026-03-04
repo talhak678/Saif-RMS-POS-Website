@@ -1,31 +1,25 @@
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { IMAGES } from "../constent/theme";
 
 const ShopStyle1RightContent = () => {
-  const { cmsConfig, addToCart } = useContext(Context);
+  const { cartItems, removeFromCart, updateQuantity, cmsConfig } = useContext(Context);
 
   const primaryColor =
     cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor ||
     cmsConfig?.config?.primaryColor ||
     "#ff6b35";
 
-  // Get menu items to show as related products
-  const menuItems = cmsConfig?.menu?.flatMap((cat: any) =>
-    cat.menuItems?.map((item: any) => ({
-      ...item,
-      categoryName: cat.name,
-      restaurantId: cat.restaurantId
-    }))
-  ).filter((i: any) => i) || [];
 
-  // Show first 6 items as related products
-  const relatedProducts = menuItems.slice(0, 6);
 
-  if (relatedProducts.length === 0) {
+  if (cartItems.length === 0) {
     return (
-      <div className="text-center py-5">
-        <h5 className="mb-2">No related products found</h5>
+      <div className="text-center py-5" style={{ background: "#fff", borderRadius: "20px", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
+        <i className="flaticon-shopping-bag-1" style={{ fontSize: "60px", color: "#eee", display: "block", marginBottom: "15px" }} />
+        <h5 className="mb-2">Your selection is empty</h5>
+        <p className="text-muted mb-4">Add some delicious items from our menu to get started!</p>
+        <Link to="/our-menu-2" className="btn btn-primary" style={{ borderRadius: "10px" }}>Browse Menu</Link>
       </div>
     );
   }
@@ -57,7 +51,7 @@ const ShopStyle1RightContent = () => {
           }
         `}
       </style>
-      {relatedProducts.map((item: any) => (
+      {cartItems.map((item) => (
         <div className="dz-shop-card style-1 mb-3" key={item.id} style={{
           background: "#fff",
           borderRadius: "18px",
@@ -78,6 +72,7 @@ const ShopStyle1RightContent = () => {
           <div className="dz-content" style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div className="dz-head" style={{ marginBottom: "10px", display: "flex", justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <h6 className="dz-name mb-0" style={{ fontSize: "18px", fontWeight: 700, display: "flex", alignItems: "center", color: '#222' }}>
+                {/* 🟢 Veg/Non-Veg indicator */}
                 <svg
                   className="m-r10"
                   width="16"
@@ -96,28 +91,63 @@ const ShopStyle1RightContent = () => {
               </div>
             </div>
 
-            <div className="dz-body" style={{ display: "flex", justifyContent: 'space-between', alignItems: "center", gap: '15px', flexWrap: 'wrap' }}>
+            <div className="dz-body" style={{ display: "flex", justifyContent: 'space-between', alignItems: "flex-end", gap: '15px', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'left' as any }}>
                 <p className="mb-2" style={{ color: "#888", fontSize: "13px" }}>
                   By <span style={{ color: primaryColor, fontWeight: 600 }}>{cmsConfig?.restaurantName || "Saif Kitchen"}</span>
                 </p>
-                <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>{cmsConfig?.config?.currency || '$'} {Number(item.price).toFixed(0)}</h5>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                  <h5 className="mb-0" style={{ color: primaryColor, fontWeight: 800 }}>$ {Number(item.price).toFixed(0)}</h5>
+
+                  {/* Quantity Controls */}
+                  <div className="btn-quantity style-1" style={{ margin: 0 }}>
+                    <div className="input-group bootstrap-touchspin" style={{ width: "100px", height: "34px" }}>
+                      <button
+                        className="btn btn-default"
+                        type="button"
+                        style={{ padding: "0 8px" }}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      >
+                        <i className="ti-minus"></i>
+                      </button>
+                      <input
+                        type="text"
+                        value={item.quantity}
+                        readOnly
+                        className="form-control"
+                        style={{ height: "34px", padding: 0, textAlign: "center", fontWeight: 700 }}
+                      />
+                      <button
+                        className="btn btn-default"
+                        type="button"
+                        style={{ padding: "0 8px" }}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      >
+                        <i className="ti-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
+              {/* Remove button */}
               <button
-                className="btn btn-primary btn-hover-2"
-                style={{ borderRadius: "10px", padding: "8px 20px" }}
-                onClick={() => {
-                  addToCart({
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    image: item.image,
-                    restaurantId: item.restaurantId
-                  });
+                onClick={() => removeFromCart(item.id)}
+                style={{
+                  background: "#fff5f5",
+                  color: "#e53e3e",
+                  border: "none",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#fed7d7")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#fff5f5")}
+                title="Remove Item"
               >
-                Add To Cart
+                <i className="fa-solid fa-trash-can"></i>
               </button>
             </div>
           </div>
