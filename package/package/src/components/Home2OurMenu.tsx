@@ -41,11 +41,12 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            position: relative;
            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
            transition: all 0.3s ease;
-           margin: 12px 8px;
            overflow: hidden;
            border: 1px solid #efefef;
            min-height: 185px;
            height: 185px;
+           width: 100%;
+           box-sizing: border-box;
         }
         .browse-menu-card:hover {
            transform: translateY(-6px);
