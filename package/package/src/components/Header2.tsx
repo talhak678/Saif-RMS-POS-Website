@@ -155,6 +155,27 @@ const Header2 = () => {
                transform: translateY(-9px) rotate(-45deg) !important;
             }
           }
+          /* Fix for cart buttons hover issue */
+          header.site-header .cart-btn-primary,
+          header.site-header .cart-btn-primary:hover,
+          header.site-header .cart-btn-primary:focus,
+          header.site-header .cart-btn-primary:active {
+            background-color: ${primaryColor} !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: none !important;
+            transition: none !important;
+          }
+          header.site-header .cart-btn-outline,
+          header.site-header .cart-btn-outline:hover,
+          header.site-header .cart-btn-outline:focus,
+          header.site-header .cart-btn-outline:active {
+            background-color: #ffffff !important;
+            color: ${primaryColor} !important;
+            border: 1.5px solid ${primaryColor} !important;
+            box-shadow: none !important;
+            transition: none !important;
+          }
         `}
       </style>
       <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
@@ -216,7 +237,7 @@ const Header2 = () => {
                             position: "absolute",
                             top: "120%",
                             right: "-60px",
-                            width: "290px",
+                            width: "270px",
                             background: "#fff",
                             borderRadius: "15px",
                             boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
@@ -226,30 +247,31 @@ const Header2 = () => {
                             border: "1px solid #f0f0f0"
                           }}
                         >
-                          <div style={{ maxHeight: "300px", overflowY: "auto", marginBottom: "15px" }}>
+                          <div style={{ maxHeight: "400px", overflowY: "auto", marginBottom: "15px", paddingRight: "4px" }}>
                             {cartItems.map((item) => (
-                              <div key={item.id} style={{ display: "flex", gap: "10px", marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px solid #f5f5f5", position: "relative" }}>
-                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "50px", height: "50px", borderRadius: "8px", objectFit: "cover" }} />
+                              <div key={item.id} style={{ display: "flex", gap: "10px", marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px dashed #eee", position: "relative" }}>
+                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "55px", height: "55px", borderRadius: "8px", objectFit: "cover" }} />
                                 <div style={{ flex: 1 }}>
-                                  <h6 style={{ fontSize: "12px", fontWeight: 700, marginBottom: "2px", color: "#222" }}>{item.name}</h6>
-                                  <p style={{ fontSize: "11px", color: primaryColor, fontWeight: 600, margin: 0 }}>
-                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)} x {item.quantity}
+                                  <h6 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "2px", color: "#222" }}>{item.name}</h6>
+                                  <p style={{ fontSize: "13px", color: primaryColor, fontWeight: 600, margin: 0 }}>
+                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)}
                                   </p>
                                 </div>
                                 <button
                                   onClick={() => removeFromCart(item.id)}
                                   style={{
-                                    background: "#ff1e1e",
+                                    background: primaryColor,
                                     color: "#fff",
                                     border: "none",
-                                    width: "20px",
-                                    height: "20px",
+                                    width: "22px",
+                                    height: "22px",
                                     borderRadius: "4px",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     cursor: "pointer",
-                                    fontSize: "12px"
+                                    fontSize: "14px",
+                                    fontWeight: "bold"
                                   }}
                                 >
                                   ×
@@ -263,9 +285,9 @@ const Header2 = () => {
                             )}
                           </div>
 
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", paddingTop: "5px", borderTop: "2px solid #f8f8f8" }}>
-                            <h6 style={{ margin: 0, fontWeight: 700, fontSize: '14px' }}>Total:</h6>
-                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor, fontSize: '14px' }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", paddingTop: "8px", borderTop: "1px dashed #ddd" }}>
+                            <h6 style={{ margin: 0, fontWeight: 700, fontSize: '16px', color: primaryColor }}>Total:</h6>
+                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor, fontSize: '16px' }}>
                               {cmsConfig?.config?.currency || '$'}{cartItems.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0).toFixed(0)}
                             </h6>
                           </div>
@@ -273,16 +295,16 @@ const Header2 = () => {
                           <div style={{ display: "flex", gap: "8px" }}>
                             <Link
                               to="/shop-cart"
-                              className="btn btn-primary btn-sm w-100"
-                              style={{ borderRadius: "8px", padding: "8px", fontSize: '12px' }}
+                              className="btn btn-sm w-100 cart-btn-primary"
+                              style={{ borderRadius: "8px", padding: "10px", fontSize: '13px', background: primaryColor, color: "#fff", border: "none" }}
                               onClick={() => setCartOpen(false)}
                             >
-                              Cart
+                              View Cart
                             </Link>
                             <Link
                               to="/our-menu-2"
-                              className="btn btn-outline-primary btn-sm w-100"
-                              style={{ borderRadius: "8px", padding: "8px", fontSize: '12px' }}
+                              className="btn btn-sm w-100 cart-btn-outline"
+                              style={{ borderRadius: "8px", padding: "10px", fontSize: '13px', background: "#fff", border: `1px solid ${primaryColor}`, color: primaryColor }}
                               onClick={() => setCartOpen(false)}
                             >
                               Menu
@@ -442,40 +464,41 @@ const Header2 = () => {
                             position: "absolute",
                             top: "110%",
                             right: 0,
-                            width: "320px",
+                            width: "280px",
                             background: "#fff",
                             borderRadius: "15px",
-                            boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
+                            boxShadow: "0 15px 60px rgba(0,0,0,0.18)",
                             zIndex: 10000,
                             padding: "20px",
                             display: cartOpen ? "block" : "none",
                             border: "1px solid #f0f0f0"
                           }}
                         >
-                          <div style={{ maxHeight: "350px", overflowY: "auto", marginBottom: "15px" }}>
+                          <div style={{ maxHeight: "450px", overflowY: "auto", marginBottom: "15px", paddingRight: "5px" }}>
                             {cartItems.map((item) => (
-                              <div key={item.id} style={{ display: "flex", gap: "12px", marginBottom: "15px", paddingBottom: "15px", borderBottom: "1px solid #f5f5f5", position: "relative" }}>
-                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "65px", height: "65px", borderRadius: "10px", objectFit: "cover" }} />
+                              <div key={item.id} style={{ display: "flex", gap: "15px", marginBottom: "15px", paddingBottom: "15px", borderBottom: "1px dashed #eee", position: "relative" }}>
+                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "75px", height: "75px", borderRadius: "10px", objectFit: "cover" }} />
                                 <div style={{ flex: 1 }}>
-                                  <h6 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "4px", color: "#222" }}>{item.name}</h6>
-                                  <p style={{ fontSize: "13px", color: primaryColor, fontWeight: 600, margin: 0 }}>
-                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)} x {item.quantity}
+                                  <h6 style={{ fontSize: "16px", fontWeight: 700, marginBottom: "4px", color: "#222" }}>{item.name}</h6>
+                                  <p style={{ fontSize: "15px", color: primaryColor, fontWeight: 600, margin: 0 }}>
+                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)}
                                   </p>
                                 </div>
                                 <button
                                   onClick={() => removeFromCart(item.id)}
                                   style={{
-                                    background: "#ff1e1e",
+                                    background: primaryColor,
                                     color: "#fff",
                                     border: "none",
-                                    width: "24px",
-                                    height: "24px",
-                                    borderRadius: "6px",
+                                    width: "26px",
+                                    height: "26px",
+                                    borderRadius: "5px",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     cursor: "pointer",
-                                    fontSize: "14px"
+                                    fontSize: "16px",
+                                    fontWeight: "bold"
                                   }}
                                 >
                                   ×
@@ -484,14 +507,14 @@ const Header2 = () => {
                             ))}
                             {cartItems.length === 0 && (
                               <div className="text-center py-3">
-                                <p style={{ color: "#888", marginBottom: 0 }}>Your cart is empty</p>
+                                <p style={{ color: "#888", marginBottom: 0, fontSize: "15px" }}>Your cart is empty</p>
                               </div>
                             )}
                           </div>
 
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", paddingTop: "10px", borderTop: "2px solid #f8f8f8" }}>
-                            <h6 style={{ margin: 0, fontWeight: 700 }}>Total:</h6>
-                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", paddingTop: "12px", borderTop: "2px dashed #eee" }}>
+                            <h6 style={{ margin: 0, fontWeight: 700, fontSize: "18px", color: primaryColor }}>Total:</h6>
+                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor, fontSize: "18px" }}>
                               {cmsConfig?.config?.currency || '$'}{cartItems.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0).toFixed(0)}
                             </h6>
                           </div>
@@ -499,16 +522,16 @@ const Header2 = () => {
                           <div style={{ display: "flex", gap: "10px" }}>
                             <Link
                               to="/shop-cart"
-                              className="btn btn-primary btn-sm w-100"
-                              style={{ borderRadius: "10px", padding: "10px" }}
+                              className="btn w-100 cart-btn-primary"
+                              style={{ borderRadius: "10px", padding: "12px", fontSize: "14px", fontWeight: "600", background: primaryColor, color: "#fff", border: "none" }}
                               onClick={() => setCartOpen(false)}
                             >
                               View Cart
                             </Link>
                             <Link
                               to="/our-menu-2"
-                              className="btn btn-outline-primary btn-sm w-100"
-                              style={{ borderRadius: "10px", padding: "10px" }}
+                              className="btn w-100 cart-btn-outline"
+                              style={{ borderRadius: "10px", padding: "12px", fontSize: "14px", fontWeight: "600", background: "#fff", border: `1.5px solid ${primaryColor}`, color: primaryColor }}
                               onClick={() => setCartOpen(false)}
                             >
                               Menu
