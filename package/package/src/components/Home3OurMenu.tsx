@@ -393,8 +393,13 @@ const Home3OurMenu = () => {
       <style>{`
         .card-overlay { opacity: 0; transition: opacity 0.3s ease; }
         .col-lg-4:hover .card-overlay { opacity: 1; }
-        .menu-category-badge {
-          color: ${secondaryColor} !important;
+        
+        /* High specificity override to beat global CMS styles */
+        .page-content .menu-category-badge,
+        section .menu-category-badge,
+        .container .menu-category-badge {
+          color: var(--secondary) !important;
+          background-color: var(--primary) !important;
         }
       `}</style>
     </>

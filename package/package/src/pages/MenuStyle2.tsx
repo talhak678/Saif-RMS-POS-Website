@@ -134,8 +134,13 @@ const MenuStyle2 = () => {
               height: 180px !important;
             }
           }
-          .menu-category-badge {
-            color: ${secondaryColor} !important;
+          
+          /* High specificity overrides */
+          .page-content .menu-category-badge,
+          section .menu-category-badge,
+          .container .menu-category-badge {
+            color: var(--secondary) !important;
+            background-color: var(--primary) !important;
           }
         `}
       </style>
