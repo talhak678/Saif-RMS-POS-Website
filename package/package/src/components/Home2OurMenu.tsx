@@ -30,7 +30,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
   ).slice(0, 10);
 
   return (
-    <div className="container px-0">
+    <div style={{ width: "100%" }}>
       <style>{`
         .browse-menu-card {
            background: #fff;
@@ -134,6 +134,17 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         }
         .browse-add-btn i {
            font-size: 16px;
+        }
+        .browse-menu-swiper {
+           width: 100% !important;
+           overflow: visible !important;
+        }
+        .browse-menu-swiper .swiper-wrapper {
+           width: 100% !important;
+        }
+        .browse-menu-swiper .swiper-slide {
+           height: auto !important;
+           display: flex !important;
         }
       `}</style>
       <Swiper
