@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
 import LocationPicker from "../elements/LocationPicker";
-import { Modal, Button, Collapse } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -37,21 +37,14 @@ const CheckoutForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    companyName: "",
     email: "",
     phone: "",
     address: "",
-    apartment: "",
     city: "",
-    state: "",
-    postcode: "",
     notes: "",
     paymentMethod: "CASH",
     cardName: ""
   });
-
-  const [openShipDifferent, setOpenShipDifferent] = useState(false);
-  const [openCreateAccount, setOpenCreateAccount] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -204,120 +197,94 @@ const CheckoutForm = () => {
     <form className="shop-form" onSubmit={handlePlaceOrder}>
       <div className="row">
         {/* Billing Address Section */}
-        <div className="col-lg-6">
+        <div className="col-lg-12">
           <div className="widget">
-            <h4 className="widget-title">Billing & Shipping Address</h4>
+            <h4 className="widget-title">Checkout Details</h4>
 
-            <div className="form-group m-b20">
-              <Select
-                styles={customStyles}
-                options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
-                value={{ value: currentBranch?.id, label: currentBranch?.name }}
-                onChange={(opt: any) => setSelectedBranchId(opt.value)}
-              />
+            {/* 📍 Order Type Selector */}
+            <div className="form-group m-b20 border p-3 rounded bg-light">
+              <h6 className="mb-2">How would you like to receive your order?</h6>
+              <div className="d-flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setOrderType("DELIVERY")}
+                  className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`}
+                  style={{ minWidth: '120px', background: orderType === "DELIVERY" ? primaryColor : '', color: orderType === "DELIVERY" ? '#fff' : '' }}
+                >
+                  🚚 Delivery
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOrderType("PICKUP")}
+                  className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`}
+                  style={{ minWidth: '120px', background: orderType === "PICKUP" ? primaryColor : '', color: orderType === "PICKUP" ? '#fff' : '' }}
+                >
+                  🥡 Pickup
+                </button>
+              </div>
             </div>
 
             <div className="row">
+              <div className="form-group col-md-12 m-b20">
+                <label className="mb-2">Select Branch</label>
+                <Select
+                  styles={customStyles}
+                  options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
+                  value={{ value: currentBranch?.id, label: currentBranch?.name }}
+                  onChange={(opt: any) => setSelectedBranchId(opt.value)}
+                />
+              </div>
+
               <div className="form-group col-md-6 m-b20">
                 <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
               </div>
               <div className="form-group col-md-6 m-b20">
                 <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
               </div>
-            </div>
 
-            <div className="form-group m-b20">
-              <input name="companyName" type="text" className="form-control" placeholder="Company Name" value={formData.companyName} onChange={handleChange} />
-            </div>
-
-            <div className="form-group m-b20 position-relative">
-              <input name="address" required type="text" className="form-control" placeholder="Address" value={formData.address} onChange={handleChange} />
-              <span
-                className="position-absolute cursor-pointer"
-                style={{ right: '15px', top: '15px', color: primaryColor }}
-                onClick={() => setShowMap(true)}
-              >
-                📍
-              </span>
-            </div>
-
-            <div className="row">
-              <div className="form-group col-md-6 m-b20">
-                <input name="apartment" type="text" className="form-control" placeholder="Apartment, suite, unit etc." value={formData.apartment} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-6 m-b20">
-                <input name="city" required type="text" className="form-control" placeholder="Town / City" value={formData.city} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="form-group col-md-6 m-b20">
-                <input name="state" type="text" className="form-control" placeholder="State / County" value={formData.state} onChange={handleChange} />
-              </div>
-              <div className="form-group col-md-6 m-b20">
-                <input name="postcode" type="text" className="form-control" placeholder="Postcode / Zip" value={formData.postcode} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="row">
               <div className="form-group col-md-6 m-b20">
                 <input name="email" required type="email" className="form-control" placeholder="Email" value={formData.email} onChange={handleChange} />
               </div>
               <div className="form-group col-md-6 m-b20">
                 <input name="phone" required type="tel" className="form-control" placeholder="Phone" value={formData.phone} onChange={handleChange} />
               </div>
-            </div>
 
-            <Button
-              style={{ border: "none" }}
-              onClick={() => setOpenCreateAccount(!openCreateAccount)}
-              className="btn btn-gray btnhover mb-3"
-            >
-              Create an account <i className={`fa fa-angle-${openCreateAccount ? 'up' : 'down'} m-l10`}></i>
-            </Button>
-            <Collapse in={openCreateAccount}>
-              <div>
-                <p>Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-                <div className="form-group m-b20">
-                  <input name="Password" type="password" className="form-control" placeholder="Password" />
-                </div>
+              {/* 🏠 Delivery Fields - Only show if Delivery is selected */}
+              {orderType === "DELIVERY" && (
+                <>
+                  <div className="form-group col-md-12 m-b20 position-relative">
+                    <label className="mb-2">Delivery Address</label>
+                    <div className="input-group">
+                      <input
+                        name="address"
+                        required={orderType === "DELIVERY"}
+                        type="text"
+                        className="form-control"
+                        placeholder="Street Address, Area or Landmark"
+                        value={formData.address}
+                        onChange={handleChange}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        style={{ borderColor: primaryColor, color: primaryColor }}
+                        onClick={() => setShowMap(true)}
+                      >
+                        📍 Map
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="form-group col-md-12 m-b20">
+                    <input name="city" required={orderType === "DELIVERY"} type="text" className="form-control" placeholder="City" value={formData.city} onChange={handleChange} />
+                  </div>
+                </>
+              )}
+
+              <div className="form-group col-md-12 m-b20">
+                <label className="mb-2">Special Notes (Optional)</label>
+                <textarea name="notes" className="form-control" rows={3} placeholder="Notes about your order, e.g. allergires or sauce preferences" value={formData.notes} onChange={handleChange}></textarea>
               </div>
-            </Collapse>
-          </div>
-        </div>
-
-        {/* Shipping & Notes Section */}
-        <div className="col-lg-6">
-          <div className="widget">
-            <Button
-              style={{ border: "none" }}
-              onClick={() => setOpenShipDifferent(!openShipDifferent)}
-              className="btn btn-gray btnhover mb-3"
-            >
-              Ship to a different address <i className={`fa fa-angle-${openShipDifferent ? 'up' : 'down'} m-l10`}></i>
-            </Button>
-            <Collapse in={openShipDifferent}>
-              <div>
-                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing & Shipping section.</p>
-                <div className="form-group m-b20">
-                  <input type="text" className="form-control" placeholder="Full Name" />
-                </div>
-                <div className="form-group m-b20">
-                  <textarea className="form-control" rows={3} placeholder="Different Shipping Address"></textarea>
-                </div>
-              </div>
-            </Collapse>
-
-            <div className="form-group m-b20">
-              <h6 className="mb-2">Order Service</h6>
-              <div className="d-flex gap-2">
-                <button type="button" onClick={() => setOrderType("PICKUP")} className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`} style={{ minWidth: '100px', background: orderType === "PICKUP" ? primaryColor : '' }}>Pickup</button>
-                <button type="button" onClick={() => setOrderType("DELIVERY")} className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`} style={{ minWidth: '100px', background: orderType === "DELIVERY" ? primaryColor : '' }}>Delivery</button>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <textarea name="notes" className="form-control" rows={5} placeholder="Notes about your order, e.g. special notes for delivery" value={formData.notes} onChange={handleChange}></textarea>
             </div>
           </div>
         </div>

@@ -36,10 +36,10 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       <style>{`
         .dz-img-box.style-4 {
           background: #fff;
-          border-radius: 18px;
-          padding: 14px 16px;
+          border-radius: 16px;
+          padding: 10px 14px;
           position: relative;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.06);
           transition: all 0.3s ease;
           border: 1px solid #efefef;
           overflow: hidden;
@@ -55,13 +55,13 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4 .menu-detail {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 10px;
+          gap: 10px;
+          margin-bottom: 6px;
         }
         .dz-img-box.style-4 .dz-media {
-          width: 80px;
-          height: 80px;
-          border-radius: 12px;
+          width: 70px;
+          height: 70px;
+          border-radius: 10px;
           overflow: hidden;
           flex-shrink: 0;
           background: #f5f5f5;

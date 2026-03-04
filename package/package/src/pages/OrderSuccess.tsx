@@ -1,20 +1,119 @@
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
+import { Context } from "../context/AppContext";
+
+const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
 const OrderSuccess = () => {
     const location = useLocation();
-    const order = location.state?.order;
+    const { cmsConfig } = useContext(Context);
+    const [order, setOrder] = useState<any>(location.state?.order);
+    const [loading, setLoading] = useState(false);
+    const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+    // Dynamic Slug Detection (matching AppContext logic)
+    const getSlug = () => {
+        const hostname = window.location.hostname;
+        // Check if we are on localhost for development
+        if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+            return "dilpasand-sweets"; // Default for local dev
+        }
+        // Extract subdomain for production (e.g., dilpasand-sweets.vercel.app -> dilpasand-sweets)
+        const parts = hostname.split('.');
+        if (parts.length >= 3) {
+            return parts[0];
+        }
+        return import.meta.env.VITE_RESTAURANT_SLUG || "saifs-kitchen";
+    };
+
+    const restaurantSlug = getSlug();
+
+    const fetchOrderStatus = async (oNo: any, phone: any) => {
+        if (!oNo || !phone) return;
+        try {
+            // Added _t timestamp to bust cache as Vercel/Next.js often caches GET requests
+            const res = await axios.get(`${BASE_URL}/api/orders/track`, {
+                params: {
+                    orderNo: oNo,
+                    phone: phone,
+                    slug: restaurantSlug,
+                    _t: Date.now()
+                }
+            });
+            if (res.data?.success) {
+                setOrder(res.data.data);
+                setLastUpdated(new Date());
+                console.log("Order Sync Success:", res.data.data.status);
+            }
+        } catch (err) {
+            console.error("Failed to sync order status", err);
+        }
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        // Initial setup for persistence
+        if (location.state?.order) {
+            const currentOrder = location.state.order;
+            const phoneStr = currentOrder.customer?.phone || currentOrder.phone || "";
+            const orderData = {
+                orderNo: currentOrder.orderNo,
+                phone: phoneStr
+            };
+            localStorage.setItem("lastOrder", JSON.stringify(orderData));
+        } else if (!order) {
+            const saved = localStorage.getItem("lastOrder");
+            if (saved) {
+                try {
+                    const { orderNo, phone } = JSON.parse(saved);
+                    setLoading(true);
+                    fetchOrderStatus(orderNo, phone).finally(() => setLoading(false));
+                } catch (e) {
+                    console.error("Failed to parse saved order", e);
+                }
+            }
+        }
     }, []);
+
+    // Polling for status updates
+    useEffect(() => {
+        if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
+
+        const oNo = order.orderNo;
+        const phone = order.customer?.phone || order.phone;
+
+        if (!oNo || !phone) return;
+
+        // Poll more frequently (10 seconds) for better UX
+        const interval = setInterval(() => {
+            fetchOrderStatus(oNo, phone);
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [order?.status, order?.orderNo]);
+
+    if (loading && !order) {
+        return (
+            <div className="page-content bg-white">
+                <div className="content-inner text-center py-10">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <h3 className="mt-4">Syncing your order...</h3>
+                </div>
+            </div>
+        );
+    }
 
     if (!order) {
         return (
             <div className="page-content bg-white">
-                <div className="content-inner text-center py-5">
-                    <h3>No order data found</h3>
-                    <Link to="/our-menu-2" className="btn btn-primary mt-3">Browse Menu</Link>
+                <div className="content-inner text-center py-10">
+                    <h3 className="mb-3">Order not found</h3>
+                    <p className="text-muted">We couldn't retrieve your latest order details.</p>
+                    <Link to="/our-menu-2" className="btn btn-primary btn-sm mt-3">Go to Menu</Link>
                 </div>
             </div>
         );
@@ -24,6 +123,7 @@ const OrderSuccess = () => {
         { key: "PENDING", label: "Order Placed", icon: "✓", desc: "We received your order" },
         { key: "CONFIRMED", label: "Confirmed", icon: "📋", desc: "Restaurant confirmed" },
         { key: "PREPARING", label: "Preparing", icon: "👨‍🍳", desc: "Being cooked fresh" },
+        { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: "Food is ready at the kitchen" },
         { key: "OUT_FOR_DELIVERY", label: "On the Way", icon: "🛵", desc: "Rider is heading to you" },
         { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: "Enjoy your meal!" },
     ];
@@ -67,8 +167,16 @@ const OrderSuccess = () => {
                             </div>
 
                             {/* Order Status Timeline */}
-                            <div className="widget mb-4" style={{ border: "1px solid #f0f0f0", borderRadius: "16px", padding: "28px" }}>
-                                <h5 className="widget-title mb-4">Order Status</h5>
+                            <div className="widget mb-4" style={{ border: "1px solid #f0f0f0", borderRadius: "16px", padding: "28px", background: "#fff" }}>
+                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 className="widget-title mb-0">Order Status</h5>
+                                    {lastUpdated && (
+                                        <span style={{ fontSize: "11px", color: "#666", display: "flex", alignItems: "center", gap: "5px" }}>
+                                            <span className="spinner-grow spinner-grow-sm text-success" style={{ width: "8px", height: "8px" }}></span>
+                                            Live: {lastUpdated.toLocaleTimeString()}
+                                        </span>
+                                    )}
+                                </div>
                                 <div style={{ position: "relative" }}>
                                     <div style={{
                                         position: "absolute", left: "22px", top: "24px", bottom: "24px",
@@ -115,6 +223,11 @@ const OrderSuccess = () => {
                                         );
                                     })}
                                 </div>
+                                {order.status !== "DELIVERED" && order.status !== "CANCELLED" && (
+                                    <p className="mt-4 text-center mb-0" style={{ fontSize: "11px", color: "#aaa" }}>
+                                        🔄 Monitoring status from dashboard every 10s...
+                                    </p>
+                                )}
                             </div>
 
                             {/* Order Details */}

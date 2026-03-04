@@ -8,11 +8,13 @@ const Home2SpacialMenu = () => {
 
   if (cmsLoading) return null;
 
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
+
   // Filter Items based on CMS selection
   const selectedItemIds = cmsConfig?.config?.configJson?.home?.sections?.todaysSpecial?.content?.selectedItemIds || [];
   const selectedCategoryIds = cmsConfig?.config?.configJson?.home?.sections?.todaysSpecial?.content?.selectedCategoryIds || [];
   const allCategories = cmsConfig?.menu || [];
-  const allItems = allCategories.flatMap((cat: any) => cat.menuItems.map((item: any) => ({ ...item, categoryId: cat.id })));
+  const allItems = allCategories.flatMap((cat: any) => cat.menuItems.map((item: any) => ({ ...item, categoryId: cat.id, categoryName: cat.name })));
 
   let displayItems = [];
 
@@ -21,24 +23,103 @@ const Home2SpacialMenu = () => {
   } else if (selectedCategoryIds.length > 0) {
     displayItems = allItems.filter((item: any) => selectedCategoryIds.includes(item.categoryId));
   } else {
-    displayItems = allItems.slice(0, 8); // Showing up to 8 by default if scrolling is enabled
+    displayItems = allItems.slice(0, 8);
   }
 
   return (
     <>
       <style>{`
-        .dz-img-box.style-5:hover {
-          background-color: white !important;
+        .special-card {
+          background: #fff;
+          border-radius: 15px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          position: relative;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          height: 100%;
         }
-        .dz-img-box.style-5:hover .dz-content h6,
-        .dz-img-box.style-5:hover .dz-content span {
-          color: inherit !important;
+        .special-card:hover {
+          transform: translateY(-10px);
         }
-        .dz-img-box.style-5:hover .dz-content h6 {
-          color: #333 !important;
+        .special-card-content {
+          padding: 20px 20px 10px 20px;
         }
-        .dz-img-box.style-5:hover .dz-content h6.text-primary {
-          color: var(--primary) !important;
+        .special-card-top-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+        }
+        .special-card-tag {
+          font-size: 14px;
+          color: #888;
+          font-weight: 500;
+        }
+        .special-card-weight {
+          font-size: 14px;
+          color: #888;
+        }
+        .special-card-main-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .special-card-title {
+          font-size: 18px;
+          font-weight: 900;
+          color: #111;
+          margin: 0;
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .special-card-price {
+          font-size: 18px;
+          font-weight: 900;
+          color: ${primaryColor};
+          margin-left: 10px;
+        }
+        .special-card-media {
+          padding: 12px;
+          height: 230px;
+          position: relative;
+        }
+        .special-card-media img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 12px;
+          background: #f0f0f0;
+        }
+        .special-add-btn {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -40%);
+          width: 55px;
+          height: 55px;
+          background: ${primaryColor};
+          color: #fff;
+          border: none;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-size: 22px;
+          transition: all 0.3s ease;
+          z-index: 2;
+          opacity: 0;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .special-card:hover .special-add-btn {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+        .special-add-btn:hover {
+          transform: translate(-50%, -50%) scale(1.1);
+          filter: brightness(1.1);
         }
       `}</style>
       <Swiper
@@ -57,27 +138,29 @@ const Home2SpacialMenu = () => {
         breakpoints={{
           1200: { slidesPerView: 4 },
           991: { slidesPerView: 3 },
-          575: { slidesPerView: 2 },
+          768: { slidesPerView: 2 },
           240: { slidesPerView: 1 },
         }}
-        style={{ paddingBottom: '40px' }}
+        style={{ padding: '20px 0 40px 0', overflow: 'visible' }}
       >
         {displayItems.map((item: any, ind: number) => (
           <SwiperSlide key={item.id || ind}>
-            <div className="dz-img-box style-5" style={{ margin: '0' }}>
-              <div className="dz-content" style={{ padding: '20px', background: 'white', borderRadius: '20px 20px 0 0' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
-                  <span className="text-muted" style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }}>Recommended</span>
-                  <h6 className="text-primary mb-0" style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>$ {item.price}</h6>
+            <div className="special-card">
+              <div className="special-card-content">
+                <div className="special-card-top-row">
+                  <span className="special-card-tag">{item.categoryName || "Recommended"}</span>
+                  <span className="special-card-weight">756g</span>
                 </div>
-                <h6 style={{ fontSize: '16px', marginBottom: '0', fontWeight: 'bold', color: '#333' }} className="line-clamp-1">{item.name}</h6>
+                <div className="special-card-main-row">
+                  <h4 className="special-card-title">{item.name}</h4>
+                  <span className="special-card-price">{cmsConfig?.config?.currency || '$'}{item.price}</span>
+                </div>
               </div>
-              <div className="dz-media" style={{ height: '180px' }}>
-                <img src={item.image || "https://via.placeholder.com/200"} alt="/" style={{ height: '100%', objectFit: 'cover' }} />
+              <div className="special-card-media">
+                <img src={item.image || "https://via.placeholder.com/360x340"} alt={item.name} />
                 <button
-                  className="detail-btn"
+                  className="special-add-btn"
                   onClick={() => addToCart(item)}
-                  style={{ border: 'none', cursor: 'pointer' }}
                 >
                   <i className="fa-solid fa-plus"></i>
                 </button>
