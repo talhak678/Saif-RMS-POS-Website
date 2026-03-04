@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../context/AppContext";
 import { IMAGES } from "../constent/theme";
@@ -23,7 +24,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
     ? allAvailableCategories.filter((cat: any) => selectedCategoryIds.includes(cat.id))
     : allAvailableCategories.slice(0, 8); // Default 8 if none selected
 
-  // Flatten items for the scroller - as the user wants products here like in the theme image
+  // Flatten items for the scroller to show products in the card format like the theme image
   const items = categories.flatMap((cat: any) =>
     cat.menuItems.map((item: any) => ({ ...item, categoryName: cat.name }))
   ).slice(0, 10);
@@ -44,6 +45,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            overflow: hidden;
            border: 1px solid #f8f8f8;
            min-height: 140px;
+           height: 140px;
         }
         .browse-menu-card:hover {
            transform: translateY(-5px);
@@ -65,25 +67,33 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .browse-content {
            padding-left: 15px;
            flex: 1;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
         }
         .browse-title {
-           font-size: 18px;
+           font-size: 16px;
            font-weight: 700;
            color: #222;
            margin-bottom: 2px;
+           line-height: 1.2;
         }
         .browse-subtitle {
-           font-size: 13px;
+           font-size: 12px;
            color: #888;
            margin-bottom: 8px;
            display: block;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
         }
         .browse-price-label {
-           font-size: 11px;
+           font-size: 10px;
            color: #aaa;
            display: block;
            text-transform: uppercase;
            letter-spacing: 0.5px;
+           margin-bottom: 0;
         }
         .browse-price {
            font-size: 18px;
@@ -101,14 +111,16 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            display: flex;
            align-items: center;
            justify-content: center;
-           border-radius: 12px 0 0px 0;
+           border-radius: 12px 0 0 0;
            cursor: pointer;
            transition: all 0.2s;
            border: none;
         }
         .browse-add-btn:hover {
            opacity: 0.9;
-           transform: scale(1.05);
+        }
+        .browse-add-btn i {
+           font-size: 16px;
         }
       `}</style>
       <Swiper
@@ -132,13 +144,13 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       >
         {items.map((item: any, ind: number) => (
           <SwiperSlide key={item.id || ind}>
-            <div className={`browse-menu-card`}>
+            <div className="browse-menu-card">
               <div className="browse-media">
                 <img src={item.image || IMAGES.shop_pic1} alt={item.name} />
               </div>
               <div className="browse-content">
                 <h6 className="browse-title">{item.name}</h6>
-                <span className="browse-subtitle">Delicious and Spicy</span>
+                <span className="browse-subtitle">{item.description || "Delicious and Spicy"}</span>
                 <span className="browse-price-label">Regular Price</span>
                 <span className="browse-price">{cmsConfig?.config?.currency || '$'} {Number(item.price).toFixed(2)}</span>
               </div>
