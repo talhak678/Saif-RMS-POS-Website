@@ -34,18 +34,18 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       <style>{`
         .browse-menu-card {
            background: #fff;
-           border-radius: 18px;
-           padding: 16px 16px 16px 16px;
+           border-radius: 20px;
+           padding: 22px 20px;
            display: flex;
            align-items: center;
            position: relative;
            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
            transition: all 0.3s ease;
-           margin: 10px 8px;
+           margin: 12px 8px;
            overflow: hidden;
            border: 1px solid #efefef;
-           min-height: 160px;
-           height: 160px;
+           min-height: 185px;
+           height: 185px;
         }
         .browse-menu-card:hover {
            transform: translateY(-6px);
@@ -53,9 +53,9 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            border-color: ${primaryColor}30;
         }
         .browse-media {
-           width: 85px;
-           height: 85px;
-           border-radius: 14px;
+           width: 100px;
+           height: 100px;
+           border-radius: 16px;
            overflow: hidden;
            flex-shrink: 0;
            background: #f5f5f5;
@@ -70,8 +70,8 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            transform: scale(1.08);
         }
         .browse-content {
-           padding-left: 14px;
-           padding-right: 48px;
+           padding-left: 18px;
+           padding-right: 55px;
            flex: 1;
            min-width: 0;
            display: flex;
@@ -79,35 +79,35 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            justify-content: center;
         }
         .browse-title {
-           font-size: 15px;
+           font-size: 16px;
            font-weight: 700;
            color: #1a1a1a;
-           margin-bottom: 3px;
+           margin-bottom: 5px;
            line-height: 1.3;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
         }
         .browse-subtitle {
-           font-size: 12px;
+           font-size: 13px;
            color: #888;
-           margin-bottom: 10px;
+           margin-bottom: 14px;
            display: block;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
         }
         .browse-price-label {
-           font-size: 10px;
+           font-size: 11px;
            color: #aaa;
            display: block;
            text-transform: uppercase;
            letter-spacing: 0.8px;
-           margin-bottom: 2px;
+           margin-bottom: 3px;
            font-weight: 600;
         }
         .browse-price {
-           font-size: 18px;
+           font-size: 20px;
            font-weight: 800;
            color: ${primaryColor};
         }
@@ -115,14 +115,14 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            position: absolute;
            bottom: 0px;
            right: 0px;
-           width: 48px;
-           height: 48px;
+           width: 52px;
+           height: 52px;
            background: ${primaryColor};
            color: #fff;
            display: flex;
            align-items: center;
            justify-content: center;
-           border-radius: 18px 0 0 0;
+           border-radius: 20px 0 0 0;
            cursor: pointer;
            transition: all 0.25s ease;
            border: none;
