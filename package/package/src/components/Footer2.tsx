@@ -6,7 +6,6 @@ import { Context } from "../context/AppContext";
 
 const Footer2 = () => {
   const { cmsConfig } = useContext(Context);
-
   const homeSections = cmsConfig?.config?.configJson?.home?.sections || {};
   const footerEnabled = homeSections.footer?.enabled !== false;
   const footerContent = homeSections.footer?.content || {};
@@ -20,6 +19,7 @@ const Footer2 = () => {
   const ftColor = themeColors.footerTextColor || "white";
   const fHeadingWeight = themeFonts.secondaryFontWeight || "700";
   const fTextWeight = themeFonts.paragraphFontWeight || "400";
+  const primaryColor = themeColors.primaryColor || "#7da640";
 
   const renderLinks = (linksString: string) => {
     if (!linksString) return null;
@@ -65,112 +65,139 @@ const Footer2 = () => {
               }
               .footer-card {
                 background-color: ${fbgColor} !important;
-                margin: 0 120px 40px 120px;
-                border-radius: 50px;
-                padding: 60px 40px;
+                margin: 0 100px 40px 100px;
+                border-radius: 40px;
+                padding: 60px 50px;
                 position: relative;
                 overflow: hidden;
                 border: none !important;
               }
-              .site-footer.style-2 .footer-top, 
-              .site-footer.style-2 .footer-bottom {
+              .site-footer.style-2 .footer-top {
                 background-color: transparent !important;
                 border: none !important;
+                padding-bottom: 0 !important;
+              }
+              .footer-divider {
+                border-top: 1px solid rgba(255,255,255,0.1);
+                margin: 40px 0;
+              }
+              .footer-title {
+                font-weight: ${fHeadingWeight} !important;
+                font-size: 20px !important;
+                letter-spacing: 1px;
+                color: ${ftColor} !important;
+                margin-bottom: 30px !important;
+                text-transform: uppercase;
               }
               .widget_services ul li {
-                margin-bottom: 15px !important;
+                margin-bottom: 12px !important;
               }
               .widget_services ul li a {
                 color: ${ftColor} !important;
-                opacity: 0.7;
-                font-size: 18px !important;
+                opacity: 0.8;
+                font-size: 15px !important;
                 font-weight: ${fTextWeight} !important;
                 transition: 0.3s;
               }
               .widget_services ul li a:hover {
                 color: var(--primary) !important;
                 opacity: 1;
-                padding-left: 5px;
-              }
-              .footer-title {
-                font-weight: ${fHeadingWeight} !important;
-                font-size: 24px !important;
-                letter-spacing: 1px;
-                color: ${ftColor} !important;
-                margin-bottom: 35px !important;
+                padding-left: 3px;
               }
               .widget_getintuch ul li {
                 display: flex;
-                align-items: center;
-                gap: 20px;
-                margin-bottom: 25px;
+                align-items: flex-start;
+                gap: 15px;
+                margin-bottom: 20px;
               }
               .widget_getintuch ul li i {
-                font-size: 28px;
+                font-size: 20px;
                 color: var(--primary);
+                margin-top: 5px;
               }
               .widget_getintuch ul li p {
                 color: ${ftColor} !important;
                 opacity: 0.8 !important;
-                font-size: 18px !important;
+                font-size: 15px !important;
                 font-weight: ${fTextWeight} !important;
                 margin: 0;
+                line-height: 1.6;
               }
-              .site-footer p, .site-footer span {
-                color: ${ftColor} !important;
-                font-weight: ${fTextWeight} !important;
+              /* Footer newsletter design */
+              .newsletter-box form {
+                display: flex;
+                align-items: center;
+                background: white;
+                border-radius: 12px;
+                padding: 6px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+              }
+              .newsletter-box input {
+                border: none !important;
+                box-shadow: none !important;
+                font-size: 15px !important;
+                color: #333 !important;
+                padding-left: 20px !important;
+              }
+              .footer-social-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 15px;
+                padding: 0;
+                list-style: none;
+              }
+              .footer-social-list li a {
+                width: 38px;
+                height: 38px;
+                background: ${primaryColor};
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                transition: 0.3s;
+                text-decoration: none;
+              }
+              .footer-social-list li a:hover {
+                transform: translateY(-3px);
+                opacity: 0.9;
+              }
+              
+              @media (max-width: 1200px) {
+                .footer-card { margin: 0 40px 40px 40px; }
               }
               @media (max-width: 991px) {
                 .footer-card {
                   margin: 0 20px 40px 20px;
                   border-radius: 30px;
-                  padding: 40px 20px;
+                  padding: 40px 30px;
                 }
                 .newsletter-box {
-                  margin-top: 40px;
-                  margin-left: 0 !important;
-                  max-width: 100% !important;
+                  margin-top: 30px;
                 }
               }
               @media (max-width: 768px) {
-                .footer-top {
-                  padding-top: 0 !important;
-                }
-                .footer-logo {
-                   text-align: center !important;
-                }
-                .footer-logo img {
-                   margin: 0 auto;
-                }
-                .max-w-md {
-                   text-align: center !important;
-                   margin: 0 auto !important;
-                }
-                .newsletter-box {
-                   text-align: center !important;
-                }
-                .dzSubscribe {
-                   margin: 0 auto;
-                }
-                .site-footer.style-2 .footer-top .row > div {
-                  text-align: left !important;
-                }
-                .widget_getintuch ul li {
-                  justify-content: flex-start;
-                }
-                .widget_services ul li {
-                  text-align: left;
-                }
+                 .footer-card { padding: 40px 20px; text-align: center; }
+                 .footer-logo { text-align: center; margin-bottom: 20px; }
+                 .footer-logo img { margin: 0 auto; }
+                 .newsletter-box { text-align: center; margin-bottom: 20px; }
+                 .newsletter-box h4 { text-align: center; }
+                 .widget_getintuch ul li { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
+                 .widget_getintuch ul li i { margin-top: 0; }
+                 .footer-divider { margin: 30px 0; }
+                 .footer-social-list { justify-content: center; }
               }
             `}
           </style>
 
           <div className="footer-card shadow-lg">
-            <div className="footer-top" style={{ position: 'relative', zIndex: 1, padding: 0 }}>
-              <div className="container">
-        
-                <div className="row align-items-center mb-5 pb-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div className="col-lg-7 col-md-12 mb-5 mb-lg-0">
+            <div className="footer-top">
+              <div className="container p-0">
+                {/* Upper Section: Logo & Newsletter */}
+                <div className="row align-items-center">
+                  <div className="col-lg-7 col-md-12">
                     <div className="footer-logo mb-4">
                       <Link to="/">
                         <img
@@ -181,90 +208,54 @@ const Footer2 = () => {
                             IMAGES.logo2
                           }
                           alt="Logo"
-                          style={{ maxWidth: '200px', height: 'auto' }}
+                          style={{ maxHeight: '45px', width: 'auto' }}
                         />
                       </Link>
                     </div>
-                    <p className="max-w-md" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', lineHeight: '1.8' }}>
-                      {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
+                    <p style={{ opacity: 0.8, fontSize: '15px', maxWidth: '400px', lineHeight: '1.7', color: ftColor }}>
+                      {footerContent.description || "Lorem ipsum is simply dummy text of the printing and typesetting industry."}
                     </p>
                   </div>
                   <div className="col-lg-5 col-md-12">
-                    <div className="newsletter-box" style={{ maxWidth: '480px', marginLeft: 'auto' }}>
-                      <h4 className="text-white mb-4" style={{ fontWeight: '600', fontSize: '22px' }}>
+                    <div className="newsletter-box">
+                      <h4 style={{ color: ftColor, fontWeight: '600', fontSize: '20px', marginBottom: '15px' }}>
                         {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                       </h4>
-                      <form className="dzSubscribe" action="#" method="post" style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        width: '100%',
-                        borderRadius: '10px',
-                        overflow: 'hidden',
-                        backgroundColor: 'white',
-                        padding: '5px'
-                      }}>
+                      <form>
                         <input
-                          name="dzEmail"
-                          required
                           type="email"
                           className="form-control"
                           placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
-                          style={{
-                            backgroundColor: 'transparent',
-                            border: 'none',
-                            color: '#333',
-                            height: '55px',
-                            padding: '0 20px',
-                            fontSize: '15px',
-                            flexGrow: 1,
-                            outline: 'none',
-                            boxShadow: 'none'
-                          }}
+                          style={{ height: '50px', background: 'transparent' }}
                         />
                         <button
-                          name="submit"
-                          value="Submit"
                           type="submit"
-                          className="btn"
-                          style={{
-                            height: '55px',
-                            width: '60px',
-                            minWidth: '60px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'var(--primary)',
-                            border: 'none',
-                            borderRadius: '8px',
-                            padding: 0,
-                            fontSize: '20px',
-                            color: 'white',
-                            transition: '0.3s'
-                          }}
+                          className="btn btn-primary"
+                          style={{ height: '50px', padding: '0 25px', borderRadius: '8px', fontWeight: '600' }}
                         >
-                          <i className="fas fa-arrow-right"></i>
+                          {footerContent.newsletterButtonText || "Subscribe"}
                         </button>
                       </form>
                     </div>
                   </div>
                 </div>
 
-                {/* BOTTOM SECTION: 4 COLUMNS */}
+                <div className="footer-divider"></div>
+
+                {/* Bottom Section: 4 Columns */}
                 <div className="row">
-                  {/* CONTACT COLUMN */}
-                  <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                  {/* CONTACT */}
+                  <div className="col-lg-3 col-md-6 mb-4">
                     <div className="widget widget_getintuch">
-                      <h5 className="footer-title m-b30">
-                        {footerContent.contactTitle || "CONTACT"}
-                      </h5>
+                      <h5 className="footer-title">{footerContent.contactTitle || "CONTACT"}</h5>
                       <ul>
                         <li>
                           <i className="flaticon-placeholder"></i>
-                          <p>{footerContent.address || "123 Street, City, Country"}</p>
+                          <p>{footerContent.address || "1247/Plot No. 39, 15th Phase, Colony, Kkatpally, Hyderabad"}</p>
                         </li>
                         <li>
                           <i className="flaticon-telephone"></i>
-                          <p>{footerContent.contactPhone || "+123 456 789"}</p>
+                          <p>{footerContent.contactPhone || "+91 987-654-3210"}</p>
                         </li>
                         <li>
                           <i className="flaticon-email-1"></i>
@@ -274,38 +265,53 @@ const Footer2 = () => {
                     </div>
                   </div>
 
-                  {/* OUR LINKS COLUMN */}
-                  <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                  {/* OUR LINKS */}
+                  <div className="col-lg-3 col-md-6 mb-4">
                     <div className="widget widget_services">
-                      <h5 className="footer-title m-b30">
-                        {footerContent.linksTitle || "OUR LINKS"}
-                      </h5>
+                      <h5 className="footer-title">{footerContent.linksTitle || "OUR LINKS"}</h5>
                       <ul>
-                        {renderLinks(footerContent.links || "Home, About Us, Our Menu, Contact Us, FAQ")}
+                        {renderLinks(footerContent.links || "Home, Contact us, About us, Blogs, FAQ")}
                       </ul>
                     </div>
                   </div>
 
-                  {/* OUR SERVICES COLUMN */}
-                  <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                  {/* OUR SERVICES */}
+                  <div className="col-lg-3 col-md-6 mb-4">
                     <div className="widget widget_services">
-                      <h5 className="footer-title m-b30">
-                        {footerContent.servicesTitle || "OUR SERVICES"}
-                      </h5>
+                      <h5 className="footer-title">{footerContent.servicesTitle || "OUR SERVICES"}</h5>
                       <ul>
-                        {renderLinks(footerContent.services || "Fast Delivery, Seat Reservation, Pickup In Store, Online Order, Table Booking")}
+                        {renderLinks(footerContent.services || "Menu, Seat Reservation, Testimonials, Order Now")}
                       </ul>
                     </div>
                   </div>
 
-                  {/* HELP CENTER COLUMN */}
-                  <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
-                    <div className="widget widget_services">
-                      <h5 className="footer-title m-b30">
-                        {footerContent.helpCenterTitle || "HELP CENTER"}
-                      </h5>
-                      <ul>
-                        {renderLinks(footerContent.helpCenter || "Support, Terms & Conditions, Privacy Policy, Account, Feedback")}
+                  {/* SERVICE HOURS & FOLLOW US */}
+                  <div className="col-lg-3 col-md-6 mb-4">
+                    <div className="widget">
+                      <h5 className="footer-title">{footerContent.serviceHoursTitle || "SERVICE HOURS"}</h5>
+                      <p style={{ opacity: 0.8, fontSize: '15px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
+                        {footerContent.serviceHours || "Saturday - Sunday : 6:30 pm - 11:59 pm\nSunday : closed"}
+                      </p>
+
+                      <h5 className="footer-title" style={{ marginBottom: '15px' }}>FOLLOW US</h5>
+                      <ul className="footer-social-list">
+                        {footerContent.facebook && (
+                          <li><Link target="_blank" to={footerContent.facebook}><i className="fab fa-facebook-f"></i></Link></li>
+                        )}
+                        {footerContent.instagram && (
+                          <li><Link target="_blank" to={footerContent.instagram}><i className="fab fa-instagram"></i></Link></li>
+                        )}
+                        {footerContent.tiktok && (
+                          <li><Link target="_blank" to={footerContent.tiktok}><i className="fab fa-tiktok"></i></Link></li>
+                        )}
+                        {/* Fallback if none set */}
+                        {(!footerContent.facebook && !footerContent.instagram && !footerContent.tiktok) && (
+                          <>
+                            <li><Link target="_blank" to="https://facebook.com"><i className="fab fa-facebook-f"></i></Link></li>
+                            <li><Link target="_blank" to="https://instagram.com"><i className="fab fa-instagram"></i></Link></li>
+                            <li><Link target="_blank" to="https://tiktok.com"><i className="fab fa-tiktok"></i></Link></li>
+                          </>
+                        )}
                       </ul>
                     </div>
                   </div>
@@ -315,13 +321,20 @@ const Footer2 = () => {
           </div>
 
           {copyrightEnabled && (
-            <div className="footer-bottom pb-5" style={{ padding: '0 0 20px 0' }}>
+            <div className="footer-bottom pb-4">
               <div className="container">
-                <div className="row">
-                  <div className="col-xl-12 text-center">
-                    <span className="copyright-text" style={{ color: 'rgba(0,0,0,0.4)', fontSize: '13px' }}>
-                      {copyrightContent.text || `Copyright © ${new Date().getFullYear()} ${cmsConfig?.restaurantName || "Saif RMS"}. All Rights Reserved.`}
+                <div className="row align-items-center">
+                  <div className="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <span style={{ opacity: 0.5, fontSize: '12px' }}>
+                      {copyrightContent.text || `Crafted With ❤️ by PlatterOS`}
                     </span>
+                  </div>
+                  <div className="col-md-6 text-center text-md-end">
+                    <div className="footer-bottom-links" style={{ display: 'flex', gap: '20px', justifyContent: 'flex-end', opacity: 0.6, fontSize: '12px' }}>
+                      <Link to="/blog-list" style={{ color: 'inherit' }}>Blog Detail</Link>
+                      <Link to="/about-us" style={{ color: 'inherit' }}>About</Link>
+                      <Link to="/faq" style={{ color: 'inherit' }}>Testimonials</Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -329,7 +342,6 @@ const Footer2 = () => {
           )}
         </footer>
       )}
-
     </>
   );
 };
