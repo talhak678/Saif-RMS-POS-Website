@@ -83,7 +83,7 @@ const Footer2 = () => {
               }
               .footer-title {
                 font-weight: ${fHeadingWeight} !important;
-                font-size: 24px !important;
+                font-size: 22px !important;
                 letter-spacing: 1px;
                 color: ${ftColor} !important;
                 margin-bottom: 25px !important;
@@ -95,7 +95,7 @@ const Footer2 = () => {
               .widget_services ul li a {
                 color: ${ftColor} !important;
                 opacity: 0.8;
-                font-size: 19px !important;
+                font-size: 18px !important;
                 font-weight: ${fTextWeight} !important;
                 transition: 0.3s;
               }
