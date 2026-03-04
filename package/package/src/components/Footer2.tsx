@@ -219,7 +219,7 @@ const Footer2 = () => {
                   </div>
                   <div className="col-lg-5 col-md-12">
                     <div className="newsletter-box">
-                      <h4 style={{ color: `${ftColor} !important`, fontWeight: '600', fontSize: '22px', marginBottom: '25px' }}>
+                      <h4 className="footer-title" style={{ fontSize: '22px', marginBottom: '25px' }}>
                         {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                       </h4>
                       <form>
