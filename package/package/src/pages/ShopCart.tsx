@@ -12,16 +12,21 @@ const ShopCart = () => {
   // Store is always open
   const isStoreClosed = false;
 
+  const cartConfig = cmsConfig?.config?.configJson?.cart;
+  const bannerEnabled = cartConfig?.sections?.banner?.enabled ?? true;
+  const bannerContent = cartConfig?.sections?.banner?.content;
+  const contentConfig = cartConfig?.sections?.cartContent?.content;
+
   const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
   const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
   const taxPercentage = Number(cmsConfig?.config?.configJson?.orders?.taxPercentage) || 0;
   const tax = subtotal * (taxPercentage / 100);
   const total = subtotal + deliveryCharge + tax;
 
-  const cartConfig = cmsConfig?.config?.configJson?.cart;
-  const bannerEnabled = cartConfig?.sections?.banner?.enabled ?? true;
-  const bannerContent = cartConfig?.sections?.banner?.content;
-  const contentConfig = cartConfig?.sections?.cartContent?.content;
+  const handleFilterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setFilterSidebar(true);
+  };
 
   return (
     <div className="page-content bg-white">
@@ -69,8 +74,15 @@ const ShopCart = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="d-flex align-items-center justify-content-start">
-                <h5 className="title m-b15 m-lg-30" style={{ color: '#222' }}>{contentConfig?.title || "Your Selection"}</h5>
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="title m-b15 m-lg-30" style={{ color: '#222' }}>{contentConfig?.relatedProductsTitle || "Related Products"}</h5>
+                <Link
+                  to="#"
+                  className="btn btn-primary panel-btn"
+                  onClick={handleFilterClick}
+                >
+                  Filter
+                </Link>
               </div>
               <ShopStyle1RightContent />
             </div>
