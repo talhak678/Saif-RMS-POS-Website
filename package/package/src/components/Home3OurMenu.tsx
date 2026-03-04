@@ -264,6 +264,7 @@ const Home3OurMenu = () => {
                   </h5>
                   {/* Price pill */}
                   <span
+                    className="menu-price-badge"
                     style={{
                       background: primaryColor,
                       color: secondaryColor,
@@ -402,6 +403,14 @@ const Home3OurMenu = () => {
         .container .menu-category-badge {
           color: var(--secondary) !important;
           background-color: var(--primary) !important;
+        }
+        
+        /* Force price pill text color to secondary */
+        .menu-price-badge,
+        .page-content .menu-price-badge,
+        section .menu-price-badge,
+        .container .menu-price-badge {
+          color: var(--secondary) !important;
         }
       `}</style>
     </>

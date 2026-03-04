@@ -142,6 +142,14 @@ const MenuStyle2 = () => {
             color: var(--secondary) !important;
             background-color: var(--primary) !important;
           }
+          
+          /* Force price pill text color to secondary */
+          .menu-price-badge,
+          .page-content .menu-price-badge,
+          section .menu-price-badge,
+          .container .menu-price-badge {
+            color: var(--secondary) !important;
+          }
         `}
       </style>
 
@@ -312,12 +320,13 @@ const MenuStyle2 = () => {
 
                     {/* Price badge */}
                     <span
+                      className="menu-price-badge"
                       style={{
                         position: "absolute",
                         bottom: "12px",
                         right: "13px",
                         background: primaryColor,
-                        color: "#fff",
+                        color: secondaryColor,
                         fontSize: "13px",
                         fontWeight: 800,
                         padding: "5px 14px",
