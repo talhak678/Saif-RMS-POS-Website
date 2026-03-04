@@ -36,10 +36,10 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       <style>{`
         .dz-img-box.style-4 {
           background: #fff;
-          border-radius: 20px;
-          padding: 20px;
+          border-radius: 18px;
+          padding: 14px 16px;
           position: relative;
-          box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.07);
           transition: all 0.3s ease;
           border: 1px solid #efefef;
           overflow: hidden;
@@ -55,13 +55,13 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4 .menu-detail {
           display: flex;
           align-items: center;
-          gap: 14px;
-          margin-bottom: 14px;
+          gap: 12px;
+          margin-bottom: 10px;
         }
         .dz-img-box.style-4 .dz-media {
-          width: 100px;
-          height: 100px;
-          border-radius: 14px;
+          width: 80px;
+          height: 80px;
+          border-radius: 12px;
           overflow: hidden;
           flex-shrink: 0;
           background: #f5f5f5;
@@ -77,11 +77,11 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           transform: scale(1.08);
         }
         .dz-img-box.style-4 .dz-content .title {
-          font-size: 15px;
-          font-weight: 700;
+          font-size: 17px;
+          font-weight: 800;
           color: #1a1a1a;
-          margin: 0 0 4px 0;
-          line-height: 1.3;
+          margin: 0 0 3px 0;
+          line-height: 1.25;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
