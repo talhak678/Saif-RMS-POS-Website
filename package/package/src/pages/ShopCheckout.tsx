@@ -1,4 +1,4 @@
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
@@ -17,13 +17,6 @@ const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder"
 );
 
-const SectionTitle = ({ title, color }: { title: string; color: string }) => (
-  <div className="mb-4">
-    <h4 className="widget-title mb-1" style={{ fontWeight: 700, fontSize: '20px', color: '#1a1a1a' }}>{title}</h4>
-    <div style={{ width: '45px', height: '3px', background: color, borderRadius: '2px' }}></div>
-  </div>
-);
-
 const CheckoutForm = () => {
   const { cartItems, user, setShowSignInForm, activeBranch, clearCart, cmsConfig } = useContext(Context);
   const stripe = useStripe();
@@ -40,6 +33,7 @@ const CheckoutForm = () => {
   const [discountLoading, setDiscountLoading] = useState(false);
   const [orderType, setOrderType] = useState<"DELIVERY" | "PICKUP">("PICKUP");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -194,290 +188,260 @@ const CheckoutForm = () => {
   const customStyles = {
     control: (base: any) => ({
       ...base,
-      height: '50px',
-      borderRadius: '8px',
+      minHeight: '50px',
+      borderRadius: '0',
       border: '1px solid #e1e1e1',
       boxShadow: 'none',
-      '&:hover': { border: '1px solid #ccc' }
     }),
     option: (styles: any, { isFocused, isSelected }: any) => ({
       ...styles,
-      backgroundColor: isSelected ? primaryColor : isFocused ? primaryColor + '10' : null,
+      backgroundColor: isSelected ? primaryColor : isFocused ? "#f2f2f4" : null,
       color: isSelected ? "#fff" : "#333",
     }),
   };
 
   return (
     <form className="shop-form" onSubmit={handlePlaceOrder}>
-      {/* Quadrant 1 & 2: Top Row */}
       <div className="row">
-        {/* Quadrant 1: Top Left - Billing */}
-        <div className="col-lg-6 mb-4">
-          <div className="widget" style={{ border: 'none', padding: '0' }}>
-            <SectionTitle title="Billing & Shipping Address" color={primaryColor} />
+        {/* Billing Address Section */}
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Billing & Shipping Address</h4>
 
-            <div className="form-group mb-3">
+            <div className="form-group m-b20">
               <Select
                 styles={customStyles}
                 options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
                 value={{ value: currentBranch?.id, label: currentBranch?.name }}
                 onChange={(opt: any) => setSelectedBranchId(opt.value)}
-                placeholder="Select Branch / Country"
               />
             </div>
 
             <div className="row">
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
               </div>
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
               </div>
             </div>
 
-            <div className="form-group mb-3">
+            <div className="form-group m-b20">
               <input name="companyName" type="text" className="form-control" placeholder="Company Name" value={formData.companyName} onChange={handleChange} />
             </div>
 
-            <div className="form-group mb-3 position-relative">
+            <div className="form-group m-b20 position-relative">
               <input name="address" required type="text" className="form-control" placeholder="Address" value={formData.address} onChange={handleChange} />
-              <button type="button" className="position-absolute end-0 top-50 translate-middle-y me-2 border-0 bg-transparent text-primary" onClick={() => setShowMap(true)}>
+              <span
+                className="position-absolute cursor-pointer"
+                style={{ right: '15px', top: '15px', color: primaryColor }}
+                onClick={() => setShowMap(true)}
+              >
                 📍
-              </button>
+              </span>
             </div>
 
             <div className="row">
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="apartment" type="text" className="form-control" placeholder="Apartment, suite, unit etc." value={formData.apartment} onChange={handleChange} />
               </div>
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="city" required type="text" className="form-control" placeholder="Town / City" value={formData.city} onChange={handleChange} />
               </div>
             </div>
 
             <div className="row">
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="state" type="text" className="form-control" placeholder="State / County" value={formData.state} onChange={handleChange} />
               </div>
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="postcode" type="text" className="form-control" placeholder="Postcode / Zip" value={formData.postcode} onChange={handleChange} />
               </div>
             </div>
 
             <div className="row">
-              <div className="form-group col-md-6 mb-3">
-                <input name="email" required type="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} />
+              <div className="form-group col-md-6 m-b20">
+                <input name="email" required type="email" className="form-control" placeholder="Email" value={formData.email} onChange={handleChange} />
               </div>
-              <div className="form-group col-md-6 mb-3">
+              <div className="form-group col-md-6 m-b20">
                 <input name="phone" required type="tel" className="form-control" placeholder="Phone" value={formData.phone} onChange={handleChange} />
               </div>
             </div>
 
             <Button
-              variant="light"
+              style={{ border: "none" }}
               onClick={() => setOpenCreateAccount(!openCreateAccount)}
-              className="btn-block mb-3 d-flex justify-content-between align-items-center bg-white border"
-              style={{ width: '100%', height: '50px', borderRadius: '8px', padding: '0 20px' }}
+              className="btn btn-gray btnhover mb-3"
             >
-              <span className="small fw-semibold">Create an account</span>
-              <i className={`fa fa-angle-${openCreateAccount ? 'up' : 'down'}`}></i>
+              Create an account <i className={`fa fa-angle-${openCreateAccount ? 'up' : 'down'} m-l10`}></i>
             </Button>
             <Collapse in={openCreateAccount}>
-              <div className="mb-3">
-                <p className="small text-muted mb-2">Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-                <input name="Password" type="password" className="form-control" placeholder="Password" />
+              <div>
+                <p>Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
+                <div className="form-group m-b20">
+                  <input name="Password" type="password" className="form-control" placeholder="Password" />
+                </div>
               </div>
             </Collapse>
           </div>
         </div>
 
-        {/* Quadrant 2: Top Right - Ship Different / Notes */}
-        <div className="col-lg-6 mb-4">
-          <div className="widget" style={{ border: 'none', padding: '0' }}>
+        {/* Shipping & Notes Section */}
+        <div className="col-lg-6">
+          <div className="widget">
             <Button
-              variant="light"
+              style={{ border: "none" }}
               onClick={() => setOpenShipDifferent(!openShipDifferent)}
-              className="btn-block mb-3 d-flex justify-content-between align-items-center bg-white border"
-              style={{ width: '100%', height: '50px', borderRadius: '8px', padding: '0 20px' }}
+              className="btn btn-gray btnhover mb-3"
             >
-              <span className="small fw-semibold">Ship to a different address</span>
-              <i className={`fa fa-angle-${openShipDifferent ? 'up' : 'down'}`}></i>
+              Ship to a different address <i className={`fa fa-angle-${openShipDifferent ? 'up' : 'down'} m-l10`}></i>
             </Button>
-
-            {/* Static text as per image 4 */}
-            <p className="small text-muted mb-4">
-              If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing & Shipping section.
-            </p>
-
             <Collapse in={openShipDifferent}>
-              <div className="mb-4 p-3 border rounded bg-light">
-                <div className="form-group mb-3">
+              <div>
+                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing & Shipping section.</p>
+                <div className="form-group m-b20">
                   <input type="text" className="form-control" placeholder="Full Name" />
                 </div>
-                <div className="form-group mb-3">
+                <div className="form-group m-b20">
                   <textarea className="form-control" rows={3} placeholder="Different Shipping Address"></textarea>
                 </div>
               </div>
             </Collapse>
 
-            {/* Order Type / Service Method logic integrated here to maintain functionality */}
-            <div className="mb-4">
-              <label className="fw-bold mb-2 small text-uppercase" style={{ color: '#888' }}>Delivery Service</label>
-              <div className="d-flex gap-2 mb-3">
-                <button type="button" onClick={() => setOrderType("PICKUP")} className={`btn flex-fill py-2 ${orderType === "PICKUP" ? "btn-primary" : "btn-outline-secondary"}`} style={{ borderRadius: '8px', background: orderType === "PICKUP" ? primaryColor : '', borderColor: orderType === "PICKUP" ? primaryColor : '' }}>Pickup</button>
-                <button type="button" onClick={() => setOrderType("DELIVERY")} className={`btn flex-fill py-2 ${orderType === "DELIVERY" ? "btn-primary" : "btn-outline-secondary"}`} style={{ borderRadius: '8px', background: orderType === "DELIVERY" ? primaryColor : '', borderColor: orderType === "DELIVERY" ? primaryColor : '' }}>Delivery</button>
+            <div className="form-group m-b20">
+              <h6 className="mb-2">Order Service</h6>
+              <div className="d-flex gap-2">
+                <button type="button" onClick={() => setOrderType("PICKUP")} className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`} style={{ minWidth: '100px', background: orderType === "PICKUP" ? primaryColor : '' }}>Pickup</button>
+                <button type="button" onClick={() => setOrderType("DELIVERY")} className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`} style={{ minWidth: '100px', background: orderType === "DELIVERY" ? primaryColor : '' }}>Delivery</button>
               </div>
             </div>
 
             <div className="form-group">
-              <textarea name="notes" className="form-control" rows={8} placeholder="Notes about your order, e.g. special notes for delivery" value={formData.notes} onChange={handleChange} style={{ borderRadius: '8px' }}></textarea>
+              <textarea name="notes" className="form-control" rows={5} placeholder="Notes about your order, e.g. special notes for delivery" value={formData.notes} onChange={handleChange}></textarea>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Central Divider */}
-      <div className="dz-divider icon-center my-4" style={{ background: '#eee', height: '1px', position: 'relative' }}>
-        <i className="fa fa-circle text-primary" style={{ color: primaryColor, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', padding: '5px', fontSize: '10px' }}></i>
+      <div className="dz-divider bg-gray-dark icon-center my-5">
+        <i className="fa fa-circle bg-white text-primary" style={{ color: primaryColor }}></i>
       </div>
 
-      {/* Quadrant 3 & 4: Bottom Row */}
       <div className="row">
-        {/* Quadrant 3: Bottom Left - Your Order Table */}
-        <div className="col-lg-6 mb-4">
-          <div className="widget" style={{ border: 'none', padding: '0' }}>
-            <SectionTitle title="Your Order" color={primaryColor} />
-            <div className="table-responsive rounded-3 overflow-hidden border">
-              <table className="table table-bordered mb-0">
-                <thead className="bg-dark text-white text-center">
-                  <tr>
-                    <th style={{ padding: '15px' }}>IMAGE</th>
-                    <th style={{ padding: '15px' }}>PRODUCT NAME</th>
-                    <th style={{ padding: '15px' }}>TOTAL</th>
+        {/* Order Table Section */}
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Your Order</h4>
+            <table className="table-bordered check-tbl">
+              <thead className="text-center">
+                <tr>
+                  <th>IMAGE</th>
+                  <th>PRODUCT NAME</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems.map(item => (
+                  <tr key={item.id}>
+                    <td className="product-item-img text-center">
+                      <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px' }} />
+                    </td>
+                    <td className="product-item-name">{item.name} x {item.quantity}</td>
+                    <td className="product-price">
+                      {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
+                    </td>
                   </tr>
-                </thead>
-                <tbody style={{ background: '#fff' }}>
-                  {cartItems.map(item => (
-                    <tr key={item.id}>
-                      <td className="text-center" style={{ padding: '15px', width: '120px' }}>
-                        <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
-                      </td>
-                      <td style={{ padding: '15px', verticalAlign: 'middle' }}>
-                        <h6 className="mb-0" style={{ fontWeight: 600 }}>{item.name}</h6>
-                        <span className="small text-muted">Price: {cmsConfig?.config?.currency || '$'} {item.price.toFixed(2)} | Qty: {item.quantity}</span>
-                      </td>
-                      <td className="text-end" style={{ padding: '15px', verticalAlign: 'middle', fontWeight: 700 }}>
-                        {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Quadrant 4: Bottom Right - Totals & Payment */}
-        <div className="col-lg-6 mb-4">
-          <div className="widget" style={{ border: 'none', padding: '0' }}>
-            <SectionTitle title="Order Total" color={primaryColor} />
-            <div className="table-responsive rounded-3 overflow-hidden border mb-4">
-              <table className="table table-bordered mb-0">
-                <tbody>
-                  <tr>
-                    <td style={{ padding: '15px' }}>Order Subtotal</td>
-                    <td className="text-end" style={{ padding: '15px', fontWeight: 600 }}>{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '15px' }}>Shipping</td>
-                    <td className="text-end" style={{ padding: '15px' }}>{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free Shipping"}</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '15px' }}>Coupon</td>
-                    <td className="text-end text-success" style={{ padding: '15px', fontWeight: 600 }}>
-                      {discountAmount > 0 ? `-${cmsConfig?.config?.currency || '$'} ${discountAmount.toFixed(2)}` : `$ 0.00`}
-                    </td>
-                  </tr>
-                  <tr style={{ background: '#f8f9fa' }}>
-                    <td style={{ padding: '15px', fontWeight: 700 }}>Total</td>
-                    <td className="text-end" style={{ padding: '15px', fontWeight: 800, color: '#1a1a1a', fontSize: '20px' }}>
-                      {cmsConfig?.config?.currency || '$'} {total.toFixed(2)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        {/* Totals & Payment Section */}
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Order Total</h4>
+            <table className="table-bordered check-tbl mb-4">
+              <tbody>
+                <tr>
+                  <td>Order Subtotal</td>
+                  <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td>Shipping</td>
+                  <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
+                </tr>
+                <tr>
+                  <td>Coupon</td>
+                  <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td className="product-price-total text-end">{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </table>
 
-            {/* Promo application relocated subtly */}
-            <div className="mb-4">
+            <div className="m-b20">
               <div className="input-group">
-                <input className="form-control" placeholder="Promo Code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} style={{ borderRadius: '8px 0 0 8px' }} />
-                <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-dark" style={{ borderRadius: '0 8px 8px 0', minWidth: '80px' }}>Apply</button>
+                <input className="form-control" placeholder="Promo Code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} />
+                <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-primary" style={{ background: primaryColor }}>Apply</button>
               </div>
             </div>
 
-            <SectionTitle title="Payment Method" color={primaryColor} />
-
-            <div className="payment-selector mb-4">
-              <div className="form-group mb-3">
-                <label className="small fw-bold mb-2">Select Method</label>
-                <div className="d-flex gap-2">
-                  <button type="button" className={`btn flex-fill py-2 ${formData.paymentMethod === "CASH" ? "btn-dark" : "btn-outline-dark"}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "CASH" }))} style={{ borderRadius: '8px' }}>Cash On Delivery</button>
-                  <button type="button" className={`btn flex-fill py-2 ${formData.paymentMethod === "STRIPE" ? "btn-dark" : "btn-outline-dark"}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "STRIPE" }))} style={{ borderRadius: '8px' }}>Pay Online (Stripe)</button>
-                </div>
+            <h4 className="widget-title">Payment Method</h4>
+            <div className="form-group m-b20">
+              <div className="d-flex gap-3 mb-3">
+                <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "CASH" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "CASH" }))} style={{ borderColor: formData.paymentMethod === "CASH" ? primaryColor : '' }}>Cash</div>
+                <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "STRIPE" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "STRIPE" }))} style={{ borderColor: formData.paymentMethod === "STRIPE" ? primaryColor : '' }}>Online Card</div>
               </div>
-
-              {formData.paymentMethod === "STRIPE" && (
-                <div className="payment-card-details">
-                  <div className="form-group mb-3">
-                    <input type="text" name="cardName" className="form-control" placeholder="Name on Card" value={formData.cardName} onChange={handleChange} />
-                  </div>
-                  <div className="form-group mb-3">
-                    <div className="p-3 border rounded-3 bg-white">
-                      <CardElement options={{ style: { base: { fontSize: "16px", color: "#333", "::placeholder": { color: "#888" } } } }} />
-                    </div>
-                  </div>
-                  <p className="small text-muted mb-3"><i className="fa fa-lock me-1"></i> Your payment is secured and encrypted by Stripe.</p>
-                </div>
-              )}
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-hover-2 w-100 py-3"
-              disabled={loading || cartItems.length === 0}
-              style={{ background: '#f5f5f5', color: '#1a1a1a', fontWeight: 700, borderRadius: '8px', border: 'none', transition: '0.3s' }}
-              onMouseOver={(e) => e.currentTarget.style.background = primaryColor}
-              onMouseOut={(e) => e.currentTarget.style.background = '#f5f5f5'}
-            >
-              {loading ? "Processing..." : "Place Order Now"}
-            </button>
+            {formData.paymentMethod === "STRIPE" && (
+              <div className="stripe-box">
+                <div className="form-group m-b20">
+                  <input type="text" name="cardName" className="form-control" placeholder="Name on Card" value={formData.cardName} onChange={handleChange} />
+                </div>
+                <div className="form-group m-b20 p-3 border rounded bg-white">
+                  <CardElement options={{ style: { base: { fontSize: "16px", color: "#333" } } }} />
+                </div>
+              </div>
+            )}
+
+            <div className="form-group">
+              <button
+                className="btn btn-gray btn-hover-2 w-100"
+                type="submit"
+                disabled={loading || cartItems.length === 0}
+              >
+                {loading ? "Processing..." : "Place Order Now"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
-        <Modal.Header closeButton><Modal.Title style={{ fontWeight: 700 }}>Pick Delivery Location</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title>Location</Modal.Title></Modal.Header>
         <Modal.Body><LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} /></Modal.Body>
-        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)}>Cancel</Button><Button variant="primary" onClick={() => setShowMap(false)} style={{ background: primaryColor, border: 'none' }}>Use this Address</Button></Modal.Footer>
+        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)}>Close</Button></Modal.Footer>
       </Modal>
     </form>
   );
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm } = useContext(Context);
-  // const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const { user, setShowSignInForm} = useContext(Context);
 
   return (
     <div className="page-content bg-white">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" />
-      <section className="content-inner" style={{ paddingTop: '50px' }}>
-        <div className="container" style={{ maxWidth: '1200px' }}>
+      <section className="content-inner">
+        <div className="container">
           {!user && (
-            <div className="alert alert-warning mb-5 d-flex justify-content-between align-items-center" style={{ borderRadius: '15px' }}>
-              <span className="fw-medium">Account required! Please login to place your order.</span>
-              <button className="btn btn-sm btn-dark px-4" onClick={() => setShowSignInForm(true)}>Login</button>
+            <div className="alert alert-warning mb-4 d-flex justify-content-between">
+              <span>Login to continue checkout!</span>
+              <button className="btn btn-sm btn-dark" onClick={() => setShowSignInForm(true)}>Login</button>
             </div>
           )}
           <Elements stripe={stripePromise}>
