@@ -16,7 +16,7 @@ const Header2 = () => {
     user,
     setUser,
     cartItems,
-    // activeBranch
+    removeFromCart
   } = useContext(Context);
 
   const isStoreClosed = false;
@@ -27,6 +27,7 @@ const Header2 = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const handleLogout = () => {
     setUser(null);
@@ -70,6 +71,7 @@ const Header2 = () => {
   const headerContent = headerSettings.content || { showCart: "true", showLogin: "true" };
   const isLight = headerClass || scroll;
   const iconColor = isLight ? "#222222" : "#ffffff";
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
 
   if (!showHeader) return null;
 
@@ -198,11 +200,95 @@ const Header2 = () => {
                 <div className="extra-nav-mobile">
                   <ul className="header-right m-0 p-0" style={{ listStyle: 'none' }}>
                     {headerContent.showCart !== "false" && (
-                      <li className="nav-item cart-link">
-                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <li className="nav-item cart-link" style={{ position: 'relative' }}>
+                        <button
+                          className="btn btn-white btn-square btn-shadow cart-btn"
+                          style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          onClick={() => setCartOpen(!cartOpen)}
+                        >
                           <i className="flaticon-shopping-bag-1"></i>
                           <span className="badge">{cartItems.length}</span>
-                        </Link>
+                        </button>
+
+                        {/* Mobile Cart Dropdown */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "120%",
+                            right: "-60px",
+                            width: "290px",
+                            background: "#fff",
+                            borderRadius: "15px",
+                            boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
+                            zIndex: 10000,
+                            padding: "15px",
+                            display: cartOpen ? "block" : "none",
+                            border: "1px solid #f0f0f0"
+                          }}
+                        >
+                          <div style={{ maxHeight: "300px", overflowY: "auto", marginBottom: "15px" }}>
+                            {cartItems.map((item) => (
+                              <div key={item.id} style={{ display: "flex", gap: "10px", marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px solid #f5f5f5", position: "relative" }}>
+                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "50px", height: "50px", borderRadius: "8px", objectFit: "cover" }} />
+                                <div style={{ flex: 1 }}>
+                                  <h6 style={{ fontSize: "12px", fontWeight: 700, marginBottom: "2px", color: "#222" }}>{item.name}</h6>
+                                  <p style={{ fontSize: "11px", color: primaryColor, fontWeight: 600, margin: 0 }}>
+                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)} x {item.quantity}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => removeFromCart(item.id)}
+                                  style={{
+                                    background: "#ff1e1e",
+                                    color: "#fff",
+                                    border: "none",
+                                    width: "20px",
+                                    height: "20px",
+                                    borderRadius: "4px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    fontSize: "12px"
+                                  }}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                            {cartItems.length === 0 && (
+                              <div className="text-center py-2">
+                                <p style={{ color: "#888", marginBottom: 0, fontSize: '13px' }}>Empty</p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px", paddingTop: "5px", borderTop: "2px solid #f8f8f8" }}>
+                            <h6 style={{ margin: 0, fontWeight: 700, fontSize: '14px' }}>Total:</h6>
+                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor, fontSize: '14px' }}>
+                              {cmsConfig?.config?.currency || '$'}{cartItems.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0).toFixed(0)}
+                            </h6>
+                          </div>
+
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <Link
+                              to="/shop-cart"
+                              className="btn btn-primary btn-sm w-100"
+                              style={{ borderRadius: "8px", padding: "8px", fontSize: '12px' }}
+                              onClick={() => setCartOpen(false)}
+                            >
+                              Cart
+                            </Link>
+                            <Link
+                              to="/our-menu-2"
+                              className="btn btn-outline-primary btn-sm w-100"
+                              style={{ borderRadius: "8px", padding: "8px", fontSize: '12px' }}
+                              onClick={() => setCartOpen(false)}
+                            >
+                              Menu
+                            </Link>
+                          </div>
+                        </div>
                       </li>
                     )}
                   </ul>
@@ -340,11 +426,95 @@ const Header2 = () => {
                       </li>
                     )}
                     {headerContent.showCart !== "false" && (
-                      <li className="nav-item cart-link">
-                        <Link to="/shop-cart" className="btn btn-white btn-square btn-shadow cart-btn">
+                      <li className="nav-item cart-link" style={{ position: 'relative' }}>
+                        <button
+                          type="button"
+                          className="btn btn-white btn-square btn-shadow cart-btn"
+                          onClick={() => setCartOpen(!cartOpen)}
+                        >
                           <i className="flaticon-shopping-bag-1"></i>
                           <span className="badge">{cartItems.length}</span>
-                        </Link>
+                        </button>
+
+                        {/* Cart Dropdown */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "110%",
+                            right: 0,
+                            width: "320px",
+                            background: "#fff",
+                            borderRadius: "15px",
+                            boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
+                            zIndex: 10000,
+                            padding: "20px",
+                            display: cartOpen ? "block" : "none",
+                            border: "1px solid #f0f0f0"
+                          }}
+                        >
+                          <div style={{ maxHeight: "350px", overflowY: "auto", marginBottom: "15px" }}>
+                            {cartItems.map((item) => (
+                              <div key={item.id} style={{ display: "flex", gap: "12px", marginBottom: "15px", paddingBottom: "15px", borderBottom: "1px solid #f5f5f5", position: "relative" }}>
+                                <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "65px", height: "65px", borderRadius: "10px", objectFit: "cover" }} />
+                                <div style={{ flex: 1 }}>
+                                  <h6 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "4px", color: "#222" }}>{item.name}</h6>
+                                  <p style={{ fontSize: "13px", color: primaryColor, fontWeight: 600, margin: 0 }}>
+                                    {cmsConfig?.config?.currency || '$'}{Number(item.price).toFixed(0)} x {item.quantity}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => removeFromCart(item.id)}
+                                  style={{
+                                    background: "#ff1e1e",
+                                    color: "#fff",
+                                    border: "none",
+                                    width: "24px",
+                                    height: "24px",
+                                    borderRadius: "6px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    fontSize: "14px"
+                                  }}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                            {cartItems.length === 0 && (
+                              <div className="text-center py-3">
+                                <p style={{ color: "#888", marginBottom: 0 }}>Your cart is empty</p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", paddingTop: "10px", borderTop: "2px solid #f8f8f8" }}>
+                            <h6 style={{ margin: 0, fontWeight: 700 }}>Total:</h6>
+                            <h6 style={{ margin: 0, fontWeight: 800, color: primaryColor }}>
+                              {cmsConfig?.config?.currency || '$'}{cartItems.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0).toFixed(0)}
+                            </h6>
+                          </div>
+
+                          <div style={{ display: "flex", gap: "10px" }}>
+                            <Link
+                              to="/shop-cart"
+                              className="btn btn-primary btn-sm w-100"
+                              style={{ borderRadius: "10px", padding: "10px" }}
+                              onClick={() => setCartOpen(false)}
+                            >
+                              View Cart
+                            </Link>
+                            <Link
+                              to="/our-menu-2"
+                              className="btn btn-outline-primary btn-sm w-100"
+                              style={{ borderRadius: "10px", padding: "10px" }}
+                              onClick={() => setCartOpen(false)}
+                            >
+                              Menu
+                            </Link>
+                          </div>
+                        </div>
                       </li>
                     )}
                   </ul>
