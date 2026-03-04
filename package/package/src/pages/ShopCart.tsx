@@ -117,29 +117,28 @@ const ShopCart = () => {
 
                           <div className="d-flex align-items-center justify-content-between mt-2">
                             <div className="btn-quantity style-1" style={{ margin: 0 }}>
-                              <div className="input-group bootstrap-touchspin" style={{ width: "90px", height: "30px", border: '1px solid #eee', borderRadius: '6px' }}>
+                              <div className="d-flex align-items-center" style={{ width: "100px", height: "32px", border: '1px solid #eee', borderRadius: '8px', overflow: 'hidden' }}>
                                 <button
-                                  className="btn btn-default"
+                                  className="btn p-0"
                                   type="button"
-                                  style={{ padding: "0 5px", background: 'none', border: 'none' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f8f9fa', fontSize: '14px', transition: 'all 0.2s' }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 >
-                                  <i className="ti-minus" style={{ fontSize: '10px' }}></i>
+                                  <i className="fa-solid fa-minus" style={{ fontSize: '10px' }}></i>
                                 </button>
                                 <input
                                   type="text"
                                   value={item.quantity}
                                   readOnly
-                                  className="form-control"
-                                  style={{ height: "28px", padding: 0, textAlign: "center", fontWeight: 700, border: 'none', background: 'none', fontSize: '13px' }}
+                                  style={{ flex: 1, height: "100%", padding: 0, textAlign: "center", fontWeight: 700, border: 'none', background: '#fff', fontSize: '13px', color: '#222' }}
                                 />
                                 <button
-                                  className="btn btn-default"
+                                  className="btn p-0"
                                   type="button"
-                                  style={{ padding: "0 5px", background: 'none', border: 'none' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f8f9fa', fontSize: '14px', transition: 'all 0.2s' }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 >
-                                  <i className="ti-plus" style={{ fontSize: '10px' }}></i>
+                                  <i className="fa-solid fa-plus" style={{ fontSize: '10px' }}></i>
                                 </button>
                               </div>
                             </div>
