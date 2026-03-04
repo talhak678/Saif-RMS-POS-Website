@@ -3,11 +3,10 @@ import axios from "axios";
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
 import LocationPicker from "../elements/LocationPicker";
-import { Modal, Button, Collapse } from "react-bootstrap";
+import { Modal, Button,  } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import Select from "react-select";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 
@@ -44,6 +43,7 @@ const CheckoutForm = () => {
     paymentMethod: "CASH"
   });
 
+  // RESTORED: Local Storage & Context Sync
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
@@ -53,6 +53,21 @@ const CheckoutForm = () => {
         email: user.email || "",
         phone: user.phone || prev.phone,
       }));
+    }
+
+    const savedType = localStorage.getItem("orderType");
+    if (savedType === "DELIVERY" || savedType === "PICKUP") setOrderType(savedType);
+
+    const savedPhone = localStorage.getItem("userPhone");
+    if (savedPhone) setFormData(prev => ({ ...prev, phone: savedPhone }));
+
+    const savedLoc = localStorage.getItem("userLocation");
+    if (savedLoc) {
+      try {
+        const parsed = JSON.parse(savedLoc);
+        if (parsed.value) setSelectedBranchId(parsed.value);
+        if (parsed.label) setFormData(prev => ({ ...prev, address: parsed.label }));
+      } catch (e) { }
     }
   }, [user]);
 
@@ -77,6 +92,7 @@ const CheckoutForm = () => {
   const discountAmount = appliedDiscount?.discountAmount || 0;
   const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
 
+  // RESTORED: Promo Code Application Logic
   const handleApplyDiscount = async () => {
     if (!discountCode.trim()) { toast.error("Please enter a discount code"); return; }
     const restaurantId = cmsConfig?.restaurantId;
@@ -136,7 +152,7 @@ const CheckoutForm = () => {
         if (intentRes.data?.success) {
           const cardEl = elements.getElement(CardElement);
           if (cardEl) {
-            const { error, paymentIntent } = await stripe.confirmCardPayment(intentRes.data.data.clientSecret, {
+            const { error, } = await stripe.confirmCardPayment(intentRes.data.data.clientSecret, {
               payment_method: { card: cardEl, billing_details: { name: `${formData.firstName} ${formData.lastName}`, email: formData.email, phone: formData.phone } }
             });
             if (error) { toast.error(error.message || "Payment failed"); setLoading(false); return; }
@@ -159,11 +175,28 @@ const CheckoutForm = () => {
       <div className="row">
         {/* BILLING SECTION */}
         <div className="col-lg-6">
-          <div className="widget" style={{ background: '#fff', borderRadius: '20px', padding: '30px', boxShadow: '0 5px 25px rgba(0,0,0,0.05)' }}>
+          <div className="widget" style={{ background: '#fff', borderRadius: '20px', padding: '30px', boxShadow: '0 5px 25px rgba(0,0,0,0.05)', marginBottom: '30px' }}>
             <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '25px', display: 'flex', alignItems: 'center' }}>
               <i className="fa-solid fa-address-book me-2" style={{ color: primaryColor }}></i>
-              Billing & Shipping Details
+              Contact & Branch details
             </h4>
+
+            {/* RESTORED: Branch Selection */}
+            {branches.length > 1 && (
+              <div className="form-group mb-3">
+                <label className="fw-bold mb-2 small text-uppercase" style={{ letterSpacing: '1px', color: '#888' }}>Select Restaurant Branch</label>
+                <select
+                  className="form-control"
+                  style={{ borderRadius: '12px', height: '50px' }}
+                  value={selectedBranchId || activeBranch?.id}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}
+                >
+                  {branches.map((b: any) => (
+                    <option key={b.id} value={b.id}>{b.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div className="row">
               <div className="form-group col-md-6 m-b20">
@@ -234,23 +267,30 @@ const CheckoutForm = () => {
         {/* ORDER SUMMARY & PAYMENT SECTION */}
         <div className="col-lg-6">
           <div className="widget" style={{ background: '#fff', borderRadius: '20px', padding: '30px', boxShadow: '0 5px 25px rgba(0,0,0,0.05)' }}>
-            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '25px' }}>Your Order</h4>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h4 className="widget-title m-0" style={{ fontWeight: 700 }}>Your Order</h4>
+              <Link to="/shop-cart" className="text-primary small fw-bold"><i className="fa-solid fa-pencil me-1"></i> Edit Cart</Link>
+            </div>
 
             <table className="table-bordered check-tbl mb-4" style={{ width: '100%', borderRadius: '15px', overflow: 'hidden' }}>
               <thead className="text-center" style={{ background: '#f8f9fa' }}>
                 <tr>
-                  <th style={{ padding: '15px' }}>IMAGE</th>
-                  <th style={{ padding: '15px' }}>PRODUCT NAME</th>
+                  <th style={{ padding: '15px' }}>PRODUCT</th>
                   <th style={{ padding: '15px' }}>TOTAL</th>
                 </tr>
               </thead>
               <tbody>
                 {cartItems.map(item => (
                   <tr key={item.id}>
-                    <td className="product-item-img text-center" style={{ padding: '15px' }}>
-                      <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <td className="product-item-name" style={{ padding: '15px' }}>
+                      <div className="d-flex align-items-center">
+                        <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '45px', height: '45px', borderRadius: '8px', objectFit: 'cover', marginRight: '15px' }} />
+                        <div>
+                          <h6 className="mb-0" style={{ fontWeight: 600, fontSize: '14px' }}>{item.name}</h6>
+                          <span className="small text-muted">Qty: {item.quantity}</span>
+                        </div>
+                      </div>
                     </td>
-                    <td className="product-item-name" style={{ padding: '15px', fontWeight: 600 }}>{item.name} x {item.quantity}</td>
                     <td className="product-price text-end" style={{ padding: '15px', fontWeight: 700 }}>
                       {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
                     </td>
@@ -259,7 +299,37 @@ const CheckoutForm = () => {
               </tbody>
             </table>
 
-            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '20px' }}>Order Total</h4>
+            {/* RESTORED: Promo Code Block */}
+            <div className="mb-4">
+              <label className="fw-bold mb-2 small text-uppercase" style={{ letterSpacing: '1px', color: '#888' }}>Apply Promo Code</label>
+              {appliedDiscount ? (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#e8f5e9", borderRadius: '12px', padding: "12px 20px", border: '1px dashed #2ecc71' }}>
+                  <span style={{ color: "#2E7D32", fontWeight: 700 }}>🎉 Applied: {appliedDiscount.code}</span>
+                  <button type="button" onClick={() => setAppliedDiscount(null)} style={{ background: "none", border: "none", color: "#c62828", fontSize: '20px' }}>×</button>
+                </div>
+              ) : (
+                <div className="d-flex gap-2">
+                  <input
+                    className="form-control"
+                    style={{ borderRadius: '12px', height: '50px', flex: 1 }}
+                    placeholder="Enter code"
+                    value={discountCode}
+                    onChange={e => setDiscountCode(e.target.value.toUpperCase())}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyDiscount}
+                    disabled={discountLoading}
+                    className="btn btn-primary"
+                    style={{ borderRadius: '12px', padding: '0 25px', background: primaryColor, border: 'none' }}
+                  >
+                    {discountLoading ? "..." : "Apply"}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '20px' }}>Order Billing</h4>
             <table className="table-bordered check-tbl mb-4" style={{ width: '100%' }}>
               <tbody>
                 <tr>
@@ -282,7 +352,7 @@ const CheckoutForm = () => {
                     <td className="product-price text-end" style={{ padding: '15px', color: '#2ecc71', fontWeight: 700 }}>- {cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
                   </tr>
                 )}
-                <tr>
+                <tr style={{ background: '#fcfcfc' }}>
                   <td style={{ padding: '15px', fontWeight: 700 }}>Total</td>
                   <td className="product-price-total text-end" style={{ padding: '15px', fontWeight: 800, color: primaryColor, fontSize: '20px' }}>
                     {cmsConfig?.config?.currency || '$'} {total.toFixed(2)}
@@ -294,21 +364,21 @@ const CheckoutForm = () => {
             <h4 className="widget-title" style={{ fontWeight: 700, marginBottom: '20px' }}>Payment Method</h4>
             <div className="payment-options mb-4">
               <div className="form-group mb-2">
-                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "CASH" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer' }}>
+                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "CASH" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer', background: formData.paymentMethod === "CASH" ? primaryColor + '05' : 'transparent' }}>
                   <input type="radio" name="paymentMethod" value="CASH" checked={formData.paymentMethod === "CASH"} onChange={handleChange} className="me-3" style={{ accentColor: primaryColor }} />
                   <span className="fw-bold">Cash on Delivery</span>
                 </label>
               </div>
               <div className="form-group">
-                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "STRIPE" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer' }}>
+                <label className="d-flex align-items-center p-3" style={{ border: `2px solid ${formData.paymentMethod === "STRIPE" ? primaryColor : "#eee"}`, borderRadius: '12px', cursor: 'pointer', background: formData.paymentMethod === "STRIPE" ? primaryColor + '05' : 'transparent' }}>
                   <input type="radio" name="paymentMethod" value="STRIPE" checked={formData.paymentMethod === "STRIPE"} onChange={handleChange} className="me-3" style={{ accentColor: primaryColor }} />
                   <span className="fw-bold">Credit / Debit Card (Stripe)</span>
                 </label>
               </div>
 
               {formData.paymentMethod === "STRIPE" && (
-                <div className="mt-3 p-3" style={{ border: '1px solid #ddd', borderRadius: '12px', background: '#fcfcfc' }}>
-                  <CardElement options={{ style: { base: { fontSize: "16px", color: "#424770" } } }} />
+                <div className="mt-3 p-3" style={{ border: '2px solid #f0f0f0', borderRadius: '12px', background: '#fcfcfc' }}>
+                  <CardElement options={{ style: { base: { fontSize: "16px", color: "#424770", "::placeholder": { color: "#aab7c4" } } } }} />
                 </div>
               )}
             </div>
@@ -319,19 +389,20 @@ const CheckoutForm = () => {
               disabled={loading || cartItems.length === 0}
               style={{
                 borderRadius: "15px", fontWeight: 700, fontSize: "18px",
-                background: primaryColor, border: 'none'
+                background: primaryColor, border: 'none',
+                boxShadow: `0 10px 20px ${primaryColor}30`
               }}
             >
-              {loading ? "Processing..." : `Place Order Now`}
+              {loading ? <><span className="spinner-border spinner-border-sm me-2"></span>Processing...</> : `Place Order — ${cmsConfig?.config?.currency || '$'} ${total.toFixed(2)}`}
             </button>
           </div>
         </div>
       </div>
 
       <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
-        <Modal.Header closeButton><Modal.Title>Select Delivery Location</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title style={{ fontWeight: 700 }}>Select Delivery Location</Modal.Title></Modal.Header>
         <Modal.Body><LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} /></Modal.Body>
-        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)}>Cancel</Button><Button variant="primary" onClick={() => setShowMap(false)} style={{ background: primaryColor, border: 'none' }}>Confirm Location</Button></Modal.Footer>
+        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)} style={{ borderRadius: '10px' }}>Cancel</Button><Button variant="primary" onClick={() => setShowMap(false)} style={{ background: primaryColor, border: 'none', borderRadius: '10px' }}>Confirm Location</Button></Modal.Footer>
       </Modal>
     </form>
   );
@@ -344,8 +415,20 @@ const ShopCheckout = () => {
   return (
     <div className="page-content bg-white">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" subtitle="Shop Checkout" />
-      <section className="content-inner">
+      <section className="content-inner" style={{ background: '#f9f9f9' }}>
         <div className="container">
+
+          {/* RESTORED: Sign-in Nudge Banner */}
+          {!user && (
+            <div className="alert alert-warning mb-5" style={{ borderRadius: '20px', padding: '25px', border: '1px dashed #f1c40f', background: '#fff9e6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h5 className="mb-1" style={{ fontWeight: 700, color: '#916d03' }}>Account required!</h5>
+                <p className="mb-0 text-muted small">Please sign in to your account for a better experience and to track your order.</p>
+              </div>
+              <button className="btn btn-primary btn-sm" onClick={() => setShowSignInForm(true)} style={{ background: primaryColor, border: 'none', borderRadius: '10px', padding: '10px 20px', fontWeight: 700 }}>Sign In Now</button>
+            </div>
+          )}
+
           <Elements stripe={stripePromise}>
             <CheckoutForm />
           </Elements>
