@@ -10,6 +10,11 @@ const ShopStyle1RightContent = () => {
     cmsConfig?.config?.primaryColor ||
     "#ff6b35";
 
+  const secondaryColor =
+    cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor ||
+    cmsConfig?.config?.secondaryColor ||
+    "#2ecc71";
+
   // Get a few items from menu for 'Related Products'
   const allItems = (cmsConfig?.menu || []).flatMap((cat: any) =>
     cat.menuItems.map((item: any) => ({ ...item, categoryName: cat.name }))
@@ -73,7 +78,7 @@ const ShopStyle1RightContent = () => {
              border-radius: 50%;
           }
           .rating-badge {
-            background: #ffb800;
+            background: ${secondaryColor};
             color: #fff;
             padding: 2px 8px;
             border-radius: 5px;
