@@ -50,7 +50,20 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4.active {
           transform: translateY(-6px);
           box-shadow: 0 16px 40px rgba(0,0,0,0.13);
-          border-color: ${primaryColor}40;
+          border-color: ${primaryColor} !important;
+          background-color: ${primaryColor} !important;
+        }
+        .dz-img-box.style-4:hover .dz-content .title,
+        .dz-img-box.style-4:hover .dz-content .title a,
+        .dz-img-box.style-4:hover .dz-content p,
+        .dz-img-box.style-4:hover .menu-footer span,
+        .dz-img-box.style-4:hover .menu-footer .price,
+        .dz-img-box.style-4.active .dz-content .title,
+        .dz-img-box.style-4.active .dz-content .title a,
+        .dz-img-box.style-4.active .dz-content p,
+        .dz-img-box.style-4.active .menu-footer span,
+        .dz-img-box.style-4.active .menu-footer .price {
+          color: #ffffff !important;
         }
         .dz-img-box.style-4 .menu-detail {
           display: flex;
@@ -86,6 +99,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          transition: color 0.3s ease;
         }
         .dz-img-box.style-4 .dz-content .title a {
           color: inherit;
@@ -99,6 +113,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          transition: color 0.3s ease;
         }
         .dz-img-box.style-4 .menu-footer {
           display: flex;
@@ -111,11 +126,13 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           text-transform: uppercase;
           letter-spacing: 0.8px;
           font-weight: 600;
+          transition: color 0.3s ease;
         }
         .dz-img-box.style-4 .menu-footer .price {
           font-size: 20px;
           font-weight: 800;
           color: ${secondaryColor};
+          transition: color 0.3s ease;
         }
         .dz-img-box.style-4 .detail-btn {
           position: absolute;
@@ -134,6 +151,12 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           border: none;
           text-decoration: none;
           font-size: 16px;
+          z-index: 2;
+        }
+        .dz-img-box.style-4:hover .detail-btn,
+        .dz-img-box.style-4.active .detail-btn {
+          background-color: #ffffff !important;
+          color: ${primaryColor} !important;
         }
         .dz-img-box.style-4 .detail-btn:hover {
           filter: brightness(1.1);
