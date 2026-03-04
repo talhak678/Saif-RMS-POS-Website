@@ -67,7 +67,7 @@ const Footer2 = () => {
                 background-color: ${fbgColor} !important;
                 margin: 0 100px 40px 100px;
                 border-radius: 40px;
-                padding: 50px 50px;
+                padding: 40px 50px;
                 position: relative;
                 overflow: hidden;
                 border: none !important;
@@ -79,14 +79,14 @@ const Footer2 = () => {
               }
               .footer-divider {
                 border-top: 1px solid rgba(255,255,255,0.1);
-                margin: 40px 0;
+                margin: 30px 0;
               }
               .footer-title {
                 font-weight: ${fHeadingWeight} !important;
                 font-size: 22px !important;
                 letter-spacing: 1px;
                 color: ${ftColor} !important;
-                margin-bottom: 25px !important;
+                margin-bottom: 20px !important;
                 text-transform: uppercase;
               }
               .widget_services ul li {
@@ -209,7 +209,7 @@ const Footer2 = () => {
                             IMAGES.logo2
                           }
                           alt="Logo"
-                          style={{ maxHeight: '45px', width: 'auto' }}
+                          style={{ maxHeight: '60px', width: 'auto' }}
                         />
                       </Link>
                     </div>
@@ -246,7 +246,7 @@ const Footer2 = () => {
                 {/* Bottom Section: 4 Columns */}
                 <div className="row">
                   {/* CONTACT */}
-                  <div className="col-lg-3 col-md-6 mb-4">
+                  <div className="col-lg-3 col-md-6 mb-3">
                     <div className="widget widget_getintuch">
                       <h5 className="footer-title">{footerContent.contactTitle || "CONTACT"}</h5>
                       <ul>
@@ -267,7 +267,7 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR LINKS */}
-                  <div className="col-lg-3 col-md-6 mb-4">
+                  <div className="col-lg-3 col-md-6 mb-3">
                     <div className="widget widget_services">
                       <h5 className="footer-title">{footerContent.linksTitle || "OUR LINKS"}</h5>
                       <ul>
@@ -277,7 +277,7 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR SERVICES */}
-                  <div className="col-lg-3 col-md-6 mb-4">
+                  <div className="col-lg-3 col-md-6 mb-3">
                     <div className="widget widget_services">
                       <h5 className="footer-title">{footerContent.servicesTitle || "OUR SERVICES"}</h5>
                       <ul>
@@ -287,7 +287,7 @@ const Footer2 = () => {
                   </div>
 
                   {/* SERVICE HOURS & FOLLOW US */}
-                  <div className="col-lg-3 col-md-6 mb-4">
+                  <div className="col-lg-3 col-md-6 mb-3">
                     <div className="widget">
                       <h5 className="footer-title">{footerContent.serviceHoursTitle || "SERVICE HOURS"}</h5>
                       <p style={{ opacity: 0.8, fontSize: '17px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
