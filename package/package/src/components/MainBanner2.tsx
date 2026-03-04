@@ -125,6 +125,14 @@ const MainBanner2 = () => {
               display: none !important;
             }
           }
+          .banner-btn .btn:hover span {
+            color: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35"} !important;
+          }
+          .banner-btn .btn-outline-primary:hover,
+          .banner-btn .btn-primary:hover {
+            background-color: #fff !important;
+            border-color: #fff !important;
+          }
         `}
       </style>
       <div className="swiper-bnr-pagination left-align">

@@ -113,6 +113,17 @@ const MainBanner = () => {
                margin-right: 0 !important;
             }
           }
+          .main-bnr-one .banner-btn .btn:hover span {
+            color: ${themeColors.primaryColor || "#ff6b35"} !important;
+          }
+          .main-bnr-one .banner-btn .btn-outline-primary:hover {
+            background-color: #fff !important;
+            border-color: #fff !important;
+          }
+          .main-bnr-one .banner-btn .btn-primary:hover {
+            background-color: #fff !important;
+            border-color: #fff !important;
+          }
         `}
       </style>
       <div className="slider-pagination">
