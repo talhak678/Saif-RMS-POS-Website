@@ -134,6 +134,9 @@ const MenuStyle2 = () => {
               height: 180px !important;
             }
           }
+          .menu-category-badge {
+            color: ${secondaryColor} !important;
+          }
         `}
       </style>
 
@@ -283,6 +286,7 @@ const MenuStyle2 = () => {
 
                     {/* Category badge */}
                     <span
+                      className="menu-category-badge"
                       style={{
                         position: "absolute",
                         top: "13px",

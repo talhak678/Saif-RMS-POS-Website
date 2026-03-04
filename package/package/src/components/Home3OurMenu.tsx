@@ -204,6 +204,7 @@ const Home3OurMenu = () => {
                 />
                 {/* Category pill */}
                 <span
+                  className="menu-category-badge"
                   style={{
                     position: "absolute",
                     top: "12px",
@@ -392,6 +393,9 @@ const Home3OurMenu = () => {
       <style>{`
         .card-overlay { opacity: 0; transition: opacity 0.3s ease; }
         .col-lg-4:hover .card-overlay { opacity: 1; }
+        .menu-category-badge {
+          color: ${secondaryColor} !important;
+        }
       `}</style>
     </>
   );
