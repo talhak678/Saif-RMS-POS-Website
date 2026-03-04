@@ -34,76 +34,80 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
       <style>{`
         .browse-menu-card {
            background: #fff;
-           border-radius: 28px;
-           padding: 30px;
+           border-radius: 18px;
+           padding: 16px 16px 16px 16px;
            display: flex;
            align-items: center;
            position: relative;
-           box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-           transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-           margin: 15px 12px;
+           box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+           transition: all 0.3s ease;
+           margin: 10px 8px;
            overflow: hidden;
-           border: 1px solid #f2f2f2;
-           min-height: 190px;
-           height: 190px;
+           border: 1px solid #efefef;
+           min-height: 160px;
+           height: 160px;
         }
         .browse-menu-card:hover {
-           transform: translateY(-10px);
-           box-shadow: 0 25px 60px rgba(0,0,0,0.1);
-           border-color: ${primaryColor}22;
+           transform: translateY(-6px);
+           box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+           border-color: ${primaryColor}30;
         }
         .browse-media {
-           width: 120px;
-           height: 120px;
-           border-radius: 20px;
+           width: 85px;
+           height: 85px;
+           border-radius: 14px;
            overflow: hidden;
            flex-shrink: 0;
-           background: #f8f8f8;
-           box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+           background: #f5f5f5;
         }
         .browse-media img {
            width: 100%;
            height: 100%;
            object-fit: cover;
-           transition: all 0.5s ease;
+           transition: transform 0.4s ease;
         }
         .browse-menu-card:hover .browse-media img {
-           transform: scale(1.1);
+           transform: scale(1.08);
         }
         .browse-content {
-           padding-left: 25px;
+           padding-left: 14px;
+           padding-right: 48px;
            flex: 1;
+           min-width: 0;
            display: flex;
            flex-direction: column;
            justify-content: center;
         }
         .browse-title {
-           font-size: 20px;
+           font-size: 15px;
            font-weight: 700;
            color: #1a1a1a;
-           margin-bottom: 6px;
-           line-height: 1.2;
+           margin-bottom: 3px;
+           line-height: 1.3;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
         }
         .browse-subtitle {
-           font-size: 15px;
-           color: #666;
-           margin-bottom: 18px;
+           font-size: 12px;
+           color: #888;
+           margin-bottom: 10px;
            display: block;
            white-space: nowrap;
            overflow: hidden;
            text-overflow: ellipsis;
         }
         .browse-price-label {
-           font-size: 11px;
-           color: #999;
+           font-size: 10px;
+           color: #aaa;
            display: block;
            text-transform: uppercase;
-           letter-spacing: 1px;
+           letter-spacing: 0.8px;
            margin-bottom: 2px;
-           font-weight: 700;
+           font-weight: 600;
         }
         .browse-price {
-           font-size: 24px;
+           font-size: 18px;
            font-weight: 800;
            color: ${primaryColor};
         }
@@ -111,26 +115,23 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
            position: absolute;
            bottom: 0px;
            right: 0px;
-           width: 65px;
-           height: 65px;
+           width: 48px;
+           height: 48px;
            background: ${primaryColor};
            color: #fff;
            display: flex;
            align-items: center;
            justify-content: center;
-           border-radius: 28px 0 0 0;
+           border-radius: 18px 0 0 0;
            cursor: pointer;
-           transition: all 0.3s ease;
+           transition: all 0.25s ease;
            border: none;
-           font-size: 22px;
         }
         .browse-add-btn:hover {
-           background: #222; /* Add a nice hover state for the button too */
-           width: 70px;
-           height: 70px;
+           filter: brightness(1.1);
         }
         .browse-add-btn i {
-           font-size: 20px;
+           font-size: 16px;
         }
       `}</style>
       <Swiper
