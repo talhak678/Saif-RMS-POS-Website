@@ -118,7 +118,12 @@ const CheckoutForm = () => {
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) { toast.error("Please sign in first"); setShowSignInForm(true); return; }
+    if (!user) {
+      toast.error("Please login to place your order");
+      setShowSignInForm(true);
+      setLoading(false);
+      return;
+    }
     if (cartItems.length === 0) { toast.error("Your cart is empty"); return; }
     if (orderType === "DELIVERY" && !formData.address) { toast.error("Please enter delivery address"); return; }
 
@@ -143,11 +148,14 @@ const CheckoutForm = () => {
       });
 
       if (!res.data?.success) {
-        const msg = res.data?.message || "Order failed";
-        toast.error(msg);
-        if (msg.toLowerCase().includes("login") || msg.toLowerCase().includes("signin") || msg.toLowerCase().includes("auth")) {
+        const msg = res.data?.message || "";
+        if (msg.toLowerCase().includes("auth") || msg.toLowerCase().includes("login") || msg.toLowerCase().includes("token")) {
+          toast.error("Session expired. Please login again.");
           setShowSignInForm(true);
+          setLoading(false);
+          return;
         }
+        toast.error(res.data?.message || "Order failed");
         setLoading(false);
         return;
       }
@@ -180,7 +188,9 @@ const CheckoutForm = () => {
       toast.success("🎉 Order placed successfully!");
       navigate("/order-success", { state: { order } });
     } catch (err: any) {
-      toast.error("Failed to place order. Please try again.");
+      console.error("Order error:", err);
+      toast.error("Authentication required. Please Login First.");
+      setShowSignInForm(true);
     } finally {
       setLoading(false);
     }
@@ -406,8 +416,7 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm, cmsConfig } = useContext(Context);
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const { user, setShowSignInForm } = useContext(Context);
 
   return (
     <div className="page-content bg-white">
@@ -415,48 +424,9 @@ const ShopCheckout = () => {
       <section className="content-inner">
         <div className="container">
           {!user && (
-            <div
-              className="alert mb-4 d-flex justify-content-between align-items-center"
-              style={{
-                background: `${primaryColor}10`,
-                border: `1px solid ${primaryColor}30`,
-                borderRadius: '16px',
-                padding: '18px 24px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
-              }}
-            >
-              <div className="d-flex align-items-center gap-3">
-                <div style={{
-                  width: '45px',
-                  height: '45px',
-                  background: primaryColor,
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  fontSize: '20px'
-                }}>
-                  <i className="fa-solid fa-user-lock"></i>
-                </div>
-                <div>
-                  <h6 className="mb-0" style={{ fontWeight: 700, color: '#222' }}>Login Required</h6>
-                  <p className="mb-0 text-muted" style={{ fontSize: '13px' }}>Please sign in to your account to complete your order.</p>
-                </div>
-              </div>
-              <button
-                className="btn btn-md rounded-pill px-4"
-                onClick={() => setShowSignInForm(true)}
-                style={{
-                  background: primaryColor,
-                  color: '#fff',
-                  fontWeight: 700,
-                  border: 'none',
-                  boxShadow: `0 4px 10px ${primaryColor}40`
-                }}
-              >
-                Login Now
-              </button>
+            <div className="alert alert-warning mb-4 d-flex justify-content-between">
+              <span>Login to continue checkout!</span>
+              <button className="btn btn-sm btn-dark" onClick={() => setShowSignInForm(true)}>Login</button>
             </div>
           )}
           <Elements stripe={stripePromise}>

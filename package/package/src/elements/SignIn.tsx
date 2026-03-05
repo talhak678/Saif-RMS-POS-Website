@@ -83,14 +83,14 @@ const SignIn = () => {
           setIsRegistering(false);
         }}
         style={{
+          display: showSignInForm ? "block" : "none",
           zIndex: 1045,
-          position: 'fixed',
+          position: "fixed",
           top: 0,
           left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          display: showSignInForm ? 'block' : 'none'
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)"
         }}
       ></div>
 
@@ -102,14 +102,13 @@ const SignIn = () => {
         style={{
           visibility: showSignInForm ? "visible" : "hidden",
           zIndex: 1050,
-          transition: 'transform 0.5s ease, visibility 0.5s ease',
-          transform: showSignInForm ? 'translateX(0)' : 'translateX(100%)',
-          position: 'fixed',
+          display: "block",
+          position: "fixed",
           top: 0,
           right: 0,
-          height: '100vh',
-          backgroundColor: '#fff',
-          boxShadow: showSignInForm ? '-10px 0 30px rgba(0,0,0,0.1)' : 'none'
+          height: "100%",
+          transform: showSignInForm ? "none" : "translateX(100%)",
+          transition: "transform .3s ease-in-out"
         }}
       >
         <div className="offcanvas-body">
