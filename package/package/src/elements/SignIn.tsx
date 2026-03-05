@@ -82,6 +82,16 @@ const SignIn = () => {
           setShowSignInForm(false);
           setIsRegistering(false);
         }}
+        style={{
+          zIndex: 1045,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: showSignInForm ? 'block' : 'none'
+        }}
       ></div>
 
       {/* Offcanvas Panel */}
@@ -89,7 +99,18 @@ const SignIn = () => {
         className={`offcanvas offcanvas-end ${showSignInForm ? "show" : ""}`}
         tabIndex={1}
         id="offcanvasLogin"
-        style={{ visibility: showSignInForm ? "visible" : "hidden" }}
+        style={{
+          visibility: showSignInForm ? "visible" : "hidden",
+          zIndex: 1050,
+          transition: 'transform 0.5s ease, visibility 0.5s ease',
+          transform: showSignInForm ? 'translateX(0)' : 'translateX(100%)',
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          height: '100vh',
+          backgroundColor: '#fff',
+          boxShadow: showSignInForm ? '-10px 0 30px rgba(0,0,0,0.1)' : 'none'
+        }}
       >
         <div className="offcanvas-body">
           <button

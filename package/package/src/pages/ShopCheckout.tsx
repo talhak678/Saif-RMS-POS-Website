@@ -142,7 +142,15 @@ const CheckoutForm = () => {
         headers: { Authorization: `Bearer ${user.token}` }
       });
 
-      if (!res.data?.success) { toast.error(res.data?.message || "Order failed"); setLoading(false); return; }
+      if (!res.data?.success) {
+        const msg = res.data?.message || "Order failed";
+        toast.error(msg);
+        if (msg.toLowerCase().includes("login") || msg.toLowerCase().includes("signin") || msg.toLowerCase().includes("auth")) {
+          setShowSignInForm(true);
+        }
+        setLoading(false);
+        return;
+      }
       const order = res.data.data;
 
       if (formData.paymentMethod === "STRIPE" && stripe && elements) {
@@ -398,7 +406,8 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm } = useContext(Context);
+  const { user, setShowSignInForm, cmsConfig } = useContext(Context);
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
 
   return (
     <div className="page-content bg-white">
@@ -406,9 +415,48 @@ const ShopCheckout = () => {
       <section className="content-inner">
         <div className="container">
           {!user && (
-            <div className="alert alert-warning mb-4 d-flex justify-content-between">
-              <span>Login to continue checkout!</span>
-              <button className="btn btn-sm btn-dark" onClick={() => setShowSignInForm(true)}>Login</button>
+            <div
+              className="alert mb-4 d-flex justify-content-between align-items-center"
+              style={{
+                background: `${primaryColor}10`,
+                border: `1px solid ${primaryColor}30`,
+                borderRadius: '16px',
+                padding: '18px 24px',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
+              }}
+            >
+              <div className="d-flex align-items-center gap-3">
+                <div style={{
+                  width: '45px',
+                  height: '45px',
+                  background: primaryColor,
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: '20px'
+                }}>
+                  <i className="fa-solid fa-user-lock"></i>
+                </div>
+                <div>
+                  <h6 className="mb-0" style={{ fontWeight: 700, color: '#222' }}>Login Required</h6>
+                  <p className="mb-0 text-muted" style={{ fontSize: '13px' }}>Please sign in to your account to complete your order.</p>
+                </div>
+              </div>
+              <button
+                className="btn btn-md rounded-pill px-4"
+                onClick={() => setShowSignInForm(true)}
+                style={{
+                  background: primaryColor,
+                  color: '#fff',
+                  fontWeight: 700,
+                  border: 'none',
+                  boxShadow: `0 4px 10px ${primaryColor}40`
+                }}
+              >
+                Login Now
+              </button>
             </div>
           )}
           <Elements stripe={stripePromise}>
