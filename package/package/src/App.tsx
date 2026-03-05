@@ -69,6 +69,7 @@ import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
 import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
 import OrderTypeModal from "./elements/OrderTypeModal";
+import PromoPopup from "./elements/PromoPopup";
 import Loader from "./components/Loader";
 import { Toaster } from "react-hot-toast";
 
@@ -148,6 +149,7 @@ function App() {
           ) : (
             <>
               <OrderTypeModal />
+              <PromoPopup />
               <SignIn />
               <ScrollTop />
               <Routes>

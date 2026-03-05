@@ -22,6 +22,8 @@ interface AppContextValue {
   setHeaderSidebar: Dispatch<SetStateAction<boolean>>;
   showOrderModal: boolean;
   setShowOrderModal: Dispatch<SetStateAction<boolean>>;
+  showPromoPopup: boolean;
+  setShowPromoPopup: Dispatch<SetStateAction<boolean>>;
   // CMS Config
   cmsConfig: any;
   cmsLoading: boolean;
@@ -36,6 +38,7 @@ interface AppContextValue {
   setUser: Dispatch<SetStateAction<any>>;
   branches: any[];
   activeBranch: any;
+  isStoreClosed: boolean;
 }
 
 const defaultState: AppContextValue = {
@@ -51,6 +54,8 @@ const defaultState: AppContextValue = {
   setHeaderSidebar: () => { },
   showOrderModal: false,
   setShowOrderModal: () => { },
+  showPromoPopup: false,
+  setShowPromoPopup: () => { },
   cmsConfig: null,
   cmsLoading: true,
   cartItems: [],
@@ -62,6 +67,7 @@ const defaultState: AppContextValue = {
   setUser: () => { },
   branches: [],
   activeBranch: null,
+  isStoreClosed: false,
 };
 
 export const Context = createContext(defaultState);
@@ -79,6 +85,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [showSidebar, setShowSidebar] = useState(false);
   const [headerSidebar, setHeaderSidebar] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showPromoPopup, setShowPromoPopup] = useState(false);
+  const [isStoreClosed, setIsStoreClosed] = useState(false);
 
   const [cmsConfig, setCmsConfig] = useState<any>(null);
   const [cmsLoading, setCmsLoading] = useState(true);
@@ -529,6 +537,42 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     fetchCMS();
   }, []);
 
+  useEffect(() => {
+    const checkStoreStatus = () => {
+      const headerContent = cmsConfig?.config?.configJson?.home?.sections?.header?.content;
+      if (!headerContent) return;
+
+      const { openingTime, closingTime } = headerContent;
+      if (!openingTime || !closingTime) return;
+
+      const now = new Date();
+      const currentH = now.getHours();
+      const currentM = now.getMinutes();
+      const currentTimeInMins = currentH * 60 + currentM;
+
+      const [openH, openM] = openingTime.split(':').map(Number);
+      const [closeH, closeM] = closingTime.split(':').map(Number);
+
+      const openInMins = openH * 60 + openM;
+      const closeInMins = closeH * 60 + closeM;
+
+      let closed = false;
+      if (closeInMins > openInMins) {
+        // Normal hours: 09:00 to 23:00
+        closed = currentTimeInMins < openInMins || currentTimeInMins >= closeInMins;
+      } else {
+        // Over midnight: 21:00 to 01:00
+        // It's open if it's AFTER open time OR BEFORE close time
+        closed = !(currentTimeInMins >= openInMins || currentTimeInMins < closeInMins);
+      }
+      setIsStoreClosed(closed);
+    };
+
+    checkStoreStatus();
+    const interval = setInterval(checkStoreStatus, 60000);
+    return () => clearInterval(interval);
+  }, [cmsConfig]);
+
   const contextValue: AppContextValue = {
     headerClass,
     setHeaderClass,
@@ -542,6 +586,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setHeaderSidebar,
     showOrderModal,
     setShowOrderModal,
+    showPromoPopup,
+    setShowPromoPopup,
     cmsConfig,
     cmsLoading,
     cartItems,
@@ -552,7 +598,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     user,
     setUser,
     branches: cmsConfig?.branches || [],
-    activeBranch: cmsConfig?.branches?.[0] || null, // For now, picking first branch
+    activeBranch: cmsConfig?.branches?.[0] || null,
+    isStoreClosed
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

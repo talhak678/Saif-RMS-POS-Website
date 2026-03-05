@@ -247,17 +247,19 @@ const MainBanner2 = () => {
                   </div>
                   <div className="col-xl-5 col-lg-5 col-md-4 text-center">
                     <div className="banner-media">
-                      <img
-                        src={img4}
-                        alt="/"
-                        data-swiper-parallax-scale="0.8"
-                        style={{ maxWidth: '100%', height: 'auto' }}
-                      />
+                      {img4 && (
+                        <img
+                          src={img4}
+                          alt="Banner Image"
+                          data-swiper-parallax-scale="0.8"
+                          style={{ maxWidth: '100%', height: 'auto' }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-              <img className="leaf" src={img3} alt="/" />
+              {img3 && <img className="leaf" src={img3} alt="Decorative Leaf" />}
             </div>
           </SwiperSlide>
         ))}

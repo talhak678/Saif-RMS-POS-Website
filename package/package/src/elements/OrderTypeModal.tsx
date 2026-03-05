@@ -5,7 +5,7 @@ import { Context } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const OrderTypeModal = () => {
-    const { showOrderModal, setShowOrderModal, branches, cmsConfig } = useContext(Context);
+    const { showOrderModal, setShowOrderModal, branches, cmsConfig, setShowPromoPopup } = useContext(Context);
     const [orderType, setOrderType] = useState("pickup");
     const [phone, setPhone] = useState("");
     const [location, setLocation] = useState<any>(null);
@@ -75,6 +75,12 @@ const OrderTypeModal = () => {
             localStorage.setItem("userPhone", phone);
             localStorage.setItem("userLocation", JSON.stringify(location));
             setShowOrderModal(false);
+
+            // 🎁 Show Promo Popup after delivery selection
+            const promos = cmsConfig?.promos || [];
+            if (promos.length > 0) {
+                setTimeout(() => setShowPromoPopup(true), 800);
+            }
         } else {
             toast.error("Please fill all details");
         }
@@ -186,9 +192,13 @@ const OrderTypeModal = () => {
                     <div className="mb-4">
                         <Form.Control
                             type="text"
-                            placeholder="03xx-xxxxxxx"
+                            inputMode="numeric"
+                            placeholder="Enter Phone Number"
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => {
+                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                setPhone(val);
+                            }}
                             className="rounded-3 py-2 px-3 shadow-none mt-2"
                             style={{ border: "1px solid #eee", fontSize: "14px" }}
                         />

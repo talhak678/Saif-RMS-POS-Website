@@ -16,10 +16,11 @@ const Header2 = () => {
     user,
     setUser,
     cartItems,
-    removeFromCart
+    removeFromCart,
+    isStoreClosed
   } = useContext(Context);
 
-  const isStoreClosed = false;
+
 
   const navigate = useNavigate();
   const [scroll, setScroll] = useState(false);
@@ -178,6 +179,23 @@ const Header2 = () => {
           }
         `}
       </style>
+      {isStoreClosed && (
+        <div style={{
+          backgroundColor: '#ff4b2b',
+          color: '#fff',
+          textAlign: 'center',
+          padding: '8px 15px',
+          fontSize: '14px',
+          fontWeight: 600,
+          letterSpacing: '0.5px',
+          position: 'relative',
+          zIndex: 10001,
+          boxShadow: '0 2px 10px rgba(255, 75, 43, 0.2)'
+        }}>
+          <i className="fa-solid fa-clock me-2"></i>
+          WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({headerContent.openingTime || '9:00 AM'} - {headerContent.closingTime || '1:00 AM'})
+        </div>
+      )}
       <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
         <div className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""}`}>
           <div className="main-bar clearfix">
