@@ -73,47 +73,13 @@ const Home2 = () => {
       )}
 
       {sections.todaysSpecial?.enabled && (
-        <section
-          id="todays-special"
-          className="section-wrapper-5 content-inner overflow-hidden bg-parallax"
-          style={{
-            backgroundColor: sections.todaysSpecial.content?.backgroundColor || "#222222",
-            backgroundImage: sections.todaysSpecial.content?.backgroundImageUrl
-              ? `url(${sections.todaysSpecial.content.backgroundImageUrl})`
-              : sections.todaysSpecial.content?.backgroundColor && sections.todaysSpecial.content.backgroundColor !== "#222222"
-                ? "none"
-                : `url(${IMAGES.background_pic1})`,
-            backgroundAttachment: "fixed",
-          }}
-        >
-          {sections.todaysSpecial.content?.backgroundColor && sections.todaysSpecial.content.backgroundColor !== "#222222" && (
-            <style>{`
-              #todays-special::after {
-                background-color: rgba(0, 0, 0, 0.4) !important;
-              }
-            `}</style>
-          )}
-          <div className="container">
-            <div className="section-head menu-align">
-              <h2 className="title mb-0 wow flipInX text-white">{sections.todaysSpecial.content?.title || "Today's Special"}</h2>
-              <div className="pagination-align wow fadeInUp">
-                <div className="special-button-prev btn-prev rounded-xl btn-hover-2 text-white border-white">
-                  <i className="fa-solid fa-arrow-left"></i>
-                </div>
-                <div className="special-button-next btn-next rounded-xl btn-hover-2 text-white border-white">
-                  <i className="fa-solid fa-arrow-right"></i>
-                </div>
-              </div>
-            </div>
-            <Home2SpacialMenu />
-          </div>
-        </section>
+        <TodaySpecialSection sections={sections} cmsConfig={cmsConfig} />
       )}
 
       {sections.ourMenu?.enabled && (
         <section className="content-inner-1">
           <div className="container">
-            <div className="section-head text-center">
+            <div className={`section-head text-${sections.ourMenu.content?.textAlign || 'center'}`} style={{ textAlign: sections.ourMenu.content?.textAlign || 'center' }}>
               <h2 className="title wow flipInX text-secondary">{sections.ourMenu.content?.title || "Our Menu"}</h2>
             </div>
             <Home3OurMenu />
@@ -124,7 +90,7 @@ const Home2 = () => {
       {sections.customerComments?.enabled && (
         <section className="content-inner-2 overflow-hidden">
           <div className="container">
-            <div className="section-head text-center">
+            <div className={`section-head text-${sections.customerComments.content?.textAlign || 'center'}`} style={{ textAlign: sections.customerComments.content?.textAlign || 'center' }}>
               <h2 className="title wow flipInX text-secondary">{sections.customerComments.content?.title || "Customer's Comment"}</h2>
             </div>
             <Home2Testimonial />
@@ -132,6 +98,63 @@ const Home2 = () => {
         </section>
       )}
     </div>
+  );
+};
+
+const TodaySpecialSection = ({ sections, cmsConfig }: { sections: any, cmsConfig: any }) => {
+  // Extract and filter items here to decide if section should show
+  const allItems = (cmsConfig?.menu || []).flatMap((cat: any) =>
+    (cat.menuItems || []).map((item: any) => ({ ...item, categoryId: cat.id, categoryName: cat.name }))
+  );
+
+  const specialSection = sections.todaysSpecial?.content || {};
+  const selectedItemIds = specialSection.selectedItemIds || [];
+
+  let displayItems = [];
+  if (selectedItemIds.length > 0) {
+    displayItems = allItems.filter((item: any) => selectedItemIds.includes(item.id));
+  }
+
+  if (displayItems.length === 0) return null;
+
+  return (
+    <section
+      id="todays-special"
+      className="section-wrapper-5 content-inner overflow-hidden bg-parallax"
+      style={{
+        backgroundColor: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor || "#222222",
+        backgroundImage: specialSection.backgroundImageUrl
+          ? `url(${specialSection.backgroundImageUrl})`
+          : cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor !== "#222222"
+            ? "none"
+            : `url(${IMAGES.background_pic1})`,
+        backgroundAttachment: "fixed",
+      }}
+    >
+      {cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor !== "#222222" && (
+        <style>{`
+              #todays-special::after {
+                background-color: rgba(0, 0, 0, 0.4) !important;
+              }
+            `}</style>
+      )}
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+        <div className="section-head menu-align">
+          <div className="flex-1" style={{ textAlign: specialSection.textAlign || 'left' }}>
+            <h2 className="title mb-0 wow flipInX text-white">{specialSection.title || "Today's Special"}</h2>
+          </div>
+          <div className="pagination-align wow fadeInUp">
+            <div className="special-button-prev btn-prev rounded-xl btn-hover-2 text-white border-white">
+              <i className="fa-solid fa-arrow-left"></i>
+            </div>
+            <div className="special-button-next btn-next rounded-xl btn-hover-2 text-white border-white">
+              <i className="fa-solid fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        <Home2SpacialMenu items={displayItems} />
+      </div>
+    </section>
   );
 };
 
