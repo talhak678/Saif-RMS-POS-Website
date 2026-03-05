@@ -34,7 +34,22 @@ const TrackOrder = () => {
     const [error, setError] = useState("");
     const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
-    const restaurantSlug = import.meta.env.VITE_RESTAURANT_SLUG || "saifs-kitchen";
+    // Dynamic Slug Detection (matching OrderSuccess logic)
+    const getSlug = () => {
+        const hostname = window.location.hostname;
+        // Check if we are on localhost for development
+        if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+            return cmsConfig?.slug || import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
+        }
+        // Extract subdomain for production (e.g., dilpasand-sweets.vercel.app -> dilpasand-sweets)
+        const parts = hostname.split('.');
+        if (parts.length >= 3) {
+            return parts[0];
+        }
+        return cmsConfig?.slug || import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
+    };
+
+    const restaurantSlug = getSlug();
 
     const fetchOrder = async () => {
         if (!orderNo || !phone) {
@@ -43,9 +58,15 @@ const TrackOrder = () => {
         }
         setLoading(true);
         setError("");
+
+        // Normalize phone: remove everything except digits (matching ShopCheckout logic)
+        const normalizedPhone = phone.replace(/[^0-9]/g, "");
+
+        console.log("🔍 Tracking order:", { orderNo, phone: normalizedPhone, slug: restaurantSlug });
+
         try {
             const res = await axios.get(`${BASE_URL}/api/orders/track`, {
-                params: { orderNo, phone, slug: restaurantSlug }
+                params: { orderNo, phone: normalizedPhone, slug: restaurantSlug }
             });
             if (res.data?.success) {
                 setOrder(res.data.data);

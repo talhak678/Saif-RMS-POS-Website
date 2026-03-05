@@ -24,7 +24,7 @@ const OrderSuccess = () => {
         if (parts.length >= 3) {
             return parts[0];
         }
-        return import.meta.env.VITE_RESTAURANT_SLUG || "saifs-kitchen";
+        return import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
     };
 
     const restaurantSlug = getSlug();

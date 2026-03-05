@@ -153,7 +153,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         const mainProductionUrl = "saif-rms-pos-website.vercel.app";
 
         if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === mainProductionUrl) {
-          slug = import.meta.env.VITE_RESTAURANT_SLUG || "saif-grill";
+          slug = import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
           console.log("🛠️ Using default restaurant:", slug);
         } else {
           console.log("🌍 Subdomain/Custom domain detected:", hostname);
