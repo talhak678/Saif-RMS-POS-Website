@@ -1,13 +1,13 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Context } from "../context/AppContext";
+// import { Context } from "../context/AppContext";
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
 const OrderSuccess = () => {
     const location = useLocation();
-    const { cmsConfig } = useContext(Context);
+    // const { cmsConfig } = useContext(Context);
     const [order, setOrder] = useState<any>(location.state?.order);
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);

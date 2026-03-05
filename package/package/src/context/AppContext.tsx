@@ -208,7 +208,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
             const hColor = colors.headingColor;
             const fbgColor = colors.footerBgColor;
             const ftColor = colors.footerTextColor;
-            const tsbgColor = colors.todaysSpecialBgColor;
+            // const tsbgColor = colors.todaysSpecialBgColor;
 
             // Set CSS Variables on Root
             if (pColor) {
