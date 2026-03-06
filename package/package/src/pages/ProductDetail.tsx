@@ -117,7 +117,7 @@ const ProductDetail = () => {
                 </p>
                 <ul className="detail-list">
                   <li>
-                    Price <span className="text-primary m-t5" style={{ fontSize: '24px', fontWeight: 800 }}>${parseFloat(product.price).toFixed(2)}</span>
+                    Price <span className="text-primary m-t5" style={{ fontSize: '24px', fontWeight: 800 }}>{cmsConfig?.config?.currency || '$'}{(parseFloat(product.price) * quantity).toFixed(2)}</span>
                   </li>
                   <li>
                     Quantity
