@@ -191,7 +191,7 @@ const PromoPopup = () => {
 
                     <div className="promo-image-container">
                         <div className="promo-badge">FRESH DEAL</div>
-                        <Link to={activePromo.linkUrl || "/our-menu-2"} onClick={() => setShowPromoPopup(false)}>
+                        <Link to={activePromo.linkUrl || "/our-menu"} onClick={() => setShowPromoPopup(false)}>
                             <img
                                 src={activePromo.imageUrl}
                                 alt={activePromo.title || "Promotion"}
@@ -207,7 +207,7 @@ const PromoPopup = () => {
                         <p className="promo-subtitle">Indulge in our chef's special creation. Quality ingredients, amazing taste, and a price you'll love.</p>
 
                         <Link
-                            to={activePromo.linkUrl || "/our-menu-2"}
+                            to={activePromo.linkUrl || "/our-menu"}
                             onClick={() => setShowPromoPopup(false)}
                             className="promo-btn-premium"
                         >

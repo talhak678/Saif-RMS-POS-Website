@@ -244,7 +244,7 @@ const Header2 = () => {
                             <span>View Cart</span>
                           </Link>
                           <Link
-                            to="/our-menu-2"
+                            to="/our-menu"
                             className="btn btn-outline-primary w-100 d-block btn-hover-1"
                           >
                             <span>Menu</span>

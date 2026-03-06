@@ -29,7 +29,7 @@ const Footer2 = () => {
       "about us": "/about-us",
       "contact us": "/contact-us",
       "faq": "/faq",
-      "our menu": "/our-menu-2",
+      "our menu": "/our-menu",
       "blogs": "/blog-list",
       "blog": "/blog-list",
       "shop": "/shop-cart",

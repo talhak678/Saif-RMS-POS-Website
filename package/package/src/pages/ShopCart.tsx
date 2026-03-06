@@ -151,7 +151,7 @@ const ShopCart = () => {
                   {cartItems.length === 0 && (
                     <div className="text-center py-4">
                       <p>{contentConfig?.emptyCartText || "Your cart is empty"}</p>
-                      <Link to="/our-menu-2" className="btn btn-primary btn-sm">{contentConfig?.exploreMenuText || "Explore Menu"}</Link>
+                      <Link to="/our-menu" className="btn btn-primary btn-sm">{contentConfig?.exploreMenuText || "Explore Menu"}</Link>
                     </div>
                   )}
 

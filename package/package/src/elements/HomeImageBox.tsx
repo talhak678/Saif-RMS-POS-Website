@@ -39,14 +39,14 @@ const HomeImageBox = () => {
               <span className="dz-tag">TOP SELLER</span>
               <div className="dz-content">
                 <h5 className="dz-title">
-                  <Link to="/our-menu-2">{name}</Link>
+                  <Link to="/our-menu">{name}</Link>
                 </h5>
                 <p>Lorem ipsum dolor sit amet, dipiscing elit, sed</p>
               </div>
               <div className="dz-hover-content">
                 <div className="dz-info">
                   <h5 className="dz-title mb-0">
-                    <Link to="/our-menu-2">Pasta</Link>
+                    <Link to="/our-menu">Pasta</Link>
                   </h5>
                   <span className="dz-price">{price}</span>
                 </div>
@@ -61,7 +61,7 @@ const HomeImageBox = () => {
           </div>
         ))}
         <div className="col-12 text-center m-t10">
-          <Link to="/our-menu-2" className="btn btn-md btn-primary btn-hover-1">
+          <Link to="/our-menu" className="btn btn-md btn-primary btn-hover-1">
             <span>See All Dishes</span>
           </Link>
         </div>

@@ -169,7 +169,7 @@ function App() {
                     </CmsProtectedRoute>
                   } />
                   <Route path="/our-menu-1" element={<MenuStyle1 />} />
-                  <Route path="/our-menu-2" element={
+                  <Route path="/our-menu" element={
                     <CmsProtectedRoute pageKey="menu">
                       <MenuStyle2 />
                     </CmsProtectedRoute>

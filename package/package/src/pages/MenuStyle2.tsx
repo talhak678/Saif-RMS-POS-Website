@@ -174,7 +174,7 @@ const MenuStyle2 = () => {
                   filterGallery(ind === 0 ? "ALL" : categories[ind - 1]?.name);
                   // Clear search when clicking category tabs
                   if (location.search.includes("search=")) {
-                    navigate("/our-menu-2");
+                    navigate("/our-menu");
                   }
                 }}
                 style={{
@@ -208,7 +208,7 @@ const MenuStyle2 = () => {
               </h5>
               <button
                 className="btn btn-link btn-sm text-muted p-0"
-                onClick={() => navigate("/our-menu-2")}
+                onClick={() => navigate("/our-menu")}
                 style={{ textDecoration: 'none' }}
               >
                 Clear Search ×
@@ -463,7 +463,7 @@ const MenuStyle2 = () => {
                 </p>
                 <button
                   onClick={() => {
-                    navigate("/our-menu-2");
+                    navigate("/our-menu");
                     window.scrollTo(0, 0);
                   }}
                   className="btn btn-primary btn-sm mt-3"

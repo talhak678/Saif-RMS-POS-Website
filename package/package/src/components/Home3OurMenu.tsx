@@ -117,7 +117,7 @@ const Home3OurMenu = () => {
 
         <div className="col-xl-2 col-lg-3 col-md-12 text-lg-end d-lg-block d-none wow fadeInUp">
           <Link
-            to="/our-menu-2"
+            to="/our-menu"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -308,7 +308,7 @@ const Home3OurMenu = () => {
                   }}
                 >
                   <Link
-                    to="/our-menu-2"
+                    to="/our-menu"
                     style={{
                       fontSize: "13px",
                       fontWeight: 600,
@@ -374,7 +374,7 @@ const Home3OurMenu = () => {
       {/* Mobile View All button */}
       <div className="text-center d-lg-none mt-4">
         <Link
-          to="/our-menu-2"
+          to="/our-menu"
           style={{
             display: "inline-flex",
             alignItems: "center",

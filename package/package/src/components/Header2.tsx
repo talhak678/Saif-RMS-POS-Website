@@ -53,9 +53,9 @@ const Header2 = () => {
     if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
     searchDebounceRef.current = setTimeout(() => {
       if (val.trim()) {
-        navigate(`/our-menu-2?search=${encodeURIComponent(val.trim())}`);
+        navigate(`/our-menu?search=${encodeURIComponent(val.trim())}`);
       } else {
-        navigate("/our-menu-2");
+        navigate("/our-menu");
       }
     }, 350);
   };
@@ -63,7 +63,7 @@ const Header2 = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/our-menu-2?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/our-menu?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -330,9 +330,9 @@ const Header2 = () => {
                               View Cart
                             </Link>
                             <Link
-                              to="/our-menu-2"
+                              to="/our-menu"
                               className="btn btn-sm w-100 cart-btn-outline"
-                              style={{ borderRadius: "8px", padding: "10px", fontSize: '13px', background: "#fff", border: `1px solid ${primaryColor}`, color: primaryColor }}
+                              style={{ borderRadius: "8px", padding: "10px", fontSize: '13px', background: "#fff", border: `1.5px solid ${primaryColor}`, color: primaryColor }}
                               onClick={() => setCartOpen(false)}
                             >
                               Menu
@@ -411,7 +411,7 @@ const Header2 = () => {
                       {searchQuery && (
                         <button
                           type="button"
-                          onClick={() => { setSearchQuery(""); navigate("/our-menu-2"); }}
+                          onClick={() => { setSearchQuery(""); navigate("/our-menu"); }}
                           style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 1 }}
                         >
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#888" : "rgba(255,255,255,0.8)"} strokeWidth="2.5" strokeLinecap="round">
@@ -557,7 +557,7 @@ const Header2 = () => {
                               View Cart
                             </Link>
                             <Link
-                              to="/our-menu-2"
+                              to="/our-menu"
                               className="btn w-100 cart-btn-outline"
                               style={{ borderRadius: "10px", padding: "12px", fontSize: "14px", fontWeight: "600", background: "#fff", border: `1.5px solid ${primaryColor}`, color: primaryColor }}
                               onClick={() => setCartOpen(false)}

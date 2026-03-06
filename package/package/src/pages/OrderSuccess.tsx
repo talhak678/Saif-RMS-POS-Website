@@ -113,7 +113,7 @@ const OrderSuccess = () => {
                 <div className="content-inner text-center py-10">
                     <h3 className="mb-3">Order not found</h3>
                     <p className="text-muted">We couldn't retrieve your latest order details.</p>
-                    <Link to="/our-menu-2" className="btn btn-primary btn-sm mt-3">Go to Menu</Link>
+                    <Link to="/our-menu" className="btn btn-primary btn-sm mt-3">Go to Menu</Link>
                 </div>
             </div>
         );
@@ -301,7 +301,7 @@ const OrderSuccess = () => {
                                     My Orders
                                 </Link>
                                 <Link
-                                    to="/our-menu-2"
+                                    to="/our-menu"
                                     className="btn btn-light"
                                     style={{ flex: 1, minWidth: 180 }}
                                 >

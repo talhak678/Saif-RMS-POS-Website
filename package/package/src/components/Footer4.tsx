@@ -95,7 +95,7 @@ const Footer4 = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/our-menu-2">
+                    <Link to="/our-menu">
                       <span>Our Menu</span>
                     </Link>
                   </li>

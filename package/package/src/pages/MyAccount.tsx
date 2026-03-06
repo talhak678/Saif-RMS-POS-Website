@@ -264,7 +264,7 @@ const MyAccount = () => {
                                             <p style={{ color: "#888", marginBottom: 24 }}>
                                                 You haven't placed any orders yet. Explore our menu to get started!
                                             </p>
-                                            <Link to="/our-menu-2" className="btn btn-primary" style={{ borderRadius: 12, padding: "10px 24px" }}>
+                                            <Link to="/our-menu" className="btn btn-primary" style={{ borderRadius: 12, padding: "10px 24px" }}>
                                                 Browse Menu
                                             </Link>
                                         </div>

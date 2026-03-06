@@ -12,14 +12,14 @@ interface MenuProps {
 
 export const MenuArr: MenuProps[] = [
   { menu: "HOME", to: "/" },
-  { menu: "OUR MENU", to: "/our-menu-2" },
+  { menu: "OUR MENU", to: "/our-menu" },
   {
     menu: "SPECIALITIES",
     className: "sub-menu-down",
     ulClassName: "sub-menu",
     submenu: [
-      { child: "Burgers", to: "/our-menu-2?category=BURGER" },
-      { child: "Pizza", to: "/our-menu-2?category=PIZZA" },
+      { child: "Burgers", to: "/our-menu?category=BURGER" },
+      { child: "Pizza", to: "/our-menu?category=PIZZA" },
     ],
   },
   { menu: "ABOUT US", to: "/about-us" },
