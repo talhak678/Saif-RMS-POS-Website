@@ -406,10 +406,17 @@ const CheckoutForm = () => {
         </div>
       </div>
 
-      <Modal show={showMap} onHide={() => setShowMap(false)} size="lg" centered>
-        <Modal.Header closeButton><Modal.Title>Location</Modal.Title></Modal.Header>
-        <Modal.Body><LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} /></Modal.Body>
-        <Modal.Footer><Button variant="secondary" onClick={() => setShowMap(false)}>Close</Button></Modal.Footer>
+      <Modal show={showMap} onHide={() => setShowMap(false)} size="xl" centered dialogClassName="map-modal">
+        <Modal.Header closeButton style={{ borderBottom: '1px solid #f0f0f0', padding: '16px 24px' }}>
+          <Modal.Title style={{ fontWeight: 800, fontSize: 18 }}>📍 Select Delivery Location</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: '20px 24px' }}>
+          <LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} />
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: '1px solid #f0f0f0', padding: '12px 24px' }}>
+          <Button variant="outline-secondary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px' }}>Cancel</Button>
+          <Button variant="primary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px', background: primaryColor, borderColor: primaryColor }}>Confirm Location</Button>
+        </Modal.Footer>
       </Modal>
     </form>
   );
