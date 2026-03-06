@@ -427,9 +427,21 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
                 background-color: transparent !important;
               }
               
+            
 
               /* Specific fix for Order Success timeline */
               .status-timeline-wrapper { background: transparent !important; }
+              /* === BUTTONS & TABS TEXT COLOR === */
+              .btn, button, .btn span, .btn i, button span, button i, .wp-block-button__link,
+              .nav-link, .nav-tabs .nav-link, .nav-tabs button, 
+              .site-filters .filters li a, .site-filters .filters li,
+              .filters li, .filters li a,
+              .rs-nav-item, .rs-nav-link, .rs-btn,
+              .tab-link, .menu-btn,
+              .btn-prev, .btn-next, .btn-prev i, .btn-next i,
+              .cart-btn-primary, .cart-btn-outline {
+                color: ${sColor || 'var(--secondary)'} !important;
+              }
             `;
           }
 
