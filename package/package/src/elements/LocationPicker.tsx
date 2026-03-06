@@ -72,7 +72,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 const lat = place.geometry.location.lat();
                 const lng = place.geometry.location.lng();
                 setMarkerPos({ lat, lng });
-                
+
                 if (mapRef.current) {
                     if (place.geometry.viewport) {
                         mapRef.current.fitBounds(place.geometry.viewport);
@@ -102,7 +102,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 <div style={{ fontSize: 32, marginBottom: 10 }}>⚠️</div>
                 <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 16 }}>Map could not be loaded</div>
                 <p style={{ margin: 0, color: '#999' }}>Please check your internet connection and try again.</p>
-                <button 
+                <button
                     className="btn btn-sm btn-outline-danger mt-3"
                     onClick={() => window.location.reload()}
                     style={{ borderRadius: 10 }}
@@ -130,20 +130,31 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
         <div className="location-picker">
             <style>
                 {`
-                    .location-picker .pac-container {
-                        z-index: 10060 !important;
+                    .pac-container {
+                        z-index: 99999 !important;
                         border-radius: 12px;
                         margin-top: 5px;
                         box-shadow: 0 8px 24px rgba(0,0,0,0.12);
                         border: 1px solid #eee;
                         font-family: inherit;
                     }
+                    .pac-item {
+                        padding: 8px 14px;
+                        cursor: pointer;
+                        font-size: 13px;
+                    }
+                    .pac-item:hover {
+                        background-color: #fff8f0;
+                    }
+                    .pac-item-selected {
+                        background-color: #fff3e0 !important;
+                    }
                 `}
             </style>
 
             {/* Header */}
-            <div style={{ 
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+            <div style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 marginBottom: 15,
                 padding: '0 5px'
             }}>
@@ -198,9 +209,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
             </div>
 
             {/* Google Map */}
-            <div style={{ 
-                borderRadius: 16, overflow: 'hidden', 
-                boxShadow: '0 6px 20px rgba(0,0,0,0.08)', 
+            <div style={{
+                borderRadius: 16, overflow: 'hidden',
+                boxShadow: '0 6px 20px rgba(0,0,0,0.08)',
                 border: '2px solid #f0f0f0',
                 marginBottom: 15
             }}>
@@ -216,8 +227,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                         fullscreenControl: false,
                     }}
                 >
-                    <Marker 
-                        position={markerPos} 
+                    <Marker
+                        position={markerPos}
                         draggable={true}
                         onDragEnd={onMarkerDragEnd}
                     />
@@ -226,10 +237,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
 
             {/* Selected Address */}
             {address && (
-                <div style={{ 
-                    padding: '14px 18px', 
-                    background: 'linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%)', 
-                    borderRadius: 14, 
+                <div style={{
+                    padding: '14px 18px',
+                    background: 'linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%)',
+                    borderRadius: 14,
                     border: '1px solid #ffe8cc',
                     fontSize: 13,
                     color: '#862e00',
