@@ -169,7 +169,6 @@ const MenuStyle2 = () => {
             {buttons.map(({ icon, title }, ind) => (
               <button
                 key={ind}
-                className="menu-category-tab"
                 onClick={() => {
                   setActive(ind);
                   filterGallery(ind === 0 ? "ALL" : categories[ind - 1]?.name);
@@ -405,7 +404,6 @@ const MenuStyle2 = () => {
                     >
                       <button
                         disabled={item.isAvailable === false}
-                        className="add-to-cart-btn"
                         style={{
                           width: "36px",
                           height: "36px",

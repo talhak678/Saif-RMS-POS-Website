@@ -431,33 +431,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
               /* Specific fix for Order Success timeline */
               .status-timeline-wrapper { background: transparent !important; }
-              /* === BUTTONS & TABS TEXT COLOR === */
-              .btn:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn), 
-              button:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn), 
-              .btn:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn) span, 
-              .btn:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn) i, 
-              button:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn) span, 
-              button:not(.logout-btn):not(.menu-category-tab):not(.header-icon-btn):not(.add-to-cart-btn) i, 
-              .wp-block-button__link,
-              .nav-link, .nav-tabs .nav-link, .nav-tabs button, 
-              .site-filters .filters li a, .site-filters .filters li,
-              .filters li, .filters li a,
-              .rs-nav-item, .rs-nav-link, .rs-btn,
-              .tab-link, .menu-btn,
-              .btn-prev, .btn-next, .btn-prev i, .btn-next i,
-              .cart-btn-primary, .cart-btn-outline {
-                color: ${sColor || 'var(--secondary)'} !important;
-              }
-
-              /* Specific Overrides */
-              .logout-btn { color: #222 !important; }
-              .menu-category-tab { color: #222 !important; }
-              .menu-category-tab.active { color: #ffffff !important; }
-              .add-to-cart-btn i, .add-to-cart-btn span { color: #ffffff !important; }
-              
-              /* Header Icons - Secondary color only when header is scrolled/light */
-              .header-icon-btn i { color: inherit !important; }
-              .is-fixed .header-icon-btn i { color: ${sColor || 'var(--secondary)'} !important; }
             `;
           }
 

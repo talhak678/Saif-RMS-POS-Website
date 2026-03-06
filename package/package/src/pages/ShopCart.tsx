@@ -53,14 +53,21 @@ const ShopCart = () => {
               font-size: 14px;
             }
           }
-          /* Shop Cart Action Button Hover Fix */
+          /* Shop Cart Action Button - Normal: Secondary Text, Hover: White Text */
+          .order-detail .btn-primary.btn-hover-1 {
+            color: var(--secondary) !important;
+          }
+          .order-detail .btn-primary.btn-hover-1 span {
+            color: var(--secondary) !important;
+          }
           .order-detail .btn-primary.btn-hover-1:hover {
             background-color: ${primaryColor} !important;
-            color: var(--secondary) !important;
+            color: #222222 !important;
             border-color: ${primaryColor} !important;
           }
-          .order-detail .btn-primary.btn-hover-1:hover span {
-             color: var(--secondary) !important;
+          .order-detail .btn-primary.btn-hover-1:hover span,
+          .order-detail .btn-primary.btn-hover-1:hover i {
+             color: #222222 !important;
           }
         `}
       </style>

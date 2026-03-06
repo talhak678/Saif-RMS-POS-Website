@@ -109,6 +109,29 @@ const ContactUs = () => {
           .dzForm .form-control::placeholder {
             opacity: 0.2 !important;
           }
+          .icon-bx-wraper.style-5 .icon-content .title {
+            color: var(--primary) !important;
+            transition: all 0.3s ease;
+          }
+          .icon-bx-wraper.style-5:hover .icon-content .title,
+          .icon-bx-wraper.style-5.active .icon-content .title {
+            color: var(--secondary) !important;
+          }
+          /* Reservation Button - Normal: Secondary Text, Hover: Dark Text */
+          .dzForm .btn-primary.btn-hover-1 {
+            color: var(--secondary) !important;
+          }
+          .dzForm .btn-primary.btn-hover-1 span {
+            color: var(--secondary) !important;
+          }
+          .dzForm .btn-primary.btn-hover-1:hover {
+            background-color: var(--primary) !important;
+            color: #222222 !important;
+            border-color: var(--primary) !important;
+          }
+          .dzForm .btn-primary.btn-hover-1:hover span {
+             color: #222222 !important;
+          }
         `}
       </style>
       {sections.banner?.enabled !== false && (

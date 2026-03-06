@@ -128,7 +128,8 @@ const OrderSuccess = () => {
         { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: "Enjoy your meal!" },
     ];
 
-    const currentStepIndex = statusSteps.findIndex(s => s.key === (order.status || "PENDING"));
+    const isCancelled = order.status === "CANCELLED";
+    const currentStepIndex = isCancelled ? -1 : statusSteps.findIndex(s => s.key === (order.status || "PENDING"));
 
     return (
         <div className="page-content">
@@ -136,35 +137,50 @@ const OrderSuccess = () => {
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-lg-8">
-                            {/* Success Header */}
+                            {/* Success or Cancelled Header */}
                             <div className="text-center mb-5">
                                 <div style={{
                                     width: 90, height: 90, borderRadius: "50%",
-                                    background: "linear-gradient(135deg, #4CAF50, #66BB6A)",
+                                    background: isCancelled ? "linear-gradient(135deg, #FF5252, #FF1744)" : "linear-gradient(135deg, #4CAF50, #66BB6A)",
                                     display: "inline-flex", alignItems: "center", justifyContent: "center",
                                     fontSize: "40px", marginBottom: "20px",
-                                    boxShadow: "0 10px 30px rgba(76, 175, 80, 0.3)"
+                                    boxShadow: isCancelled ? "0 10px 30px rgba(255, 23, 68, 0.3)" : "0 10px 30px rgba(76, 175, 80, 0.3)"
                                 }}>
-                                    ✓
+                                    {isCancelled ? "✕" : "✓"}
                                 </div>
-                                <h2 className="title" style={{ color: "#222" }}>Order Placed Successfully!</h2>
+                                <h2 className="title" style={{ color: "#222" }}>
+                                    {isCancelled ? "Order Cancelled" : "Order Placed Successfully!"}
+                                </h2>
                                 <p style={{ color: "#666", fontSize: "16px" }}>
-                                    Thank you for your order! We'll start preparing it right away.
+                                    {isCancelled
+                                        ? "This order has been cancelled by the restaurant. Please contact support if you have questions."
+                                        : "Thank you for your order! We'll start preparing it right away."}
                                 </p>
                                 <div style={{
                                     display: "inline-block",
                                     background: "#f8f9fa",
-                                    border: "2px dashed var(--primary, #ff6b35)",
+                                    border: isCancelled ? "2px dashed #ff5252" : "2px dashed var(--primary, #ff6b35)",
                                     borderRadius: "12px",
                                     padding: "16px 32px",
                                     marginTop: "16px"
                                 }}>
                                     <p style={{ marginBottom: 4, color: "#888", fontSize: 13 }}>Your Order Number</p>
-                                    <h3 style={{ color: "var(--primary, #ff6b35)", marginBottom: 0, fontWeight: 700 }}>
+                                    <h3 style={{ color: isCancelled ? "#ff5252" : "var(--primary, #ff6b35)", marginBottom: 0, fontWeight: 700 }}>
                                         #{order.orderNo}
                                     </h3>
                                 </div>
                             </div>
+
+                            {/* Cancelled Alert Box */}
+                            {isCancelled && (
+                                <div className="alert alert-danger mb-4 d-flex align-items-center" style={{ borderRadius: "12px", border: "none", background: "#fff5f5", color: "#c62828" }}>
+                                    <span style={{ fontSize: "24px", marginRight: "12px" }}>⚠️</span>
+                                    <div>
+                                        <h6 className="mb-1" style={{ fontWeight: 700 }}>Order Status: Cancelled</h6>
+                                        <p className="mb-0" style={{ fontSize: "14px", opacity: 0.8 }}>This order is no longer being processed.</p>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Order Status Timeline */}
                             <div className="widget mb-4" style={{ border: "1px solid #f0f0f0", borderRadius: "16px", padding: "28px" }}>
@@ -183,13 +199,14 @@ const OrderSuccess = () => {
                                         width: "2px", background: "#f0f0f0", zIndex: 0
                                     }} />
                                     {statusSteps.map((step, idx) => {
-                                        const isCompleted = idx <= currentStepIndex;
-                                        const isCurrent = idx === currentStepIndex;
+                                        const isCompleted = !isCancelled && idx <= currentStepIndex;
+                                        const isCurrent = !isCancelled && idx === currentStepIndex;
                                         return (
                                             <div key={step.key} style={{
                                                 display: "flex", alignItems: "flex-start",
                                                 marginBottom: idx < statusSteps.length - 1 ? "24px" : 0,
-                                                position: "relative", zIndex: 1
+                                                position: "relative", zIndex: 1,
+                                                opacity: isCancelled ? 0.5 : 1
                                             }}>
                                                 <div style={{
                                                     width: 44, height: 44, borderRadius: "50%",
@@ -204,7 +221,7 @@ const OrderSuccess = () => {
                                                 </div>
                                                 <div style={{ marginLeft: "16px", paddingTop: "8px" }}>
                                                     <p style={{
-                                                        fontWeight: isCurrent ? 700 : 500,
+                                                        fontWeight: (isCurrent || (isCancelled && idx === 0)) ? 700 : 500,
                                                         color: isCompleted ? "#222" : "#aaa",
                                                         marginBottom: 2, fontSize: "15px"
                                                     }}>
@@ -215,6 +232,13 @@ const OrderSuccess = () => {
                                                                 color: "#fff", fontSize: "11px", padding: "2px 8px",
                                                                 borderRadius: "20px", fontWeight: 600
                                                             }}>CURRENT</span>
+                                                        )}
+                                                        {isCancelled && idx === 0 && (
+                                                            <span style={{
+                                                                marginLeft: 8, background: "#ff5252",
+                                                                color: "#fff", fontSize: "11px", padding: "2px 8px",
+                                                                borderRadius: "20px", fontWeight: 600
+                                                            }}>CANCELLED</span>
                                                         )}
                                                     </p>
                                                     <p style={{ color: "#999", fontSize: "13px", marginBottom: 0 }}>{step.desc}</p>

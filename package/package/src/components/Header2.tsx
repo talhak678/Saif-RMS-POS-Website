@@ -187,6 +187,11 @@ const Header2 = () => {
             box-shadow: none !important;
             transition: none !important;
           }
+          .is-fixed .header-user-btn span, 
+          .is-fixed .header-user-btn i,
+          .is-fixed .header-login-btn i {
+            color: var(--secondary) !important;
+          }
         `}
       </style>
       {isStoreClosed && (
@@ -251,7 +256,7 @@ const Header2 = () => {
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link" style={{ position: 'relative' }}>
                         <button
-                          className="btn btn-white btn-square btn-shadow cart-btn header-icon-btn"
+                          className="btn btn-white btn-square btn-shadow cart-btn"
                           style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           onClick={() => setCartOpen(!cartOpen)}
                         >
@@ -429,7 +434,7 @@ const Header2 = () => {
                         {user ? (
                           <>
                             <button
-                              className="btn btn-white btn-shadow px-3"
+                              className="btn btn-white btn-shadow px-3 header-user-btn"
                               onClick={() => setShowUserMenu(!showUserMenu)}
                               style={{ display: "flex", alignItems: "center", gap: 6 }}
                             >
@@ -457,23 +462,19 @@ const Header2 = () => {
                                 }}>
                                   🔍 Track Order
                                 </Link>
-                                <button
-                                  className="logout-btn"
-                                  onClick={() => { handleLogout(); setShowUserMenu(false); }}
-                                  style={{
-                                    display: "flex", alignItems: "center", gap: 10,
-                                    padding: "12px 16px", color: "#c62828", background: "none",
-                                    border: "none", cursor: "pointer", width: "100%",
-                                    fontSize: 14, fontWeight: 500
-                                  }}
-                                >
+                                <button onClick={() => { handleLogout(); setShowUserMenu(false); }} style={{
+                                  display: "flex", alignItems: "center", gap: 10,
+                                  padding: "12px 16px", color: "#c62828", background: "none",
+                                  border: "none", cursor: "pointer", width: "100%",
+                                  fontSize: 14, fontWeight: 500
+                                }}>
                                   🚪 Logout
                                 </button>
                               </div>
                             )}
                           </>
                         ) : (
-                          <Link className="btn btn-white btn-square btn-shadow header-icon-btn" to={"#"} onClick={() => setShowSignInForm(true)}>
+                          <Link className="btn btn-white btn-square btn-shadow header-login-btn" to={"#"} onClick={() => setShowSignInForm(true)}>
                             <i className="flaticon-user"></i>
                           </Link>
                         )}
@@ -483,7 +484,7 @@ const Header2 = () => {
                       <li className="nav-item cart-link" style={{ position: 'relative' }}>
                         <button
                           type="button"
-                          className="btn btn-white btn-square btn-shadow cart-btn header-icon-btn"
+                          className="btn btn-white btn-square btn-shadow cart-btn"
                           onClick={() => setCartOpen(!cartOpen)}
                         >
                           <i className="flaticon-shopping-bag-1"></i>

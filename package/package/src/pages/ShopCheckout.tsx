@@ -212,230 +212,213 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="checkout-container">
-      <style>
-        {`
-          .place-order-btn {
-            background-color: var(--secondary) !important;
-            color: #ffffff !important;
-            border-color: var(--secondary) !important;
-            transition: all 0.3s ease;
-          }
-          .place-order-btn:hover {
-            background-color: var(--secondary) !important;
-            color: #ffffff !important;
-            opacity: 0.9;
-          }
-        `}
-      </style>
-      <form className="shop-form" onSubmit={handlePlaceOrder}>
-        <div className="row">
-          {/* Billing Address Section */}
-          <div className="col-lg-12">
-            <div className="widget">
-              <h4 className="widget-title">Checkout Details</h4>
+    <form className="shop-form" onSubmit={handlePlaceOrder}>
+      <div className="row">
+        {/* Billing Address Section */}
+        <div className="col-lg-12">
+          <div className="widget">
+            <h4 className="widget-title">Checkout Details</h4>
 
-              {/* 📍 Order Type Selector */}
-              <div className="form-group m-b20 border p-3 rounded bg-light">
-                <h6 className="mb-2">How would you like to receive your order?</h6>
-                <div className="d-flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setOrderType("DELIVERY")}
-                    className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`}
-                    style={{ minWidth: '120px', background: orderType === "DELIVERY" ? primaryColor : '', color: orderType === "DELIVERY" ? '#fff' : '' }}
-                  >
-                    🚚 Delivery
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setOrderType("PICKUP")}
-                    className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`}
-                    style={{ minWidth: '120px', background: orderType === "PICKUP" ? primaryColor : '', color: orderType === "PICKUP" ? '#fff' : '' }}
-                  >
-                    🥡 Pickup
-                  </button>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="form-group col-md-12 m-b20">
-                  <label className="mb-2">Select Branch</label>
-                  <Select
-                    styles={customStyles}
-                    options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
-                    value={{ value: currentBranch?.id, label: currentBranch?.name }}
-                    onChange={(opt: any) => setSelectedBranchId(opt.value)}
-                  />
-                </div>
-
-                <div className="form-group col-md-6 m-b20">
-                  <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
-                </div>
-                <div className="form-group col-md-6 m-b20">
-                  <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
-                </div>
-
-                <div className="form-group col-md-6 m-b20">
-                  <input name="email" required type="email" className="form-control" placeholder="Email" value={formData.email} onChange={handleChange} />
-                </div>
-                <div className="form-group col-md-6 m-b20">
-                  <input name="phone" required type="tel" className="form-control" placeholder="Phone" value={formData.phone} onChange={handleChange} />
-                </div>
-
-                {/* 🏠 Delivery Fields - Only show if Delivery is selected */}
-                {orderType === "DELIVERY" && (
-                  <>
-                    <div className="form-group col-md-12 m-b20 position-relative">
-                      <label className="mb-2">Delivery Address</label>
-                      <div className="input-group">
-                        <input
-                          name="address"
-                          required={orderType === "DELIVERY"}
-                          type="text"
-                          className="form-control"
-                          placeholder="Street Address, Area or Landmark"
-                          value={formData.address}
-                          onChange={handleChange}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          style={{ borderColor: primaryColor, color: primaryColor }}
-                          onClick={() => setShowMap(true)}
-                        >
-                          📍 Map
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="form-group col-md-12 m-b20">
-                      <input name="city" required={orderType === "DELIVERY"} type="text" className="form-control" placeholder="City" value={formData.city} onChange={handleChange} />
-                    </div>
-                  </>
-                )}
-
-                <div className="form-group col-md-12 m-b20">
-                  <label className="mb-2">Special Notes (Optional)</label>
-                  <textarea name="notes" className="form-control" rows={3} placeholder="Notes about your order, e.g. allergires or sauce preferences" value={formData.notes} onChange={handleChange}></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="dz-divider bg-gray-dark icon-center my-5">
-          <i className="fa fa-circle bg-white text-primary" style={{ color: primaryColor }}></i>
-        </div>
-
-        <div className="row">
-          {/* Order Table Section */}
-          <div className="col-lg-6">
-            <div className="widget">
-              <h4 className="widget-title">Your Order</h4>
-              <table className="table-bordered check-tbl">
-                <thead className="text-center">
-                  <tr>
-                    <th>IMAGE</th>
-                    <th>PRODUCT NAME</th>
-                    <th>TOTAL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map(item => (
-                    <tr key={item.id}>
-                      <td className="product-item-img text-center">
-                        <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px' }} />
-                      </td>
-                      <td className="product-item-name">{item.name} x {item.quantity}</td>
-                      <td className="product-price">
-                        {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Totals & Payment Section */}
-          <div className="col-lg-6">
-            <div className="widget">
-              <h4 className="widget-title">Order Total</h4>
-              <table className="table-bordered check-tbl mb-4">
-                <tbody>
-                  <tr>
-                    <td>Order Subtotal</td>
-                    <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td>Shipping</td>
-                    <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
-                  </tr>
-                  <tr>
-                    <td>Coupon</td>
-                    <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td>Total</td>
-                    <td className="product-price-total text-end">{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div className="m-b20">
-                <div className="input-group">
-                  <input className="form-control" placeholder="Promo Code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} />
-                  <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-primary" style={{ background: primaryColor }}>Apply</button>
-                </div>
-              </div>
-
-              <h4 className="widget-title">Payment Method</h4>
-              <div className="form-group m-b20">
-                <div className="d-flex gap-3 mb-3">
-                  <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "CASH" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "CASH" }))} style={{ borderColor: formData.paymentMethod === "CASH" ? primaryColor : '' }}>Cash</div>
-                  <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "STRIPE" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "STRIPE" }))} style={{ borderColor: formData.paymentMethod === "STRIPE" ? primaryColor : '' }}>Online Card</div>
-                </div>
-              </div>
-
-              {formData.paymentMethod === "STRIPE" && (
-                <div className="stripe-box">
-                  <div className="form-group m-b20">
-                    <input type="text" name="cardName" className="form-control" placeholder="Name on Card" value={formData.cardName} onChange={handleChange} />
-                  </div>
-                  <div className="form-group m-b20 p-3 border rounded bg-white">
-                    <CardElement options={{ style: { base: { fontSize: "16px", color: "#333" } } }} />
-                  </div>
-                </div>
-              )}
-
-              <div className="form-group">
+            {/* 📍 Order Type Selector */}
+            <div className="form-group m-b20 border p-3 rounded bg-light">
+              <h6 className="mb-2">How would you like to receive your order?</h6>
+              <div className="d-flex gap-2">
                 <button
-                  className="btn btn-gray btn-hover-2 w-100 place-order-btn"
-                  type="submit"
-                  disabled={loading || cartItems.length === 0}
+                  type="button"
+                  onClick={() => setOrderType("DELIVERY")}
+                  className={`btn btn-sm ${orderType === "DELIVERY" ? "btn-primary" : "btn-light"}`}
+                  style={{ minWidth: '120px', background: orderType === "DELIVERY" ? primaryColor : '', color: orderType === "DELIVERY" ? '#fff' : '' }}
                 >
-                  {loading ? "Processing..." : "Place Order Now"}
+                  🚚 Delivery
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOrderType("PICKUP")}
+                  className={`btn btn-sm ${orderType === "PICKUP" ? "btn-primary" : "btn-light"}`}
+                  style={{ minWidth: '120px', background: orderType === "PICKUP" ? primaryColor : '', color: orderType === "PICKUP" ? '#fff' : '' }}
+                >
+                  🥡 Pickup
                 </button>
               </div>
             </div>
+
+            <div className="row">
+              <div className="form-group col-md-12 m-b20">
+                <label className="mb-2">Select Branch</label>
+                <Select
+                  styles={customStyles}
+                  options={branches.map((b: any) => ({ value: b.id, label: b.name }))}
+                  value={{ value: currentBranch?.id, label: currentBranch?.name }}
+                  onChange={(opt: any) => setSelectedBranchId(opt.value)}
+                />
+              </div>
+
+              <div className="form-group col-md-6 m-b20">
+                <input name="firstName" required type="text" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} />
+              </div>
+              <div className="form-group col-md-6 m-b20">
+                <input name="lastName" type="text" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} />
+              </div>
+
+              <div className="form-group col-md-6 m-b20">
+                <input name="email" required type="email" className="form-control" placeholder="Email" value={formData.email} onChange={handleChange} />
+              </div>
+              <div className="form-group col-md-6 m-b20">
+                <input name="phone" required type="tel" className="form-control" placeholder="Phone" value={formData.phone} onChange={handleChange} />
+              </div>
+
+              {/* 🏠 Delivery Fields - Only show if Delivery is selected */}
+              {orderType === "DELIVERY" && (
+                <>
+                  <div className="form-group col-md-12 m-b20 position-relative">
+                    <label className="mb-2">Delivery Address</label>
+                    <div className="input-group">
+                      <input
+                        name="address"
+                        required={orderType === "DELIVERY"}
+                        type="text"
+                        className="form-control"
+                        placeholder="Street Address, Area or Landmark"
+                        value={formData.address}
+                        onChange={handleChange}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        style={{ borderColor: primaryColor, color: primaryColor }}
+                        onClick={() => setShowMap(true)}
+                      >
+                        📍 Map
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="form-group col-md-12 m-b20">
+                    <input name="city" required={orderType === "DELIVERY"} type="text" className="form-control" placeholder="City" value={formData.city} onChange={handleChange} />
+                  </div>
+                </>
+              )}
+
+              <div className="form-group col-md-12 m-b20">
+                <label className="mb-2">Special Notes (Optional)</label>
+                <textarea name="notes" className="form-control" rows={3} placeholder="Notes about your order, e.g. allergires or sauce preferences" value={formData.notes} onChange={handleChange}></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="dz-divider bg-gray-dark icon-center my-5">
+        <i className="fa fa-circle bg-white text-primary" style={{ color: primaryColor }}></i>
+      </div>
+
+      <div className="row">
+        {/* Order Table Section */}
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Your Order</h4>
+            <table className="table-bordered check-tbl">
+              <thead className="text-center">
+                <tr>
+                  <th>IMAGE</th>
+                  <th>PRODUCT NAME</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartItems.map(item => (
+                  <tr key={item.id}>
+                    <td className="product-item-img text-center">
+                      <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px' }} />
+                    </td>
+                    <td className="product-item-name">{item.name} x {item.quantity}</td>
+                    <td className="product-price">
+                      {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <Modal show={showMap} onHide={() => setShowMap(false)} size="xl" centered dialogClassName="map-modal" enforceFocus={false}>
-          <Modal.Header closeButton style={{ borderBottom: '1px solid #f0f0f0', padding: '16px 24px' }}>
-            <Modal.Title style={{ fontWeight: 800, fontSize: 18 }}>📍 Select Delivery Location</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ padding: '20px 24px' }}>
-            <LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} />
-          </Modal.Body>
-          <Modal.Footer style={{ borderTop: '1px solid #f0f0f0', padding: '12px 24px' }}>
-            <Button variant="outline-secondary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px' }}>Cancel</Button>
-            <Button variant="primary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px', background: primaryColor, borderColor: primaryColor }}>Confirm Location</Button>
-          </Modal.Footer>
-        </Modal>
-      </form>
-    </div>
+        {/* Totals & Payment Section */}
+        <div className="col-lg-6">
+          <div className="widget">
+            <h4 className="widget-title">Order Total</h4>
+            <table className="table-bordered check-tbl mb-4">
+              <tbody>
+                <tr>
+                  <td>Order Subtotal</td>
+                  <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td>Shipping</td>
+                  <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
+                </tr>
+                <tr>
+                  <td>Coupon</td>
+                  <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td className="product-price-total text-end">{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="m-b20">
+              <div className="input-group">
+                <input className="form-control" placeholder="Promo Code" value={discountCode} onChange={e => setDiscountCode(e.target.value.toUpperCase())} />
+                <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-primary" style={{ background: primaryColor }}>Apply</button>
+              </div>
+            </div>
+
+            <h4 className="widget-title">Payment Method</h4>
+            <div className="form-group m-b20">
+              <div className="d-flex gap-3 mb-3">
+                <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "CASH" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "CASH" }))} style={{ borderColor: formData.paymentMethod === "CASH" ? primaryColor : '' }}>Cash</div>
+                <div className={`cursor-pointer p-2 border rounded ${formData.paymentMethod === "STRIPE" ? "border-primary" : ""}`} onClick={() => setFormData(prev => ({ ...prev, paymentMethod: "STRIPE" }))} style={{ borderColor: formData.paymentMethod === "STRIPE" ? primaryColor : '' }}>Online Card</div>
+              </div>
+            </div>
+
+            {formData.paymentMethod === "STRIPE" && (
+              <div className="stripe-box">
+                <div className="form-group m-b20">
+                  <input type="text" name="cardName" className="form-control" placeholder="Name on Card" value={formData.cardName} onChange={handleChange} />
+                </div>
+                <div className="form-group m-b20 p-3 border rounded bg-white">
+                  <CardElement options={{ style: { base: { fontSize: "16px", color: "#333" } } }} />
+                </div>
+              </div>
+            )}
+
+            <div className="form-group">
+              <button
+                className="btn btn-gray btn-hover-2 w-100"
+                type="submit"
+                disabled={loading || cartItems.length === 0}
+              >
+                {loading ? "Processing..." : "Place Order Now"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Modal show={showMap} onHide={() => setShowMap(false)} size="xl" centered dialogClassName="map-modal" enforceFocus={false}>
+        <Modal.Header closeButton style={{ borderBottom: '1px solid #f0f0f0', padding: '16px 24px' }}>
+          <Modal.Title style={{ fontWeight: 800, fontSize: 18 }}>📍 Select Delivery Location</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: '20px 24px' }}>
+          <LocationPicker onLocationSelect={handleLocationSelect} initialLat={currentBranch?.lat} initialLng={currentBranch?.lng} />
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: '1px solid #f0f0f0', padding: '12px 24px' }}>
+          <Button variant="outline-secondary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px' }}>Cancel</Button>
+          <Button variant="primary" onClick={() => setShowMap(false)} style={{ borderRadius: 10, padding: '8px 24px', background: primaryColor, borderColor: primaryColor }}>Confirm Location</Button>
+        </Modal.Footer>
+      </Modal>
+    </form>
   );
 };
 
