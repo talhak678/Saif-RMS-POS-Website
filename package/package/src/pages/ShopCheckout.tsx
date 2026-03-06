@@ -406,7 +406,7 @@ const CheckoutForm = () => {
         </div>
       </div>
 
-      <Modal show={showMap} onHide={() => setShowMap(false)} size="xl" centered dialogClassName="map-modal">
+      <Modal show={showMap} onHide={() => setShowMap(false)} size="xl" centered dialogClassName="map-modal" enforceFocus={false}>
         <Modal.Header closeButton style={{ borderBottom: '1px solid #f0f0f0', padding: '16px 24px' }}>
           <Modal.Title style={{ fontWeight: 800, fontSize: 18 }}>📍 Select Delivery Location</Modal.Title>
         </Modal.Header>

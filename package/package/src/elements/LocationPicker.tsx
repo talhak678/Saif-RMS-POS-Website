@@ -71,12 +71,20 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
         style.id = styleId;
         style.textContent = `
             .pac-container {
-                z-index: 99999 !important;
-                border-radius: 10px;
-                margin-top: 4px;
-                box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-                border: 1px solid #e5e7eb;
+                z-index: 100000 !important;
+                position: fixed !important;
+                border-radius: 12px;
+                margin-top: 5px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                border: 1px solid #ddd !important;
                 font-family: inherit;
+            }
+            .pac-item {
+                padding: 10px 15px;
+                cursor: pointer;
+            }
+            .pac-item:hover {
+                background-color: #f7f7f7;
             }
         `;
         document.head.appendChild(style);
