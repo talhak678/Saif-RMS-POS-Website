@@ -67,38 +67,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
         }
     };
 
-    // Inject global style for pac-container z-index (above Bootstrap modal)
-    useEffect(() => {
-        const styleId = 'pac-container-zindex-fix';
-        if (document.getElementById(styleId)) return;
-
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.textContent = `
-            .pac-container {
-                z-index: 100000 !important;
-                position: fixed !important;
-                border-radius: 12px;
-                margin-top: 5px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-                border: 1px solid #ddd !important;
-                font-family: inherit;
-            }
-            .pac-item {
-                padding: 10px 15px;
-                cursor: pointer;
-            }
-            .pac-item:hover {
-                background-color: #f7f7f7;
-            }
-        `;
-        document.head.appendChild(style);
-
-        return () => {
-            const el = document.getElementById(styleId);
-            if (el) el.remove();
-        };
-    }, []);
+    // Global style for .pac-container is defined in index.html to ensure it works correctly with the modal.
 
     const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
         if (e.latLng) {
