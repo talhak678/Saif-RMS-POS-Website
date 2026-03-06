@@ -31,7 +31,28 @@
 
 
   <title>Please wait...</title>
-  <!-- Google Maps loaded dynamically by LocationPicker component -->
+  <!-- Google Maps global styling fix -->
+  <style>
+    .pac-container {
+      z-index: 100000 !important;
+      position: fixed !important;
+      border-radius: 12px !important;
+      margin-top: 5px !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+      border: 1px solid #ccc !important;
+    }
+
+    .pac-item {
+      padding: 12px 15px !important;
+      cursor: pointer !important;
+      font-family: 'Poppins', sans-serif !important;
+      font-size: 14px !important;
+    }
+
+    .pac-item:hover {
+      background-color: #f8f9fa !important;
+    }
+  </style>
 </head>
 
 <body id="bg" data-color="color_2" data-layout="wide-layout">

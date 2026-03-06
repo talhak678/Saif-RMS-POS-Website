@@ -32,12 +32,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
     });
 
     const onAutocompleteLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
+        console.log("Autocomplete Loaded:", autocompleteInstance);
         setAutocomplete(autocompleteInstance);
     };
 
     const onPlaceChanged = () => {
+        console.log("Place Changed Event Triggered");
         if (autocomplete !== null) {
             const place = autocomplete.getPlace();
+            console.log("Selected Place:", place);
             if (place.geometry && place.geometry.location) {
                 const lat = place.geometry.location.lat();
                 const lng = place.geometry.location.lng();
@@ -59,6 +62,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                     searchInputRef.current.value = addr;
                 }
             }
+        } else {
+            console.warn("Autocomplete instance is null onPlaceChanged");
         }
     };
 
@@ -157,11 +162,16 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 <Autocomplete
                     onLoad={onAutocompleteLoad}
                     onPlaceChanged={onPlaceChanged}
-                    fields={['geometry', 'formatted_address', 'name']}
+                    fields={['geometry', 'formatted_address', 'name', 'address_components']}
+                    options={{
+                        types: [], // empty array means all types
+                        componentRestrictions: { country: "pk" } // Restricted to Pakistan like the dashboard
+                    }}
                 >
                     <input
                         ref={searchInputRef}
                         type="text"
+                        autoComplete="off"
                         placeholder="Search your location (e.g. City, Street, Restaurant name)..."
                         style={{
                             width: '100%',
