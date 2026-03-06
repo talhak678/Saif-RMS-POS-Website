@@ -1,4 +1,12 @@
-import React, { useState,  useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+
+const GOOGLE_MAPS_API_KEY = "AIzaSyAhwD5EE1C7J_K5qaqlPuBX6o0SjqJ2wYw";
+
+const containerStyle = {
+    width: '100%',
+    height: '400px'
+};
 
 interface LocationPickerProps {
     onLocationSelect: (lat: number, lng: number, address: string) => void;
@@ -12,114 +20,116 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
 
     const [coords, setCoords] = useState({ lat: defaultLat, lng: defaultLng });
     const [address, setAddress] = useState('');
-    const mapContainerRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
-    const mapRef = useRef<any>(null);
-    const markerRef = useRef<any>(null);
+    const mapRef = useRef<google.maps.Map | null>(null);
 
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+        libraries: ['places'] as any,
+    });
+
+    // Setup autocomplete manually after map is loaded
     useEffect(() => {
-        if (!mapContainerRef.current || !window.google?.maps) return;
+        if (!isLoaded || !searchInputRef.current) return;
+        if (!window.google?.maps?.places) return;
 
-        // Create map
-        const map = new window.google.maps.Map(mapContainerRef.current, {
-            center: { lat: defaultLat, lng: defaultLng },
-            zoom: 15,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-        });
-        mapRef.current = map;
-
-        // Create marker
-        const marker = new window.google.maps.Marker({
-            position: { lat: defaultLat, lng: defaultLng },
-            map: map,
-            draggable: true,
-        });
-        markerRef.current = marker;
-
-        // Map click -> move marker
-        map.addListener('click', (e: any) => {
-            const lat = e.latLng.lat();
-            const lng = e.latLng.lng();
-            marker.setPosition(e.latLng);
-            setCoords({ lat, lng });
-            reverseGeocode(lat, lng);
+        const autocomplete = new window.google.maps.places.Autocomplete(searchInputRef.current, {
+            fields: ['geometry', 'formatted_address', 'name'],
         });
 
-        // Marker drag -> update coords
-        marker.addListener('dragend', (e: any) => {
-            const lat = e.latLng.lat();
-            const lng = e.latLng.lng();
-            setCoords({ lat, lng });
-            reverseGeocode(lat, lng);
-        });
-
-        // Setup autocomplete on search input
-        if (searchInputRef.current && window.google.maps.places) {
-            const autocomplete = new window.google.maps.places.Autocomplete(searchInputRef.current, {
-                fields: ['geometry', 'formatted_address', 'name'],
-            });
-
-            autocomplete.bindTo('bounds', map);
-
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                if (!place.geometry || !place.geometry.location) return;
-
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry && place.geometry.location) {
                 const lat = place.geometry.location.lat();
                 const lng = place.geometry.location.lng();
+                setCoords({ lat, lng });
 
-                // Move map
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17);
+                if (mapRef.current) {
+                    if (place.geometry.viewport) {
+                        mapRef.current.fitBounds(place.geometry.viewport);
+                    } else {
+                        mapRef.current.setCenter({ lat, lng });
+                        mapRef.current.setZoom(17);
+                    }
                 }
 
-                // Move marker
-                marker.setPosition(place.geometry.location);
-
-                // Update state
-                setCoords({ lat, lng });
                 const addr = place.formatted_address || place.name || '';
                 setAddress(addr);
                 onLocationSelect(lat, lng, addr);
-            });
-        }
-    }, []);
-
-    const reverseGeocode = (lat: number, lng: number) => {
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ location: { lat, lng } }, (results: any, status: any) => {
-            if (status === 'OK' && results && results[0]) {
-                const addr = results[0].formatted_address;
-                setAddress(addr);
-                onLocationSelect(lat, lng, addr);
-                if (searchInputRef.current) {
-                    searchInputRef.current.value = addr;
-                }
-            } else {
-                onLocationSelect(lat, lng, `${lat.toFixed(6)}, ${lng.toFixed(6)}`);
             }
         });
-    };
 
-    if (!window.google?.maps) {
+        return () => {
+            window.google.maps.event.clearInstanceListeners(autocomplete);
+        };
+    }, [isLoaded, onLocationSelect]);
+
+    // Inject global style for pac-container z-index (above Bootstrap modal)
+    useEffect(() => {
+        const styleId = 'pac-container-zindex-fix';
+        if (document.getElementById(styleId)) return;
+
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            .pac-container {
+                z-index: 99999 !important;
+                border-radius: 10px;
+                margin-top: 4px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+                border: 1px solid #e5e7eb;
+                font-family: inherit;
+            }
+        `;
+        document.head.appendChild(style);
+
+        return () => {
+            const el = document.getElementById(styleId);
+            if (el) el.remove();
+        };
+    }, []);
+
+    const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
+        if (e.latLng) {
+            const lat = e.latLng.lat();
+            const lng = e.latLng.lng();
+            setCoords({ lat, lng });
+
+            const geocoder = new window.google.maps.Geocoder();
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                if (status === 'OK' && results && results[0]) {
+                    const addr = results[0].formatted_address;
+                    setAddress(addr);
+                    onLocationSelect(lat, lng, addr);
+                    if (searchInputRef.current) {
+                        searchInputRef.current.value = addr;
+                    }
+                } else {
+                    onLocationSelect(lat, lng, `${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+                }
+            });
+        }
+    }, [onLocationSelect]);
+
+    const onMapLoad = useCallback((map: google.maps.Map) => {
+        mapRef.current = map;
+    }, []);
+
+    if (!isLoaded) {
         return (
             <div style={{
                 height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: '#f5f5f5', borderRadius: 12, color: '#c00', fontSize: 14
+                background: '#f5f5f5', borderRadius: 12, color: '#999', fontSize: 14
             }}>
-                ⚠️ Google Maps not loaded. Please refresh the page.
+                Loading Map...
             </div>
         );
     }
 
     return (
         <div>
-            {/* Header */}
+            {/* Header with coordinates */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
                 <div>
                     <h5 style={{ margin: 0, fontWeight: 700, fontSize: 16 }}>Pin your Location</h5>
@@ -137,7 +147,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 </div>
             </div>
 
-            {/* Search Bar */}
+            {/* Search Bar - manual autocomplete on native input */}
             <div style={{ position: 'relative', marginBottom: 15 }}>
                 <input
                     ref={searchInputRef}
@@ -159,15 +169,25 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 }}>📍</span>
             </div>
 
-            {/* Map */}
+            {/* Google Map */}
             <div style={{ borderRadius: 16, overflow: 'hidden', border: '2px solid #e5e7eb', boxShadow: '0 4px 15px rgba(0,0,0,0.06)' }}>
-                <div
-                    ref={mapContainerRef}
-                    style={{ width: '100%', height: '400px' }}
-                />
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={{ lat: coords.lat, lng: coords.lng }}
+                    zoom={15}
+                    onClick={onMapClick}
+                    onLoad={onMapLoad}
+                    options={{
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        fullscreenControl: false,
+                    }}
+                >
+                    <Marker position={{ lat: coords.lat, lng: coords.lng }} />
+                </GoogleMap>
             </div>
 
-            {/* Address */}
+            {/* Selected Address */}
             {address && (
                 <div style={{
                     marginTop: 15, padding: '12px 16px',
