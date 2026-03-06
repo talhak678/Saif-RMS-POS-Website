@@ -427,10 +427,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
                 background-color: transparent !important;
               }
               
-              /* Ensure widgets and cards remain readable if background is dark/vibrant */
-              .dz-img-box, .widget, .shop-filter, .card, .modal-content {
-                background-color: #ffffff !important;
-              }
 
               /* Specific fix for Order Success timeline */
               .status-timeline-wrapper { background: transparent !important; }
