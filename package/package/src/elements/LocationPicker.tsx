@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAhwD5EE1C7J_K5qaqlPuBX6o0SjqJ2wYw";
+const LIBRARIES: any = ['places'];
 
 const containerStyle = {
     width: '100%',
@@ -22,23 +23,20 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
     const [address, setAddress] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
     const mapRef = useRef<google.maps.Map | null>(null);
+    const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-        libraries: ['places'] as any,
+        libraries: LIBRARIES,
     });
 
-    // Setup autocomplete manually after map is loaded
-    useEffect(() => {
-        if (!isLoaded || !searchInputRef.current) return;
-        if (!window.google?.maps?.places) return;
+    const onAutocompleteLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
+        setAutocomplete(autocompleteInstance);
+    };
 
-        const autocomplete = new window.google.maps.places.Autocomplete(searchInputRef.current, {
-            fields: ['geometry', 'formatted_address', 'name'],
-        });
-
-        autocomplete.addListener('place_changed', () => {
+    const onPlaceChanged = () => {
+        if (autocomplete !== null) {
             const place = autocomplete.getPlace();
             if (place.geometry && place.geometry.location) {
                 const lat = place.geometry.location.lat();
@@ -57,13 +55,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 const addr = place.formatted_address || place.name || '';
                 setAddress(addr);
                 onLocationSelect(lat, lng, addr);
+                if (searchInputRef.current) {
+                    searchInputRef.current.value = addr;
+                }
             }
-        });
-
-        return () => {
-            window.google.maps.event.clearInstanceListeners(autocomplete);
-        };
-    }, [isLoaded, onLocationSelect]);
+        }
+    };
 
     // Inject global style for pac-container z-index (above Bootstrap modal)
     useEffect(() => {
@@ -122,7 +119,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
                 height: 400, display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: '#f5f5f5', borderRadius: 12, color: '#999', fontSize: 14
             }}>
-                Loading Map...
+                Loading Map library...
             </div>
         );
     }
@@ -132,40 +129,48 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
             {/* Header with coordinates */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
                 <div>
-                    <h5 style={{ margin: 0, fontWeight: 700, fontSize: 16 }}>Pin your Location</h5>
-                    <p style={{ margin: '4px 0 0', fontSize: 12, color: '#888', fontStyle: 'italic' }}>Click on the map to set your precise coordinates</p>
+                    <h5 style={{ margin: 0, fontWeight: 700, fontSize: 16, color: '#222' }}>Pin your Location</h5>
+                    <p style={{ margin: '4px 0 0', fontSize: 12, color: '#888', fontStyle: 'italic' }}>Click on the map or search to set your precise coordinates</p>
                 </div>
                 <div style={{ display: 'flex', gap: 10 }}>
                     <div style={{ background: '#f3f4f6', padding: '6px 14px', borderRadius: 8, border: '1px solid #e5e7eb' }}>
                         <span style={{ display: 'block', fontSize: 10, color: '#9ca3af' }}>Latitude</span>
-                        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>{coords.lat.toFixed(6)}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'monospace', color: '#333' }}>{coords.lat.toFixed(6)}</span>
                     </div>
                     <div style={{ background: '#f3f4f6', padding: '6px 14px', borderRadius: 8, border: '1px solid #e5e7eb' }}>
                         <span style={{ display: 'block', fontSize: 10, color: '#9ca3af' }}>Longitude</span>
-                        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'monospace' }}>{coords.lng.toFixed(6)}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'monospace', color: '#333' }}>{coords.lng.toFixed(6)}</span>
                     </div>
                 </div>
             </div>
 
-            {/* Search Bar - manual autocomplete on native input */}
+            {/* Search Bar - Using Autocomplete component from @react-google-maps/api */}
             <div style={{ position: 'relative', marginBottom: 15 }}>
-                <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search your location (e.g. City, Street, Restaurant name)..."
-                    style={{
-                        width: '100%',
-                        padding: '12px 16px 12px 40px',
-                        border: '1px solid #d1d5db',
-                        borderRadius: 14,
-                        fontSize: 14,
-                        outline: 'none',
-                        fontWeight: 500,
-                    }}
-                />
+                <Autocomplete
+                    onLoad={onAutocompleteLoad}
+                    onPlaceChanged={onPlaceChanged}
+                    fields={['geometry', 'formatted_address', 'name']}
+                >
+                    <input
+                        ref={searchInputRef}
+                        type="text"
+                        placeholder="Search your location (e.g. City, Street, Restaurant name)..."
+                        style={{
+                            width: '100%',
+                            padding: '12px 16px 12px 40px',
+                            border: '1px solid #d1d5db',
+                            borderRadius: 14,
+                            fontSize: 14,
+                            outline: 'none',
+                            fontWeight: 500,
+                            background: '#fff',
+                            color: '#333'
+                        }}
+                    />
+                </Autocomplete>
                 <span style={{
                     position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)',
-                    color: '#9ca3af', fontSize: 15, pointerEvents: 'none'
+                    color: '#9ca3af', fontSize: 15, pointerEvents: 'none', zIndex: 2
                 }}>📍</span>
             </div>
 
@@ -204,5 +209,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, initi
         </div>
     );
 };
+
 
 export default LocationPicker;
