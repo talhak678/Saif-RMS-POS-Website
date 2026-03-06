@@ -76,6 +76,16 @@ const Header2 = () => {
 
   if (!showHeader) return null;
 
+  const formatTo12Hour = (timeStr: string) => {
+    if (!timeStr) return "";
+    if (timeStr.includes("AM") || timeStr.includes("PM")) return timeStr;
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    if (isNaN(hours) || isNaN(minutes)) return timeStr;
+    const period = hours >= 12 ? "PM" : "AM";
+    const h12 = hours % 12 || 12;
+    return `${h12}:${minutes.toString().padStart(2, "0")} ${period}`;
+  };
+
   return (
     <>
       <style>
@@ -193,7 +203,7 @@ const Header2 = () => {
           boxShadow: '0 2px 10px rgba(255, 75, 43, 0.2)'
         }}>
           <i className="fa-solid fa-clock me-2"></i>
-          WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({headerContent.openingTime || '9:00 AM'} - {headerContent.closingTime || '1:00 AM'})
+          WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({formatTo12Hour(headerContent.openingTime) || '9:00 AM'} - {formatTo12Hour(headerContent.closingTime) || '1:00 AM'})
         </div>
       )}
       <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>

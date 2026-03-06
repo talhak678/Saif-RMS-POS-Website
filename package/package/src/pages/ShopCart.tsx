@@ -6,12 +6,9 @@ import ShopStyle1RightContent from "../elements/ShopStyle1RightContent";
 import { Context } from "../context/AppContext";
 
 const ShopCart = () => {
-  const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig } = useContext(Context);
+  const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig, isStoreClosed } = useContext(Context);
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
   const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
-
-  // Store is always open
-  const isStoreClosed = false;
 
   const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
   const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
