@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { Context } from "../context/AppContext";
 import { Link } from "react-router-dom";
@@ -6,9 +6,39 @@ import { Link } from "react-router-dom";
 const PromoPopup = () => {
     const { showPromoPopup, setShowPromoPopup, cmsConfig } = useContext(Context);
     const promos = cmsConfig?.promos || [];
+    const [activeIndex, setActiveIndex] = useState<number>(0);
 
-    // Pick the most relevant promo
-    const activePromo = promos.length > 0 ? promos[0] : null;
+    useEffect(() => {
+        if (!promos || promos.length === 0) return;
+
+        const lastShownTime = localStorage.getItem('promo_last_shown_time');
+        const lastShownIndex = parseInt(localStorage.getItem('promo_last_shown_index') || "-1");
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        if (!lastShownTime || (now - parseInt(lastShownTime)) > twentyFourHours) {
+            // It's time to show a new promo!
+            const nextIndex = (lastShownIndex + 1) % promos.length;
+
+            setActiveIndex(nextIndex);
+
+            // Give a slight delay (2 seconds) after load to not overwhelm the user immediately 
+            // and follow the 24h requirement
+            const timer = setTimeout(() => {
+                setShowPromoPopup(true);
+                localStorage.setItem('promo_last_shown_time', now.toString());
+                localStorage.setItem('promo_last_shown_index', nextIndex.toString());
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        } else {
+            // Keep the last shown index for consistency in case it's needed during the active state
+            setActiveIndex(lastShownIndex >= 0 ? lastShownIndex % promos.length : 0);
+        }
+    }, [cmsConfig, promos.length, setShowPromoPopup]);
+
+    // Pick the most relevant promo based on our index
+    const activePromo = promos.length > 0 ? promos[activeIndex] : null;
 
     if (!activePromo) return null;
 
@@ -96,7 +126,7 @@ const PromoPopup = () => {
                     z-index: 20;
                     border: none;
                     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                    color: ${secondaryColor};
+                    color: ${primaryColor};
                     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
                 }
                 .promo-close-btn:hover {

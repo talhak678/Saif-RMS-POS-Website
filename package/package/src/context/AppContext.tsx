@@ -553,10 +553,10 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   useEffect(() => {
     const checkStoreStatus = () => {
-      const headerContent = cmsConfig?.config?.configJson?.home?.sections?.header?.content;
-      if (!headerContent) return;
+      // Look for times in top level (from restaurant profile) or fall back to old CMS header section
+      const openingTime = cmsConfig?.openingTime || cmsConfig?.config?.configJson?.home?.sections?.header?.content?.openingTime;
+      const closingTime = cmsConfig?.closingTime || cmsConfig?.config?.configJson?.home?.sections?.header?.content?.closingTime;
 
-      const { openingTime, closingTime } = headerContent;
       if (!openingTime || !closingTime) return;
 
       const now = new Date();

@@ -1,11 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import Select from "react-select";
 import { Context } from "../context/AppContext";
 import toast from "react-hot-toast";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const OrderTypeModal = () => {
-    const { showOrderModal, setShowOrderModal, branches, cmsConfig, setShowPromoPopup } = useContext(Context);
+    const { showOrderModal, setShowOrderModal, branches, cmsConfig } = useContext(Context);
     const [orderType, setOrderType] = useState("pickup");
     const [phone, setPhone] = useState("");
     const [location, setLocation] = useState<any>(null);
@@ -70,17 +72,15 @@ const OrderTypeModal = () => {
 
     const handleSelect = () => {
         if (phone && location) {
+            if (phone.length < 10) {
+                toast.error("Please enter a valid phone number");
+                return;
+            }
             localStorage.setItem("orderTypeSelected", "true");
             localStorage.setItem("orderType", orderType);
             localStorage.setItem("userPhone", phone);
             localStorage.setItem("userLocation", JSON.stringify(location));
             setShowOrderModal(false);
-
-            // 🎁 Show Promo Popup after delivery selection
-            const promos = cmsConfig?.promos || [];
-            if (promos.length > 0) {
-                setTimeout(() => setShowPromoPopup(true), 800);
-            }
         } else {
             toast.error("Please fill all details");
         }
@@ -117,6 +117,40 @@ const OrderTypeModal = () => {
                             margin-left: auto;
                             margin-right: auto;
                         }
+                    }
+                    .react-tel-input .form-control {
+                        width: 100% !important;
+                        height: 45px !important;
+                        border-radius: 10px !important;
+                        border: 1px solid #eee !important;
+                        font-size: 14px !important;
+                    }
+                    .react-tel-input .flag-dropdown {
+                        border: 1px solid #eee !important;
+                        border-radius: 10px 0 0 10px !important;
+                        background: #f8f9fa !important;
+                    }
+                    .react-tel-input .form-control:focus {
+                        border-color: ${primaryColor} !important;
+                        box-shadow: 0 0 0 1px ${primaryColor} !important;
+                    }
+                    .react-tel-input .selected-flag {
+                        border-radius: 10px 0 0 10px !important;
+                    }
+                    .react-tel-input .country-list {
+                        border-radius: 10px !important;
+                        margin-top: 5px !important;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+                        scrollbar-width: thin;
+                    }
+                    .react-tel-input .country-list .search {
+                        padding: 10px !important;
+                        background: #fff !important;
+                    }
+                    .react-tel-input .country-list .search-box {
+                        width: 90% !important;
+                        border-radius: 5px !important;
+                        margin-left: 0 !important;
                     }
                 `}
             </style>
@@ -190,17 +224,14 @@ const OrderTypeModal = () => {
                     </div>
 
                     <div className="mb-4">
-                        <Form.Control
-                            type="text"
-                            inputMode="numeric"
-                            placeholder="Enter Phone Number"
+                        <PhoneInput
+                            country={'pk'}
                             value={phone}
-                            onChange={(e) => {
-                                const val = e.target.value.replace(/[^0-9]/g, '');
-                                setPhone(val);
-                            }}
-                            className="rounded-3 py-2 px-3 shadow-none mt-2"
-                            style={{ border: "1px solid #eee", fontSize: "14px" }}
+                            onChange={(phone) => setPhone(phone)}
+                            placeholder="Enter Phone Number"
+                            enableSearch={true}
+                            inputStyle={{ width: '100%' }}
+                            containerClass="mt-2"
                         />
                     </div>
 

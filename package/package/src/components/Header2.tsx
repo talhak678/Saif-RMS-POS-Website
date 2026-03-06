@@ -74,6 +74,10 @@ const Header2 = () => {
   const iconColor = isLight ? "#222222" : "#ffffff";
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
 
+  // Use times from root (restaurant profile) or fall back to old CMS header section
+  const openingTime = cmsConfig?.openingTime || headerContent?.openingTime;
+  const closingTime = cmsConfig?.closingTime || headerContent?.closingTime;
+
   if (!showHeader) return null;
 
   const formatTo12Hour = (timeStr: string) => {
@@ -208,7 +212,7 @@ const Header2 = () => {
           boxShadow: '0 2px 10px rgba(255, 75, 43, 0.2)'
         }}>
           <i className="fa-solid fa-clock me-2"></i>
-          WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({formatTo12Hour(headerContent.openingTime) || '9:00 AM'} - {formatTo12Hour(headerContent.closingTime) || '1:00 AM'})
+          WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({formatTo12Hour(openingTime) || '9:00 AM'} - {formatTo12Hour(closingTime) || '1:00 AM'})
         </div>
       )}
       <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
