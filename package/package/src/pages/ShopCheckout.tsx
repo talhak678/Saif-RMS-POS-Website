@@ -426,7 +426,7 @@ const ShopCheckout = () => {
   const { user, setShowSignInForm } = useContext(Context);
 
   return (
-    <div className="page-content bg-white">
+    <div className="page-content">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" />
       <section className="content-inner">
         <div className="container">

@@ -22,7 +22,7 @@ const ShopCart = () => {
   const contentConfig = cartConfig?.sections?.cartContent?.content;
 
   return (
-    <div className="page-content bg-white">
+    <div className="page-content">
       <style>
         {`
           @media (max-width: 991px) {

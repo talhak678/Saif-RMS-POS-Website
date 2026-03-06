@@ -96,7 +96,7 @@ const OrderSuccess = () => {
 
     if (loading && !order) {
         return (
-            <div className="page-content bg-white">
+            <div className="page-content">
                 <div className="content-inner text-center py-10">
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
@@ -109,7 +109,7 @@ const OrderSuccess = () => {
 
     if (!order) {
         return (
-            <div className="page-content bg-white">
+            <div className="page-content">
                 <div className="content-inner text-center py-10">
                     <h3 className="mb-3">Order not found</h3>
                     <p className="text-muted">We couldn't retrieve your latest order details.</p>
@@ -131,7 +131,7 @@ const OrderSuccess = () => {
     const currentStepIndex = statusSteps.findIndex(s => s.key === (order.status || "PENDING"));
 
     return (
-        <div className="page-content bg-white">
+        <div className="page-content">
             <section className="content-inner" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
                 <div className="container">
                     <div className="row justify-content-center">
@@ -167,7 +167,7 @@ const OrderSuccess = () => {
                             </div>
 
                             {/* Order Status Timeline */}
-                            <div className="widget mb-4" style={{ border: "1px solid #f0f0f0", borderRadius: "16px", padding: "28px", background: "#fff" }}>
+                            <div className="widget mb-4" style={{ border: "1px solid #f0f0f0", borderRadius: "16px", padding: "28px" }}>
                                 <div className="d-flex justify-content-between align-items-center mb-4">
                                     <h5 className="widget-title mb-0">Order Status</h5>
                                     {lastUpdated && (

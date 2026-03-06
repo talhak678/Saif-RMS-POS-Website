@@ -417,6 +417,23 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               }
               .footer-link li a:hover,
               .widget_services ul li a:hover { color: ${pColor} !important; opacity: 1 !important; }
+
+              /* === GLOBAL BACKGROUND CONSISTENCY === */
+              .page-content.bg-white, 
+              .page-content,
+              .content-inner, 
+              .content-inner-1,
+              .section-full {
+                background-color: transparent !important;
+              }
+              
+              /* Ensure widgets and cards remain readable if background is dark/vibrant */
+              .dz-img-box, .widget, .shop-filter, .card, .modal-content {
+                background-color: #ffffff !important;
+              }
+
+              /* Specific fix for Order Success timeline */
+              .status-timeline-wrapper { background: transparent !important; }
             `;
           }
 

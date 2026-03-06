@@ -106,7 +106,7 @@ const MenuStyle2 = () => {
     );
 
   return (
-    <div className="page-content bg-white">
+    <div className="page-content">
       {/* Banner */}
       {sections.banner?.enabled !== false && (
         <CommonBanner
