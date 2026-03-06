@@ -53,6 +53,15 @@ const ShopCart = () => {
               font-size: 14px;
             }
           }
+          /* Shop Cart Action Button Hover Fix */
+          .order-detail .btn-primary.btn-hover-1:hover {
+            background-color: ${primaryColor} !important;
+            color: var(--secondary) !important;
+            border-color: ${primaryColor} !important;
+          }
+          .order-detail .btn-primary.btn-hover-1:hover span {
+             color: var(--secondary) !important;
+          }
         `}
       </style>
       {bannerEnabled && (
