@@ -22,9 +22,11 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
   const hasNoImage =
     !img ||
     img.trim() === "" ||
-    img.includes("via.placeholder.com") ||
-    /\/bnr[1-9]\.jpg$/i.test(img) ||
-    /\/bnr[1-9]\.png$/i.test(img);
+    img.toLowerCase().includes("placeholder") ||
+    img.toLowerCase().includes("placehold") ||
+    img.includes("1920") ||
+    img.includes("1980") ||
+    /bnr[1-9]/i.test(img);
 
   return (
     <div
@@ -32,8 +34,7 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
       style={
         hasNoImage
           ? {
-            // Light gray background when no image — no background-image loaded
-            background: "#f0f0f0",
+            background: "#f8f9fa", // Cleaner light gray
           }
           : {
             backgroundImage: `url(${img})`,

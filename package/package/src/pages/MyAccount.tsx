@@ -2,8 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../context/AppContext";
-import CommonBanner from "../elements/CommonBanner";
-import { IMAGES } from "../constent/theme";
 import toast from "react-hot-toast";
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
@@ -131,7 +129,6 @@ const MyAccount = () => {
     if (!user) {
         return (
             <div className="page-content bg-white">
-                <CommonBanner img={IMAGES.images_bnr3} title="My Account" subtitle="My Account" />
                 <section className="content-inner" style={{ background: "#f8f9fa" }}>
                     <div className="container">
                         <div className="row justify-content-center">
@@ -158,15 +155,6 @@ const MyAccount = () => {
 
     return (
         <div className="page-content bg-white">
-            <CommonBanner
-                img={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr3}
-                title={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.title || "My Account"}
-                subtitle={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.breadcrumb || "My Account"}
-                description={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.description}
-                showTitle={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.showTitle !== "false"}
-                textAlign={cmsConfig?.config?.configJson?.account?.sections?.banner?.content?.textAlign}
-            />
-
             <section className="content-inner" style={{ background: "#f8f9fa" }}>
                 <div className="container">
                     <div className="row">

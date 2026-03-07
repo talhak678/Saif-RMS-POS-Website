@@ -2,9 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../context/AppContext";
-import CommonBanner from "../elements/CommonBanner";
-import { IMAGES } from "../constent/theme";
-
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
 const STATUS_STEPS = [
@@ -108,15 +105,6 @@ const TrackOrder = () => {
 
     return (
         <div className="page-content bg-white">
-            <CommonBanner
-                img={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.imageUrl || IMAGES.images_bnr3}
-                title={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.title || "Track Order"}
-                subtitle={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.breadcrumb || "Track Order"}
-                description={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.description}
-                showTitle={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.showTitle !== "false"}
-                textAlign={cmsConfig?.config?.configJson?.trackOrder?.sections?.banner?.content?.textAlign}
-            />
-
             <section className="content-inner" style={{ background: "#f8f9fa" }}>
                 <div className="container">
                     <div className="row justify-content-center">

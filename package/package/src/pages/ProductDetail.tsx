@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { IMAGES } from "../constent/theme";
-import CommonBanner from "../elements/CommonBanner";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ProductDetailTabs from "../elements/ProductDetailTabs";
 import HomeSpacialMenu from "../elements/HomeSpacialMenu";
@@ -102,11 +101,6 @@ const ProductDetail = () => {
           }
         `}
       </style>
-      <CommonBanner
-        img={IMAGES.banner_bnr1}
-        title={product.name}
-        subtitle="Product Detail"
-      />
       <section className="content-inner-1 overflow-hidden">
         <div className="container">
           <div className="row product-detail">
