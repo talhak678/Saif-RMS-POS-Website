@@ -15,9 +15,10 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
   const primaryColor =
     cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "var(--primary)";
 
-  // Detect placeholder images: local bnr*.jpg fallbacks or via.placeholder.com
+  // Detect placeholder images: local bnr*.jpg fallbacks, via.placeholder.com, or no image at all
   const isDefaultPlaceholder =
     !img ||
+    img.trim() === "" ||
     img.includes("via.placeholder.com") ||
     /\/bnr[1-9]\.jpg$/.test(img) ||
     /\/bnr[1-9]\.png$/.test(img);
@@ -28,7 +29,7 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
       style={
         isDefaultPlaceholder
           ? {
-            background: "linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #ececec 100%)",
+            background: "#f0f0f0",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }
@@ -42,7 +43,7 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
       <style>
         {`
           .dz-bnr-inr.style-1::after {
-            background: ${isDefaultPlaceholder ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.45)"} !important;
+            background: ${isDefaultPlaceholder ? "transparent" : "rgba(0, 0, 0, 0.45)"} !important;
           }
           .dz-bnr-inr.style-1 .dz-bnr-inr-entry h1 {
             margin-bottom: 10px;
@@ -61,8 +62,9 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
       </style>
       <div className="container" style={{ textAlign: textAlign as any }}>
         <div className="dz-bnr-inr-entry">
-          {showTitle && <h1>{title}</h1>}
-          {description && <p>{description}</p>}
+          {/* Only show text content when a real image is uploaded */}
+          {!isDefaultPlaceholder && showTitle && <h1>{title}</h1>}
+          {!isDefaultPlaceholder && description && <p>{description}</p>}
         </div>
       </div>
     </div>
@@ -70,3 +72,4 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
 };
 
 export default CommonBanner;
+
