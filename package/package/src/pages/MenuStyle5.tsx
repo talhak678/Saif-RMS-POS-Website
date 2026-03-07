@@ -98,7 +98,7 @@ const MenuStyle5 = () => {
               </strong>
               <Link
                 to={"#"}
-                className="btn btn-primary filter-btn btn-hover-2"
+                className="btn btn-primary filter-btn "
                 onClick={() => {
                   setShowCategeryFilter(true);
                 }}
@@ -142,7 +142,7 @@ const MenuStyle5 = () => {
                     <h5 className="dz-price text-primary">{price}</h5>
                     <Link
                       to="/shop-cart"
-                      className="btn btn-primary btn-hover-2"
+                      className="btn btn-primary "
                     >
                       {" "}
                       Add To Cart

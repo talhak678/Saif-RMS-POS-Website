@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { IMAGES } from "../constent/theme";
 
 const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?: string; description?: string; videoUrl?: string; thumbnailUrl?: string }) => {
   const [playing, setPlaying] = useState(false);
@@ -118,7 +117,10 @@ const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?:
                 {!playing ? (
                   <div
                     className="video-thumbnail-overlay"
-                    style={{ backgroundImage: `url(${thumbnailUrl || IMAGES.background_pic11})` }}
+                    style={thumbnailUrl
+                      ? { backgroundImage: `url(${thumbnailUrl})` }
+                      : { background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)" }
+                    }
                   >
                     <button className="play-btn-main" onClick={() => setPlaying(true)}>
                       <i className="fa-solid fa-play"></i>

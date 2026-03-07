@@ -90,10 +90,10 @@ const Home2Testimonial = () => {
         </SwiperSlide>
       ))}
       <div className="pagination">
-        <div className="testimonial-2-button-prev btn-prev rounded-xl btn-hover-2">
+        <div className="testimonial-2-button-prev btn-prev rounded-xl ">
           <i className="fa-solid fa-arrow-left"></i>
         </div>
-        <div className="testimonial-2-button-next btn-next rounded-xl btn-hover-2">
+        <div className="testimonial-2-button-next btn-next rounded-xl ">
           <i className="fa-solid fa-arrow-right"></i>
         </div>
       </div>

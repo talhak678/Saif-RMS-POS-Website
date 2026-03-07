@@ -59,7 +59,7 @@ const BlogList = () => {
                       <Link
                         to="/blog-standard"
                         state={{ blog }}
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary"
                       >
                         Read More
                       </Link>
@@ -77,7 +77,7 @@ const BlogList = () => {
           {cmsConfig?.blogs?.length > 0 && (
             <div className="text-center m-t10 m-b30">
               <Link
-                className="btn btn-primary dz-load-more btn-hover-2"
+                className="btn btn-primary dz-load-more"
                 to={"#"}
               >
                 Load More

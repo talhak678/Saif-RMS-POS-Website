@@ -79,7 +79,7 @@ const Testimonial = () => {
             })}
           </div>
           <div className="text-center m-t10">
-            <Link className="btn btn-primary dz-load-more btn-hover-2" to={"#"}>
+            <Link className="btn btn-primary dz-load-more " to={"#"}>
               Load More
             </Link>
           </div>

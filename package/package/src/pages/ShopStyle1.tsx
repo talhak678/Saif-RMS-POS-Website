@@ -29,7 +29,7 @@ const ShopStyle1 = () => {
                       name="submit"
                       value="submit"
                       type="reset"
-                      className="btn btn-primary btn-hover-2"
+                      className="btn btn-primary "
                     >
                       <span>Search</span>
                       <i className="icon-search"></i>

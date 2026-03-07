@@ -42,7 +42,7 @@ const Home2OurBlog = () => {
                 <div className="btn-wrapper p-t10">
                   <Link
                     to="/blog-standard"
-                    className="btn btn-primary btn-hover-2"
+                    className="btn btn-primary"
                   >
                     Read More
                   </Link>
@@ -81,7 +81,7 @@ const Home2OurBlog = () => {
                 <div className="btn-wrapper p-t10">
                   <Link
                     to="/blog-standard"
-                    className="btn btn-primary btn-hover-2"
+                    className="btn btn-primary"
                   >
                     Read More
                   </Link>

@@ -34,7 +34,7 @@ const BlogGridRightContent = () => {
                 There are many variations of passages of Lorem Ipsum available
                 have.
               </p>
-              <Link to="/blog-standard" className="btn btn-primary btn-hover-2">
+              <Link to="/blog-standard" className="btn btn-primary ">
                 Read More
               </Link>
             </div>

@@ -70,7 +70,7 @@ const BlogGrid2 = () => {
                     </p>
                     <Link
                       to="/blog-standard"
-                      className="btn btn-primary btn-hover-2"
+                      className="btn btn-primary "
                     >
                       Read More
                     </Link>
@@ -81,7 +81,7 @@ const BlogGrid2 = () => {
           </div>
           <div className="text-center m-t10">
             <Link
-              className="btn btn-primary dz-load-more btn-hover-2"
+              className="btn btn-primary dz-load-more "
               to={"#"}
               onClick={loadMore}
             >

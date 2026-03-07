@@ -48,7 +48,7 @@ const HomeSpacialMenu = () => {
                 </h4>
                 <p>Freshly prepared with the best ingredients.</p>
                 <h5 className="dz-price text-primary">{price}</h5>
-                <Link to="/shop-cart" className="btn btn-primary btn-hover-2">
+                <Link to="/shop-cart" className="btn btn-primary">
                   Add To Cart
                 </Link>
               </div>

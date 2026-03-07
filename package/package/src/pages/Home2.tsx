@@ -59,10 +59,10 @@ const Home2 = () => {
             <div className="section-head menu-align">
               <h2 className="title mb-0 wow flipInX text-secondary">{sections.browseMenu.content?.title || "Browse Our Menu"}</h2>
               <div className="pagination-align wow fadeInUp">
-                <div className="menu-button-prev1 btn-prev rounded-xl btn-hover-2">
+                <div className="menu-button-prev1 btn-prev rounded-xl ">
                   <i className="fa-solid fa-arrow-left"></i>
                 </div>
-                <div className="menu-button-next1 btn-next rounded-xl btn-hover-2">
+                <div className="menu-button-next1 btn-next rounded-xl ">
                   <i className="fa-solid fa-arrow-right"></i>
                 </div>
               </div>
@@ -144,10 +144,10 @@ const TodaySpecialSection = ({ sections, cmsConfig }: { sections: any, cmsConfig
             <h2 className="title mb-0 wow flipInX text-white">{specialSection.title || "Today's Special"}</h2>
           </div>
           <div className="pagination-align wow fadeInUp">
-            <div className="special-button-prev btn-prev rounded-xl btn-hover-2 text-white border-white">
+            <div className="special-button-prev btn-prev rounded-xl  text-white border-white">
               <i className="fa-solid fa-arrow-left"></i>
             </div>
-            <div className="special-button-next btn-next rounded-xl btn-hover-2 text-white border-white">
+            <div className="special-button-next btn-next rounded-xl  text-white border-white">
               <i className="fa-solid fa-arrow-right"></i>
             </div>
           </div>

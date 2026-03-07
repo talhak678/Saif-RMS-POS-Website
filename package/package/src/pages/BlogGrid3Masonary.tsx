@@ -80,7 +80,7 @@ const BlogGrid3Masonary = () => {
                       </p>
                       <Link
                         to="/blog-standard"
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary "
                       >
                         Read More
                       </Link>
@@ -187,7 +187,7 @@ const BlogGrid3Masonary = () => {
                       </p>
                       <Link
                         to="/blog-standard"
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary "
                       >
                         Read More
                       </Link>
@@ -247,7 +247,7 @@ const BlogGrid3Masonary = () => {
                       </p>
                       <Link
                         to="/blog-standard"
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary "
                       >
                         Read More
                       </Link>
@@ -298,7 +298,7 @@ const BlogGrid3Masonary = () => {
                       </p>
                       <Link
                         to="/blog-standard"
-                        className="btn btn-primary btn-hover-2"
+                        className="btn btn-primary "
                       >
                         Read More
                       </Link>

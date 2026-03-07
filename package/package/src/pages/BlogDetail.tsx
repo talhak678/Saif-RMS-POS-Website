@@ -38,7 +38,7 @@ export function OurBlog({ blog }: { blog?: any }) {
             <p>Please navigate back to the blog list and select a post to view.</p>
           </div>
           <div className="read-btn">
-            <Link to="/blog-list" className="btn btn-primary btn-hover-2">Back to Blogs</Link>
+            <Link to="/blog-list" className="btn btn-primary ">Back to Blogs</Link>
           </div>
         </div>
       </div>

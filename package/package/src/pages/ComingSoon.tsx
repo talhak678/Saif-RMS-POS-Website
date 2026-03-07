@@ -88,7 +88,7 @@ const ComingSoon = () => {
                           name="submit"
                           value="submit"
                           type="submit"
-                          className="btn btn-primary btn-hover-2"
+                          className="btn btn-primary "
                         >
                           <span>Send Request</span>
                           <i className="fa-solid fa-paper-plane"></i>

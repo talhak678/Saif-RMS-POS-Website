@@ -50,7 +50,7 @@ const Sidebar = () => {
             <p>
               {footerContent.description || "Quality food delivered to your doorstep. Experience the best culinary delights with us."}
             </p>
-            <Link to="/about-us" className="btn btn-primary btn-hover-2" onClick={() => setShowSidebar(false)}>
+            <Link to="/about-us" className="btn btn-primary" onClick={() => setShowSidebar(false)}>
               <span>READ MORE</span>
             </Link>
           </div>

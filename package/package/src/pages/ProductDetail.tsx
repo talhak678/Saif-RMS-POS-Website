@@ -16,6 +16,8 @@ const ProductDetail = () => {
   const [reviewStats, setReviewStats] = useState({ avgRating: 0, totalReviews: 0 });
 
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffc822";
+  const textColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.textColor || "#222222";
 
   useEffect(() => {
     if (!cmsLoading && cmsConfig?.menu) {
@@ -65,6 +67,41 @@ const ProductDetail = () => {
 
   return (
     <div className="page-content bg-white">
+      <style>
+        {`
+          /* Add To Cart Button Logic */
+          .modal-btn-group button.btn .secondary-text-enforced {
+            color: ${secondaryColor} !important;
+            transition: all 0.3s ease;
+          }
+          .modal-btn-group button.btn:hover .secondary-text-enforced {
+            color: ${textColor} !important;
+          }
+          .modal-btn-group button.btn {
+            color: ${secondaryColor} !important;
+          }
+          .modal-btn-group button.btn:hover {
+            color: ${textColor} !important;
+          }
+
+          /* Buy Now Button Logic (Always Text Color) */
+          .modal-btn-group a.btn,
+          .modal-btn-group a.btn .secondary-text-enforced {
+            color: ${textColor} !important;
+            transition: all 0.3s ease;
+          }
+          .modal-btn-group a.btn:hover,
+          .modal-btn-group a.btn:hover .secondary-text-enforced {
+            color: ${textColor} !important;
+            opacity: 0.8;
+          }
+
+          .secondary-label-enforced,
+          .avatar-list li.avatar span.secondary-label-enforced {
+            color: ${secondaryColor} !important;
+          }
+        `}
+      </style>
       <CommonBanner
         img={IMAGES.banner_bnr1}
         title={product.name}
@@ -117,10 +154,10 @@ const ProductDetail = () => {
                 </p>
                 <ul className="detail-list">
                   <li>
-                    Price <span className="text-primary m-t5" style={{ fontSize: '24px', fontWeight: 800 }}>{cmsConfig?.config?.currency || '$'}{(parseFloat(product.price) * quantity).toFixed(2)}</span>
+                    <span className="secondary-label-enforced">Price</span> <span className="text-primary m-t5" style={{ fontSize: '24px', fontWeight: 800 }}>{cmsConfig?.config?.currency || '$'}{(parseFloat(product.price) * quantity).toFixed(2)}</span>
                   </li>
                   <li>
-                    Quantity
+                    <span className="secondary-label-enforced">Quantity</span>
                     <div className="btn-quantity style-1 m-t5">
                       <div className="input-group bootstrap-touchspin">
                         <input
@@ -159,9 +196,9 @@ const ProductDetail = () => {
                         className="btn btn-primary btn-hover-1"
                         style={{ padding: '15px 35px', borderRadius: '15px' }}
                       >
-                        <span>
+                        <span className="secondary-text-enforced">
                           Add To Cart{" "}
-                          <i className="flaticon-shopping-bag-1 m-l10"></i>
+                          <i className="flaticon-shopping-bag-1 m-l10 secondary-text-enforced"></i>
                         </span>
                       </button>
                     </li>
@@ -172,9 +209,9 @@ const ProductDetail = () => {
                         className="btn btn-outline-secondary btn-hover-1"
                         style={{ padding: '15px 35px', borderRadius: '15px' }}
                       >
-                        <span>
+                        <span className="secondary-text-enforced">
                           Buy Now{" "}
-                          <i className="flaticon-shopping-cart m-l10"></i>
+                          <i className="flaticon-shopping-cart m-l10 secondary-text-enforced"></i>
                         </span>
                       </Link>
                     </li>
@@ -281,7 +318,7 @@ export function Avatar() {
           <img src={IMAGES.testiminial_small_pic5} alt="" />
         </li>
         <li className="avatar">
-          <span>150+</span>
+          <span className="secondary-label-enforced">150+</span>
         </li>
       </ul>
     </>

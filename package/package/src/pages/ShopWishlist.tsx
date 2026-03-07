@@ -37,7 +37,7 @@ const ShopWishlist = () => {
                         <td className="product-item-totle">
                           <Link
                             to="/shop-cart"
-                            className="btn btn-gray btn-hover-2"
+                            className="btn btn-gray "
                           >
                             Add To Cart
                           </Link>

@@ -35,7 +35,7 @@ const BlogGridCard = ({ img, title }: propType) => {
             There are many variations of passages of Lorem Ipsum available, but
             the majority have.
           </p>
-          <Link to="/blog-standard" className="btn btn-primary btn-hover-2">
+          <Link to="/blog-standard" className="btn btn-primary">
             Read More
           </Link>
         </div>

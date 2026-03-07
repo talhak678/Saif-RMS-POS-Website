@@ -55,7 +55,7 @@ const OurBlog = () => {
               <div className="read-btn">
                 <Link
                   to="/blog-standard"
-                  className="btn btn-primary btn-hover-2"
+                  className="btn btn-primary"
                 >
                   Read More
                 </Link>

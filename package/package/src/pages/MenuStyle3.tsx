@@ -115,7 +115,7 @@ const MenuStyle3 = () => {
                 </strong>
                 <Link
                   to={"#"}
-                  className="btn btn-primary filter-btn btn-hover-2"
+                  className="btn btn-primary filter-btn "
                   onClick={() => {
                     setShowCategeryFilter(true);
                   }}

@@ -395,7 +395,7 @@ const CheckoutForm = () => {
 
             <div className="form-group">
               <button
-                className="btn btn-gray btn-hover-2 w-100"
+                className="btn btn-gray  w-100"
                 type="submit"
                 disabled={loading || cartItems.length === 0}
               >
