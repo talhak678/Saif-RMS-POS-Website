@@ -86,10 +86,11 @@ const OrderSuccess = () => {
 
         if (!oNo || !phone) return;
 
-        // Poll more frequently (10 seconds) for better UX
+        // Poll more frequently (5 seconds) for better UX
         const interval = setInterval(() => {
             fetchOrderStatus(oNo, phone);
-        }, 10000);
+        }, 5000);
+
 
         return () => clearInterval(interval);
     }, [order?.status, order?.orderNo]);
