@@ -121,8 +121,7 @@ const CheckoutForm = () => {
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !user.token) {
-      toast.error("Please login/register to place your order");
+    if (!user) {
       setShowSignInForm(true);
       setLoading(false);
       return;
@@ -441,20 +440,14 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  const { user, setShowSignInForm } = useContext(Context);
-
+  
   return (
     <div className="page-content">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" />
       <section className="content-inner">
         <div className="container">
-          {!user && (
-            <div className="alert alert-warning mb-4 d-flex justify-content-between">
-              <span>Login to continue checkout!</span>
-              <button className="btn btn-sm btn-dark" onClick={() => setShowSignInForm(true)}>Login</button>
-            </div>
-          )}
           <Elements stripe={stripePromise}>
+
             <CheckoutForm />
           </Elements>
         </div>
