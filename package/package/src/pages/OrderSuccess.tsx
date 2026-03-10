@@ -11,19 +11,16 @@ const OrderSuccess = () => {
     const [order, setOrder] = useState<any>(location.state?.order);
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+    const [nextRefresh, setNextRefresh] = useState(1);
 
-    // Dynamic Slug Detection (matching AppContext logic)
+    // Dynamic Slug Detection
     const getSlug = () => {
         const hostname = window.location.hostname;
-        // Check if we are on localhost for development
         if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-            return "dilpasand-sweets"; // Default for local dev
+            return "dilpasand-sweets";
         }
-        // Extract subdomain for production (e.g., dilpasand-sweets.vercel.app -> dilpasand-sweets)
         const parts = hostname.split('.');
-        if (parts.length >= 3) {
-            return parts[0];
-        }
+        if (parts.length >= 3) return parts[0];
         return import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
     };
 
@@ -32,13 +29,17 @@ const OrderSuccess = () => {
     const fetchOrderStatus = async (oNo: any, phone: any) => {
         if (!oNo || !phone) return;
         try {
-            // Added _t timestamp to bust cache as Vercel/Next.js often caches GET requests
             const res = await axios.get(`${BASE_URL}/api/orders/track`, {
                 params: {
                     orderNo: oNo,
                     phone: phone,
                     slug: restaurantSlug,
                     _t: Date.now()
+                },
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
                 }
             });
             if (res.data?.success) {
@@ -53,16 +54,10 @@ const OrderSuccess = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-
-        // Initial setup for persistence
         if (location.state?.order) {
             const currentOrder = location.state.order;
             const phoneStr = currentOrder.customer?.phone || currentOrder.phone || "";
-            const orderData = {
-                orderNo: currentOrder.orderNo,
-                phone: phoneStr
-            };
-            localStorage.setItem("lastOrder", JSON.stringify(orderData));
+            localStorage.setItem("lastOrder", JSON.stringify({ orderNo: currentOrder.orderNo, phone: phoneStr }));
         } else if (!order) {
             const saved = localStorage.getItem("lastOrder");
             if (saved) {
@@ -70,27 +65,23 @@ const OrderSuccess = () => {
                     const { orderNo, phone } = JSON.parse(saved);
                     setLoading(true);
                     fetchOrderStatus(orderNo, phone).finally(() => setLoading(false));
-                } catch (e) {
-                    console.error("Failed to parse saved order", e);
-                }
+                } catch (e) { }
             }
         }
     }, []);
 
-    // Polling for status updates
+    // Polling for status updates every 1 SECOND
     useEffect(() => {
         if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
 
         const oNo = order.orderNo;
         const phone = order.customer?.phone || order.phone;
-
         if (!oNo || !phone) return;
 
-        // Poll more frequently (5 seconds) for better UX
         const interval = setInterval(() => {
             fetchOrderStatus(oNo, phone);
-        }, 5000);
-
+            setNextRefresh(1); // Reset timer after fetch
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [order?.status, order?.orderNo]);
@@ -107,6 +98,7 @@ const OrderSuccess = () => {
             </div>
         );
     }
+
 
     if (!order) {
         return (
@@ -250,9 +242,10 @@ const OrderSuccess = () => {
                                 </div>
                                 {order.status !== "DELIVERED" && order.status !== "CANCELLED" && (
                                     <p className="mt-4 text-center mb-0" style={{ fontSize: "11px", color: "#aaa" }}>
-                                        🔄 Monitoring status from dashboard every 10s...
+                                        🔄 Checking status in 1s... (Live tracking)
                                     </p>
                                 )}
+
                             </div>
 
                             {/* Order Details */}
