@@ -34,12 +34,12 @@ const Sidebar = () => {
       </style>
       <div className={`contact-sidebar ${showSidebar ? "active" : ""}`}>
         <div className="contact-box1">
-          <div className="logo-contact logo-header">
-            <Link to="/" className="anim-logo" onClick={() => setShowSidebar(false)}>
+          <div className="logo-contact text-center w-100 m-b30">
+            <Link to="/" onClick={() => setShowSidebar(false)}>
               <img
                 src={logoUrl}
                 alt={restaurantName}
-                style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain' }}
+                style={{ maxHeight: '70px', width: 'auto', objectFit: 'contain', margin: '0 auto' }}
               />
             </Link>
           </div>
@@ -123,7 +123,7 @@ const Sidebar = () => {
               <p className="m-b0">{footerContent.contactEmail || "info@example.com"}</p>
             </div>
           </div>
-          <div className="m-t50 dz-social-icon style-1">
+          <div className="m-t30">
             <SocialLinks />
           </div>
         </div>
