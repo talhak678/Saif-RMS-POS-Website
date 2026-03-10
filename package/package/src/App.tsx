@@ -68,6 +68,7 @@ import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
 // import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
 import ContactUs from "./pages/ContactUs";
 import SignIn from "./elements/SignIn";
+import ResetPassword from "./pages/ResetPassword";
 import OrderTypeModal from "./elements/OrderTypeModal";
 import PromoPopup from "./elements/PromoPopup";
 import Loader from "./components/Loader";
@@ -183,6 +184,7 @@ function App() {
                   <Route path="/order-success" element={<OrderSuccess />} />
                   <Route path="/track-order" element={<TrackOrder />} />
                   <Route path="/my-account" element={<MyAccount />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
 
                   <Route path="/blog-list" element={
                     <CmsProtectedRoute pageKey="blogs">
