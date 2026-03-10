@@ -34,8 +34,7 @@ const OrderSuccess = () => {
             if (orderId) {
                 // Most reliable - direct ID lookup
                 res = await axios.get(`${BASE_URL}/api/orders/track`, {
-                    params: { orderId, _t: Date.now() },
-                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                    params: { orderId, _t: Date.now() }
                 });
             } else if (oNo && phone) {
                 res = await axios.get(`${BASE_URL}/api/orders/track`, {
@@ -44,8 +43,7 @@ const OrderSuccess = () => {
                         phone,
                         ...(restaurantId ? { restaurantId } : {}),
                         _t: Date.now()
-                    },
-                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                    }
                 });
             }
 
