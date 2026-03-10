@@ -200,7 +200,7 @@ const CheckoutForm = () => {
     control: (base: any) => ({
       ...base,
       minHeight: '50px',
-      borderRadius: '0',
+      borderRadius: '10px',
       border: '1px solid #e1e1e1',
       boxShadow: 'none',
     }),
@@ -213,6 +213,13 @@ const CheckoutForm = () => {
 
   return (
     <form className="shop-form" onSubmit={handlePlaceOrder}>
+      <style>{`
+        .shop-form .form-control { border-radius: 10px !important; }
+        .shop-form .btn { border-radius: 10px !important; }
+        .shop-form .rounded { border-radius: 10px !important; }
+        .shop-form .input-group .form-control { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+        .shop-form .input-group .btn { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; }
+      `}</style>
       <div className="row">
         {/* Billing Address Section */}
         <div className="col-lg-12">
@@ -317,28 +324,30 @@ const CheckoutForm = () => {
         <div className="col-lg-6">
           <div className="widget">
             <h4 className="widget-title">Your Order</h4>
-            <table className="table-bordered check-tbl">
-              <thead className="text-center">
-                <tr>
-                  <th>IMAGE</th>
-                  <th>PRODUCT NAME</th>
-                  <th>TOTAL</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map(item => (
-                  <tr key={item.id}>
-                    <td className="product-item-img text-center">
-                      <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px' }} />
-                    </td>
-                    <td className="product-item-name">{item.name} x {item.quantity}</td>
-                    <td className="product-price">
-                      {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
-                    </td>
+            <div style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #e1e1e1' }}>
+              <table className="table-bordered check-tbl w-100 mb-0" style={{ borderStyle: 'hidden' }}>
+                <thead className="text-center">
+                  <tr>
+                    <th>IMAGE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>TOTAL</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cartItems.map(item => (
+                    <tr key={item.id}>
+                      <td className="product-item-img text-center">
+                        <img src={item.image || IMAGES.shop_pic1} alt="/" style={{ width: '60px' }} />
+                      </td>
+                      <td className="product-item-name">{item.name} x {item.quantity}</td>
+                      <td className="product-price">
+                        {cmsConfig?.config?.currency || '$'} {(item.price * item.quantity).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -346,26 +355,28 @@ const CheckoutForm = () => {
         <div className="col-lg-6">
           <div className="widget">
             <h4 className="widget-title">Order Total</h4>
-            <table className="table-bordered check-tbl mb-4">
-              <tbody>
-                <tr>
-                  <td>Order Subtotal</td>
-                  <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
-                </tr>
-                <tr>
-                  <td>Shipping</td>
-                  <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
-                </tr>
-                <tr>
-                  <td>Coupon</td>
-                  <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td className="product-price-total text-end">{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="mb-4" style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #e1e1e1' }}>
+              <table className="table-bordered check-tbl w-100 mb-0" style={{ borderStyle: 'hidden' }}>
+                <tbody>
+                  <tr>
+                    <td>Order Subtotal</td>
+                    <td className="product-price text-end">{cmsConfig?.config?.currency || '$'} {subtotal.toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td>Shipping</td>
+                    <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
+                  </tr>
+                  <tr>
+                    <td>Coupon</td>
+                    <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td className="product-price-total text-end">{cmsConfig?.config?.currency || '$'} {total.toFixed(2)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div className="m-b20">
               <div className="input-group">
