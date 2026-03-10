@@ -107,7 +107,7 @@ const MainBanner2 = () => {
               font-size: 14px !important;
             }
             .main-bnr-three .banner-content {
-               padding: 20px !important;
+               padding: 20px 20px 60px 20px !important;
                text-align: left !important;
             }
             .main-bnr-three .banner-content .title {
@@ -156,7 +156,7 @@ const MainBanner2 = () => {
         {displayBanners.map(({ title, subtitle, description, bgimg, img3, img4 }, ind) => (
           <SwiperSlide className="swiper-slide" key={ind}>
             <div
-              className="banner-inner overflow-hidden"
+              className="banner-inner"
               data-swiper-parallax="-10"
               data-swiper-parallax-duration="0.5"
               style={{
@@ -196,16 +196,17 @@ const MainBanner2 = () => {
                         </Link>
                       </div>
 
-                      {selectedReview && (
-                        <div className="review-card-banner mt-4 animate__animated animate__fadeInUp" style={{
+                      {(selectedReview && (bannerSection.showReview === 'true' || bannerSection.showReview === true)) && (
+                        <div className="review-card-banner animate__animated animate__fadeInUp" style={{
                           background: '#ffffff',
-                          padding: '24px',
+                          padding: '16px 20px',
                           borderRadius: '24px',
                           border: '1px solid rgba(0, 0, 0, 0.08)',
-                          maxWidth: '450px',
+                          maxWidth: '420px',
                           boxShadow: '0 15px 40px rgba(0, 0, 0, 0.12)',
                           position: 'relative',
-                          zIndex: 1
+                          zIndex: 10,
+                          marginTop: '-60px'
                         }}>
                           <div className="d-flex align-items-center mb-3">
                             <div className="rating d-flex gap-1 mr-3">

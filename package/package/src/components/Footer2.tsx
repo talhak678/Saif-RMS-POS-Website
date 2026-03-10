@@ -58,8 +58,8 @@ const Footer2 = () => {
   };
 
 
-  const renderLinks = (linksString: string) => {
-    if (!linksString) return null;
+  const renderLinks = (linksData: any) => {
+    if (!linksData) return null;
 
     const routeMap: Record<string, string> = {
       "home": "/",
@@ -75,15 +75,29 @@ const Footer2 = () => {
       "frequently asked questions": "/faq"
     };
 
-    return linksString.split(",").map((item: string, index: number) => {
-      const label = item.trim();
-      const target = routeMap[label.toLowerCase()] || "/#";
-      return (
+    // If it's a string (Legacy format)
+    if (typeof linksData === 'string') {
+      return linksData.split(",").map((item: string, index: number) => {
+        const label = item.trim();
+        const target = routeMap[label.toLowerCase()] || "/#";
+        return (
+          <li key={index}>
+            <Link to={target}><span>{label}</span></Link>
+          </li>
+        );
+      });
+    }
+
+    // If it's an array (New proper format)
+    if (Array.isArray(linksData)) {
+      return linksData.map((item: any, index: number) => (
         <li key={index}>
-          <Link to={target}><span>{label}</span></Link>
+          <Link to={item.url || "/#"}><span>{item.label}</span></Link>
         </li>
-      );
-    });
+      ));
+    }
+
+    return null;
   };
 
   if (!footerEnabled && !copyrightEnabled) return <Toaster position="bottom-right" reverseOrder={true} />;
@@ -308,9 +322,9 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR LINKS */}
-                  <div className="col-lg-3 col-md-6 mb-2">
+                  <div className="col-lg-2 col-md-6 col-6 mb-2">
                     <div className="widget widget_services">
-                      <h5 className="footer-title">{footerContent.linksTitle || "OUR LINKS"}</h5>
+                      <h5 className="footer-title text-nowrap">{footerContent.linksTitle || "OUR LINKS"}</h5>
                       <ul>
                         {renderLinks(footerContent.links || "Home, Contact us, About us, Blogs, FAQ")}
                       </ul>
@@ -318,11 +332,21 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR SERVICES */}
-                  <div className="col-lg-3 col-md-6 mb-2">
+                  <div className="col-lg-2 col-md-6 col-6 mb-2">
                     <div className="widget widget_services">
-                      <h5 className="footer-title">{footerContent.servicesTitle || "OUR SERVICES"}</h5>
+                      <h5 className="footer-title text-nowrap">{footerContent.servicesTitle || "OUR SERVICES"}</h5>
                       <ul>
                         {renderLinks(footerContent.services || "Menu, Seat Reservation, Testimonials, Order Now")}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* HELP CENTER */}
+                  <div className="col-lg-2 col-md-6 col-6 mb-2">
+                    <div className="widget widget_services">
+                      <h5 className="footer-title text-nowrap">{footerContent.helpCenterTitle || "HELP CENTER"}</h5>
+                      <ul>
+                        {renderLinks(footerContent.helpCenter || "Support, Terms, Privacy, Account")}
                       </ul>
                     </div>
                   </div>
@@ -331,7 +355,7 @@ const Footer2 = () => {
                   <div className="col-lg-3 col-md-6 mb-2">
                     <div className="widget">
                       <h5 className="footer-title">{footerContent.serviceHoursTitle || "SERVICE HOURS"}</h5>
-                      <p style={{ opacity: 0.8, fontSize: '19px', marginBottom: '30px', whiteSpace: 'pre-line', color: ftColor }}>
+                      <p style={{ opacity: 0.8, fontSize: '18px', marginBottom: '25px', whiteSpace: 'pre-line', color: ftColor }}>
                         {footerContent.serviceHours || "Saturday - Sunday : 6:30 pm - 11:59 pm\nSunday : closed"}
                       </p>
 
