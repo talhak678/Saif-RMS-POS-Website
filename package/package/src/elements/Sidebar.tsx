@@ -100,39 +100,39 @@ const Sidebar = () => {
           <div className="dz-title">
             <h4 className="m-b20">Contact Info</h4>
           </div>
-          <div className="icon-bx-wraper left m-b20">
+          <div className="icon-bx-wraper left m-b20 d-flex align-items-center">
             <div className="icon-md m-r20">
-              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
-                <i className="las la-phone-volume"></i>
+              <span className="icon-cell">
+                <i className="fa-solid fa-phone-volume" style={{ color: '#fff', fontSize: '20px' }}></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Call Now</h6>
-              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>
+              <h6 className="tilte m-b5" style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Call Now</h6>
+              <p className="m-b0" style={{ fontSize: '14px', color: '#666' }}>
                 {footerContent.contactPhone || "Contact restaurant"}
               </p>
             </div>
           </div>
-          <div className="icon-bx-wraper left m-b20">
+          <div className="icon-bx-wraper left m-b20 d-flex align-items-center">
             <div className="icon-md m-r20">
-              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
-                <i className="las la-map-marker"></i>
+              <span className="icon-cell">
+                <i className="fa-solid fa-location-dot" style={{ color: '#fff', fontSize: '20px' }}></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Location</h6>
-              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>{footerContent.address || "Visit us today"}</p>
+              <h6 className="tilte m-b5" style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Location</h6>
+              <p className="m-b0" style={{ fontSize: '14px', color: '#666' }}>{footerContent.address || "Visit us today"}</p>
             </div>
           </div>
-          <div className="icon-bx-wraper left m-b20">
+          <div className="icon-bx-wraper left m-b20 d-flex align-items-center">
             <div className="icon-md m-r20">
-              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
-                <i className="las la-envelope-open"></i>
+              <span className="icon-cell">
+                <i className="fa-solid fa-envelope-open-text" style={{ color: '#fff', fontSize: '20px' }}></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Email Now</h6>
-              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>{footerContent.contactEmail || "Email us"}</p>
+              <h6 className="tilte m-b5" style={{ fontSize: '15px', fontWeight: 700, margin: 0 }}>Email Now</h6>
+              <p className="m-b0" style={{ fontSize: '14px', color: '#666' }}>{footerContent.contactEmail || "Email us"}</p>
             </div>
           </div>
           <div className="m-t30">

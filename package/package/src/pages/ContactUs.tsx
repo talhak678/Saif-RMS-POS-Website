@@ -18,6 +18,35 @@ const ContactUs = () => {
   const contactCards = sections.cards?.enabled !== false ? sections.cards?.content : null;
   const formContent = sections.form?.content || {};
 
+  const now = new Date();
+  const defaultDate = now.toISOString().split('T')[0];
+  const defaultTime = now.toTimeString().slice(0, 5);
+
+  const isWithinHours = (_selectedDate: string, selectedTime: string) => {
+    if (!cmsConfig?.openingTime || !cmsConfig?.closingTime) return true;
+
+    const [sHour, sMin] = selectedTime.split(':').map(Number);
+    const selectedMinutes = sHour * 60 + sMin;
+
+    const [oHour, oMin] = cmsConfig.openingTime.split(':').map(Number);
+    const openingMinutes = oHour * 60 + oMin;
+
+    const [cHour, cMin] = cmsConfig.closingTime.split(':').map(Number);
+    let closingMinutes = cHour * 60 + cMin;
+
+    // Handle overnight hours (e.g., 9 AM to 2 AM)
+    if (closingMinutes <= openingMinutes) {
+      closingMinutes += 24 * 60;
+      // If selected time is early morning (e.g., 1 AM), treat it as next day minutes
+      if (selectedMinutes < openingMinutes) {
+        const adjustedSelected = selectedMinutes + 24 * 60;
+        return adjustedSelected >= openingMinutes && adjustedSelected <= closingMinutes;
+      }
+    }
+
+    return selectedMinutes >= openingMinutes && selectedMinutes <= closingMinutes;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!activeBranch?.id) {
@@ -26,23 +55,37 @@ const ContactUs = () => {
     }
 
     const formData = new FormData(e.currentTarget);
-    const dateVal = formData.get("dzOther[Date]");
-    const timeVal = formData.get("dzOther[Time]");
+    const dateVal = formData.get("dzOther[Date]") as string;
+    const timeVal = formData.get("dzOther[Time]") as string;
 
     if (!dateVal || !timeVal) {
       toast.error("Please select both Date and Time for your reservation.");
       return;
     }
 
+    // 1. Check if date/time is in the past
+    const selectedDateTime = new Date(`${dateVal}T${timeVal}`);
+    if (selectedDateTime < new Date()) {
+      toast.error("You cannot book a table in the past.");
+      return;
+    }
+
+    // 2. Check restaurant opening hours
+    if (!isWithinHours(dateVal, timeVal)) {
+      const open = cmsConfig?.openingTime || "9:00 AM";
+      const close = cmsConfig?.closingTime || "11:00 PM";
+      toast.error(`Restaurant is closed at this time. We are open from ${open} to ${close}.`);
+      return;
+    }
+
     try {
       setLoading(true);
-      const startTime = new Date(`${dateVal}T${timeVal}`).toISOString();
       const data = {
         customerName: formData.get("dzName"),
         email: formData.get("dzEmail"),
         phone: formData.get("dzPhoneNumber"),
         guestCount: parseInt(formData.get("dzOther[Person]") as string) || 1,
-        startTime,
+        startTime: selectedDateTime.toISOString(),
         message: formData.get("dzMessage"),
         branchId: activeBranch.id,
       };
@@ -52,14 +95,27 @@ const ContactUs = () => {
         toast.success("Reservation Booked Successfully!");
         (e.target as HTMLFormElement).reset();
       } else {
-        toast.error(res.data?.message || "Something went wrong.");
+        // Handle field validation errors from backend
+        if (res.data?.data && typeof res.data.data === 'object') {
+          const errors = Object.entries(res.data.data)
+            .map(([field, msgs]: any) => `${field}: ${msgs.join(', ')}`)
+            .join('\n');
+          toast.error(errors || "Validation failed");
+        } else {
+          toast.error(res.data?.message || "Something went wrong.");
+        }
       }
     } catch (error: any) {
       console.error("Booking Error:", error);
-      if (error instanceof RangeError) {
-        toast.error("Invalid Date or Time selected. Please check your input.");
+      const backendError = error.response?.data;
+
+      if (backendError?.data && typeof backendError.data === 'object') {
+        const errorMsgs = Object.entries(backendError.data)
+          .map(([_field, msgs]: any) => `${msgs.join(', ')}`)
+          .join('\n');
+        toast.error(errorMsgs || "Invalid input");
       } else {
-        toast.error(error.response?.data?.message || "Failed to book table. Please try again.");
+        toast.error(backendError?.message || "Failed to book table. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -220,13 +276,13 @@ const ContactUs = () => {
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
                     <label className="form-label text-primary">{formContent.dateLabel || "Date"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzOther[Date]" required type="date" className="form-control" placeholder={formContent.datePlaceholder || "Select Date"} />
+                      <input name="dzOther[Date]" required type="date" className="form-control" defaultValue={defaultDate} placeholder={formContent.datePlaceholder || "Select Date"} />
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
                     <label className="form-label text-primary">{formContent.timeLabel || "Time"}</label>
                     <div className="input-group input-line input-black">
-                      <input name="dzOther[Time]" required type="time" className="form-control" placeholder={formContent.timePlaceholder || "Select Time"} />
+                      <input name="dzOther[Time]" required type="time" className="form-control" defaultValue={defaultTime} placeholder={formContent.timePlaceholder || "Select Time"} />
                     </div>
                   </div>
                   <div className="col-sm-12 m-b40">
