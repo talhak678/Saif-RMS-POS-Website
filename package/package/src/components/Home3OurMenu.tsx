@@ -173,56 +173,58 @@ const Home3OurMenu = () => {
               }}
             >
               {/* Image */}
-              <div style={{ position: "relative", height: "220px", overflow: "hidden" }}>
-                <img
-                  src={item.image || "https://via.placeholder.com/400x300"}
-                  alt={item.name}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    transition: "transform 0.4s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.transform = "scale(1.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.transform = "scale(1)";
-                  }}
-                />
-                {/* Gradient overlay */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `linear-gradient(to top, ${primaryColor}bb 0%, transparent 60%)`,
-                    opacity: 0,
-                    transition: "opacity 0.3s ease",
-                    pointerEvents: "none",
-                  }}
-                  className="card-overlay"
-                />
-                {/* Category pill */}
-                <span
-                  className="menu-category-badge"
-                  style={{
-                    position: "absolute",
-                    top: "12px",
-                    left: "12px",
-                    background: `${primaryColor}ee`,
-                    color: secondaryColor,
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    padding: "4px 12px",
-                    borderRadius: "50px",
-                    letterSpacing: "0.5px",
-                    textTransform: "uppercase",
-                    backdropFilter: "blur(4px)",
-                  }}
-                >
-                  {item.categoryName}
-                </span>
-              </div>
+              <Link to={`/product/${item.id}`} style={{ display: 'block' }}>
+                <div style={{ position: "relative", height: "220px", overflow: "hidden" }}>
+                  <img
+                    src={item.image || "https://via.placeholder.com/400x300"}
+                    alt={item.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      transition: "transform 0.4s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.transform = "scale(1.06)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.transform = "scale(1)";
+                    }}
+                  />
+                  {/* Gradient overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: `linear-gradient(to top, ${primaryColor}bb 0%, transparent 60%)`,
+                      opacity: 0,
+                      transition: "opacity 0.3s ease",
+                      pointerEvents: "none",
+                    }}
+                    className="card-overlay"
+                  />
+                  {/* Category pill */}
+                  <span
+                    className="menu-category-badge"
+                    style={{
+                      position: "absolute",
+                      top: "12px",
+                      left: "12px",
+                      background: `${primaryColor}ee`,
+                      color: secondaryColor,
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "4px 12px",
+                      borderRadius: "50px",
+                      letterSpacing: "0.5px",
+                      textTransform: "uppercase",
+                      backdropFilter: "blur(4px)",
+                    }}
+                  >
+                    {item.categoryName}
+                  </span>
+                </div>
+              </Link>
 
               {/* Content */}
               <div style={{ padding: "18px 20px 20px" }}>
@@ -246,7 +248,7 @@ const Home3OurMenu = () => {
                     }}
                   >
                     <Link
-                      to="/product-detail"
+                      to={`/product/${item.id}`}
                       style={{
                         color: "inherit",
                         textDecoration: "none",
@@ -308,7 +310,7 @@ const Home3OurMenu = () => {
                   }}
                 >
                   <Link
-                    to="/our-menu"
+                    to={`/product/${item.id}`}
                     style={{
                       fontSize: "13px",
                       fontWeight: 600,
