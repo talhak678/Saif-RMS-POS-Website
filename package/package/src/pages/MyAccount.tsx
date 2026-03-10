@@ -65,6 +65,22 @@ const MyAccount = () => {
             if (res.data?.success) {
                 setOrders(res.data.data);
             }
+
+            // Sync latest loyalty points
+            try {
+                const loyaltyRes = await axios.get(`${BASE_URL}/api/customers/loyalty`, {
+                    headers: { Authorization: `Bearer ${user.token}` }
+                });
+                if (loyaltyRes.data?.success) {
+                    setUser((prev: any) => ({
+                        ...prev,
+                        loyaltyPoints: loyaltyRes.data.data.loyaltyPoints
+                    }));
+                }
+            } catch (lErr) {
+                console.error("Loyalty sync failed:", lErr);
+            }
+
         } catch (err: any) {
             toast.error("Failed to load orders");
         } finally {

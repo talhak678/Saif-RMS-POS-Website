@@ -33,6 +33,8 @@ const CheckoutForm = () => {
   const [discountLoading, setDiscountLoading] = useState(false);
   const [orderType, setOrderType] = useState<"DELIVERY" | "PICKUP">("PICKUP");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
+  const [useLoyalty, setUseLoyalty] = useState(false);
+  const [customerLoyalty, setCustomerLoyalty] = useState<any>(null);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -74,6 +76,14 @@ const CheckoutForm = () => {
         if (parsed.label) setFormData(prev => ({ ...prev, address: parsed.label }));
       } catch (e) { }
     }
+
+    if (user) {
+      axios.get(`${BASE_URL}/api/customers/loyalty`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      }).then(res => {
+        if (res.data.success) setCustomerLoyalty(res.data.data);
+      }).catch(err => console.error(err));
+    }
   }, [user, prefilled]);
 
   const branches = cmsConfig?.branches || [];
@@ -95,7 +105,9 @@ const CheckoutForm = () => {
   const deliveryCharge = orderType === "DELIVERY" && cartItems.length > 0 ? (currentBranch?.deliveryCharge || 0) : 0;
   const tax = subtotal * 0.05;
   const discountAmount = appliedDiscount?.discountAmount || 0;
-  const total = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
+  const potentialTotalBeforeLoyalty = Math.max(0, subtotal + Number(deliveryCharge) + tax - discountAmount);
+  const loyaltyValue = useLoyalty && customerLoyalty ? Math.min(customerLoyalty.loyaltyPoints, potentialTotalBeforeLoyalty) : 0;
+  const total = potentialTotalBeforeLoyalty - loyaltyValue;
 
   const handleApplyDiscount = async () => {
     if (!discountCode.trim()) { toast.error("Please enter a discount code"); return; }
@@ -142,7 +154,8 @@ const CheckoutForm = () => {
         deliveryLat: deliveryCoords?.lat,
         deliveryLng: deliveryCoords?.lng,
         discountCode: appliedDiscount ? discountCode : undefined,
-        notes: formData.notes
+        notes: formData.notes,
+        redeemPoints: useLoyalty
       };
 
       const res = await axios.post(`${BASE_URL}/api/customers/orders`, payload, {
@@ -372,6 +385,12 @@ const CheckoutForm = () => {
                     <td>Shipping</td>
                     <td className="text-end">{orderType === "DELIVERY" ? `${cmsConfig?.config?.currency || '$'} ${Number(deliveryCharge).toFixed(2)}` : "Free"}</td>
                   </tr>
+                  {loyaltyValue > 0 && (
+                    <tr className="border-bottom">
+                      <td className="py-2" style={{ color: "#2e7d32", fontWeight: 600 }}>Loyalty Points Discount</td>
+                      <td className="text-end py-2" style={{ color: "#2e7d32", fontWeight: 700 }}>-{cmsConfig?.config?.currency || '$'}{loyaltyValue.toFixed(2)}</td>
+                    </tr>
+                  )}
                   <tr>
                     <td>Coupon</td>
                     <td className="product-price text-end">-{cmsConfig?.config?.currency || '$'} {discountAmount.toFixed(2)}</td>
@@ -390,6 +409,39 @@ const CheckoutForm = () => {
                 <button type="button" onClick={handleApplyDiscount} disabled={discountLoading} className="btn btn-primary" style={{ background: primaryColor }}>Apply</button>
               </div>
             </div>
+
+            {customerLoyalty && customerLoyalty.loyaltyPoints > 0 && (
+              <div className="card m-b20" style={{ borderRadius: "15px", border: "1px solid #eee", overflow: "hidden" }}>
+                <div className="card-body" style={{ padding: "20px" }}>
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-3">
+                      <div style={{ fontSize: "24px" }}>💎</div>
+                      <div>
+                        <h6 style={{ margin: 0, fontWeight: 700 }}>Loyalty Rewards</h6>
+                        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>You have <b>{customerLoyalty.loyaltyPoints.toFixed(2)}</b> points available</p>
+                      </div>
+                    </div>
+                    <div className="form-check form-switch">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id="useLoyalty"
+                        checked={useLoyalty}
+                        onChange={(e) => setUseLoyalty(e.target.checked)}
+                        style={{ cursor: "pointer", transform: "scale(1.2)" }}
+                      />
+                      <label className="form-check-label ms-2" htmlFor="useLoyalty" style={{ fontSize: "14px", fontWeight: 600 }}>Use Points</label>
+                    </div>
+                  </div>
+                  {useLoyalty && (
+                    <div style={{ marginTop: "15px", padding: "10px", background: "#f8f9fa", borderRadius: "10px", fontSize: "13px", color: "#2e7d32", fontWeight: 600 }}>
+                      ✅ Applied {loyaltyValue.toFixed(2)} points as discount!
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             <h4 className="widget-title">Payment Method</h4>
             <div className="form-group m-b20">
@@ -440,7 +492,7 @@ const CheckoutForm = () => {
 };
 
 const ShopCheckout = () => {
-  
+
   return (
     <div className="page-content">
       <CommonBanner img={IMAGES.images_bnr3} title="Shop Checkout" />

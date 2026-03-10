@@ -483,6 +483,13 @@ const Header2 = () => {
                                 }}>
                                   🔍 Track Order
                                 </Link>
+                                <Link to="/loyalty-points" onClick={() => setShowUserMenu(false)} style={{
+                                  display: "flex", alignItems: "center", gap: 10,
+                                  padding: "12px 16px", color: "#333", textDecoration: "none",
+                                  fontSize: 14, fontWeight: 500, borderBottom: "1px solid #f8f8f8"
+                                }}>
+                                  💰 Loyalty Points
+                                </Link>
                                 <button onClick={() => { handleLogout(); setShowUserMenu(false); }} style={{
                                   display: "flex", alignItems: "center", gap: 10,
                                   padding: "12px 16px", color: "#c62828", background: "none",

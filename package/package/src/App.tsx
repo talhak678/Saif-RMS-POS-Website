@@ -67,6 +67,7 @@ import BlogDetailRightSidebar from "./pages/BlogDetailRightSidebar";
 // import BlogWideListSidebar from "./pages/BlogWideListSidebar";
 // import BlogWideGridSidebar from "./pages/BlogWideGridSidebar";
 import ContactUs from "./pages/ContactUs";
+import LoyaltyPoints from "./pages/LoyaltyPoints";
 import SignIn from "./elements/SignIn";
 import ResetPassword from "./pages/ResetPassword";
 import OrderTypeModal from "./elements/OrderTypeModal";
@@ -184,6 +185,7 @@ function App() {
                   <Route path="/order-success" element={<OrderSuccess />} />
                   <Route path="/track-order" element={<TrackOrder />} />
                   <Route path="/my-account" element={<MyAccount />} />
+                  <Route path="/loyalty-points" element={<LoyaltyPoints />} />
                   <Route path="/reset-password" element={<ResetPassword />} />
 
                   <Route path="/blog-list" element={

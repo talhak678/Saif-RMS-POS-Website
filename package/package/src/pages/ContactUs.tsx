@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { ContactUsArr } from "../elements/JsonData";
@@ -8,8 +9,20 @@ import toast from "react-hot-toast";
 
 const ContactUs = () => {
   const { cmsConfig, cmsLoading, activeBranch } = useContext(Context);
+  const { hash } = useLocation();
   const [active, setActive] = useState<number>(1);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (hash === "#reservation-section") {
+      const element = document.getElementById("reservation-section");
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 300); // Give it a tiny delay to ensure page is rendered
+      }
+    }
+  }, [hash]);
 
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
 
