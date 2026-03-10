@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../context/AppContext";
 import toast from "react-hot-toast";
+import { IoSync } from "react-icons/io5";
+
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
@@ -228,10 +230,12 @@ const MyAccount = () => {
                                             style={{
                                                 background: "transparent", border: `1px solid ${primaryColor}`,
                                                 color: primaryColor, padding: "6px 16px", borderRadius: 8,
-                                                cursor: "pointer", fontSize: 13, fontWeight: 600
+                                                cursor: "pointer", fontSize: 13, fontWeight: 600,
+                                                display: "flex", alignItems: "center", gap: "6px"
                                             }}
                                         >
-                                            🔄 Refresh
+                                            <IoSync style={{ fontSize: 16 }} /> Refresh
+
                                         </button>
                                     </div>
 
