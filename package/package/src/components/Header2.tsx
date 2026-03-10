@@ -400,17 +400,17 @@ const Header2 = () => {
                         ? (searchFocused ? "#fff" : "rgba(0,0,0,0.06)")
                         : (searchFocused ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)"),
                       borderRadius: 50,
-                      padding: "3px 14px", // Reduced from 4px to 3px to prevent touching
-                      gap: 7,
+                      padding: "4px 14px",
+                      gap: 8,
                       border: searchFocused
                         ? `1.5px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35"}`
                         : "1.5px solid transparent",
                       transition: "all 0.25s ease",
-                      minWidth: searchFocused ? 220 : 165,
+                      minWidth: searchFocused ? 240 : 180,
                       boxShadow: searchFocused ? "0 4px 20px rgba(0,0,0,0.12)" : "none",
-                      height: "36px" // Fixed height to keep it consistent
+                      height: "42px" // Matched to neighboring cart/login buttons
                     }}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#555" : (searchFocused ? "#555" : "rgba(255,255,255,0.8)")} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#555" : (searchFocused ? "#555" : "rgba(255,255,255,0.8)")} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                       </svg>
@@ -425,7 +425,7 @@ const Header2 = () => {
                           border: "none",
                           outline: "none",
                           background: "transparent",
-                          fontSize: "12px",
+                          fontSize: "14px",
                           fontWeight: 500,
                           color: isLight ? "#222" : (searchFocused ? "#222" : "#fff"),
                           width: "100%",
@@ -438,13 +438,14 @@ const Header2 = () => {
                           onClick={() => { setSearchQuery(""); navigate("/our-menu"); }}
                           style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 1 }}
                         >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#888" : "rgba(255,255,255,0.8)"} strokeWidth="2.5" strokeLinecap="round">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#888" : "rgba(255,255,255,0.8)"} strokeWidth="2.5" strokeLinecap="round">
                             <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                           </svg>
                         </button>
                       )}
                     </div>
                   </form>
+
 
                   {/* User + Cart */}
                   <ul className="header-right" style={{ marginBottom: 0 }}>
