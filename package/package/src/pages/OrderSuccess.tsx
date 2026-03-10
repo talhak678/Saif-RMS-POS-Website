@@ -1,51 +1,58 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-// import { Context } from "../context/AppContext";
+import { Context } from "../context/AppContext";
+
 
 const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
 const OrderSuccess = () => {
     const location = useLocation();
-    // const { cmsConfig } = useContext(Context);
+    const { cmsConfig } = useContext(Context);
     const [order, setOrder] = useState<any>(location.state?.order);
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-    const [nextRefresh, setNextRefresh] = useState(1);
+    const [countdown, setCountdown] = useState(3);
+    const orderRef = useRef<any>(null);
 
-    // Dynamic Slug Detection
-    const getSlug = () => {
-        const hostname = window.location.hostname;
-        if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-            return "dilpasand-sweets";
-        }
-        const parts = hostname.split('.');
-        if (parts.length >= 3) return parts[0];
-        return import.meta.env.VITE_RESTAURANT_SLUG || "dilpasand-sweets";
-    };
+    // Keep ref in sync so interval always has latest order
+    useEffect(() => { orderRef.current = order; }, [order]);
 
-    const restaurantSlug = getSlug();
+    const fetchOrderStatus = async () => {
+        const current = orderRef.current;
+        if (!current) return;
 
-    const fetchOrderStatus = async (oNo: any, phone: any) => {
-        if (!oNo || !phone) return;
+        // PRIMARY: Use orderId directly — works on any domain, no slug needed
+        const orderId = current.id;
+        // FALLBACK: orderNo + phone + restaurantId
+        const oNo = current.orderNo;
+        const phone = current.customer?.phone || current.phone;
+        const restaurantId = cmsConfig?.restaurantId;
+
         try {
-            const res = await axios.get(`${BASE_URL}/api/orders/track`, {
-                params: {
-                    orderNo: oNo,
-                    phone: phone,
-                    slug: restaurantSlug,
-                    _t: Date.now()
-                },
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                }
-            });
-            if (res.data?.success) {
+            let res;
+            if (orderId) {
+                // Most reliable - direct ID lookup
+                res = await axios.get(`${BASE_URL}/api/orders/track`, {
+                    params: { orderId, _t: Date.now() },
+                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                });
+            } else if (oNo && phone) {
+                res = await axios.get(`${BASE_URL}/api/orders/track`, {
+                    params: {
+                        orderNo: oNo,
+                        phone,
+                        ...(restaurantId ? { restaurantId } : {}),
+                        _t: Date.now()
+                    },
+                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+                });
+            }
+
+            if (res?.data?.success) {
                 setOrder(res.data.data);
                 setLastUpdated(new Date());
-                console.log("Order Sync Success:", res.data.data.status);
+                setCountdown(3);
             }
         } catch (err) {
             console.error("Failed to sync order status", err);
@@ -57,34 +64,40 @@ const OrderSuccess = () => {
         if (location.state?.order) {
             const currentOrder = location.state.order;
             const phoneStr = currentOrder.customer?.phone || currentOrder.phone || "";
-            localStorage.setItem("lastOrder", JSON.stringify({ orderNo: currentOrder.orderNo, phone: phoneStr }));
+            localStorage.setItem("lastOrder", JSON.stringify({ orderId: currentOrder.id, orderNo: currentOrder.orderNo, phone: phoneStr }));
         } else if (!order) {
             const saved = localStorage.getItem("lastOrder");
             if (saved) {
                 try {
-                    const { orderNo, phone } = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    // Set a minimal order object so polling can start
                     setLoading(true);
-                    fetchOrderStatus(orderNo, phone).finally(() => setLoading(false));
+                    // Build minimal order ref
+                    orderRef.current = { id: parsed.orderId, orderNo: parsed.orderNo, customer: { phone: parsed.phone } };
+                    fetchOrderStatus().finally(() => setLoading(false));
                 } catch (e) { }
             }
         }
     }, []);
 
-    // Polling for status updates every 1 SECOND
+    // Countdown timer display
+    useEffect(() => {
+        if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
+        const t = setInterval(() => setCountdown(c => c > 1 ? c - 1 : 3), 1000);
+        return () => clearInterval(t);
+    }, [order?.status]);
+
+    // Polling every 3 seconds
     useEffect(() => {
         if (!order || order.status === "DELIVERED" || order.status === "CANCELLED") return;
 
-        const oNo = order.orderNo;
-        const phone = order.customer?.phone || order.phone;
-        if (!oNo || !phone) return;
-
         const interval = setInterval(() => {
-            fetchOrderStatus(oNo, phone);
-            setNextRefresh(1); // Reset timer after fetch
-        }, 1000);
+            fetchOrderStatus();
+        }, 3000);
 
         return () => clearInterval(interval);
-    }, [order?.status, order?.orderNo]);
+    }, [order?.id, order?.status]);
+
 
     if (loading && !order) {
         return (
@@ -241,10 +254,14 @@ const OrderSuccess = () => {
                                     })}
                                 </div>
                                 {order.status !== "DELIVERED" && order.status !== "CANCELLED" && (
-                                    <p className="mt-4 text-center mb-0" style={{ fontSize: "11px", color: "#aaa" }}>
-                                        🔄 Checking status in 1s... (Live tracking)
-                                    </p>
+                                    <div className="mt-4 text-center" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                                        <span className="spinner-grow spinner-grow-sm" style={{ width: 8, height: 8, background: "#4CAF50" }}></span>
+                                        <span style={{ fontSize: "12px", color: "#888" }}>
+                                            Live tracking — refreshing in <strong style={{ color: "#4CAF50" }}>{countdown}s</strong>
+                                        </span>
+                                    </div>
                                 )}
+
 
                             </div>
 
