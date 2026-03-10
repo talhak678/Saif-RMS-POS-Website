@@ -45,9 +45,11 @@ const CheckoutForm = () => {
     paymentMethod: "CASH",
     cardName: ""
   });
+  const [prefilled, setPrefilled] = useState(false);
+
 
   useEffect(() => {
-    if (user) {
+    if (user && !prefilled) {
       setFormData(prev => ({
         ...prev,
         firstName: user.name?.split(" ")[0] || "",
@@ -55,6 +57,7 @@ const CheckoutForm = () => {
         email: user.email || "",
         phone: user.phone || prev.phone,
       }));
+      setPrefilled(true);
     }
 
     const savedType = localStorage.getItem("orderType");
@@ -71,7 +74,7 @@ const CheckoutForm = () => {
         if (parsed.label) setFormData(prev => ({ ...prev, address: parsed.label }));
       } catch (e) { }
     }
-  }, [user]);
+  }, [user, prefilled]);
 
   const branches = cmsConfig?.branches || [];
   const currentBranch = branches.find((b: any) => b.id === selectedBranchId) || branches[0] || activeBranch;
@@ -118,8 +121,8 @@ const CheckoutForm = () => {
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("Please login to place your order");
+    if (!user || !user.token) {
+      toast.error("Please login/register to place your order");
       setShowSignInForm(true);
       setLoading(false);
       return;
@@ -189,8 +192,12 @@ const CheckoutForm = () => {
       navigate("/order-success", { state: { order } });
     } catch (err: any) {
       console.error("Order error:", err);
-      toast.error("Authentication required. Please Login First.");
-      setShowSignInForm(true);
+      if (err.response?.status === 401 || err.response?.data?.message?.toLowerCase().includes("auth")) {
+        toast.error("Session expired. Please login again.");
+        setShowSignInForm(true);
+      } else {
+        toast.error(err.response?.data?.message || err.message || "Failed to place order.");
+      }
     } finally {
       setLoading(false);
     }
