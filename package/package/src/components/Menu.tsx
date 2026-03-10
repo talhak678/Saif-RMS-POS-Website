@@ -14,7 +14,8 @@ const routeMap: Record<string, string> = {
   "contact": "/contact-us",
   "faq": "/faq",
   "help": "/faq",
-  "blogs": "/blog-list"
+  "blogs": "/blog-list",
+  "reservation": "/contact-us#reservation-section"
 };
 
 const Menu = () => {
@@ -25,8 +26,7 @@ const Menu = () => {
     || '#ff6b35';
 
   const headerSettings = cmsConfig?.config?.configJson?.home?.sections?.header || {};
-  const menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Contact Us, Blogs";
-
+  const menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Reservation, Contact Us, Blogs";
   const menuItems = menuItemsString.split(",").map((item: string) => {
     const name = item.trim();
     const key = name.toLowerCase();
@@ -40,7 +40,7 @@ const Menu = () => {
     if (key === 'our menu' || key === 'menu') cmsKey = 'menu';
     if (key === 'home') cmsKey = 'home';
 
-    const isEnabled = cmsConfig?.config?.configJson?.[cmsKey]?.enabled !== false;
+    const isEnabled = cmsConfig?.config?.configJson?.[cmsKey]?.enabled !== false || key === 'reservation';
 
     return {
       name,
@@ -49,7 +49,7 @@ const Menu = () => {
     };
   }).filter((item: any) => item.isEnabled)
     .sort((a: any, b: any) => {
-      const order = ["home", "our menu", "about us", "contact us", "blogs"];
+      const order = ["home", "our menu", "about us", "reservation", "contact us", "blogs"];
       const indexA = order.indexOf(a.name.toLowerCase());
       const indexB = order.indexOf(b.name.toLowerCase());
       return (indexA > -1 ? indexA : 99) - (indexB > -1 ? indexB : 99);

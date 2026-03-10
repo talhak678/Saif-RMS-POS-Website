@@ -5,7 +5,10 @@ import { Context } from "../context/AppContext";
 import SocialLinks from "./SocialLinks";
 
 const Sidebar = () => {
-  const { showSidebar, setShowSidebar, setShowOrderModal, cmsConfig } = useContext(Context);
+  const { showSidebar, setShowSidebar, setShowOrderModal, cmsConfig, user } = useContext(Context);
+  const storedPhone = localStorage.getItem("userPhone");
+  const displayPhone = user?.phone || storedPhone || "";
+
 
   const footerContent = cmsConfig?.config?.configJson?.home?.sections?.footer?.content || {};
   const logoUrl = cmsConfig?.config?.configJson?.theme?.sections?.logos?.content?.mainLogo || IMAGES.logo;
@@ -62,9 +65,10 @@ const Sidebar = () => {
               <button
                 className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
                 style={{
-                  backgroundColor: cmsConfig?.config?.primaryColor || "#fe9f10",
-                  borderColor: cmsConfig?.config?.primaryColor || "#fe9f10",
-                  color: "#fff"
+                  backgroundColor: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10",
+                  borderColor: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10",
+                  color: "#fff",
+                  borderRadius: '10px'
                 }}
                 onClick={() => {
                   setShowSidebar(false);
@@ -72,55 +76,63 @@ const Sidebar = () => {
                 }}
               >
                 <i className="fa-solid fa-location-dot"></i>
-                <span>Change Location</span>
+                <span style={{ fontSize: '14px', fontWeight: 600 }}>Change Location</span>
               </button>
-              {footerContent.contactPhone && (
-                <button
-                  className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
-                  onClick={() => window.open(`tel:${footerContent.contactPhone}`)}
+
+              {displayPhone && (
+                <div
+                  className="d-flex align-items-center justify-content-center gap-2"
+                  style={{
+                    border: '1.5px solid #eee',
+                    padding: '10px',
+                    borderRadius: '10px',
+                    color: '#555',
+                    fontSize: '15px',
+                    fontWeight: 600
+                  }}
                 >
-                  <i className="fa-solid fa-phone"></i>
-                  <span>{footerContent.contactPhone}</span>
-                </button>
+                  <i className="fa-solid fa-phone" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}></i>
+                  <span>{displayPhone}</span>
+                </div>
               )}
             </div>
           </div>
           <div className="dz-title">
             <h4 className="m-b20">Contact Info</h4>
           </div>
-          <div className="icon-bx-wraper left">
+          <div className="icon-bx-wraper left m-b20">
             <div className="icon-md m-r20">
-              <span className="icon-cell">
+              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
                 <i className="las la-phone-volume"></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte">Call Now</h6>
-              <p className="m-b0">
-                {footerContent.contactPhone || "+123 456 7890"}
+              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Call Now</h6>
+              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>
+                {footerContent.contactPhone || "Contact restaurant"}
               </p>
             </div>
           </div>
-          <div className="icon-bx-wraper left">
+          <div className="icon-bx-wraper left m-b20">
             <div className="icon-md m-r20">
-              <span className="icon-cell">
+              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
                 <i className="las la-map-marker"></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte">Location</h6>
-              <p className="m-b0">{footerContent.address || "123 Street, City, Country"}</p>
+              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Location</h6>
+              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>{footerContent.address || "Visit us today"}</p>
             </div>
           </div>
-          <div className="icon-bx-wraper left">
+          <div className="icon-bx-wraper left m-b20">
             <div className="icon-md m-r20">
-              <span className="icon-cell">
+              <span className="icon-cell" style={{ color: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10" }}>
                 <i className="las la-envelope-open"></i>
               </span>
             </div>
             <div className="icon-content">
-              <h6 className="tilte">Email Now</h6>
-              <p className="m-b0">{footerContent.contactEmail || "info@example.com"}</p>
+              <h6 className="tilte m-b5" style={{ fontSize: '16px', fontWeight: 700 }}>Email Now</h6>
+              <p className="m-b0" style={{ fontSize: '15px', color: '#666' }}>{footerContent.contactEmail || "Email us"}</p>
             </div>
           </div>
           <div className="m-t30">

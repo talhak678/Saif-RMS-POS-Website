@@ -145,7 +145,7 @@ const ContactUs = () => {
         />
       )}
 
-      <section className="section-wrapper-8 content-inner-1">
+      <section id="reservation-section" className="section-wrapper-8 content-inner-1">
         <div className="container">
           {contactCards && (
             <div className="row inner-section-wrapper align-items-center">
