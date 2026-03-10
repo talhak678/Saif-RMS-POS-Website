@@ -63,9 +63,11 @@ const ContactUs = () => {
       return;
     }
 
-    // 1. Check if date/time is in the past
+    // 1. Check if date/time is in the past (Allow 5 mins buffer for "current time" bookings)
     const selectedDateTime = new Date(`${dateVal}T${timeVal}`);
-    if (selectedDateTime < new Date()) {
+    const timeBuffer = new Date(Date.now() - 5 * 60 * 1000); // 5 mins buffer
+
+    if (selectedDateTime < timeBuffer) {
       toast.error("You cannot book a table in the past.");
       return;
     }

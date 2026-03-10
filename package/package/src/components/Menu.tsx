@@ -26,7 +26,13 @@ const Menu = () => {
     || '#ff6b35';
 
   const headerSettings = cmsConfig?.config?.configJson?.home?.sections?.header || {};
-  const menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Reservation, Contact Us, Blogs";
+  let menuItemsString = headerSettings.content?.menuItems || "Home, Our Menu, About Us, Contact Us, Blogs";
+
+  // Ensure "Reservation" is in the menu even if not set in CMS
+  if (!menuItemsString.toLowerCase().includes("reservation")) {
+    menuItemsString += ", Reservation";
+  }
+
   const menuItems = menuItemsString.split(",").map((item: string) => {
     const name = item.trim();
     const key = name.toLowerCase();
