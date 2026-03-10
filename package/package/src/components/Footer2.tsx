@@ -1,8 +1,13 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { IMAGES } from "../constent/theme";
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Context } from "../context/AppContext";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+
+const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
 
 const Footer2 = () => {
   const { cmsConfig } = useContext(Context);
@@ -20,6 +25,38 @@ const Footer2 = () => {
   const fHeadingWeight = themeFonts.secondaryFontWeight || "700";
   const fTextWeight = themeFonts.paragraphFontWeight || "400";
   const primaryColor = themeColors.primaryColor || "#7da640";
+
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    setNewsletterLoading(true);
+    try {
+      const res = await axios.post(`${BASE_URL}/api/newsletter/subscribe`, {
+        email: newsletterEmail,
+        restaurantId: cmsConfig?.restaurantId,
+        slug: cmsConfig?.slug
+      });
+      if (res.data?.success) {
+        toast.success("🎉 Subscribed! Check your inbox.");
+        setSubscribed(true);
+        setNewsletterEmail("");
+      } else {
+        toast.error(res.data?.message || "Subscription failed");
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to subscribe. Try again.");
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
+
 
   const renderLinks = (linksString: string) => {
     if (!linksString) return null;
@@ -222,19 +259,23 @@ const Footer2 = () => {
                       <h4 className="footer-title" style={{ fontSize: '22px', marginBottom: '25px' }}>
                         {footerContent.newsletterTitle || "Subscribe To Our Newsletter"}
                       </h4>
-                      <form>
+                      <form onSubmit={handleSubscribe}>
                         <input
                           type="email"
                           className="form-control"
                           placeholder={footerContent.newsletterPlaceholder || "Enter Your Email"}
                           style={{ height: '50px', background: 'transparent' }}
+                          value={newsletterEmail}
+                          onChange={(e) => setNewsletterEmail(e.target.value)}
+                          disabled={newsletterLoading || subscribed}
                         />
                         <button
                           type="submit"
                           className="btn btn-primary"
-                          style={{ height: '50px', padding: '0 25px', borderRadius: '8px', fontWeight: '600' }}
+                          style={{ height: '50px', padding: '0 25px', borderRadius: '8px', fontWeight: '600', minWidth: 110 }}
+                          disabled={newsletterLoading || subscribed}
                         >
-                          {footerContent.newsletterButtonText || "Subscribe"}
+                          {subscribed ? "✓ Done" : newsletterLoading ? "Sending..." : (footerContent.newsletterButtonText || "Subscribe")}
                         </button>
                       </form>
                     </div>
