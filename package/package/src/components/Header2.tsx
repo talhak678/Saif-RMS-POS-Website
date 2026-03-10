@@ -196,6 +196,19 @@ const Header2 = () => {
           .is-fixed .header-login-btn i {
             color: var(--secondary) !important;
           }
+
+          /* 🔹 Increased Sticky Header Spacing */
+          .is-fixed .main-bar {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            transition: all 0.3s ease;
+          }
+
+          /* 🔹 Logo scaling in sticky mode */
+          .is-fixed .logo-header img {
+            max-height: 50px !important;
+            transition: all 0.3s ease;
+          }
         `}
       </style>
       {isStoreClosed && (
@@ -387,7 +400,7 @@ const Header2 = () => {
                         ? (searchFocused ? "#fff" : "rgba(0,0,0,0.06)")
                         : (searchFocused ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)"),
                       borderRadius: 50,
-                      padding: "4px 14px",
+                      padding: "3px 14px", // Reduced from 4px to 3px to prevent touching
                       gap: 7,
                       border: searchFocused
                         ? `1.5px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35"}`
@@ -395,8 +408,9 @@ const Header2 = () => {
                       transition: "all 0.25s ease",
                       minWidth: searchFocused ? 220 : 165,
                       boxShadow: searchFocused ? "0 4px 20px rgba(0,0,0,0.12)" : "none",
+                      height: "36px" // Fixed height to keep it consistent
                     }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#555" : (searchFocused ? "#555" : "rgba(255,255,255,0.8)")} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={isLight ? "#555" : (searchFocused ? "#555" : "rgba(255,255,255,0.8)")} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                       </svg>
@@ -411,10 +425,11 @@ const Header2 = () => {
                           border: "none",
                           outline: "none",
                           background: "transparent",
-                          fontSize: 12,
+                          fontSize: "12px",
                           fontWeight: 500,
                           color: isLight ? "#222" : (searchFocused ? "#222" : "#fff"),
                           width: "100%",
+                          padding: 0
                         }}
                       />
                       {searchQuery && (
