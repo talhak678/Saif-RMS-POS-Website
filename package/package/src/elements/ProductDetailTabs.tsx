@@ -21,7 +21,7 @@ const ProductDetailTabs = ({ menuItemId }: { menuItemId?: string }) => {
       if (!menuItemId || (!slug && !restaurantId)) return;
       try {
         const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
-        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}`);
+        const res = await axios.get(`https://saif-rms-pos-backend-tau.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}`);
         if (res.data?.success) {
           setReviews(res.data.data.reviews || []);
         }

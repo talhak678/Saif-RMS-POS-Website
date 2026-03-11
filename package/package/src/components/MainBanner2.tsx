@@ -68,7 +68,7 @@ const MainBanner2 = () => {
     if (bannerSection.selectedReviewId && cmsConfig?.slug) {
       const fetchReview = async () => {
         try {
-          const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?slug=${cmsConfig.slug}&limit=100`);
+          const res = await axios.get(`https://saif-rms-pos-backend-tau.vercel.app/api/customers/reviews?slug=${cmsConfig.slug}&limit=100`);
           if (res.data?.success) {
             const review = res.data.data.reviews.find((r: any) => r.id === bannerSection.selectedReviewId);
             setSelectedReview(review);

@@ -51,7 +51,7 @@ const Reservation = () => {
         branchId: activeBranch.id,
       };
 
-      const res = await axios.post("https://saif-rms-pos-backend.vercel.app/api/reservations/public", payload);
+      const res = await axios.post("https://saif-rms-pos-backend-tau.vercel.app/api/reservations/public", payload);
       if (res.data?.success) {
         toast.success("Table Booked successfully!");
         (e.target as HTMLFormElement).reset();

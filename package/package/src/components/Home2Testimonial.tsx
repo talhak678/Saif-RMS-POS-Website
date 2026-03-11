@@ -16,7 +16,7 @@ const Home2Testimonial = () => {
       try {
         const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
         // Fetch more reviews to allow filtering from a larger pool if needed
-        const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&limit=20`);
+        const res = await axios.get(`https://saif-rms-pos-backend-tau.vercel.app/api/customers/reviews?${params}&limit=20`);
         if (res.data?.success) {
           setReviews(res.data.data.reviews || []);
         }

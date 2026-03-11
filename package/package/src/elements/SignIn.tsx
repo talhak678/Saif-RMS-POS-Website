@@ -25,7 +25,7 @@ const SignIn = () => {
 
   // restaurantId comes from the CMS public API response
   const restaurantId = cmsConfig?.restaurantId;
-  const baseUrl = "https://saif-rms-pos-backend.vercel.app/api/customers/auth";
+  const baseUrl = "https://saif-rms-pos-backend-tau.vercel.app/api/customers/auth";
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
