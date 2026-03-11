@@ -8,6 +8,7 @@ import Home2Testimonial from "../components/Home2Testimonial";
 import { Context } from "../context/AppContext";
 
 import Home2PromoBanners from "../components/Home2PromoBanners";
+import Loader from "../components/Loader";
 
 const Home2 = () => {
   const { cmsConfig, cmsLoading } = useContext(Context);
@@ -16,7 +17,7 @@ const Home2 = () => {
     // document.body.setAttribute("data-color", "color_2");
   }, []);
 
-  if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
+  if (cmsLoading || !cmsConfig) return <Loader />;
 
   const sections = cmsConfig?.config?.configJson?.home?.sections || {};
 

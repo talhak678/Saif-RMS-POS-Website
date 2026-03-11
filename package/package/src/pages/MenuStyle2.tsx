@@ -3,6 +3,7 @@ import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import { useRef, useState, useContext, useEffect } from "react";
 import { Context } from "../context/AppContext";
+import Loader from "../components/Loader";
 
 const MenuStyle2 = () => {
   const { cmsConfig, cmsLoading, addToCart } = useContext(Context);
@@ -97,13 +98,7 @@ const MenuStyle2 = () => {
     }, 180);
   };
 
-  if (cmsLoading)
-    return (
-      <div className="text-center py-5" style={{ color: primaryColor, fontSize: "16px" }}>
-        <i className="flaticon-fast-food" style={{ fontSize: "36px", display: "block", marginBottom: "12px" }} />
-        Loading menu...
-      </div>
-    );
+  if (cmsLoading || !cmsConfig) return <Loader />;
 
   return (
     <div className="page-content">

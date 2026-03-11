@@ -128,7 +128,7 @@ const Layout6 = () => {
 const CmsProtectedRoute = ({ pageKey, children }: { pageKey: string, children: React.ReactNode }) => {
   const { cmsConfig, cmsLoading } = useContext(Context);
 
-  if (cmsLoading) return <Loader />;
+  if (cmsLoading || !cmsConfig) return <Loader />;
 
   const isEnabled = cmsConfig?.config?.configJson?.[pageKey]?.enabled !== false;
 
@@ -146,7 +146,7 @@ function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="page-wraper" style={{ backgroundColor: cmsConfig?.config?.backgroundColor || "white", minHeight: '100vh' }}>
         <Router>
-          {cmsLoading ? (
+          {cmsLoading || !cmsConfig ? (
             <Loader />
           ) : (
             <>

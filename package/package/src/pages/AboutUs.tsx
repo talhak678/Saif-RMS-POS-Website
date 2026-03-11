@@ -5,10 +5,12 @@ import ModalVideoBox from "../elements/ModalVideoBox";
 import { Link } from "react-router-dom";
 import { Context } from "../context/AppContext";
 
+import Loader from "../components/Loader";
+
 const AboutUs = () => {
   const { cmsConfig, cmsLoading } = useContext(Context);
 
-  if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
+  if (cmsLoading || !cmsConfig) return <Loader />;
 
   const sections = cmsConfig?.config?.configJson?.about?.sections || {};
   const whatWeDoContent = sections.whatWeDo?.content || {};
