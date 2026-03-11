@@ -288,13 +288,13 @@ const Header2 = () => {
                             top: "120%",
                             right: "-60px",
                             width: "270px",
-                            background: "#fff",
+                            background: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.backgroundColor || "#fff",
                             borderRadius: "15px",
                             boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
                             zIndex: 10000,
                             padding: "15px",
                             display: cartOpen ? "block" : "none",
-                            border: "1px solid #f0f0f0"
+                            border: `1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"}`
                           }}
                         >
                           <div style={{ maxHeight: "400px", overflowY: "auto", marginBottom: "15px", paddingRight: "4px" }}>
@@ -466,8 +466,10 @@ const Header2 = () => {
                             {showUserMenu && (
                               <div style={{
                                 position: "absolute", top: "110%", right: 0, minWidth: 180,
-                                background: "#fff", borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
-                                zIndex: 9999, overflow: "hidden", border: "1px solid #f0f0f0"
+                                background: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.backgroundColor || "#fff",
+                                borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+                                zIndex: 9999, overflow: "hidden", 
+                                border: `1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"}`
                               }}>
                                 <Link to="/my-account" onClick={() => setShowUserMenu(false)} style={{
                                   display: "flex", alignItems: "center", gap: 10,
@@ -526,13 +528,13 @@ const Header2 = () => {
                             top: "110%",
                             right: 0,
                             width: "280px",
-                            background: "#fff",
+                            background: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.backgroundColor || "#fff",
                             borderRadius: "15px",
                             boxShadow: "0 15px 60px rgba(0,0,0,0.18)",
                             zIndex: 10000,
                             padding: "20px",
                             display: cartOpen ? "block" : "none",
-                            border: "1px solid #f0f0f0"
+                            border: `1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"}`
                           }}
                         >
                           <div style={{ maxHeight: "450px", overflowY: "auto", marginBottom: "15px", paddingRight: "5px" }}>

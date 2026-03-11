@@ -34,7 +34,7 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
       style={
         hasNoImage
           ? {
-            background: "#f8f9fa", // Cleaner light gray
+            background: "rgba(0,0,0,0.06)", // Matches search bar bg
           }
           : {
             backgroundImage: `url(${img})`,

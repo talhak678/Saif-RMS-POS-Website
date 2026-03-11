@@ -423,11 +423,47 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               .page-content,
               .content-inner, 
               .content-inner-1,
-              .section-full {
-                background-color: transparent !important;
+              .section-full,
+              .site-header, 
+              .sticky-header, 
+              .main-bar,
+              .offcanvas,
+              .offcanvas-end,
+              .offcanvas-start,
+              .offcanvas-body,
+              .offcanvas-header,
+              .offcanvas-form,
+              .login-head,
+              .header-nav,
+              .navbar-collapse,
+              .nav-item.cart-link > div,
+              .header-right .dropdown-menu,
+              .header-user-btn + div {
+                background-color: ${bColor || '#ffffff'} !important;
+                color: ${tColor || '#222222'} !important;
+              }
+
+              /* Dropdowns and Floating Panels Border */
+              .cart-link > div, 
+              .header-user-btn + div,
+              .dropdown-menu,
+              .extra-nav-mobile div,
+              .offcanvas {
+                border: 1px solid ${aColor || (pColor ? pColor + '20' : '#f0f0f0')} !important;
               }
               
-            
+              /* Ensure all text inside themed blocks respects tColor */
+              .cart-link *, 
+              .header-user-btn + div *,
+              .offcanvas *,
+              .navbar-collapse * {
+                color: ${tColor || 'inherit'};
+              }
+
+              /* Specific button text should stay white if they are primary buttons */
+              .btn-primary *, .btn-primary {
+                 color: #ffffff !important;
+              }
 
               /* Specific fix for Order Success timeline */
               .status-timeline-wrapper { background: transparent !important; }
