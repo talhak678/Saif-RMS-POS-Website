@@ -15,7 +15,6 @@ const AboutUs = () => {
   const sections = cmsConfig?.config?.configJson?.about?.sections || {};
   const whatWeDoContent = sections.whatWeDo?.content || {};
 
-  // Map CMS cards from the dynamic array or fallback to static mapping if empty
   const cmsCards = whatWeDoContent.cards || [];
 
   const displayCards = cmsCards.length > 0
