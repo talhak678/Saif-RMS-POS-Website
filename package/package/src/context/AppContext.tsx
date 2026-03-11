@@ -159,7 +159,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
           console.log("🌍 Subdomain/Custom domain detected:", hostname);
         }
 
-        const apiUrl = `https://saif-rms-pos-backend.vercel.app/api/cms/config/public/${slug}`;
+        const apiUrl = `https://saif-rms-pos-backend-tau.vercel.app/api/cms/config/public/${slug}`;
         console.log("🌐 Calling Backend API:", apiUrl);
 
         const res = await axios.get(apiUrl);
@@ -618,3 +618,4 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
+

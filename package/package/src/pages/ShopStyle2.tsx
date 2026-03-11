@@ -94,3 +94,4 @@ const ShopStyle2 = () => {
 };
 
 export default ShopStyle2;
+

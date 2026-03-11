@@ -7,7 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 
-const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
+const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
 const Footer2 = () => {
   const { cmsConfig } = useContext(Context);
@@ -413,3 +413,4 @@ const Footer2 = () => {
 };
 
 export default Footer2;
+

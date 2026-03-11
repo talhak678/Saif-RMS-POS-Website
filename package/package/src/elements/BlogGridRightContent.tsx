@@ -46,3 +46,4 @@ const BlogGridRightContent = () => {
 };
 
 export default BlogGridRightContent;
+

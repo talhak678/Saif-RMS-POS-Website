@@ -75,3 +75,4 @@ const CommonBanner = ({ img, title, description, showTitle = true, textAlign = "
 };
 
 export default CommonBanner;
+

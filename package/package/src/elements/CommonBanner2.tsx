@@ -25,3 +25,4 @@ const CommonBanner2 = ({ pages }: propType) => {
 };
 
 export default CommonBanner2;
+

@@ -156,3 +156,4 @@ const ModalVideoBox = ({ title, description, videoUrl, thumbnailUrl }: { title?:
 };
 
 export default ModalVideoBox;
+

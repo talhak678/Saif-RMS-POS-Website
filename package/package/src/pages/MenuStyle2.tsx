@@ -476,3 +476,4 @@ const MenuStyle2 = () => {
 };
 
 export default MenuStyle2;
+

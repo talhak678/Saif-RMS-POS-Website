@@ -117,3 +117,4 @@ export function OurBlog({ blog }: { blog?: any }) {
     </>
   );
 }
+

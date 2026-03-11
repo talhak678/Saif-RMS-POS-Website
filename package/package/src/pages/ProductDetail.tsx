@@ -43,7 +43,7 @@ const ProductDetail = () => {
 
     try {
       const params = slug ? `slug=${slug}` : `restaurantId=${restaurantId}`;
-      const res = await axios.get(`https://saif-rms-pos-backend.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}&limit=1`);
+      const res = await axios.get(`https://saif-rms-pos-backend-tau.vercel.app/api/customers/reviews?${params}&menuItemId=${menuItemId}&limit=1`);
       if (res.data?.success) {
         setReviewStats({
           avgRating: res.data.data.avgRating || 0,
@@ -318,3 +318,4 @@ export function Avatar() {
     </>
   );
 }
+

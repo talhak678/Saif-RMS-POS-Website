@@ -229,3 +229,4 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
 };
 
 export default Home2OurMenu;
+

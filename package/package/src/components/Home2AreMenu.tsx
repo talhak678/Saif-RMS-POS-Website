@@ -99,3 +99,4 @@ const Home2AreMenu = () => {
 };
 
 export default Home2AreMenu;
+

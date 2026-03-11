@@ -32,7 +32,7 @@ const LoyaltyPoints = () => {
 
             setLoading(true);
             try {
-                const response = await axios.get('https://saif-rms-pos-backend.vercel.app/api/customers/loyalty', {
+                const response = await axios.get('https://saif-rms-pos-backend-tau.vercel.app/api/customers/loyalty', {
                     headers: { Authorization: `Bearer ${user.token}` }
                 });
 
@@ -167,3 +167,4 @@ const LoyaltyPoints = () => {
 };
 
 export default LoyaltyPoints;
+

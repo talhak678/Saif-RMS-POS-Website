@@ -22,3 +22,4 @@ const BlogDetailRightSidebar = () => {
 };
 
 export default BlogDetailRightSidebar;
+

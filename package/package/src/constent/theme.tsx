@@ -440,3 +440,4 @@ export const IMAGES = {
   switcher_large_pt6: switcher_large_pt6,
   switcher_large_pt7: switcher_large_pt7,
 };
+

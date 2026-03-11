@@ -45,3 +45,4 @@ const BlogGridCard = ({ img, title }: propType) => {
 };
 
 export default BlogGridCard;
+

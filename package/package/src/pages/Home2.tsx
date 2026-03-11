@@ -160,3 +160,4 @@ const TodaySpecialSection = ({ sections, cmsConfig }: { sections: any, cmsConfig
 };
 
 export default Home2;
+

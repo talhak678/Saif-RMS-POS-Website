@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { IoSync } from "react-icons/io5";
 
 
-const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
+const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
 const STATUS_COLORS: Record<string, string> = {
     PENDING: "#FF9800",
@@ -552,3 +552,4 @@ const MyAccount = () => {
 };
 
 export default MyAccount;
+

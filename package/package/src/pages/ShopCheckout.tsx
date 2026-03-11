@@ -11,7 +11,7 @@ import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import Select from "react-select";
 
-const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
+const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder"
@@ -509,3 +509,4 @@ const ShopCheckout = () => {
 };
 
 export default ShopCheckout;
+

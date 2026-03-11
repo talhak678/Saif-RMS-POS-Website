@@ -270,3 +270,4 @@ const MainBanner2 = () => {
 };
 
 export default MainBanner2;
+

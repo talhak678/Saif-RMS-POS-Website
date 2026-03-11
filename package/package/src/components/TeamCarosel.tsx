@@ -104,3 +104,4 @@ const TeamCarosel = () => {
 };
 
 export default TeamCarosel;
+

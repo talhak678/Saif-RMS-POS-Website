@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../context/AppContext";
-const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
+const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
 const STATUS_STEPS = [
     { key: "PENDING", label: "Order Placed", icon: "📦", desc: "Your order has been received", color: "#FF9800" },
@@ -407,3 +407,4 @@ const TrackOrder = () => {
 };
 
 export default TrackOrder;
+

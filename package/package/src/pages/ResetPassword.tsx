@@ -37,7 +37,7 @@ const ResetPassword = () => {
 
         setLoading(true);
         try {
-            const res = await axios.post("https://saif-rms-pos-backend.vercel.app/api/customers/auth/reset-password", {
+            const res = await axios.post("https://saif-rms-pos-backend-tau.vercel.app/api/customers/auth/reset-password", {
                 token,
                 newPassword,
             });
@@ -155,3 +155,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+

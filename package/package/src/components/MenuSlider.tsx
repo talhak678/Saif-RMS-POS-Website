@@ -62,3 +62,4 @@ const MenuSlider = () => {
 };
 
 export default MenuSlider;
+

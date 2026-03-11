@@ -4,7 +4,7 @@ import axios from "axios";
 import { Context } from "../context/AppContext";
 
 
-const BASE_URL = "https://saif-rms-pos-backend.vercel.app";
+const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
 const OrderSuccess = () => {
     const location = useLocation();
@@ -350,3 +350,4 @@ const OrderSuccess = () => {
 };
 
 export default OrderSuccess;
+

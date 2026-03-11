@@ -960,3 +960,4 @@ export const BgSmallImgArr = [
     ptLarge: IMAGES.switcher_large_pt7,
   },
 ];
+

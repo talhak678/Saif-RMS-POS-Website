@@ -105,7 +105,7 @@ const ContactUs = () => {
         branchId: activeBranch.id,
       };
 
-      const res = await axios.post("https://saif-rms-pos-backend.vercel.app/api/reservations/public", data);
+      const res = await axios.post("https://saif-rms-pos-backend-tau.vercel.app/api/reservations/public", data);
       if (res.data?.success) {
         toast.success("Reservation Booked Successfully!");
         (e.target as HTMLFormElement).reset();
@@ -322,3 +322,4 @@ const ContactUs = () => {
 };
 
 export default ContactUs;
+

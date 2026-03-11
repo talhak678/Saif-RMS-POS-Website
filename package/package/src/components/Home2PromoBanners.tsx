@@ -75,3 +75,4 @@ const Home2PromoBanners = () => {
 };
 
 export default Home2PromoBanners;
+
