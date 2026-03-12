@@ -48,13 +48,13 @@ const MyAccount = () => {
         if (user && activeTab === "orders") {
             fetchOrders();
         }
-    }, [user, activeTab]);
+    }, [user?.token, activeTab]);
 
     useEffect(() => {
         if (user) {
             setProfileForm({ name: user.name || "", phone: user.phone || "" });
         }
-    }, [user]);
+    }, [user?.token]);
 
     const fetchOrders = async () => {
         if (!user?.token) return;
