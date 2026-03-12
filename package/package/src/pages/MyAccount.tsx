@@ -40,6 +40,7 @@ const MyAccount = () => {
     const [submittingReview, setSubmittingReview] = useState(false);
     const [profileForm, setProfileForm] = useState({ name: user?.name || "", phone: user?.phone || "" });
     const [savingProfile, setSavingProfile] = useState(false);
+    const [generatingAIReview, setGeneratingAIReview] = useState(false);
 
     const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
 
@@ -122,6 +123,27 @@ const MyAccount = () => {
             toast.error(err.response?.data?.message || "Failed to submit review");
         } finally {
             setSubmittingReview(false);
+        }
+    };
+
+    const handleAIReview = async () => {
+        if (!reviewModal || !reviewData.rating) return;
+        setGeneratingAIReview(true);
+        try {
+            const res = await axios.post(`${BASE_URL}/api/ai/generate-review`, {
+                rating: reviewData.rating,
+                feedback: reviewData.comment || "Everything was great!",
+                menuItemName: "the food" // Could be more specific if order items are passed
+            });
+            if (res.data?.review) {
+                setReviewData({ ...reviewData, comment: res.data.review });
+                toast.success("Magic! Your review is ready 🎉");
+            }
+        } catch (err) {
+            console.error("AI Review failed", err);
+            toast.error("AI writing failed. Please try again.");
+        } finally {
+            setGeneratingAIReview(false);
         }
     };
 
@@ -514,7 +536,20 @@ const MyAccount = () => {
                         </div>
 
                         <div style={{ marginBottom: 24 }}>
-                            <label className="form-label" style={{ fontWeight: 600 }}>Comment (optional)</label>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                                <label className="form-label" style={{ fontWeight: 600, marginBottom: 0 }}>Comment (optional)</label>
+                                <button
+                                    onClick={handleAIReview}
+                                    disabled={generatingAIReview}
+                                    style={{
+                                        fontSize: 11, fontWeight: 700, color: primaryColor,
+                                        background: "transparent", border: "none", cursor: "pointer",
+                                        display: "flex", alignItems: "center", gap: 4, padding: 0
+                                    }}
+                                >
+                                    {generatingAIReview ? "Writing..." : "✨ Magic AI Writing"}
+                                </button>
+                            </div>
                             <textarea
                                 className="form-control"
                                 rows={3}
