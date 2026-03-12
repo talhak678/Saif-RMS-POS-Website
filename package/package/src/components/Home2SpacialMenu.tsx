@@ -9,6 +9,7 @@ const Home2SpacialMenu = ({ items }: { items: any[] }) => {
   if (cmsLoading) return null;
 
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffffff";
   const currency = cmsConfig?.config?.currency || '$';
 
   return (
@@ -99,7 +100,7 @@ const Home2SpacialMenu = ({ items }: { items: any[] }) => {
           width: 60px;
           height: 60px;
           background: ${primaryColor};
-          color: #fff;
+          color: ${secondaryColor} !important;
           border: none;
           border-radius: 18px;
           display: flex;
@@ -144,7 +145,7 @@ const Home2SpacialMenu = ({ items }: { items: any[] }) => {
       >
         {items.map((item: any, ind: number) => (
           <SwiperSlide key={item.id || ind}>
-            <div className="special-card">
+            <div className="special-card cms-card-bg">
               <div className="special-card-content">
                 <div className="special-card-top-row">
                   <span className="special-card-tag">{item.categoryName || "Special"}</span>

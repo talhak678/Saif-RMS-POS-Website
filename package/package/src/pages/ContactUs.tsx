@@ -203,6 +203,27 @@ const ContactUs = () => {
           .dzForm .btn-primary.btn-hover-1:hover span {
              color: #222222 !important;
           }
+          .cms-card-bg {
+            transition: all 0.3s ease !important;
+            background-color: ${cmsConfig?.config?.backgroundColor || "white"} !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12) !important;
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            border-radius: 12px !important;
+          }
+          .cms-card-bg:hover, .cms-card-bg.active {
+            transform: translateY(-10px) !important;
+            background-color: var(--primary) !important;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.2) !important;
+          }
+          .cms-card-bg:hover .icon-content .title, 
+          .cms-card-bg.active .icon-content .title,
+          .cms-card-bg:hover .icon-content p, 
+          .cms-card-bg.active .icon-content p {
+            color: #ffffff !important;
+          }
+          .icon-bx-wraper.style-5 .effect {
+            display: none !important;
+          }
         `}
       </style>
       {sections.banner?.enabled !== false && (
@@ -223,7 +244,7 @@ const ContactUs = () => {
               {displayInfo.map(({ icon, text, title, iconUrl }: any, ind) => (
                 <div className="col-lg-3 col-sm-6" key={ind}>
                   <div
-                    className={`icon-bx-wraper style-5 hover-aware box-hover ${active === ind ? "active" : ""}`}
+                    className={`icon-bx-wraper style-5 hover-aware box-hover cms-card-bg ${active === ind ? "active" : ""}`}
                     onMouseEnter={() => setActive(ind)}
                   >
                     <div className="icon-bx">

@@ -141,7 +141,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
           width: 50px;
           height: 50px;
           background: ${primaryColor};
-          color: #fff;
+          color: ${secondaryColor} !important;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -195,7 +195,7 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         {items.map((item: any, ind: number) => (
           <SwiperSlide className="swiper-slide" key={item.id || ind}>
             <div
-              className={`dz-img-box style-4 box-hover ${active === ind ? "active" : ""}`}
+              className={`dz-img-box style-4 box-hover cms-card-bg ${active === ind ? "active" : ""}`}
               onMouseEnter={() => setActive(ind)}
               onMouseLeave={() => setActive(undefined)}
             >

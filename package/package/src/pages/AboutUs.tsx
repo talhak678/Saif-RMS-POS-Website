@@ -68,6 +68,13 @@ const AboutUs = () => {
             height: 50px;
             object-fit: contain;
           }
+          .cms-card-bg {
+            transition: all 0.3s ease !important;
+          }
+          .cms-card-bg:hover {
+            transform: translateY(-8px) !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
+          }
         `}
       </style>
       {sections.banner?.enabled !== false && (
@@ -102,7 +109,7 @@ const AboutUs = () => {
             <div className="row">
               {displayCards.map(({ icon, title, desc, iconUrl }: { icon: string; title: string; desc: string; iconUrl?: string }, ind: number) => (
                 <div className="col-lg-3 col-sm-6 m-b30" key={ind}>
-                  <div className={`icon-bx-wraper style-3 h-100 text-${textAlignClass}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                  <div className={`icon-bx-wraper style-3 h-100 cms-card-bg text-${textAlignClass}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                     <div className="icon-bx">
                       <div className="icon-cell">
                         {iconUrl ? (

@@ -456,8 +456,18 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               .cart-link *, 
               .header-user-btn + div *,
               .offcanvas *,
-              .navbar-collapse * {
+              .navbar-collapse *,
+              .cms-card-bg, .cms-card-bg *,
+              .special-card, .special-card *,
+              .dz-img-box, .dz-img-box *,
+              .icon-bx-wraper, .icon-bx-wraper *,
+              .dz-shop-card, .dz-shop-card * {
                 color: ${tColor || 'inherit'};
+              }
+              
+              /* Specific icon overrides for visibility inside primary colored buttons */
+              .special-add-btn i, .detail-btn i, .cms-add-to-cart i, .dz-shop-card .button i, button i, a.btn i {
+                 color: ${sColor || '#ffffff'} !important;
               }
 
               /* Specific button text should stay white if they are primary buttons */
@@ -467,6 +477,47 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
 
               /* Specific fix for Order Success timeline */
               .status-timeline-wrapper { background: transparent !important; }
+
+              /* === CARDS BACKGROUND CONSISTENCY === */
+              .cms-card-bg, .special-card, .dz-img-box, .icon-bx-wraper.style-5, .icon-bx-wraper.style-3, .dz-shop-card, .card, .dz-card {
+                background-color: ${bColor || "#ffffff"} !important;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.12) !important;
+                border: 1px solid ${aColor || (pColor ? pColor + '15' : 'rgba(0,0,0,0.1)')} !important;
+              }
+              
+              /* Remove inner background/box for consistent look */
+              .cms-card-bg .icon-content, .icon-bx-wraper .icon-content, .dz-img-box .dz-content {
+                background: transparent !important;
+                box-shadow: none !important;
+                border: none !important;
+              }
+              
+              /* Ensure the effect overlay doesn't break the background when not hovered/active */
+              .icon-bx-wraper.style-5 .effect {
+                 background-color: ${pColor || '#7da640'}; /* This is the hover color */
+              }
+
+              /* === HEADER ICONS & BADGE SCROLL STATE === */
+              
+              /* Icons behavior */
+              .sticky-header:not(.is-fixed) .extra-nav .btn i,
+              .sticky-header:not(.is-fixed) .extra-nav .cart-btn i {
+                color: ${pColor} !important;
+              }
+              .sticky-header.is-fixed .extra-nav .btn i,
+              .sticky-header.is-fixed .extra-nav .cart-btn i {
+                color: ${sColor} !important;
+              }
+
+              /* Cart Badge behavior */
+              .sticky-header:not(.is-fixed) .extra-nav .cart-btn .badge {
+                background-color: ${sColor} !important;
+                color: ${pColor} !important;
+              }
+              .sticky-header.is-fixed .extra-nav .cart-btn .badge {
+                background-color: ${sColor} !important;
+                color: ${pColor} !important;
+              }
             `;
           }
 

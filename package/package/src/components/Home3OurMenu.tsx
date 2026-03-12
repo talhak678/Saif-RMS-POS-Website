@@ -154,10 +154,10 @@ const Home3OurMenu = () => {
             data-wow-delay={`${ind * 0.08}s`}
           >
             <div
+              className="cms-card-bg"
               style={{
                 borderRadius: "18px",
                 overflow: "hidden",
-                background: "#fff",
                 boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 position: "relative",
@@ -324,6 +324,7 @@ const Home3OurMenu = () => {
                     View Details <i className="fa fa-arrow-right" style={{ fontSize: "11px" }} />
                   </Link>
                   <button
+                    className="cms-add-to-cart"
                     onClick={() => {
                       addToCart({
                         id: item.id,
@@ -338,7 +339,7 @@ const Home3OurMenu = () => {
                       height: "34px",
                       borderRadius: "50%",
                       background: primaryColor,
-                      color: "#fff",
+                      color: secondaryColor,
                       border: "none",
                       display: "flex",
                       alignItems: "center",

@@ -191,23 +191,30 @@ const Header2 = () => {
             box-shadow: none !important;
             transition: none !important;
           }
-          .is-fixed .header-user-btn span, 
-          .is-fixed .header-user-btn i,
-          .is-fixed .header-login-btn i {
-            color: var(--secondary) !important;
-          }
-
-          /* 🔹 Increased Sticky Header Spacing */
-          .is-fixed .main-bar {
-            padding-top: 10px !important;
-            padding-bottom: 10px !important;
-            transition: all 0.3s ease;
-          }
-
-          /* 🔹 Logo scaling in sticky mode */
           .is-fixed .logo-header img {
             max-height: 50px !important;
             transition: all 0.3s ease;
+          }
+
+          /* Header Icons & Badge Scroll State */
+          .sticky-header:not(.is-fixed) .header-right .btn i,
+          .sticky-header:not(.is-fixed) .header-right .cart-btn i,
+          .sticky-header:not(.is-fixed) .header-right .header-user-btn span {
+            color: var(--primary) !important;
+          }
+          .sticky-header.is-fixed .header-right .btn i,
+          .sticky-header.is-fixed .header-right .cart-btn i,
+          .sticky-header.is-fixed .header-right .header-user-btn span {
+            color: var(--secondary) !important;
+          }
+
+          .sticky-header:not(.is-fixed) .header-right .cart-btn .badge {
+            background-color: var(--secondary) !important;
+            color: var(--primary) !important;
+          }
+          .sticky-header.is-fixed .header-right .cart-btn .badge {
+            background-color: var(--secondary) !important;
+            color: var(--primary) !important;
           }
         `}
       </style>

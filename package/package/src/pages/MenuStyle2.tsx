@@ -222,10 +222,10 @@ const MenuStyle2 = () => {
                 <div
                   ref={(node) => { if (node) cardRef.current[ind] = node; }}
                   onClick={() => navigate(`/product/${item.id}`)}
+                  className="cms-card-bg"
                   style={{
                     borderRadius: "18px",
                     overflow: "hidden",
-                    background: "#fff",
                     boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
                     transition: "transform 0.3s ease, box-shadow 0.3s ease",
                     opacity: 1,
@@ -397,14 +397,15 @@ const MenuStyle2 = () => {
                         marginTop: "10px",
                       }}
                     >
-                      <button
-                        disabled={item.isAvailable === false}
+                        <button
+                          className="cms-add-to-cart"
+                          disabled={item.isAvailable === false}
                         style={{
                           width: "36px",
                           height: "36px",
                           borderRadius: "50%",
                           background: item.isAvailable === false ? '#cbd5e0' : primaryColor,
-                          color: "#fff",
+                          color: secondaryColor,
                           display: "inline-flex",
                           alignItems: "center",
                           justifyContent: "center",
