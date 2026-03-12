@@ -74,6 +74,7 @@ import OrderTypeModal from "./elements/OrderTypeModal";
 import PromoPopup from "./elements/PromoPopup";
 import Loader from "./components/Loader";
 import { Toaster } from "react-hot-toast";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const Layout2 = () => {
   const { setHeaderClass } = useContext(Context);
@@ -84,6 +85,7 @@ const Layout2 = () => {
       <Header2 />
       <Outlet />
       <Footer2 />
+      <ChatbotWidget />
     </>
   );
 };
@@ -96,6 +98,7 @@ const Layout4 = () => {
       <Header2 />
       <Outlet />
       <Footer2 />
+      <ChatbotWidget />
     </>
   );
 };
