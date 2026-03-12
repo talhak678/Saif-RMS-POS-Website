@@ -15,6 +15,7 @@ const ChatbotWidget: React.FC = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom of messages
@@ -41,10 +42,14 @@ const ChatbotWidget: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Use the production Vercel backend URL for the AI chatbot
+      const backendUrl = 'https://saif-rms-pos-backend-tau.vercel.app/api/ai/chatbot';
+      
       const response = await axios.post(
-        'https://saif-rms-pos-backend-tau.vercel.app/api/ai/chatbot', 
+        backendUrl, 
         {
-          restaurantId: cmsConfig.restaurantId,
+          // Ensure we capture the correct ID since AppContext nested it under data sometimes
+          restaurantId: cmsConfig.restaurantId || cmsConfig._id || cmsConfig.id || (cmsConfig.data && cmsConfig.data.restaurantId),
           messages: newMessages
         }
       );
@@ -69,52 +74,236 @@ const ChatbotWidget: React.FC = () => {
   if (!cmsConfig?.restaurantId) return null;
 
   return (
-    <div className={`ai-chatbot-wrapper ${isOpen ? 'open' : ''}`}>
-      {/* Floating Action Button */}
-      <button 
-        className="chatbot-fab btn btn-primary shadow-primary" 
-        onClick={toggleChat}
-        aria-label="Toggle AI Assistant"
-      >
-        {isOpen ? (
-          <i className="fa-solid fa-times"></i>
-        ) : (
-          <i className="fa-solid fa-robot"></i>
-        )}
-      </button>
+    <>
+      {/* Component Scoped Styles */}
+      <style>{`
+        .ai-chatbot-icon-wrapper {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-      {/* Chat Window */}
-      <div className={`chatbot-window card bg-white ${isOpen ? 'show' : 'hide'}`}>
+        .chatbot-fab {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          padding: 0;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        }
+
+        .chatbot-fab:hover {
+          transform: scale(1.05);
+        }
+
+
+
+        .ai-chatbot-sidebar {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 400px;
+          max-width: 100%;
+          height: 100vh;
+          background: #fff;
+          z-index: 10001;
+          display: flex;
+          flex-direction: column;
+          box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+          transform: translateX(100%);
+          transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .ai-chatbot-sidebar.show {
+          transform: translateX(0);
+        }
+
+        .ai-chatbot-sidebar .chatbot-header {
+          padding: 20px;
+          border-radius: 0;
+        }
+
+        .ai-chatbot-sidebar .chatbot-body {
+          flex: 1;
+          overflow-y: auto;
+          background-color: #f8f9fa;
+          padding: 20px;
+        }
+        
+        .ai-chatbot-sidebar .chatbot-footer {
+          padding: 20px;
+          border-top: 1px solid #eee;
+          background: #fff;
+        }
+
+        .chatbot-body::-webkit-scrollbar {
+          width: 6px;
+        }
+        .chatbot-body::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .chatbot-body::-webkit-scrollbar-thumb {
+          background: rgba(0,0,0,0.1);
+          border-radius: 4px;
+        }
+
+        .typing-indicator {
+          padding: 5px;
+        }
+        .typing-indicator .dot {
+          opacity: 0.6;
+        }
+
+        @keyframes bounce {
+          0%, 80%, 100% { transform: translateY(0); }
+          40% { transform: translateY(-5px); }
+        }
+
+        @media (max-width: 576px) {
+          .ai-chatbot-icon-wrapper {
+            bottom: 20px;
+            right: 20px;
+          }
+          .ai-chatbot-sidebar {
+            width: 100%;
+          }
+        }
+
+        .chatbot-intro-card {
+          position: absolute;
+          bottom: 80px;
+          right: 0;
+          width: 260px;
+          background: #fff;
+          padding: 15px 20px;
+          border-radius: 18px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          animation: slideUpIntro 0.5s ease-out;
+          z-index: 10000;
+          border: 1px solid #eee;
+          cursor: pointer;
+        }
+
+        .chatbot-intro-card::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          right: 20px;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-top: 10px solid #fff;
+        }
+
+        .chatbot-intro-card .close-intro {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f0f0f0;
+          border-radius: 50%;
+          font-size: 10px;
+          color: #888;
+          transition: all 0.2s;
+        }
+
+        .chatbot-intro-card .close-intro:hover {
+          background: #e0e0e0;
+          color: #333;
+        }
+
+        .chatbot-intro-content {
+          font-size: 0.9rem;
+          line-height: 1.4;
+          color: #333;
+          margin: 0;
+          padding-right: 15px;
+        }
+
+        @keyframes slideUpIntro {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      {/* Floating Action Button (Always remains in bottom right) */}
+      <div className="ai-chatbot-icon-wrapper">
+        {/* Intro Card */}
+        {showIntro && !isOpen && (
+          <div className="chatbot-intro-card" onClick={toggleChat}>
+            <button 
+              className="close-intro border-0" 
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowIntro(false);
+              }}
+            >
+              <i className="fa-solid fa-times"></i>
+            </button>
+            <p className="chatbot-intro-content">
+              <strong>Hi there!</strong> Welcome to {cmsConfig?.restaurantName || 'our restaurant'}. How can I help you today?
+            </p>
+          </div>
+        )}
+
+        <button 
+          className="chatbot-fab btn btn-primary bg-primary text-white border-0 shadow-primary" 
+          onClick={toggleChat}
+          aria-label="Toggle AI Assistant"
+        >
+          {isOpen ? (
+            <i className="fa-solid fa-times"></i>
+          ) : (
+            <i className="fa-solid fa-robot"></i>
+          )}
+        </button>
+      </div>
+
+
+      {/* Sliding Sidebar for Chat Window */}
+      <div className={`ai-chatbot-sidebar ${isOpen ? 'show' : ''}`}>
         {/* Header */}
-        <div className="chatbot-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-2">
-            <div className="robot-icon-bg bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style={{width: '32px', height: '32px'}}>
+        <div className="chatbot-header bg-primary text-white d-flex align-items-center justify-content-between">
+          <div className="d-flex align-items-center gap-3">
+            <div className="robot-icon-bg bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style={{width: '40px', height: '40px', fontSize: '1.2rem'}}>
               <i className="fa-solid fa-robot"></i>
             </div>
             <div>
-              <h6 className="mb-0 text-white fw-bold">AI Assistant</h6>
-              <small className="opacity-75" style={{fontSize: '0.7rem'}}>Ask me anything!</small>
+              <h5 className="mb-0 text-white fw-bold">AI Assistant</h5>
+              <small className="opacity-75" style={{fontSize: '0.8rem'}}>Ask me anything about the menu!</small>
             </div>
           </div>
-          <button className="btn btn-sm btn-link text-white shadow-none p-0" onClick={toggleChat}>
-            <i className="fa-solid fa-minus"></i>
+          <button className="btn btn-sm btn-link text-white shadow-none p-0 fs-5" onClick={() => setIsOpen(false)}>
+            <i className="fa-solid fa-times"></i>
           </button>
         </div>
 
         {/* Messages Body */}
-        <div className="chatbot-body p-3" style={{ height: '350px', overflowY: 'auto', backgroundColor: '#f8f9fa' }}>
+        <div className="chatbot-body">
           {messages.map((msg, idx) => (
             <div 
               key={idx} 
               className={`d-flex mb-3 ${msg.role === 'user' ? 'justify-content-end' : 'justify-content-start'}`}
             >
               <div 
-                className={`p-2 rounded-3 shadow-sm ${
+                className={`p-3 rounded-3 shadow-sm ${
                   msg.role === 'user' 
                     ? 'bg-primary text-white rounded-bottom-end-0' 
                     : 'bg-white text-dark border rounded-bottom-start-0'
                 }`}
-                style={{ maxWidth: '85%', fontSize: '0.9rem' }}
+                style={{ maxWidth: '85%', fontSize: '0.95rem' }}
               >
                 {/* Parse line breaks safely */}
                 {msg.content.split('\n').map((line, i) => (
@@ -129,11 +318,11 @@ const ChatbotWidget: React.FC = () => {
           
           {isLoading && (
             <div className="d-flex justify-content-start mb-3">
-              <div className="p-2 rounded-3 bg-white text-dark border rounded-bottom-start-0 shadow-sm" style={{ width: '60px' }}>
+              <div className="p-3 rounded-3 bg-white text-dark border rounded-bottom-start-0 shadow-sm" style={{ width: '70px' }}>
                 <div className="typing-indicator d-flex justify-content-center gap-1">
-                  <span className="dot bg-secondary rounded-circle" style={{width: '6px', height: '6px', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '-0.32s'}}></span>
-                  <span className="dot bg-secondary rounded-circle" style={{width: '6px', height: '6px', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '-0.16s'}}></span>
-                  <span className="dot bg-secondary rounded-circle" style={{width: '6px', height: '6px', animation: 'bounce 1.4s infinite ease-in-out both'}}></span>
+                  <span className="dot bg-secondary rounded-circle" style={{width: '8px', height: '8px', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '-0.32s'}}></span>
+                  <span className="dot bg-secondary rounded-circle" style={{width: '8px', height: '8px', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '-0.16s'}}></span>
+                  <span className="dot bg-secondary rounded-circle" style={{width: '8px', height: '8px', animation: 'bounce 1.4s infinite ease-in-out both'}}></span>
                 </div>
               </div>
             </div>
@@ -142,32 +331,32 @@ const ChatbotWidget: React.FC = () => {
         </div>
 
         {/* Input Footer */}
-        <div className="chatbot-footer p-2 border-top bg-white rounded-bottom">
+        <div className="chatbot-footer">
           <form onSubmit={sendMessage} className="d-flex gap-2">
             <input 
               type="text" 
-              className="form-control form-control-sm border-0 bg-light shadow-none" 
+              className="form-control border bg-light shadow-none px-3" 
               placeholder="Type your message..." 
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               disabled={isLoading}
-              style={{ borderRadius: '20px' }}
+              style={{ borderRadius: '25px', padding: '10px 15px' }}
             />
             <button 
               type="submit" 
-              className="btn btn-sm btn-primary rounded-circle shadow-none d-flex align-items-center justify-content-center"
-              style={{ width: '38px', height: '38px', flexShrink: 0 }}
+              className="btn btn-primary bg-primary text-white border-0 rounded-circle shadow-none d-flex align-items-center justify-content-center"
+              style={{ width: '45px', height: '45px', flexShrink: 0 }}
               disabled={!inputMessage.trim() || isLoading}
             >
               <i className="fa-solid fa-paper-plane" style={{ marginLeft: '-2px' }}></i>
             </button>
           </form>
-          <div className="text-center mt-1">
-            <small className="text-muted" style={{ fontSize: '0.65rem' }}>Powered by AI • {cmsConfig?.restaurantName}</small>
+          <div className="text-center mt-3">
+            <small className="text-muted" style={{ fontSize: '0.75rem' }}>Powered by AI • {cmsConfig?.restaurantName}</small>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

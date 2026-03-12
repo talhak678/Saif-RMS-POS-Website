@@ -24,7 +24,7 @@ import {
 import Header2 from "./components/Header2";
 import Footer2 from "./components/Footer2";
 import Home2 from "./pages/Home2";
-import ScrollTop from "./constent/ScrollTop";
+
 import AboutUs from "./pages/AboutUs";
 import Faq from "./pages/Faq";
 // import Team from "./pages/Team";
@@ -156,7 +156,7 @@ function App() {
               <OrderTypeModal />
               <PromoPopup />
               <SignIn />
-              <ScrollTop />
+
               <Routes>
                 <Route element={<Layout2 />}>
                   <Route path="/" element={<Home2 />} />
