@@ -123,6 +123,20 @@ const MenuStyle2 = () => {
             .gallery-grid-item {
               margin-bottom: 20px !important;
             }
+            .category-tabs {
+              justify-content: flex-start !important;
+              overflow-x: auto !important;
+              flex-wrap: nowrap !important;
+              padding-bottom: 10px !important;
+              -webkit-overflow-scrolling: touch;
+            }
+            .category-tabs::-webkit-scrollbar {
+              display: none;
+            }
+            .category-tabs button {
+              white-space: nowrap !important;
+              flex-shrink: 0 !important;
+            }
           }
            @media (max-width: 576px) {
             .menu-card-img {
@@ -153,6 +167,7 @@ const MenuStyle2 = () => {
 
           {/* ── Filter Tabs ── */}
           <div
+            className="category-tabs"
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -187,6 +202,7 @@ const MenuStyle2 = () => {
                   transition: "all 0.25s ease",
                   boxShadow: active === ind ? `0 6px 18px ${primaryColor}44` : "none",
                   letterSpacing: "0.3px",
+                  whiteSpace: "nowrap"
                 }}
               >
                 <i className={icon} style={{ fontSize: "15px" }} />

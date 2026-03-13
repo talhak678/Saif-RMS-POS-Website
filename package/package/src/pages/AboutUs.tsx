@@ -40,27 +40,29 @@ const AboutUs = () => {
           @media (max-width: 768px) {
             .section-head {
               margin-bottom: 40px !important;
-              text-align: center !important;
+              text-align: left !important;
             }
             .section-head .title {
               font-size: 28px !important;
+              text-align: left !important;
             }
             .section-head p {
-              text-align: center !important;
+              text-align: left !important;
+              margin-left: 0 !important;
             }
           }
           @media (max-width: 576px) {
             .icon-bx-wraper.style-3 {
               padding: 20px !important;
-              text-align: center !important;
-              flex-direction: column !important;
-              align-items: center !important;
+              text-align: left !important;
+              flex-direction: row !important;
+              align-items: flex-start !important;
             }
             .icon-bx-wraper.style-3 .icon-bx {
-              margin: 0 auto 15px !important;
+              margin: 0 15px 0 0 !important;
             }
             .icon-content {
-              text-align: center !important;
+              text-align: left !important;
             }
           }
           .icon-cell img {

@@ -36,7 +36,8 @@ const Home2 = () => {
             .section-head {
               margin-bottom: 30px !important;
               flex-direction: column !important;
-              text-align: center !important;
+              text-align: left !important;
+              align-items: flex-start !important;
               gap: 15px;
             }
             .section-head.menu-align {

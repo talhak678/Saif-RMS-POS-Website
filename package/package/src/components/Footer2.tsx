@@ -231,15 +231,15 @@ const Footer2 = () => {
                 }
               }
               @media (max-width: 768px) {
-                 .footer-card { padding: 40px 20px; text-align: center; }
-                 .footer-logo { text-align: center; margin-bottom: 20px; }
-                 .footer-logo img { margin: 0 auto; }
-                 .newsletter-box { text-align: center; margin-bottom: 20px; }
-                 .newsletter-box h4 { text-align: center; }
-                 .widget_getintuch ul li { justify-content: center; text-align: center; flex-direction: column; align-items: center; }
-                 .widget_getintuch ul li i { margin-top: 0; }
+                 .footer-card { padding: 40px 20px; text-align: left; }
+                 .footer-logo { text-align: left; margin-bottom: 20px; }
+                 .footer-logo img { margin: 0; }
+                 .newsletter-box { text-align: left; margin-bottom: 20px; }
+                 .newsletter-box h4 { text-align: left; }
+                 .widget_getintuch ul li { justify-content: flex-start; text-align: left; flex-direction: row; align-items: flex-start; }
+                 .widget_getintuch ul li i { margin-top: 5px; }
                  .footer-divider { margin: 30px 0; }
-                 .footer-social-list { justify-content: center; }
+                 .footer-social-list { justify-content: flex-start; }
               }
             `}
           </style>
