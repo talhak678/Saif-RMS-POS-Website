@@ -35,7 +35,7 @@ const MyAccount = () => {
     const [activeTab, setActiveTab] = useState<TabType>("orders");
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
-    const [reviewModal, setReviewModal] = useState<{ orderId: string; orderNo: number } | null>(null);
+    const [reviewModal, setReviewModal] = useState<{ orderId: string; orderNo: number; itemName?: string } | null>(null);
     const [reviewData, setReviewData] = useState({ rating: 5, comment: "" });
     const [submittingReview, setSubmittingReview] = useState(false);
     const [profileForm, setProfileForm] = useState({ name: user?.name || "", phone: user?.phone || "" });
@@ -126,14 +126,17 @@ const MyAccount = () => {
         }
     };
 
+    const [aiPrompt, setAiPrompt] = useState("");
+
     const handleAIReview = async () => {
         if (!reviewModal || !reviewData.rating) return;
         setGeneratingAIReview(true);
         try {
             const res = await axios.post(`${BASE_URL}/api/ai/generate-review`, {
                 rating: reviewData.rating,
-                feedback: reviewData.comment || "Everything was great!",
-                menuItemName: "the food" // Could be more specific if order items are passed
+                feedback: reviewData.comment || "",
+                instructions: aiPrompt,
+                menuItemName: reviewModal.itemName || "the food"
             });
             if (res.data?.review) {
                 setReviewData({ ...reviewData, comment: res.data.review });
@@ -387,7 +390,11 @@ const MyAccount = () => {
                                                             </button>
                                                             {order.status === "DELIVERED" && !order.review && (
                                                                 <button
-                                                                    onClick={() => setReviewModal({ orderId: order.id, orderNo: order.orderNo })}
+                                                                    onClick={() => setReviewModal({ 
+                                                                        orderId: order.id, 
+                                                                        orderNo: order.orderNo,
+                                                                        itemName: order.items?.[0]?.menuItem?.name
+                                                                    })}
                                                                     style={{
                                                                         padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
                                                                         background: "#FFF9C4", color: "#F57F17", border: "1px solid #FFE082",
@@ -550,6 +557,14 @@ const MyAccount = () => {
                                     {generatingAIReview ? "Writing..." : "✨ Magic AI Writing"}
                                 </button>
                             </div>
+                            <input
+                                type="text"
+                                className="form-control mb-2"
+                                style={{ borderRadius: 10, fontSize: 13 }}
+                                placeholder="Give a hint (e.g., mention the sauce or fast service)"
+                                value={aiPrompt}
+                                onChange={e => setAiPrompt(e.target.value)}
+                            />
                             <textarea
                                 className="form-control"
                                 rows={3}
