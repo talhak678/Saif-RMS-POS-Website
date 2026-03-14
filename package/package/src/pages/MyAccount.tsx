@@ -41,6 +41,7 @@ const MyAccount = () => {
     const [profileForm, setProfileForm] = useState({ name: user?.name || "", phone: user?.phone || "" });
     const [savingProfile, setSavingProfile] = useState(false);
     const [generatingAIReview, setGeneratingAIReview] = useState(false);
+    const [showAIPrompt, setShowAIPrompt] = useState(false);
 
     const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
 
@@ -546,25 +547,49 @@ const MyAccount = () => {
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                                 <label className="form-label" style={{ fontWeight: 600, marginBottom: 0 }}>Comment (optional)</label>
                                 <button
-                                    onClick={handleAIReview}
-                                    disabled={generatingAIReview}
+                                    onClick={() => setShowAIPrompt(!showAIPrompt)}
                                     style={{
                                         fontSize: 11, fontWeight: 700, color: primaryColor,
-                                        background: "transparent", border: "none", cursor: "pointer",
-                                        display: "flex", alignItems: "center", gap: 4, padding: 0
+                                        background: primaryColor + "10", border: `1px solid ${primaryColor}30`, 
+                                        cursor: "pointer", display: "flex", alignItems: "center", gap: 4, 
+                                        padding: "4px 10px", borderRadius: 8
                                     }}
                                 >
-                                    {generatingAIReview ? "Writing..." : "✨ Magic AI Writing"}
+                                    Write a review with AI
                                 </button>
                             </div>
-                            <input
-                                type="text"
-                                className="form-control mb-2"
-                                style={{ borderRadius: 10, fontSize: 13 }}
-                                placeholder="Give a hint (e.g., mention the sauce or fast service)"
-                                value={aiPrompt}
-                                onChange={e => setAiPrompt(e.target.value)}
-                            />
+
+                            {showAIPrompt && (
+                                <div style={{ 
+                                    background: "#f8f9fa", padding: "12px", borderRadius: "12px", marginBottom: "12px",
+                                    border: "1px solid #eee", animation: "slideDown 0.3s ease-out"
+                                }}>
+                                    <label style={{ fontSize: "11px", fontWeight: 700, color: "#888", marginBottom: "8px", display: "block", textTransform: "uppercase" }}>
+                                        What should the AI mention?
+                                    </label>
+                                    <div style={{ display: "flex", gap: "8px" }}>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            style={{ borderRadius: 8, fontSize: 13, flex: 1 }}
+                                            placeholder="e.g. mention the fast delivery"
+                                            value={aiPrompt}
+                                            onChange={e => setAiPrompt(e.target.value)}
+                                        />
+                                        <button
+                                            onClick={handleAIReview}
+                                            disabled={generatingAIReview}
+                                            style={{
+                                                background: primaryColor, color: "#fff", border: "none",
+                                                padding: "0 12px", borderRadius: 8, fontSize: 11, fontWeight: 700
+                                            }}
+                                        >
+                                            {generatingAIReview ? "..." : "Generate"}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                             <textarea
                                 className="form-control"
                                 rows={3}
