@@ -193,6 +193,8 @@ const Header2 = () => {
           }
           .is-fixed .logo-header img {
             max-height: 50px !important;
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
             transition: all 0.3s ease;
           }
 
