@@ -61,10 +61,27 @@ const ChatbotWidget: React.FC = () => {
       }
     } catch (error) {
       console.error('Chatbot API Error:', error);
+      
+      const whatsappLink = `https://wa.me/${cmsConfig?.whatsappNumber || ''}?text=Hi, I need help with ${cmsConfig?.restaurantName || 'the restaurant'}. The AI assistant is currently unavailable.`;
+      
       setMessages([
         ...newMessages, 
-        { role: 'assistant', content: "I'm sorry, I'm having trouble connecting to my brain right now. Please try again later or contact our staff directly." }
+        { 
+          role: 'assistant', 
+          content: "I'm sorry, I'm having trouble connecting to my brain right now. 🧠\n\nDirectly humein WhatsApp par message karein, hum aapki madad kar dein ge!" 
+        }
       ]);
+
+      // Add a small delay then show the WhatsApp button suggestion
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `[Click here to chat on WhatsApp](${whatsappLink})`
+          }
+        ]);
+      }, 1000);
     } finally {
       setIsLoading(false);
     }
@@ -236,6 +253,27 @@ const ChatbotWidget: React.FC = () => {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        .whatsapp-redirect-btn {
+          background: #25d366;
+          color: white;
+          border-radius: 50px;
+          padding: 8px 15px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          margin-top: 10px;
+          transition: all 0.3s ease;
+          border: none;
+          font-size: 0.85rem;
+        }
+        .whatsapp-redirect-btn:hover {
+          background: #128c7e;
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
       `}</style>
 
       {/* Floating Action Button (Always remains in bottom right) */}
@@ -285,9 +323,20 @@ const ChatbotWidget: React.FC = () => {
               <small className="opacity-75" style={{fontSize: '0.8rem'}}>Ask me anything about the menu!</small>
             </div>
           </div>
-          <button className="btn btn-sm btn-link text-white shadow-none p-0 fs-5" onClick={() => setIsOpen(false)}>
-            <i className="fa-solid fa-times"></i>
-          </button>
+          <div className="d-flex align-items-center gap-2">
+            <a 
+              href={`https://wa.me/${cmsConfig?.whatsappNumber || ''}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white opacity-75 hover-opacity-100"
+              title="Chat on WhatsApp"
+            >
+              <i className="fa-brands fa-whatsapp fs-4"></i>
+            </a>
+            <button className="btn btn-sm btn-link text-white shadow-none p-0 fs-5" onClick={() => setIsOpen(false)}>
+              <i className="fa-solid fa-times"></i>
+            </button>
+          </div>
         </div>
 
         {/* Messages Body */}
@@ -305,13 +354,27 @@ const ChatbotWidget: React.FC = () => {
                 }`}
                 style={{ maxWidth: '85%', fontSize: '0.95rem' }}
               >
-                {/* Parse line breaks safely */}
-                {msg.content.split('\n').map((line, i) => (
-                  <React.Fragment key={i}>
-                    {line}
-                    {i !== msg.content.split('\n').length - 1 && <br />}
-                  </React.Fragment>
-                ))}
+                {/* Parse line breaks safely and handle special WhatsApp link format */}
+                {msg.content.includes('[Click here to chat on WhatsApp]') ? (
+                  <div>
+                    <p className="mb-2">I'm sorry, I'm having trouble connecting. Hum se WhatsApp par baat karein:</p>
+                    <a 
+                      href={msg.content.match(/\((.*?)\)/)?.[1] || `https://wa.me/${cmsConfig?.whatsappNumber || ''}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="whatsapp-redirect-btn"
+                    >
+                      <i className="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                  </div>
+                ) : (
+                  msg.content.split('\n').map((line, i) => (
+                    <React.Fragment key={i}>
+                      {line}
+                      {i !== msg.content.split('\n').length - 1 && <br />}
+                    </React.Fragment>
+                  ))
+                )}
               </div>
             </div>
           ))}
