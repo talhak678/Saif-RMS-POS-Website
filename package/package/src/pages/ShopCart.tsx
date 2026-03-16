@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
@@ -8,7 +8,6 @@ import { Context } from "../context/AppContext";
 const ShopCart = () => {
   const { cartItems, updateQuantity, removeFromCart, activeBranch, cmsConfig, isStoreClosed } = useContext(Context);
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
-  const [filterSidebar, setFilterSidebar] = useState<boolean>(false);
 
   const subtotal = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.quantity), 0);
   const deliveryCharge = cartItems.length > 0 ? Number(activeBranch?.deliveryCharge || 0) : 0;
@@ -116,9 +115,7 @@ const ShopCart = () => {
                     <Link
                       to={"#"}
                       className="panel-close-btn"
-                      onClick={() => {
-                        setFilterSidebar(false);
-                      }}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <i className="fa-solid fa-xmark"></i>
                     </Link>
