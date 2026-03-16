@@ -8,6 +8,7 @@ import { Context } from "../context/AppContext";
 const Header2 = () => {
   const {
     setShowSidebar,
+    showSidebar,
     headerSidebar,
     // setHeaderSidebar,
     headerClass,
@@ -169,6 +170,15 @@ const Header2 = () => {
             .navbar-toggler.open span:nth-child(3) {
                transform: translateY(-9px) rotate(-45deg) !important;
             }
+            .mobile-search-bar {
+              display: none;
+              padding: 10px 15px;
+              background: #fff;
+              border-bottom: 1px solid #eee;
+            }
+            .mobile-search-bar.show {
+              display: block;
+            }
           }
           /* Fix for cart buttons hover issue */
           header.site-header .cart-btn-primary,
@@ -276,9 +286,33 @@ const Header2 = () => {
 
               {/* ─── Mobile Right Area (Icons + Toggler) ─── */}
               <div className="d-lg-none mobile-nav-area">
-                {/* Cart Icon */}
+                {/* Icons Area */}
                 <div className="extra-nav-mobile">
-                  <ul className="header-right m-0 p-0" style={{ listStyle: 'none' }}>
+                  <ul className="header-right m-0 p-0 d-flex align-items-center gap-2" style={{ listStyle: 'none' }}>
+                    {/* User Profile / Login */}
+                    {headerContent.showLogin !== "false" && (
+                      <li>
+                        {user ? (
+                           <Link 
+                            to="/my-account" 
+                            className="btn btn-white btn-square btn-shadow"
+                            style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: primaryColor, color: '#fff' }}
+                           >
+                              <span style={{ fontWeight: 700 }}>{user.name?.[0].toUpperCase()}</span>
+                           </Link>
+                        ) : (
+                          <button
+                            className="btn btn-white btn-square btn-shadow"
+                            style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            onClick={() => setShowSignInForm(true)}
+                          >
+                            <i className="flaticon-user"></i>
+                          </button>
+                        )}
+                      </li>
+                    )}
+
+                    {/* Cart Icon */}
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link" style={{ position: 'relative' }}>
                         <button
@@ -295,7 +329,7 @@ const Header2 = () => {
                           style={{
                             position: "absolute",
                             top: "120%",
-                            right: "-60px",
+                            right: "-10px",
                             width: "270px",
                             background: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.backgroundColor || "#fff",
                             borderRadius: "15px",
@@ -306,7 +340,7 @@ const Header2 = () => {
                             border: `1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"}`
                           }}
                         >
-                          <div style={{ maxHeight: "400px", overflowY: "auto", marginBottom: "15px", paddingRight: "4px" }}>
+                          <div style={{ maxHeight: "350px", overflowY: "auto", marginBottom: "15px", paddingRight: "4px" }}>
                             {cartItems.map((item) => (
                               <div key={item.id} style={{ display: "flex", gap: "10px", marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px dashed #eee", position: "relative" }}>
                                 <img src={item.image || IMAGES.shop_pic2} alt={item.name} style={{ width: "55px", height: "55px", borderRadius: "8px", objectFit: "cover" }} />
@@ -360,14 +394,6 @@ const Header2 = () => {
                             >
                               View Cart
                             </Link>
-                            <Link
-                              to="/our-menu"
-                              className="btn btn-sm w-100 cart-btn-outline"
-                              style={{ borderRadius: "8px", padding: "10px", fontSize: '13px', background: "#fff", border: `1.5px solid ${primaryColor}`, color: primaryColor }}
-                              onClick={() => setCartOpen(false)}
-                            >
-                              Menu
-                            </Link>
                           </div>
                         </div>
                       </li>
@@ -377,7 +403,7 @@ const Header2 = () => {
 
                 {/* Main Menu Hamburger */}
                 <button
-                  className={`navbar-toggler navicon p-0 ${headerSidebar ? "open" : ""}`}
+                  className={`navbar-toggler navicon p-0 ${showSidebar ? "open" : ""}`}
                   type="button"
                   onClick={() => setShowSidebar(true)}
                   style={{

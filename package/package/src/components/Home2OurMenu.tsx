@@ -16,8 +16,8 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
 
   if (cmsLoading) return null;
 
-  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#1a73e8";
-  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#1a73e8";
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#fe9f10";
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffffff";
 
   // Filter based on CMS selection
   const selectedCategoryIds = cmsConfig?.config?.configJson?.home?.sections?.browseMenu?.content?.selectedCategoryIds || [];
@@ -55,8 +55,6 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         }
         .dz-img-box.style-4:hover .dz-content .title,
         .dz-img-box.style-4:hover .dz-content .title a,
-        .dz-img-box.style-4:hover .dz-content p,
-        .dz-img-box.style-4:hover .menu-footer span,
         .dz-img-box.style-4:hover .menu-footer .price,
         .dz-img-box.style-4.active .dz-content .title,
         .dz-img-box.style-4.active .dz-content .title a,
@@ -64,6 +62,10 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4.active .menu-footer span,
         .dz-img-box.style-4.active .menu-footer .price {
           color: #ffffff !important;
+        }
+        .dz-img-box.style-4:hover::before,
+        .dz-img-box.style-4.active::before {
+          background-color: ${primaryColor} !important;
         }
         .dz-img-box.style-4 .menu-detail {
           display: flex;
@@ -156,6 +158,10 @@ const Home2OurMenu = ({ prev, next }: PropFile) => {
         .dz-img-box.style-4:hover .detail-btn,
         .dz-img-box.style-4.active .detail-btn {
           background-color: #ffffff !important;
+          color: ${primaryColor} !important;
+        }
+        .dz-img-box.style-4:hover .detail-btn i,
+        .dz-img-box.style-4.active .detail-btn i {
           color: ${primaryColor} !important;
         }
         .dz-img-box.style-4 .detail-btn:hover {
