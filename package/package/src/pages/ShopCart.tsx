@@ -28,7 +28,23 @@ const ShopCart = () => {
           @media (max-width: 991px) {
             .side-bar.sticky-top {
               position: static !important;
-              margin-top: 40px;
+              margin-top: 20px;
+            }
+            /* Override shop-filter off-canvas behavior on mobile */
+            .shop-filter.style-1 {
+              position: static !important;
+              left: 0 !important;
+              width: 100% !important;
+              height: auto !important;
+              padding: 0 !important;
+              box-shadow: none !important;
+              overflow: visible !important;
+              z-index: 1 !important;
+              background: transparent !important;
+              display: block !important;
+            }
+            .panel-close-btn {
+              display: none !important;
             }
           }
           @media (max-width: 576px) {
@@ -82,18 +98,15 @@ const ShopCart = () => {
       <section className="content-inner-1">
         <div className="container">
           <div className="row">
-            <div className="col-lg-8">
+            <div className="col-lg-8 order-2 order-lg-1">
               <div className="d-flex align-items-center justify-content-between mb-4">
                 <h4 className="title mb-0" style={{ color: '#222', fontWeight: 700 }}>Related Products</h4>
               </div>
               <ShopStyle1RightContent />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 order-1 order-lg-2">
               <aside className="side-bar sticky-top">
-                <div
-                  className={`shop-filter style-1 ${filterSidebar ? "show" : ""
-                    }`}
-                >
+                <div className="shop-filter style-1 show">
                   <div className="d-flex justify-content-between">
                     <div className="widget-title">
                       <h5 className="title m-b30">
