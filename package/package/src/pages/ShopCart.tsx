@@ -84,6 +84,12 @@ const ShopCart = () => {
           .order-detail .btn-primary.btn-hover-1:hover i {
              color: #222222 !important;
           }
+          .btn-quantity.style-1 .btn {
+            color: ${primaryColor} !important;
+          }
+          .btn-quantity.style-1 .btn i {
+            color: ${primaryColor} !important;
+          }
         `}
       </style>
       {bannerEnabled && (
@@ -144,10 +150,10 @@ const ShopCart = () => {
                                 <button
                                   className="btn p-0"
                                   type="button"
-                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: '#666' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: primaryColor }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 >
-                                  <i className="fa-solid fa-minus" style={{ fontSize: '10px' }}></i>
+                                  <i className="fa-solid fa-minus" style={{ fontSize: '12px', fontWeight: 'bold' }}></i>
                                 </button>
                                 <input
                                   type="text"
@@ -158,10 +164,10 @@ const ShopCart = () => {
                                 <button
                                   className="btn p-0"
                                   type="button"
-                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: '#666' }}
+                                  style={{ width: '30px', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: '#f5f5f5', color: primaryColor }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 >
-                                  <i className="fa-solid fa-plus" style={{ fontSize: '10px' }}></i>
+                                  <i className="fa-solid fa-plus" style={{ fontSize: '12px', fontWeight: 'bold' }}></i>
                                 </button>
                               </div>
                             </div>
