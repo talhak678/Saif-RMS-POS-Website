@@ -124,22 +124,24 @@ const TodaySpecialSection = ({ sections, cmsConfig }: { sections: any, cmsConfig
       id="todays-special"
       className="section-wrapper-5 content-inner overflow-hidden bg-parallax"
       style={{
-        backgroundColor: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor || "#222222",
+        backgroundColor: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35",
         backgroundImage: specialSection.backgroundImageUrl
           ? `url(${specialSection.backgroundImageUrl})`
-          : cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor !== "#222222"
+          : cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor !== "#ff6b35"
             ? "none"
             : `url(${IMAGES.background_pic1})`,
         backgroundAttachment: "fixed",
       }}
     >
-      {cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.todaysSpecialBgColor !== "#222222" && (
-        <style>{`
-              #todays-special::after {
-                background-color: rgba(0, 0, 0, 0.4) !important;
-              }
-            `}</style>
-      )}
+      <style>{`
+            #todays-special {
+              background-color: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35"} !important;
+              background-image: ${specialSection.backgroundImageUrl ? `url(${specialSection.backgroundImageUrl})` : (cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor && cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor !== "#ff6b35" ? "none" : "inherit")} !important;
+            }
+            #todays-special::after {
+              background-color: rgba(0, 0, 0, 0.4) !important;
+            }
+          `}</style>
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="section-head menu-align">
           <div className="flex-1" style={{ textAlign: specialSection.textAlign || 'left' }}>

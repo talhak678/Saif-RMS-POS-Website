@@ -14,15 +14,30 @@ const ContactUs = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (hash === "#reservation-section") {
-      const element = document.getElementById("reservation-section");
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 300); // Give it a tiny delay to ensure page is rendered
-      }
+    if (!cmsLoading && hash === "#reservation-section") {
+      const scrollToReservation = () => {
+        // Target the specific input box for better "center" feel
+        const element = document.getElementById("reservation-input");
+        if (element) {
+          const headerOffset = window.innerWidth <= 991 ? 120 : 150; // Increased offset to push it further down/centered
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "auto"
+          });
+        }
+      };
+
+      // Try once immediately
+      scrollToReservation();
+      
+      // And once more shortly after to ensure it sticks if images/content loaded
+      const timer = setTimeout(scrollToReservation, 100);
+      return () => clearTimeout(timer);
     }
-  }, [hash]);
+  }, [hash, cmsLoading]);
 
   if (cmsLoading) return <div className="text-center py-5">Loading...</div>;
 
@@ -276,7 +291,7 @@ const ContactUs = () => {
               <form className="dzForm dezPlaceAni" onSubmit={handleSubmit}>
                 <input type="hidden" name="dzToDo" value="Contact" />
                 <div className="row">
-                  <div className="col-lg-6 col-md-6 m-b30 m-sm-b50">
+                  <div className="col-lg-6 col-md-6 m-b30 m-sm-b50" id="reservation-input">
                     <label className="form-label text-primary">{formContent.nameLabel || "Your Name"}</label>
                     <div className="input-group input-line input-black">
                       <input name="dzName" required type="text" className="form-control" placeholder={formContent.namePlaceholder || "John Doe"} />

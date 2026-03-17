@@ -74,6 +74,7 @@ const Header2 = () => {
   const isLight = headerClass || scroll;
   const iconColor = isLight ? "#222222" : "#ffffff";
   const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
+  const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#222222";
 
   // Use times from root (restaurant profile) or fall back to old CMS header section
   const openingTime = cmsConfig?.openingTime || headerContent?.openingTime;
@@ -207,27 +208,63 @@ const Header2 = () => {
             margin-bottom: 10px !important;
             transition: all 0.3s ease;
           }
-
-          /* Header Icons & Badge Scroll State */
-          .sticky-header:not(.is-fixed) .header-right .btn i,
-          .sticky-header:not(.is-fixed) .header-right .cart-btn i,
-          .sticky-header:not(.is-fixed) .header-right .header-user-btn span {
-            color: var(--primary) !important;
-          }
-          .sticky-header.is-fixed .header-right .btn i,
-          .sticky-header.is-fixed .header-right .cart-btn i,
-          .sticky-header.is-fixed .header-right .header-user-btn span {
-            color: var(--secondary) !important;
-          }
-
           .sticky-header:not(.is-fixed) .header-right .cart-btn .badge {
             background-color: var(--secondary) !important;
             color: var(--primary) !important;
           }
+
+          /* Global Header Scroll State - WEB TO SECONDARY */
+          .sticky-header.is-fixed .header-right .btn i,
+          .sticky-header.is-fixed .header-right .cart-btn i,
+          .sticky-header.is-fixed .header-right .header-user-btn span,
           .sticky-header.is-fixed .header-right .cart-btn .badge {
-            background-color: var(--secondary) !important;
-            color: var(--primary) !important;
+            color: ${secondaryColor} !important;
+            border-color: ${secondaryColor} !important;
           }
+          .sticky-header.is-fixed .header-right .cart-btn .badge {
+            background-color: ${primaryColor} !important;
+            color: #ffffff !important;
+          }
+
+          /* Mobile Header - ALWAYS PRIMARY ICONS */
+          @media (max-width: 991px) {
+            /* 1. Hamburger Bars */
+            .navbar-toggler span,
+            .mobile-nav-area .navbar-toggler span,
+            .is-fixed .navbar-toggler span {
+              background-color: ${primaryColor} !important;
+            }
+
+            /* 2. All Header Icons & Initial Text */
+            .mobile-nav-area .header-right .btn i, 
+            .mobile-nav-area .header-right .cart-btn i,
+            .mobile-nav-area .header-right .btn span,
+            .mobile-nav-area .header-right li span,
+            .is-fixed .mobile-nav-area .header-right .btn i, 
+            .is-fixed .mobile-nav-area .header-right .cart-btn i,
+            .is-fixed .mobile-nav-area .header-right .btn span {
+              color: ${primaryColor} !important;
+            }
+
+            /* 3. User Profile Circle (Initial 'M') */
+            .mobile-nav-area .header-right li a.btn-shadow,
+            .is-fixed .mobile-nav-area .header-right li a.btn-shadow {
+              background-color: white !important;
+              border: 1.5px solid ${primaryColor}40 !important;
+            }
+            .mobile-nav-area .header-right li a.btn-shadow span,
+            .is-fixed .mobile-nav-area .header-right li a.btn-shadow span {
+              color: ${primaryColor} !important;
+            }
+
+            /* 4. Cart Badge */
+            .mobile-nav-area .cart-btn .badge,
+            .is-fixed .mobile-nav-area .cart-btn .badge {
+              background-color: ${primaryColor} !important;
+              color: white !important;
+            }
+          }
+
         `}
       </style>
       {isStoreClosed && (
@@ -293,13 +330,13 @@ const Header2 = () => {
                     {headerContent.showLogin !== "false" && (
                       <li>
                         {user ? (
-                           <Link 
-                            to="/my-account" 
+                          <Link
+                            to="/my-account"
                             className="btn btn-white btn-square btn-shadow"
                             style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: primaryColor, color: '#fff' }}
-                           >
-                              <span style={{ fontWeight: 700 }}>{user.name?.[0].toUpperCase()}</span>
-                           </Link>
+                          >
+                            <span style={{ fontWeight: 700 }}>{user.name?.[0].toUpperCase()}</span>
+                          </Link>
                         ) : (
                           <button
                             className="btn btn-white btn-square btn-shadow"
@@ -503,7 +540,7 @@ const Header2 = () => {
                                 position: "absolute", top: "110%", right: 0, minWidth: 180,
                                 background: cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.backgroundColor || "#fff",
                                 borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
-                                zIndex: 9999, overflow: "hidden", 
+                                zIndex: 9999, overflow: "hidden",
                                 border: `1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"}`
                               }}>
                                 <Link to="/my-account" onClick={() => setShowUserMenu(false)} style={{

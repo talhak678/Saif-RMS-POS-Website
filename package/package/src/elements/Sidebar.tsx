@@ -20,7 +20,7 @@ const routeMap: Record<string, string> = {
 
 const Sidebar = () => {
   const { showSidebar, setShowSidebar, setShowOrderModal, cmsConfig, user, setUser, setShowSignInForm } = useContext(Context);
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const navigate = useNavigate();
   const storedPhone = localStorage.getItem("userPhone");
   const displayPhone = user?.phone || storedPhone || "";
@@ -141,7 +141,7 @@ const Sidebar = () => {
                 <li key={ind}>
                   <Link 
                     to={item.to} 
-                    className={pathname === item.to ? "active" : ""}
+                    className={pathname === item.to.split('#')[0] && (item.to.includes('#') ? hash === '#' + item.to.split('#')[1] : !hash) ? "active" : ""}
                     onClick={() => setShowSidebar(false)}
                   >
                     {item.name}
