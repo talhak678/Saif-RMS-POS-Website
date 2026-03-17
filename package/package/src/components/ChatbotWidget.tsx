@@ -324,15 +324,7 @@ const ChatbotWidget: React.FC = () => {
             </div>
           </div>
           <div className="d-flex align-items-center gap-2">
-            <a 
-              href={`https://wa.me/${cmsConfig?.whatsappNumber || ''}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white opacity-75 hover-opacity-100"
-              title="Chat on WhatsApp"
-            >
-              <i className="fa-brands fa-whatsapp fs-4"></i>
-            </a>
+
             <button className="btn btn-sm btn-link text-white shadow-none p-0 fs-5" onClick={() => setIsOpen(false)}>
               <i className="fa-solid fa-times"></i>
             </button>
@@ -414,8 +406,18 @@ const ChatbotWidget: React.FC = () => {
               <i className="fa-solid fa-paper-plane" style={{ marginLeft: '-2px' }}></i>
             </button>
           </form>
-          <div className="text-center mt-3">
-            <small className="text-muted" style={{ fontSize: '0.75rem' }}>Powered by AI • {cmsConfig?.restaurantName}</small>
+          <div className="d-flex align-items-center justify-content-center gap-2 mt-3">
+            <small className="text-muted" style={{ fontSize: '0.75rem' }}>Powered by AI – Mandi House or Contact via WhatsApp.</small>
+            <a 
+              href={`https://wa.me/${cmsConfig?.whatsappNumber || ''}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-success"
+              title="Chat on WhatsApp"
+              style={{ fontSize: '0.9rem', lineHeight: 1 }}
+            >
+              <i className="fa-brands fa-whatsapp"></i>
+            </a>
           </div>
         </div>
       </div>
