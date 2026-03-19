@@ -414,7 +414,7 @@ const ChatbotWidget: React.FC = () => {
               rel="noopener noreferrer"
               className="text-success"
               title="Chat on WhatsApp"
-              style={{ fontSize: '1.4rem', lineHeight: 1, textDecoration: 'none' }}
+              style={{ fontSize: '2rem', lineHeight: 1, textDecoration: 'none' }}
             >
               <i className="fa-brands fa-whatsapp"></i>
             </a>
