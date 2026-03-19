@@ -79,7 +79,8 @@ const CheckoutForm = () => {
 
     if (user) {
       axios.get(`${BASE_URL}/api/customers/loyalty`, {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${user.token}` },
+        withCredentials: true
       }).then(res => {
         if (res.data.success) setCustomerLoyalty(res.data.data);
       }).catch(err => console.error(err));
@@ -159,7 +160,8 @@ const CheckoutForm = () => {
       };
 
       const res = await axios.post(`${BASE_URL}/api/customers/orders`, payload, {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${user.token}` },
+        withCredentials: true
       });
 
       if (!res.data?.success) {
@@ -179,7 +181,10 @@ const CheckoutForm = () => {
       if (formData.paymentMethod === "STRIPE" && stripe && elements) {
         const intentRes = await axios.post(`${BASE_URL}/api/stripe-intent`, {
           orderId: order.id, amount: total
-        }, { headers: { Authorization: `Bearer ${user.token}` } });
+        }, { 
+          headers: { Authorization: `Bearer ${user.token}` },
+          withCredentials: true 
+        });
 
         if (intentRes.data?.success) {
           const cardEl = elements.getElement(CardElement);

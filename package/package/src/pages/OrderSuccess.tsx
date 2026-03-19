@@ -127,9 +127,9 @@ const OrderSuccess = () => {
         { key: "PENDING", label: "Order Placed", icon: "✓", desc: "We received your order" },
         { key: "CONFIRMED", label: "Confirmed", icon: "📋", desc: "Restaurant confirmed" },
         { key: "PREPARING", label: "Preparing", icon: "👨‍🍳", desc: "Being cooked fresh" },
-        { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: "Food is ready at the kitchen" },
-        { key: "OUT_FOR_DELIVERY", label: "On the Way", icon: "🛵", desc: "Rider is heading to you" },
-        { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: "Enjoy your meal!" },
+        { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: order.type === "PICKUP" ? "Ready for pickup" : "Food is ready at the kitchen" },
+        { key: "OUT_FOR_DELIVERY", label: order.type === "PICKUP" ? "Ready to Handover" : "On the Way", icon: order.type === "PICKUP" ? "👜" : "🛵", desc: order.type === "PICKUP" ? "Waiting for your arrival" : "Rider is heading to you" },
+        { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: order.type === "PICKUP" ? "Order picked up!" : "Enjoy your meal!" },
     ];
 
     const isCancelled = order.status === "CANCELLED";

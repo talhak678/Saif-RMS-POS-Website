@@ -43,7 +43,8 @@ const MyAccount = () => {
     const [generatingAIReview, setGeneratingAIReview] = useState(false);
     const [showAIPrompt, setShowAIPrompt] = useState(false);
 
-    const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff6b35";
+    const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || cmsConfig?.config?.primaryColor || "#ff6b35";
+    const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || cmsConfig?.config?.secondaryColor || "#ffffff";
 
     useEffect(() => {
         if (user && activeTab === "orders") {
@@ -62,7 +63,8 @@ const MyAccount = () => {
         setLoading(true);
         try {
             const res = await axios.get(`${BASE_URL}/api/customers/orders`, {
-                headers: { Authorization: `Bearer ${user.token}` }
+                headers: { Authorization: `Bearer ${user.token}` },
+                withCredentials: true
             });
             if (res.data?.success) {
                 setOrders(res.data.data);
@@ -71,7 +73,8 @@ const MyAccount = () => {
             // Sync latest loyalty points
             try {
                 const loyaltyRes = await axios.get(`${BASE_URL}/api/customers/loyalty`, {
-                    headers: { Authorization: `Bearer ${user.token}` }
+                    headers: { Authorization: `Bearer ${user.token}` },
+                    withCredentials: true
                 });
                 if (loyaltyRes.data?.success) {
                     setUser((prev: any) => ({
@@ -112,7 +115,8 @@ const MyAccount = () => {
                 rating: reviewData.rating,
                 comment: reviewData.comment
             }, {
-                headers: { Authorization: `Bearer ${user?.token}` }
+                headers: { Authorization: `Bearer ${user?.token}` },
+                withCredentials: true
             });
             if (res.data?.success) {
                 toast.success("Review submitted! Thank you 🎉");
@@ -530,15 +534,25 @@ const MyAccount = () => {
                                             width: 44, height: 44, borderRadius: "50%", border: "2px solid",
                                             borderColor: star <= reviewData.rating ? primaryColor : "#e0e0e0",
                                             background: star <= reviewData.rating ? primaryColor : "#fff",
-                                            cursor: "pointer", fontSize: 18, transition: "all 0.2s",
+                                            cursor: "pointer", fontSize: 20, transition: "all 0.2s",
                                             display: "flex", alignItems: "center", justifyContent: "center"
                                         }}
                                     >
-                                        <span style={{ color: star <= reviewData.rating ? "#fff" : "#ccc" }}>★</span>
+                                        <span 
+                                            style={{ 
+                                                color: star <= reviewData.rating ? secondaryColor : primaryColor,
+                                                WebkitTextFillColor: star <= reviewData.rating ? secondaryColor : primaryColor,
+                                                display: "block",
+                                                lineHeight: "1",
+                                                marginTop: "-2px"
+                                            }}
+                                        >
+                                            ★
+                                        </span>
                                     </button>
                                 ))}
                             </div>
-                            <p style={{ color: "#888", fontSize: 13, marginTop: 8 }}>
+                            <p style={{ color: secondaryColor, fontSize: 13, marginTop: 8, fontWeight: 500 }}>
                                 {["", "Poor", "Fair", "Good", "Very Good", "Excellent!"][reviewData.rating]}
                             </p>
                         </div>

@@ -141,17 +141,24 @@ const TodaySpecialSection = ({ sections, cmsConfig }: { sections: any, cmsConfig
             #todays-special::after {
               background-color: rgba(0, 0, 0, 0.4) !important;
             }
+            #todays-special .title {
+              color: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffffff"} !important;
+            }
+            #todays-special .btn-prev, #todays-special .btn-next {
+              color: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffffff"} !important;
+              border-color: ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#ffffff"} !important;
+            }
           `}</style>
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="section-head menu-align">
           <div className="flex-1" style={{ textAlign: specialSection.textAlign || 'left' }}>
-            <h2 className="title mb-0 wow flipInX text-white">{specialSection.title || "Today's Special"}</h2>
+            <h2 className="title mb-0 wow flipInX text-secondary">{specialSection.title || "Today's Special"}</h2>
           </div>
           <div className="pagination-align wow fadeInUp">
-            <div className="special-button-prev btn-prev rounded-xl  text-white border-white">
+            <div className="special-button-prev btn-prev rounded-xl  text-secondary border-secondary">
               <i className="fa-solid fa-arrow-left"></i>
             </div>
-            <div className="special-button-next btn-next rounded-xl  text-white border-white">
+            <div className="special-button-next btn-next rounded-xl  text-secondary border-secondary">
               <i className="fa-solid fa-arrow-right"></i>
             </div>
           </div>

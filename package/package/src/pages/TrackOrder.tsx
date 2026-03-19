@@ -4,15 +4,6 @@ import axios from "axios";
 import { Context } from "../context/AppContext";
 const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
 
-const STATUS_STEPS = [
-    { key: "PENDING", label: "Order Placed", icon: "📦", desc: "Your order has been received", color: "#FF9800" },
-    { key: "CONFIRMED", label: "Confirmed", icon: "✅", desc: "Restaurant has confirmed your order", color: "#2196F3" },
-    { key: "PREPARING", label: "Preparing", icon: "👨‍🍳", desc: "Your food is being freshly prepared", color: "#9C27B0" },
-    { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: "Food is ready at the kitchen", color: "#FF5722" },
-    { key: "OUT_FOR_DELIVERY", label: "On the Way", icon: "🛵", desc: "Rider is heading to your location", color: "#FF6B35" },
-    { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: "Your order has been delivered!", color: "#4CAF50" },
-];
-
 const PAYMENT_METHOD_LABELS: Record<string, string> = {
     CASH: "Cash on Delivery",
     COD: "Cash on Delivery",
@@ -30,6 +21,21 @@ const TrackOrder = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+
+    const STATUS_STEPS = [
+        { key: "PENDING", label: "Order Placed", icon: "📦", desc: "Your order has been received", color: "#FF9800" },
+        { key: "CONFIRMED", label: "Confirmed", icon: "✅", desc: "Restaurant has confirmed your order", color: "#2196F3" },
+        { key: "PREPARING", label: "Preparing", icon: "👨‍🍳", desc: "Your food is being freshly prepared", color: "#9C27B0" },
+        { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: order?.type === "PICKUP" ? "Ready for pickup!" : "Food is ready at the kitchen", color: "#FF5722" },
+        { 
+            key: "OUT_FOR_DELIVERY", 
+            label: order?.type === "PICKUP" ? "Ready to Handover" : "On the Way", 
+            icon: order?.type === "PICKUP" ? "👜" : "🛵", 
+            desc: order?.type === "PICKUP" ? "Waiting for your arrival" : "Rider is heading to your location", 
+            color: "#FF6B35" 
+        },
+        { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: order?.type === "PICKUP" ? "Order has been picked up!" : "Your order has been delivered!", color: "#4CAF50" },
+    ];
 
     // Dynamic Slug Detection (matching OrderSuccess logic)
     const getSlug = () => {

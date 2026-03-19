@@ -319,6 +319,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               
               /* Border Overrides */
               .border-primary { border-color: ${pColor} !important; }
+              .border-secondary { border-color: ${sColor} !important; }
               
               /* Typography Overrides (UNMIXED COLORS) */
               h1, h2, h3, h4, h5, h6, .title, .h1, .h2, .h3, .h4, .h5, .h6 {

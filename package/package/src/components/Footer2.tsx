@@ -25,6 +25,7 @@ const Footer2 = () => {
   const fHeadingWeight = themeFonts.secondaryFontWeight || "700";
   const fTextWeight = themeFonts.paragraphFontWeight || "400";
   const primaryColor = themeColors.primaryColor || "#7da640";
+  const secondaryColor = themeColors.secondaryColor || cmsConfig?.config?.secondaryColor || "#ff6b35";
 
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterLoading, setNewsletterLoading] = useState(false);
@@ -163,7 +164,7 @@ const Footer2 = () => {
               }
               .widget_getintuch ul li i {
                 font-size: 28px;
-                color: var(--primary);
+                color: ${secondaryColor} !important;
                 margin-top: 5px;
               }
               .widget_getintuch ul li p {
@@ -202,8 +203,8 @@ const Footer2 = () => {
               .footer-social-list li a {
                 width: 38px;
                 height: 38px;
-                background: ${primaryColor};
-                color: white;
+                background: ${secondaryColor} !important;
+                color: ${primaryColor} !important;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
@@ -322,7 +323,7 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR LINKS */}
-                  <div className="col-lg-2 col-md-6 col-6 mb-2">
+                  <div className="col-lg-3 col-md-6 col-6 mb-2">
                     <div className="widget widget_services">
                       <h5 className="footer-title text-nowrap">{footerContent.linksTitle || "OUR LINKS"}</h5>
                       <ul>
@@ -332,21 +333,11 @@ const Footer2 = () => {
                   </div>
 
                   {/* OUR SERVICES */}
-                  <div className="col-lg-2 col-md-6 col-6 mb-2">
+                  <div className="col-lg-3 col-md-6 col-6 mb-2">
                     <div className="widget widget_services">
                       <h5 className="footer-title text-nowrap">{footerContent.servicesTitle || "OUR SERVICES"}</h5>
                       <ul>
                         {renderLinks(footerContent.services || "Menu, Seat Reservation, Testimonials, Order Now")}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* HELP CENTER */}
-                  <div className="col-lg-2 col-md-6 col-6 mb-2">
-                    <div className="widget widget_services">
-                      <h5 className="footer-title text-nowrap">{footerContent.helpCenterTitle || "HELP CENTER"}</h5>
-                      <ul>
-                        {renderLinks(footerContent.helpCenter || "Support, Terms, Privacy, Account")}
                       </ul>
                     </div>
                   </div>

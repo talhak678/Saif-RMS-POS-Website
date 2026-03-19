@@ -159,6 +159,15 @@ const MenuStyle2 = () => {
           .container .menu-price-badge {
             color: var(--secondary) !important;
           }
+          
+          .category-tabs button i {
+            font-size: 18px !important;
+            vertical-align: middle;
+            transition: color 0.25s ease;
+          }
+          .category-tabs button:not(.active-tab) i {
+            color: ${primaryColor} !important;
+          }
         `}
       </style>
 
@@ -179,6 +188,7 @@ const MenuStyle2 = () => {
             {buttons.map(({ icon, title }, ind) => (
               <button
                 key={ind}
+                className={active === ind ? "active-tab" : ""}
                 onClick={() => {
                   setActive(ind);
                   filterGallery(ind === 0 ? "ALL" : categories[ind - 1]?.name);
@@ -205,7 +215,7 @@ const MenuStyle2 = () => {
                   whiteSpace: "nowrap"
                 }}
               >
-                <i className={icon} style={{ fontSize: "15px" }} />
+                <i className={icon} />
                 {title}
               </button>
             ))}
