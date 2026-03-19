@@ -407,14 +407,14 @@ const ChatbotWidget: React.FC = () => {
             </button>
           </form>
           <div className="d-flex align-items-center justify-content-center gap-2 mt-3">
-            <small className="text-muted" style={{ fontSize: '0.75rem' }}>Powered by AI – Mandi House or Contact via WhatsApp.</small>
+            <small className="text-muted" style={{ fontSize: '0.8rem' }}>Powered by AI – Mandi House or Contact via WhatsApp.</small>
             <a 
               href={`https://wa.me/${cmsConfig?.whatsappNumber || ''}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-success"
               title="Chat on WhatsApp"
-              style={{ fontSize: '0.9rem', lineHeight: 1 }}
+              style={{ fontSize: '1.4rem', lineHeight: 1, textDecoration: 'none' }}
             >
               <i className="fa-brands fa-whatsapp"></i>
             </a>
