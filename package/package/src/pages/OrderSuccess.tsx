@@ -135,11 +135,41 @@ const OrderSuccess = () => {
     const isCancelled = order.status === "CANCELLED";
     const currentStepIndex = isCancelled ? -1 : statusSteps.findIndex(s => s.key === (order.status || "PENDING"));
 
+    const themeColors = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content || {};
+    const primaryColor = themeColors.primaryColor || cmsConfig?.config?.primaryColor || "#ff6b35";
+    const secondaryColor = themeColors.secondaryColor || cmsConfig?.config?.secondaryColor || "#fe9f10";
+    const contrastColor = themeColors.backgroundColor || "#ffffff"; // Use site bg color (beige) for best contrast on maroon
+
     return (
         <div className="page-content">
+            <style>
+                {`
+                    /* ELITE OVERRIDE: Ensure ticks and badge text are ALWAYS visible on dark backgrounds */
+                    div.page-content .status-symbol, 
+                    .page-content .status-symbol,
+                    .status-symbol { 
+                        color: ${secondaryColor} !important; 
+                        fill: ${secondaryColor} !important;
+                        -webkit-text-fill-color: ${secondaryColor} !important;
+                        font-weight: 900 !important;
+                        font-size: 20px !important;
+                    }
+                    div.page-content .current-badge-txt,
+                    .page-content .current-badge-txt,
+                    .current-badge-txt { 
+                        color: ${secondaryColor} !important;
+                        -webkit-text-fill-color: ${secondaryColor} !important;
+                        font-weight: bold !important;
+                    }
+                    /* Backup contrast if secondary is same as primary */
+                    ${secondaryColor.toLowerCase() === primaryColor.toLowerCase() ? `
+                    .status-symbol, .current-badge-txt { color: ${contrastColor} !important; }
+                    ` : ''}
+                `}
+            </style>
             <section className="content-inner" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
                 <div className="container">
-                    <div className="row justify-content-center">
+            <div className="row justify-content-center">
                         <div className="col-lg-8">
                             {/* Success or Cancelled Header */}
                             <div className="text-center mb-5">
@@ -221,7 +251,7 @@ const OrderSuccess = () => {
                                                     boxShadow: isCurrent ? "0 0 0 4px rgba(255, 107, 53, 0.15)" : "none",
                                                     transition: "all 0.3s"
                                                 }}>
-                                                    {isCompleted ? "✓" : <span style={{ opacity: 0.4 }}>{idx + 1}</span>}
+                                                    {isCompleted ? <span className="status-symbol">✓</span> : <span style={{ opacity: 0.4 }}>{idx + 1}</span>}
                                                 </div>
                                                 <div style={{ marginLeft: "16px", paddingTop: "8px" }}>
                                                     <p style={{
@@ -231,9 +261,9 @@ const OrderSuccess = () => {
                                                     }}>
                                                         {step.label}
                                                         {isCurrent && (
-                                                            <span style={{
+                                                            <span className="current-badge-txt" style={{
                                                                 marginLeft: 8, background: "var(--primary, #ff6b35)",
-                                                                color: "#fff", fontSize: "11px", padding: "2px 8px",
+                                                                fontSize: "11px", padding: "2px 8px",
                                                                 borderRadius: "20px", fontWeight: 600
                                                             }}>CURRENT</span>
                                                         )}

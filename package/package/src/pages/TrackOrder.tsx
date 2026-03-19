@@ -27,12 +27,12 @@ const TrackOrder = () => {
         { key: "CONFIRMED", label: "Confirmed", icon: "✅", desc: "Restaurant has confirmed your order", color: "#2196F3" },
         { key: "PREPARING", label: "Preparing", icon: "👨‍🍳", desc: "Your food is being freshly prepared", color: "#9C27B0" },
         { key: "KITCHEN_READY", label: "Ready", icon: "🍽️", desc: order?.type === "PICKUP" ? "Ready for pickup!" : "Food is ready at the kitchen", color: "#FF5722" },
-        { 
-            key: "OUT_FOR_DELIVERY", 
-            label: order?.type === "PICKUP" ? "Ready to Handover" : "On the Way", 
-            icon: order?.type === "PICKUP" ? "👜" : "🛵", 
-            desc: order?.type === "PICKUP" ? "Waiting for your arrival" : "Rider is heading to your location", 
-            color: "#FF6B35" 
+        {
+            key: "OUT_FOR_DELIVERY",
+            label: order?.type === "PICKUP" ? "Ready to Handover" : "On the Way",
+            icon: order?.type === "PICKUP" ? "👜" : "🛵",
+            desc: order?.type === "PICKUP" ? "Waiting for your arrival" : "Rider is heading to your location",
+            color: "#FF6B35"
         },
         { key: "DELIVERED", label: "Delivered", icon: "🎉", desc: order?.type === "PICKUP" ? "Order has been picked up!" : "Your order has been delivered!", color: "#4CAF50" },
     ];

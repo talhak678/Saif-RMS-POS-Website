@@ -37,10 +37,11 @@ const MenuStyle2 = () => {
   );
 
   const buttons = [
-    { icon: "flaticon-fast-food", title: "ALL" },
+    { icon: "flaticon-fast-food", title: "ALL", image: null },
     ...categories.map((cat: any) => ({
       icon: "flaticon-pizza-slice",
       title: cat.name,
+      image: cat.image || null,
     })),
   ];
 
@@ -185,7 +186,7 @@ const MenuStyle2 = () => {
               marginBottom: "50px",
             }}
           >
-            {buttons.map(({ icon, title }, ind) => (
+            {buttons.map(({ icon, title, image }, ind) => (
               <button
                 key={ind}
                 className={active === ind ? "active-tab" : ""}
@@ -215,7 +216,11 @@ const MenuStyle2 = () => {
                   whiteSpace: "nowrap"
                 }}
               >
-                <i className={icon} />
+                {image ? (
+                  <img src={image} alt={title} style={{ width: 18, height: 18, objectFit: 'contain', filter: active === ind && image.endsWith('.svg') ? 'brightness(0) invert(1)' : 'none' }} />
+                ) : (
+                  <i className={icon} />
+                )}
                 {title}
               </button>
             ))}
