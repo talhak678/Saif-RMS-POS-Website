@@ -25,6 +25,7 @@ const LoyaltyPoints = () => {
     const [data, setData] = useState<LoyaltyData | null>(null);
 
     const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff0000";
+    const secondaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.secondaryColor || "#222222";
 
     useEffect(() => {
         const fetchLoyaltyData = async () => {
@@ -58,9 +59,20 @@ const LoyaltyPoints = () => {
     }, [cmsLoading, user]);
 
     if (loading || cmsLoading) return <Loader />;
+    
+    const secondaryColorForce = secondaryColor || "#222222";
 
     return (
-        <div className="page-content bg-white">
+        <div className="page-content bg-white loyalty-points-page">
+            <style>
+                {`
+                    .loyalty-points-page .balance-title,
+                    .loyalty-points-page .balance-amount,
+                    .loyalty-points-page .balance-label {
+                        color: ${secondaryColorForce} !important;
+                    }
+                `}
+            </style>
             <section className="section-inner" style={{ padding: "80px 0" }}>
                 <div className="container">
                     <div className="row justify-content-center">
@@ -78,11 +90,11 @@ const LoyaltyPoints = () => {
                                 overflow: "hidden"
                             }}>
                                 <div style={{ position: "relative", zIndex: 1 }}>
-                                    <h5 style={{ opacity: 0.9, fontWeight: 500, marginBottom: "10px", fontSize: "18px" }}>Available Balance</h5>
-                                    <h1 style={{ fontSize: "64px", fontWeight: 800, margin: 0, textShadow: "0 4px 10px rgba(0,0,0,0.2)" }}>
+                                    <h5 className="balance-title" style={{ opacity: 0.9, fontWeight: 500, marginBottom: "10px", fontSize: "18px" }}>Available Balance</h5>
+                                    <h1 className="balance-amount" style={{ fontSize: "64px", fontWeight: 800, margin: 0, textShadow: "0 4px 10px rgba(0,0,0,0.2)" }}>
                                         {data?.loyaltyPoints?.toFixed(2) || "0.00"}
                                     </h1>
-                                    <p style={{ margin: 0, fontSize: "16px", textTransform: "uppercase", letterSpacing: "2px", fontWeight: 600 }}>Points</p>
+                                    <p className="balance-label" style={{ margin: 0, fontSize: "16px", textTransform: "uppercase", letterSpacing: "2px", fontWeight: 600 }}>Points</p>
                                 </div>
                                 <div style={{
                                     position: "absolute", bottom: "-30px", right: "-30px",

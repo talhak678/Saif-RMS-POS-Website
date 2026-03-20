@@ -17,6 +17,8 @@ const ChatbotWidget: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  const primaryColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.primaryColor || "#ff0000";
 
   // Auto-scroll to bottom of messages
   const scrollToBottom = () => {
@@ -220,20 +222,28 @@ const ChatbotWidget: React.FC = () => {
           border-top: 10px solid #fff;
         }
 
+        .ai-chatbot-icon-wrapper .chatbot-intro-card button.close-intro,
+        .ai-chatbot-icon-wrapper .chatbot-intro-card button.close-intro i {
+          color: ${primaryColor} !important;
+          background-color: #f0f0f0 !important;
+          opacity: 1 !important;
+          font-size: 12px !important;
+          font-weight: 900 !important;
+        }
+
         .chatbot-intro-card .close-intro {
           position: absolute;
           top: 8px;
           right: 8px;
-          width: 20px;
-          height: 20px;
+          width: 24px;
+          height: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
           background: #f0f0f0;
           border-radius: 50%;
-          font-size: 10px;
-          color: #888;
           transition: all 0.2s;
+          border: 1px solid rgba(0,0,0,0.05) !important;
         }
 
         .chatbot-intro-card .close-intro:hover {
