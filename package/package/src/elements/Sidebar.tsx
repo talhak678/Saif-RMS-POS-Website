@@ -139,8 +139,8 @@ const Sidebar = () => {
             <ul className="mobile-nav-list">
               {menuItems.map((item: any, ind: number) => (
                 <li key={ind}>
-                  <Link 
-                    to={item.to} 
+                  <Link
+                    to={item.to}
                     className={pathname === item.to.split('#')[0] && (item.to.includes('#') ? hash === '#' + item.to.split('#')[1] : !hash) ? "active" : ""}
                     onClick={() => setShowSidebar(false)}
                   >
@@ -206,7 +206,6 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-      <div className="menu-close" onClick={() => setShowSidebar(false)}></div>
     </>
   );
 };

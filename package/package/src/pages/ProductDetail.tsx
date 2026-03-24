@@ -29,6 +29,37 @@ const YouMayAlsoLike = ({ currentProductId }: { currentProductId: string }) => {
 
   return (
     <section className="content-inner-1 pt-0 mt-5">
+      <style>
+        {`
+          .suggested-card .top-curved-bg {
+            background-color: #f5f5f5;
+            transition: all 0.4s ease;
+          }
+          .suggested-card:hover .top-curved-bg {
+            background-color: ${primaryColor} !important;
+          }
+           .suggested-card:hover {
+            border-color: ${primaryColor}40 !important;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
+          }
+          .suggested-card .dz-title a {
+            font-weight: 600 !important;
+            color: ${primaryColor} !important;
+            display: block;
+          }
+          .suggested-card:hover .dz-media img {
+            animation: spin 12s linear infinite;
+          }
+          .suggested-card .dz-media img {
+            transition: all 0.5s ease;
+          }
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}
+      </style>
       <div className="container">
         <div className="section-head text-center mb-4">
           <h2 className="title" style={{ fontWeight: 800 }}>You May Also Like</h2>
@@ -36,41 +67,81 @@ const YouMayAlsoLike = ({ currentProductId }: { currentProductId: string }) => {
         </div>
         <div className="row">
           {suggestions.map((item, ind) => (
-            <div className="col-lg-3 col-md-6 col-sm-6 m-b30 wow fadeInUp" key={item.id || ind}>
-              <div className="dz-img-box style-2 box-hover" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
-                <div className="dz-media" style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
-                  <img src={item.image || IMAGES.shop_pic1} alt={item.name} style={{ objectFit: 'cover', width: '160px', height: '160px', borderRadius: '50%', border: '4px solid #fff', boxShadow: '0 5px 15px rgba(0,0,0,0.08)' }} />
+            <div className="col-lg-3 col-md-6 col-sm-6 m-b30 fadeInUp" key={item.id || ind}>
+              <div 
+                className="dz-img-box suggested-card" 
+                style={{ 
+                  backgroundColor: '#fff',
+                  borderRadius: '10px',
+                  border: '1px solid #f0f0f0',
+                  overflow: 'hidden',
+                  minHeight: '420px', 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 5px 15px rgba(0,0,0,0.03)'
+                }}
+              >
+                {/* Colored Top Background (Curved) */}
+                <div 
+                  className="top-curved-bg"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '140px',
+                    borderRadius: '0 0 100% 100% / 0 0 50% 50%',
+                    transform: 'scaleX(1.2)',
+                    zIndex: 0
+                  }}
+                />
+
+                <div className="dz-media" style={{ display: 'flex', justifyContent: 'center', padding: '40px 0 0', position: 'relative', zIndex: 1 }}>
+                  <img 
+                    src={item.image || IMAGES.shop_pic1} 
+                    alt={item.name} 
+                    style={{ 
+                      objectFit: 'cover', 
+                      width: '140px', 
+                      height: '140px', 
+                      borderRadius: '50%', 
+                      border: '5px solid #fff', 
+                      boxShadow: '0 8px 15px rgba(0,0,0,0.08)' 
+                    }} 
+                  />
                 </div>
-                <div className="dz-content" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '0 15px 20px', textAlign: 'center' }}>
-                  <div style={{ height: '40px', overflow: 'hidden', marginBottom: '8px' }}>
-                    <h4 className="dz-title" style={{ fontSize: '16px', fontWeight: 700, margin: 0, lineHeight: '1.2' }}>
-                      <Link to={`/product-detail/${item.id}`}>{item.name}</Link>
-                    </h4>
-                  </div>
-                  <div style={{ height: '35px', overflow: 'hidden', marginBottom: '10px' }}>
-                    <p style={{ fontSize: '12px', color: '#888', margin: 0, lineHeight: '1.4' }}>
-                      {item.description ? item.description.slice(0, 50) + '...' : 'Freshly prepared with the best ingredients.'}
-                    </p>
-                  </div>
-                  <h5 className="dz-price mt-auto" style={{ color: primaryColor, fontWeight: 800, marginBottom: '15px', fontSize: '18px' }}>
+
+                <div className="dz-content" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '5px 15px 20px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                  <h4 className="dz-title" style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px', marginTop: '10px' }}>
+                    <Link to={`/product/${item.id}`} style={{ fontWeight: 900, color: '#000' }}>{item.name}</Link>
+                  </h4>
+                  <p style={{ fontSize: '15px', color: '#555', marginBottom: '10px', lineHeight: '1.5', height: '48px', overflow: 'hidden' }}>
+                    {item.description ? item.description.split(' ').slice(0, 7).join(' ') + '...' : 'Freshly prepared with the best ingredients.'}
+                  </p>
+                  
+                  <h5 className="dz-price" style={{ color: primaryColor, fontWeight: 800, marginBottom: '15px', fontSize: '24px' }}>
                     {cmsConfig?.config?.currency || '$'}{parseFloat(item.price || 0).toFixed(2)}
                   </h5>
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+
+                  <div className="mt-auto" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <button
                       className="btn btn-primary"
                       style={{ 
                         background: primaryColor, 
                         borderColor: primaryColor, 
-                        padding: '0 30px', 
-                        fontSize: '13px', 
-                        height: '44px', 
-                        width: 'auto',
-                        minWidth: '140px',
-                        borderRadius: '12px',
+                        padding: '0', 
+                        fontSize: '16px', 
+                        height: '48px', 
+                        width: '140px',
+                        borderRadius: '6px',
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center',
-                        fontWeight: 700
+                        fontWeight: 800,
+                        color: '#fff',
+                        textTransform: 'none'
                       }}
                       onClick={() => addToCart({ ...item, quantity: 1 })}
                     >
@@ -101,6 +172,7 @@ const ProductDetail = () => {
   const textColor = cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.textColor || "#222222";
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!cmsLoading && cmsConfig?.menu) {
       let found = null;
       for (const cat of cmsConfig.menu) {
@@ -373,7 +445,7 @@ const ProductDetail = () => {
                     </li>
                   </ul>
                   
-                  <div className="review-stat-wrapper" style={{ minWidth: '120px' }}>
+                  <div className="review-stat-wrapper" style={{ minWidth: reviewStats.totalReviews > 0 ? '120px' : '60px' }}>
                     <ReviewAvatars reviewStats={reviewStats} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                   </div>
                 </div>
@@ -395,31 +467,28 @@ const ProductDetail = () => {
 export default ProductDetail;
 
 // ─── Dynamic Review Avatars ──────────────────────────────────────────────────
-export function ReviewAvatars({ reviewStats, primaryColor, secondaryColor }: { reviewStats: { totalReviews: number; avgRating: number }; primaryColor: string; secondaryColor: string }) {
-  const avatarImages = [IMAGES.testiminial_small_pic1, IMAGES.testiminial_small_pic2, IMAGES.testiminial_small_pic3, IMAGES.testiminial_small_pic4, IMAGES.testiminial_small_pic5];
+export function ReviewAvatars({ reviewStats, primaryColor }: { reviewStats: { totalReviews: number; avgRating: number }; primaryColor: string; secondaryColor: string }) {
   const count = reviewStats.totalReviews;
 
-  // Logic: 
-  // If count > 1: Show 1st image + (count-1)+ bubble
-  // If count == 1: Show 1st image + No bubble
-  // If count == 0: Show placeholder image + "New" bubble
-  
   return (
-    <ul className="avatar-list avatar-list-stacked">
-      <li className="avatar">
-        <img src={avatarImages[0]} alt="avatar" />
-      </li>
-      {(count === 0 || count > 1) && (
-        <li className="avatar">
-          <div className="avatar-review-count" style={{
+    <ul className="avatar-list avatar-list-stacked" style={{ justifyContent: 'center' }}>
+      <li className="avatar" style={{ border: 'none', margin: 0 }}>
+        <div
+          className="avatar-review-count"
+          style={{
             background: primaryColor,
-            color: secondaryColor,
-            border: `2px solid ${primaryColor}`
-          }}>
-            {count > 0 ? `${count - 1}+` : 'New'}
-          </div>
-        </li>
-      )}
+            color: '#fff',
+            border: `2px solid ${primaryColor}`,
+            marginLeft: 0,
+            width: '38px',
+            height: '38px',
+            fontSize: '11px',
+            fontWeight: 800
+          }}
+        >
+          {count > 0 ? (count === 1 ? '1' : `${count}+`) : 'New'}
+        </div>
+      </li>
     </ul>
   );
 }

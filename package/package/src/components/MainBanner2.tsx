@@ -83,6 +83,14 @@ const MainBanner2 = () => {
     }
   }, [bannerSection.selectedReviewId, cmsConfig?.slug]);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
+ 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 991);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const pagination = {
     clickable: true,
     el: ".main-swiper3-pagination",
@@ -95,33 +103,61 @@ const MainBanner2 = () => {
     <div className="main-bnr-three overflow-hidden">
       <style>
         {`
-          @media (max-width: 576px) {
+          @media (max-width: 991px) {
+            .main-bnr-three {
+              height: auto !important;
+              overflow: visible !important;
+            }
+            .main-bnr-three .banner-inner {
+              height: auto !important;
+              padding: 30px 0 20px 0 !important;
+              min-height: auto !important;
+              display: block !important;
+            }
             .banner-btn {
-              flex-direction: column !important;
-              align-items: stretch !important;
+              flex-direction: row !important;
+              align-items: center !important;
               gap: 10px !important;
+              margin-bottom: 25px !important;
+              width: 100% !important;
             }
             .banner-btn .btn {
-              width: 100% !important;
-              padding: 12px !important;
-              font-size: 14px !important;
+              flex: 1 !important;
+              padding: 12px 5px !important;
+              font-size: 13px !important;
+              text-align: center !important;
+              white-space: nowrap !important;
+            }
+            .banner-btn .m-r30 {
+              margin-right: 0 !important;
             }
             .main-bnr-three .banner-content {
-               padding: 20px 20px 60px 20px !important;
+               padding: 10px !important;
                text-align: left !important;
+               width: 100% !important;
             }
             .main-bnr-three .banner-content .title {
-               font-size: 32px !important;
+               font-size: 34px !important;
+               line-height: 1.2 !important;
+               margin-bottom: 15px !important;
+            }
+            .banner-media {
+              display: block !important;
+              margin-top: 10px !important;
+              text-align: center !important;
+              width: 100% !important;
+            }
+            .banner-media img {
+              max-width: 95% !important;
+              height: auto !important;
+              display: block !important;
+              margin: 0 auto !important;
             }
             .food-card {
               display: none !important;
             }
-            .review-card-banner {
-              padding: 15px !important;
-              max-width: 100% !important;
-              margin-top: 20px !important;
-            }
-            .banner-media {
+            /* Adjust pagination for mobile */
+            .swiper-bnr-pagination {
               display: none !important;
             }
           }
@@ -135,7 +171,7 @@ const MainBanner2 = () => {
           }
         `}
       </style>
-      <div className="swiper-bnr-pagination left-align">
+      <div className="swiper-bnr-pagination left-align d-none d-lg-block">
         <div className="main-button-prev">
           <i className="icon-arrow-up"></i>
         </div>
@@ -146,7 +182,7 @@ const MainBanner2 = () => {
       </div>
       <Swiper
         className="main-slider-3"
-        direction="vertical"
+        direction={isMobile ? "horizontal" : "vertical"}
         modules={[Parallax, Pagination]}
         pagination={pagination}
         parallax={true}
@@ -169,7 +205,7 @@ const MainBanner2 = () => {
                   className="row align-items-center"
                   data-swiper-parallax="-100"
                 >
-                  <div className="col-xl-7 col-lg-7 col-md-8">
+                  <div className="col-xl-7 col-lg-7 col-md-12">
                     <div className="banner-content">
                       <span className="sub-title text-primary">
                         {subtitle}
@@ -246,7 +282,7 @@ const MainBanner2 = () => {
 
                     </div>
                   </div>
-                  <div className="col-xl-5 col-lg-5 col-md-4 text-center">
+                  <div className="col-xl-5 col-lg-5 col-md-12 text-center">
                     <div className="banner-media">
                       {img4 && (
                         <img

@@ -121,7 +121,7 @@ const Header2 = () => {
               display: flex !important;
               align-items: center !important;
               justify-content: flex-end !important;
-              gap: 12px !important;
+              gap: 8px !important;
             }
             .extra-nav-mobile {
               display: flex !important;
@@ -131,7 +131,7 @@ const Header2 = () => {
               height: 70px !important;
             }
             .navbar-toggler {
-              margin: 0 0 0 10px !important;
+              margin: 0 !important;
               float: none !important;
               height: 40px !important;
               width: 40px !important;
@@ -163,13 +163,13 @@ const Header2 = () => {
                transition: all 0.3s ease !important;
             }
             .navbar-toggler.open span:nth-child(1) {
-               transform: translateY(9px) rotate(45deg) !important;
+               transform: translateY(11.5px) rotate(45deg) !important;
             }
             .navbar-toggler.open span:nth-child(2) {
                opacity: 0 !important;
             }
             .navbar-toggler.open span:nth-child(3) {
-               transform: translateY(-9px) rotate(-45deg) !important;
+               transform: translateY(-11.5px) rotate(-45deg) !important;
             }
             .mobile-search-bar {
               display: none;
@@ -284,7 +284,7 @@ const Header2 = () => {
           WE ARE CURRENTLY CLOSED. ORDERS WILL BE PROCESSED DURING OPENING HOURS ({formatTo12Hour(openingTime) || '9:00 AM'} - {formatTo12Hour(closingTime) || '1:00 AM'})
         </div>
       )}
-      <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`}>
+      <header className={`site-header mo-left header style-2 ${headerClass ? "" : "header-transparent transparent-white"}`} style={{ zIndex: 10001, position: 'relative' }}>
         <div className={`sticky-header main-bar-wraper navbar-expand-lg ${scroll ? "is-fixed" : ""}`}>
           <div className="main-bar clearfix">
             <div className="container-fluid clearfix">
@@ -348,7 +348,7 @@ const Header2 = () => {
                         )}
                       </li>
                     )}
-
+ 
                     {/* Cart Icon */}
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link" style={{ position: 'relative' }}>
@@ -438,23 +438,40 @@ const Header2 = () => {
                   </ul>
                 </div>
 
-                {/* Main Menu Hamburger */}
+                {/* Main Menu Hamburger / Close Toggle */}
                 <button
                   className={`navbar-toggler navicon p-0 ${showSidebar ? "open" : ""}`}
                   type="button"
-                  onClick={() => setShowSidebar(true)}
+                  onClick={() => setShowSidebar(!showSidebar)}
                   style={{
                     background: 'none',
                     border: 'none',
-                    width: '35px',
-                    height: '35px',
+                    width: '40px',
+                    height: '40px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    position: 'relative',
+                    zIndex: 10005,
+                    margin: '0',
+                    padding: '0',
+                    boxShadow: 'none',
+                    transform: showSidebar ? 'none' : 'translateY(-4px)'
                   }}
                 >
-                  <span></span><span></span><span></span>
+                  {showSidebar ? (
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M18 6L6 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M6 6L18 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ) : (
+                    <>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </>
+                  )}
                 </button>
               </div>
 
@@ -677,16 +694,6 @@ const Header2 = () => {
                     )}
                   </ul>
 
-                  {/* Hamburger / Sidebar toggle */}
-                  <div className="menu-btn" onClick={() => setShowSidebar(true)}>
-                    <Link to={"#"}>
-                      <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.04102 17.3984H29.041" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4.04102 8.39844H29.541" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4.04102 25.3984H29.041" stroke={iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </Link>
-                  </div>
                 </div>
               </div>
 

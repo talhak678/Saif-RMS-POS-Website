@@ -98,14 +98,8 @@ export function TabOne({ product }: { product?: any }) {
       <div className="pt-4">
         <h5 className="mb-3">Product Description</h5>
         <p className="m-b20" style={{ lineHeight: '1.8', fontSize: '15px' }}>
-          {product?.description || "This delicious dish is prepared with the finest ingredients and traditional recipes to ensure an authentic taste experience. Perfect for any meal of the day."}
+          {product?.description || ""}
         </p>
-        <ul className="list-check primary">
-          <li>Authentic taste with high-quality ingredients</li>
-          <li>Freshly prepared on order</li>
-          <li>Served with care and attention to detail</li>
-          <li>Available for dine-in, takeaway, and delivery</li>
-        </ul>
       </div>
     </div>
   );
@@ -201,7 +195,7 @@ export function TabThree({ reviews }: { reviews: any[] }) {
                     </span>
                   </div>
                   <p style={{ fontSize: '14px', color: '#555', lineHeight: '1.6', fontStyle: 'italic' }}>
-                    "{review.comment || "The food was amazing! Highly recommended."}"
+                    "{review.comment}"
                   </p>
                   {review.reply && (
                     <div className="merchant-reply" style={{
