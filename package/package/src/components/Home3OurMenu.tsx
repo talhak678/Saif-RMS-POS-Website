@@ -149,12 +149,12 @@ const Home3OurMenu = () => {
       <div className="row g-4">
         {filteredItems.map((item, ind) => (
           <div
-            className="col-lg-4 col-md-6 col-sm-12 wow fadeInUp"
+            className="col-lg-4 col-md-6 col-sm-12 d-flex wow fadeInUp"
             key={item.id || ind}
             data-wow-delay={`${ind * 0.08}s`}
           >
             <div
-              className="cms-card-bg"
+              className="cms-card-bg w-100"
               style={{
                 borderRadius: "18px",
                 overflow: "hidden",
@@ -162,6 +162,9 @@ const Home3OurMenu = () => {
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 position: "relative",
                 cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%"
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLDivElement).style.transform = "translateY(-6px)";
@@ -227,13 +230,14 @@ const Home3OurMenu = () => {
               </Link>
 
               {/* Content */}
-              <div style={{ padding: "18px 20px 20px" }}>
+              <div style={{ padding: "18px 20px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
-                    marginBottom: "8px",
+                    marginBottom: "12px",
+                    minHeight: "44px" // Ensures title area is consistent
                   }}
                 >
                   <h5
@@ -245,6 +249,10 @@ const Home3OurMenu = () => {
                       lineHeight: 1.3,
                       flex: 1,
                       paddingRight: "10px",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
                     }}
                   >
                     <Link
@@ -254,12 +262,6 @@ const Home3OurMenu = () => {
                         textDecoration: "none",
                         transition: "color 0.2s",
                       }}
-                      onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color = secondaryColor)
-                      }
-                      onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLAnchorElement).style.color = secondaryColor)
-                      }
                     >
                       {item.name}
                     </Link>
@@ -294,6 +296,7 @@ const Home3OurMenu = () => {
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical",
                     overflow: "hidden",
+                    flex: 1 // Push action buttons to the bottom
                   }}
                 >
                   {item.description || "Freshly prepared with the finest ingredients."}
