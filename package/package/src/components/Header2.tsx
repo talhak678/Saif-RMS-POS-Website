@@ -263,6 +263,31 @@ const Header2 = () => {
               background-color: ${primaryColor} !important;
               color: white !important;
             }
+
+            /* Force remove all primary color borders from cart elements on mobile */
+            .mobile-nav-area .cart-link div,
+            .mobile-nav-area .cart-link span,
+            .mobile-nav-area .cart-link h6,
+            .mobile-nav-area .cart-link p {
+              border: none !important;
+              outline: none !important;
+              box-shadow: none !important;
+            }
+            
+            /* Re-apply the container border ONLY to the main dropdown box */
+            .mobile-nav-area .cart-link > div {
+               border: 1px solid ${cmsConfig?.config?.configJson?.theme?.sections?.colors?.content?.accentColor || "#f0f0f0"} !important;
+            }
+            
+            /* Keep the horizontal separators for clarity, but ensure they are subtle */
+            .mobile-nav-area .cart-link div[style*="border-bottom"], 
+            .mobile-nav-area .cart-link div[style*="border-top"] {
+               border-bottom: 1px dashed #eee !important;
+            }
+            .mobile-nav-area .cart-link div[style*="border-top"] {
+               border-top: 1px dashed #ddd !important;
+            }
+
           }
 
         `}
@@ -348,7 +373,7 @@ const Header2 = () => {
                         )}
                       </li>
                     )}
- 
+
                     {/* Cart Icon */}
                     {headerContent.showCart !== "false" && (
                       <li className="nav-item cart-link" style={{ position: 'relative' }}>
@@ -462,8 +487,8 @@ const Header2 = () => {
                 >
                   {showSidebar ? (
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M18 6L6 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M6 6L18 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M18 6L6 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M6 6L18 18" stroke={primaryColor} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : (
                     <>

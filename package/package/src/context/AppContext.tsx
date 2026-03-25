@@ -447,7 +447,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
               .cart-link > div, 
               .header-user-btn + div,
               .dropdown-menu,
-              .extra-nav-mobile div,
               .offcanvas {
                 border: 1px solid ${aColor || (pColor ? pColor + '20' : '#f0f0f0')} !important;
               }
