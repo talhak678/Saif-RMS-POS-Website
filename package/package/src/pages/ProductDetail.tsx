@@ -31,32 +31,22 @@ const YouMayAlsoLike = ({ currentProductId }: { currentProductId: string }) => {
     <section className="content-inner-1 pt-0 mt-5">
       <style>
         {`
-          .suggested-card .top-curved-bg {
-            background-color: #f5f5f5;
+          .suggested-card {
+            background-color: #fff;
             transition: all 0.4s ease;
+            box-shadow: none !important;
           }
-          .suggested-card:hover .top-curved-bg {
-            background-color: ${primaryColor} !important;
-          }
-           .suggested-card:hover {
+          .suggested-card:hover {
             border-color: ${primaryColor}40 !important;
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
+            transform: translateY(-5px);
           }
           .suggested-card .dz-title a {
             font-weight: 600 !important;
             color: ${primaryColor} !important;
             display: block;
           }
-          .suggested-card:hover .dz-media img {
-            animation: spin 12s linear infinite;
-          }
           .suggested-card .dz-media img {
             transition: all 0.5s ease;
-          }
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
           }
         `}
       </style>
@@ -65,79 +55,62 @@ const YouMayAlsoLike = ({ currentProductId }: { currentProductId: string }) => {
           <h2 className="title" style={{ fontWeight: 800 }}>You May Also Like</h2>
           <p className="text-muted">Explore more delicious options from our menu</p>
         </div>
-        <div className="row">
+         <div className="row">
           {suggestions.map((item, ind) => (
             <div className="col-lg-3 col-md-6 col-sm-6 m-b30 fadeInUp" key={item.id || ind}>
-              <div 
-                className="dz-img-box suggested-card" 
-                style={{ 
-                  backgroundColor: '#fff',
+              <div
+                className="dz-img-box suggested-card"
+                style={{
                   borderRadius: '10px',
                   border: '1px solid #f0f0f0',
                   overflow: 'hidden',
-                  minHeight: '420px', 
-                  display: 'flex', 
+                  display: 'flex',
                   flexDirection: 'column',
                   position: 'relative',
                   transition: 'all 0.3s ease',
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.03)'
+                  boxShadow: 'none'
                 }}
               >
-                {/* Colored Top Background (Curved) */}
-                <div 
-                  className="top-curved-bg"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '140px',
-                    borderRadius: '0 0 100% 100% / 0 0 50% 50%',
-                    transform: 'scaleX(1.2)',
-                    zIndex: 0
-                  }}
-                />
-
-                <div className="dz-media" style={{ display: 'flex', justifyContent: 'center', padding: '40px 0 0', position: 'relative', zIndex: 1 }}>
-                  <img 
-                    src={item.image || IMAGES.shop_pic1} 
-                    alt={item.name} 
-                    style={{ 
-                      objectFit: 'cover', 
-                      width: '140px', 
-                      height: '140px', 
-                      borderRadius: '50%', 
-                      border: '5px solid #fff', 
-                      boxShadow: '0 8px 15px rgba(0,0,0,0.08)' 
-                    }} 
+                <div className="dz-media" style={{ width: '100%', height: '210px', overflow: 'hidden', position: 'relative', zIndex: 1 }}>
+                  <img
+                    src={item.image || IMAGES.shop_pic1}
+                    alt={item.name}
+                    style={{
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '0',
+                      border: 'none',
+                      boxShadow: 'none'
+                    }}
                   />
                 </div>
 
-                <div className="dz-content" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '5px 15px 20px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-                  <h4 className="dz-title" style={{ fontSize: '18px', fontWeight: 900, marginBottom: '12px', marginTop: '10px' }}>
+                <div className="dz-content" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '10px 15px 15px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+                  <h4 className="dz-title" style={{ fontSize: '18px', fontWeight: 900, marginBottom: '6px', marginTop: '5px' }}>
                     <Link to={`/product/${item.id}`} style={{ fontWeight: 900, color: '#000' }}>{item.name}</Link>
                   </h4>
-                  <p style={{ fontSize: '15px', color: '#555', marginBottom: '10px', lineHeight: '1.5', height: '48px', overflow: 'hidden' }}>
-                    {item.description ? item.description.split(' ').slice(0, 7).join(' ') + '...' : 'Freshly prepared with the best ingredients.'}
+                  <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px', lineHeight: '1.4', height: '40px', overflow: 'hidden' }}>
+                    {item.description ? item.description.split(' ').slice(0, 8).join(' ') + '...' : 'Freshly prepared with the best ingredients.'}
                   </p>
-                  
-                  <h5 className="dz-price" style={{ color: primaryColor, fontWeight: 800, marginBottom: '15px', fontSize: '24px' }}>
+
+                  <h5 className="dz-price" style={{ color: primaryColor, fontWeight: 800, marginBottom: '12px', fontSize: '20px' }}>
                     {cmsConfig?.config?.currency || '$'}{parseFloat(item.price || 0).toFixed(2)}
                   </h5>
 
                   <div className="mt-auto" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <button
                       className="btn btn-primary"
-                      style={{ 
-                        background: primaryColor, 
-                        borderColor: primaryColor, 
-                        padding: '0', 
-                        fontSize: '16px', 
-                        height: '48px', 
-                        width: '140px',
+                      style={{
+                        background: primaryColor,
+                        borderColor: primaryColor,
+                        padding: '0',
+                        fontSize: '14px',
+                        height: '40px',
+                        width: '120px',
                         borderRadius: '6px',
-                        display: 'flex', 
-                        alignItems: 'center', 
+                        display: 'flex',
+                        alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 800,
                         color: '#fff',
@@ -444,7 +417,7 @@ const ProductDetail = () => {
                       </Link>
                     </li>
                   </ul>
-                  
+
                   <div className="review-stat-wrapper" style={{ minWidth: reviewStats.totalReviews > 0 ? '120px' : '60px' }}>
                     <ReviewAvatars reviewStats={reviewStats} primaryColor={primaryColor} secondaryColor={secondaryColor} />
                   </div>
