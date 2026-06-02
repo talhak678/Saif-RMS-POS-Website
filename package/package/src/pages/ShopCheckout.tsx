@@ -11,10 +11,10 @@ import { IMAGES } from "../constent/theme";
 import CommonBanner from "../elements/CommonBanner";
 import Select from "react-select";
 
-const BASE_URL = "https://saif-rms-pos-backend-tau.vercel.app";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_placeholder"
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || ""
 );
 
 const CheckoutForm = () => {
@@ -141,6 +141,16 @@ const CheckoutForm = () => {
     }
     if (cartItems.length === 0) { toast.error("Your cart is empty"); return; }
     if (orderType === "DELIVERY" && !formData.address) { toast.error("Please enter delivery address"); return; }
+    if (formData.paymentMethod === "STRIPE") {
+      if (!import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY) {
+        toast.error("Stripe is not configured. Please contact support.");
+        return;
+      }
+      if (!stripe || !elements) {
+        toast.error("Payment form is still loading. Please wait a moment and try again.");
+        return;
+      }
+    }
 
     setLoading(true);
     try {
@@ -177,30 +187,56 @@ const CheckoutForm = () => {
         return;
       }
       const order = res.data.data;
+      const orderTotal = Number(order.total);
 
-      if (formData.paymentMethod === "STRIPE" && stripe && elements) {
+      if (formData.paymentMethod === "STRIPE") {
         const intentRes = await axios.post(`${BASE_URL}/api/stripe-intent`, {
-          orderId: order.id, amount: total
-        }, { 
+          orderId: order.id,
+          amount: orderTotal,
+        }, {
           headers: { Authorization: `Bearer ${user.token}` },
-          withCredentials: true 
+          withCredentials: true,
         });
 
-        if (intentRes.data?.success) {
-          const cardEl = elements.getElement(CardElement);
-          if (cardEl) {
-            const { error } = await stripe.confirmCardPayment(intentRes.data.data.clientSecret, {
-              payment_method: {
-                card: cardEl,
-                billing_details: {
-                  name: formData.cardName || `${formData.firstName} ${formData.lastName}`,
-                  email: formData.email,
-                  phone: formData.phone
-                }
-              }
-            });
-            if (error) { toast.error(error.message || "Payment failed"); setLoading(false); return; }
+        if (!intentRes.data?.success || !intentRes.data?.data?.clientSecret) {
+          toast.error(
+            intentRes.data?.message || "Could not start card payment. Your order was saved — please contact the restaurant."
+          );
+          setLoading(false);
+          return;
+        }
+
+        const cardEl = elements!.getElement(CardElement);
+        if (!cardEl) {
+          toast.error("Card details are missing. Please enter your card and try again.");
+          setLoading(false);
+          return;
+        }
+
+        const { error, paymentIntent } = await stripe!.confirmCardPayment(
+          intentRes.data.data.clientSecret,
+          {
+            payment_method: {
+              card: cardEl,
+              billing_details: {
+                name: formData.cardName || `${formData.firstName} ${formData.lastName}`,
+                email: formData.email,
+                phone: formData.phone,
+              },
+            },
           }
+        );
+
+        if (error) {
+          toast.error(error.message || "Payment failed");
+          setLoading(false);
+          return;
+        }
+
+        if (paymentIntent?.status !== "succeeded") {
+          toast.error("Payment was not completed. Please try again.");
+          setLoading(false);
+          return;
         }
       }
 
